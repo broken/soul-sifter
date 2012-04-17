@@ -1,8 +1,8 @@
 .DS_Store
 
 # xcode project settings
-.xcodeproj/
-!*.xcodeproj/project.pbxproj
+soul-sifter.xcodeproj/*
+!soul-sifter.xcodeproj/project.pbxproj
 
 # Generated files
 VersionX-revision.h
