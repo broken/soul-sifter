@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22CA153D4F190043634A /* Cocoa.framework */; };
+		189D22D5153D4F190043634A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 189D22D3153D4F190043634A /* InfoPlist.strings */; };
+		189D22D7153D4F190043634A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D22D6153D4F190043634A /* main.m */; };
+		189D22DB153D4F190043634A /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 189D22D9153D4F190043634A /* Credits.rtf */; };
+		189D22DE153D4F190043634A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D22DD153D4F190043634A /* AppDelegate.m */; };
+		189D22E1153D4F190043634A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D22DF153D4F190043634A /* MainMenu.xib */; };
+		189D22E9153D4F190043634A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22E8153D4F190043634A /* SenTestingKit.framework */; };
+		189D22EA153D4F190043634A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22CA153D4F190043634A /* Cocoa.framework */; };
+		189D22F2153D4F190043634A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 189D22F0153D4F190043634A /* InfoPlist.strings */; };
+		189D22F5153D4F1A0043634A /* soul_sifterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D22F4153D4F1A0043634A /* soul_sifterTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		189D22EB153D4F190043634A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 189D22BD153D4F190043634A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 189D22C5153D4F190043634A;
+			remoteInfo = "soul-sifter";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		189D22C6153D4F190043634A /* soul-sifter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "soul-sifter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		189D22CA153D4F190043634A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		189D22CD153D4F190043634A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		189D22CE153D4F190043634A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		189D22CF153D4F190043634A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		189D22D2153D4F190043634A /* soul-sifter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "soul-sifter-Info.plist"; sourceTree = "<group>"; };
+		189D22D4153D4F190043634A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		189D22D6153D4F190043634A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		189D22D8153D4F190043634A /* soul-sifter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "soul-sifter-Prefix.pch"; sourceTree = "<group>"; };
+		189D22DA153D4F190043634A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		189D22DC153D4F190043634A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		189D22DD153D4F190043634A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		189D22E0153D4F190043634A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		189D22E7153D4F190043634A /* soul-sifterTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "soul-sifterTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		189D22E8153D4F190043634A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		189D22EF153D4F190043634A /* soul-sifterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "soul-sifterTests-Info.plist"; sourceTree = "<group>"; };
+		189D22F1153D4F190043634A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		189D22F3153D4F190043634A /* soul_sifterTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = soul_sifterTests.h; sourceTree = "<group>"; };
+		189D22F4153D4F1A0043634A /* soul_sifterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = soul_sifterTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		189D22C3153D4F190043634A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		189D22E3153D4F190043634A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				189D22E9153D4F190043634A /* SenTestingKit.framework in Frameworks */,
+				189D22EA153D4F190043634A /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		189D22BB153D4F190043634A = {
+			isa = PBXGroup;
+			children = (
+				189D22D0153D4F190043634A /* soul-sifter */,
+				189D22ED153D4F190043634A /* soul-sifterTests */,
+				189D22C9153D4F190043634A /* Frameworks */,
+				189D22C7153D4F190043634A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		189D22C7153D4F190043634A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				189D22C6153D4F190043634A /* soul-sifter.app */,
+				189D22E7153D4F190043634A /* soul-sifterTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		189D22C9153D4F190043634A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				189D22CA153D4F190043634A /* Cocoa.framework */,
+				189D22E8153D4F190043634A /* SenTestingKit.framework */,
+				189D22CC153D4F190043634A /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		189D22CC153D4F190043634A /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				189D22CD153D4F190043634A /* AppKit.framework */,
+				189D22CE153D4F190043634A /* CoreData.framework */,
+				189D22CF153D4F190043634A /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		189D22D0153D4F190043634A /* soul-sifter */ = {
+			isa = PBXGroup;
+			children = (
+				189D22DC153D4F190043634A /* AppDelegate.h */,
+				189D22DD153D4F190043634A /* AppDelegate.m */,
+				189D22DF153D4F190043634A /* MainMenu.xib */,
+				189D22D1153D4F190043634A /* Supporting Files */,
+			);
+			path = "soul-sifter";
+			sourceTree = "<group>";
+		};
+		189D22D1153D4F190043634A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				189D22D2153D4F190043634A /* soul-sifter-Info.plist */,
+				189D22D3153D4F190043634A /* InfoPlist.strings */,
+				189D22D6153D4F190043634A /* main.m */,
+				189D22D8153D4F190043634A /* soul-sifter-Prefix.pch */,
+				189D22D9153D4F190043634A /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		189D22ED153D4F190043634A /* soul-sifterTests */ = {
+			isa = PBXGroup;
+			children = (
+				189D22F3153D4F190043634A /* soul_sifterTests.h */,
+				189D22F4153D4F1A0043634A /* soul_sifterTests.m */,
+				189D22EE153D4F190043634A /* Supporting Files */,
+			);
+			path = "soul-sifterTests";
+			sourceTree = "<group>";
+		};
+		189D22EE153D4F190043634A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				189D22EF153D4F190043634A /* soul-sifterTests-Info.plist */,
+				189D22F0153D4F190043634A /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		189D22C5153D4F190043634A /* soul-sifter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 189D22F8153D4F1A0043634A /* Build configuration list for PBXNativeTarget "soul-sifter" */;
+			buildPhases = (
+				189D22C2153D4F190043634A /* Sources */,
+				189D22C3153D4F190043634A /* Frameworks */,
+				189D22C4153D4F190043634A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "soul-sifter";
+			productName = "soul-sifter";
+			productReference = 189D22C6153D4F190043634A /* soul-sifter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		189D22E6153D4F190043634A /* soul-sifterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 189D22FB153D4F1A0043634A /* Build configuration list for PBXNativeTarget "soul-sifterTests" */;
+			buildPhases = (
+				189D22E2153D4F190043634A /* Sources */,
+				189D22E3153D4F190043634A /* Frameworks */,
+				189D22E4153D4F190043634A /* Resources */,
+				189D22E5153D4F190043634A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				189D22EC153D4F190043634A /* PBXTargetDependency */,
+			);
+			name = "soul-sifterTests";
+			productName = "soul-sifterTests";
+			productReference = 189D22E7153D4F190043634A /* soul-sifterTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		189D22BD153D4F190043634A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 189D22C0153D4F190043634A /* Build configuration list for PBXProject "soul-sifter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 189D22BB153D4F190043634A;
+			productRefGroup = 189D22C7153D4F190043634A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				189D22C5153D4F190043634A /* soul-sifter */,
+				189D22E6153D4F190043634A /* soul-sifterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		189D22C4153D4F190043634A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				189D22D5153D4F190043634A /* InfoPlist.strings in Resources */,
+				189D22DB153D4F190043634A /* Credits.rtf in Resources */,
+				189D22E1153D4F190043634A /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		189D22E4153D4F190043634A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				189D22F2153D4F190043634A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		189D22E5153D4F190043634A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		189D22C2153D4F190043634A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				189D22D7153D4F190043634A /* main.m in Sources */,
+				189D22DE153D4F190043634A /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		189D22E2153D4F190043634A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				189D22F5153D4F1A0043634A /* soul_sifterTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		189D22EC153D4F190043634A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 189D22C5153D4F190043634A /* soul-sifter */;
+			targetProxy = 189D22EB153D4F190043634A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		189D22D3153D4F190043634A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				189D22D4153D4F190043634A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		189D22D9153D4F190043634A /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				189D22DA153D4F190043634A /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		189D22DF153D4F190043634A /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				189D22E0153D4F190043634A /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		189D22F0153D4F190043634A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				189D22F1153D4F190043634A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		189D22F6153D4F1A0043634A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		189D22F7153D4F1A0043634A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		189D22F9153D4F1A0043634A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		189D22FA153D4F1A0043634A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		189D22FC153D4F1A0043634A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/soul-sifter.app/Contents/MacOS/soul-sifter";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				INFOPLIST_FILE = "soul-sifterTests/soul-sifterTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		189D22FD153D4F1A0043634A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/soul-sifter.app/Contents/MacOS/soul-sifter";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				INFOPLIST_FILE = "soul-sifterTests/soul-sifterTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		189D22C0153D4F190043634A /* Build configuration list for PBXProject "soul-sifter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				189D22F6153D4F1A0043634A /* Debug */,
+				189D22F7153D4F1A0043634A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		189D22F8153D4F1A0043634A /* Build configuration list for PBXNativeTarget "soul-sifter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				189D22F9153D4F1A0043634A /* Debug */,
+				189D22FA153D4F1A0043634A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		189D22FB153D4F1A0043634A /* Build configuration list for PBXNativeTarget "soul-sifterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				189D22FC153D4F1A0043634A /* Debug */,
+				189D22FD153D4F1A0043634A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 189D22BD153D4F190043634A /* Project object */;
+}
