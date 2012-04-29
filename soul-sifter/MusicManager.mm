@@ -10,20 +10,30 @@
 #import "MusicManager.h"
 
 #include <stdio.h>
-#include <id3/tag.h>
-#include <id3/utils.h>
 #include <id3/misc_support.h>
 #include <id3/readers.h>
+#include <id3/tag.h>
+#include <id3/utils.h>
+#include <id3/writers.h>
 
 #import <stdlib.h>
 #import "Song.h"
+
+// private helper methods
+
+@interface MusicManager()
+
+- (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value;
+
+@end
+
 
 @implementation MusicManager
 
 # pragma mark tagging
 
 - (Song *)discoverSong:(NSURL *)musicFile {
-    NSLog(@"discoverSong");
+    NSLog(@"musicManager.discoverSong");
 	NSLog(@"looking at '%@'", musicFile);
     Song *song = [[Song alloc] init];
     ID3_Tag tag([[musicFile path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
@@ -329,8 +339,51 @@
         }
     }
     delete iter;
-    
+
+    [lastParsedSong release];
+    lastParsedSong = song;
+    [lastParsedSong retain];
+
     return song;
+}
+
+- (void)writeTags:(Song *)song toFile:(NSURL *)musicFile {
+    NSLog(@"musicManager.writeTags");
+    ID3_Tag tag([[musicFile path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+    [self updateTag:&tag frame:ID3FID_LEADARTIST text:[song artist]];
+    [self updateTag:&tag frame:ID3FID_ALBUM text:[song album]];
+    [self updateTag:&tag frame:ID3FID_TRACKNUM text:[song trackNum]];
+    [self updateTag:&tag frame:ID3FID_TITLE text:[song title]];
+    [self updateTag:&tag frame:ID3FID_MIXARTIST text:[song remix]];
+    [self updateTag:&tag frame:ID3FID_BAND text:[song featuring]];
+    //[self updateTag:&tag frame:ID3FID_YEAR text:[song releaseDate]];
+    [self updateTag:&tag frame:ID3FID_PUBLISHER text:[song label]];
+    //[self updateTag:&tag frame:ID3FID_ALBUM text:[song catalogId]];
+    tag.Update();
+}
+
+# pragma mark helper methods
+
+- (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value {
+    NSLog(@"musicManager.updateTag");
+    const char* text = [value cStringUsingEncoding:[NSString defaultCStringEncoding]];
+    ID3_Frame* frame = NULL;
+    if (NULL != tag && NULL != text && strlen(text) > 0) {
+        // remove previous tag
+        while ((frame = tag->Find(frameId))) {
+            frame = tag->RemoveFrame(frame);
+            delete frame;
+        }
+        // add new tag
+        if (tag->Find(frameId) == NULL) {
+            frame = new ID3_Frame(frameId);
+            if (frame) {
+                frame->GetField(ID3FN_TEXT)->Set(text);
+                tag->AttachFrame(frame);
+            }
+        }
+    }
+    return frame;
 }
 
 @end

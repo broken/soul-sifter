@@ -16,7 +16,6 @@
     int index;
     NSArray *fileUrls;
     MusicManager *musicManager;
-    IBOutlet Song *song;
     
     IBOutlet NSTextField *artist;
     IBOutlet NSTextField *album;
@@ -27,10 +26,12 @@
     IBOutlet NSTextField *releaseDate;
     IBOutlet NSTextField *label;
     IBOutlet NSTextField *catalogId;
+    IBOutlet NSString *genre;
 }
 
+- (IBAction)processMusicFile:(id)sender;
+
 @property(retain,nonatomic) NSArray *fileUrls;
-@property(readwrite,retain) Song *song;
 
 @property(readwrite,retain,nonatomic) NSTextField *artist;
 @property(readwrite,retain,nonatomic) NSTextField *album;
@@ -41,5 +42,6 @@
 @property(readwrite,retain,nonatomic) NSTextField *releaseDate;
 @property(readwrite,retain,nonatomic) NSTextField *label;
 @property(readwrite,retain,nonatomic) NSTextField *catalogId;
+@property(readwrite,retain,nonatomic) NSString *genre;
 
 @end

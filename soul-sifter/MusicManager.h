@@ -17,5 +17,6 @@
 }
 
 - (Song *)discoverSong:(NSURL *)musicFile;
+- (void)writeTags:(Song *)song toFile:(NSURL *)musicFile;
 
 @end
