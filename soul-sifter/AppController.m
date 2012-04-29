@@ -7,6 +7,8 @@
 //
 
 #import "AppController.h"
+
+#import "DropBox.h"
 #import "TagInfoController.h"
 
 @implementation AppController
@@ -18,6 +20,7 @@
     if (!tagInfoController) {
         tagInfoController = [[TagInfoController alloc] initWithWindowNibName:@"TagInfo"];
     }
+    [tagInfoController setFileUrls:[dropBox fileUrls]];
     [tagInfoController showWindow:self];
 }
 

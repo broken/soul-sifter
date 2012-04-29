@@ -8,6 +8,38 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TagInfoController : NSWindowController
+@class MusicManager;
+@class Song;
+
+@interface TagInfoController : NSWindowController {
+@private
+    int index;
+    NSArray *fileUrls;
+    MusicManager *musicManager;
+    IBOutlet Song *song;
+    
+    IBOutlet NSTextField *artist;
+    IBOutlet NSTextField *album;
+    IBOutlet NSTextField *trackNum;
+    IBOutlet NSTextField *title;
+    IBOutlet NSTextField *remix;
+    IBOutlet NSTextField *featuring;
+    IBOutlet NSTextField *releaseDate;
+    IBOutlet NSTextField *label;
+    IBOutlet NSTextField *catalogId;
+}
+
+@property(retain,nonatomic) NSArray *fileUrls;
+@property(readwrite,retain) Song *song;
+
+@property(readwrite,retain,nonatomic) NSTextField *artist;
+@property(readwrite,retain,nonatomic) NSTextField *album;
+@property(readwrite,retain,nonatomic) NSTextField *trackNum;
+@property(readwrite,retain,nonatomic) NSTextField *title;
+@property(readwrite,retain,nonatomic) NSTextField *remix;
+@property(readwrite,retain,nonatomic) NSTextField *featuring;
+@property(readwrite,retain,nonatomic) NSTextField *releaseDate;
+@property(readwrite,retain,nonatomic) NSTextField *label;
+@property(readwrite,retain,nonatomic) NSTextField *catalogId;
 
 @end
