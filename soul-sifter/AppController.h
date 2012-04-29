@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AppController : NSObject
+@class DropBox;
+@class TagInfoController;
+
+@interface AppController : NSObject {
+@private
+    IBOutlet DropBox *dropBox;
+    
+    TagInfoController *tagInfoController;
+}
+
+- (IBAction)showTagInfoWindow:(id)sender;
 
 @end

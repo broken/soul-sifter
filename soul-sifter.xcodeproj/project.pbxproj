@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		18169643154CADFB00593FEC /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169642154CADFB00593FEC /* AppController.m */; };
 		18169648154CB7D200593FEC /* DropBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169647154CB7D200593FEC /* DropBox.m */; };
+		1816964B154CD8E000593FEC /* TagInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816964A154CD8E000593FEC /* TagInfoController.m */; };
 		189C84F9153E647400F05E62 /* TagInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189C84F8153E647400F05E62 /* TagInfo.xib */; };
 		189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22CA153D4F190043634A /* Cocoa.framework */; };
 		189D22D5153D4F190043634A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 189D22D3153D4F190043634A /* InfoPlist.strings */; };
@@ -37,6 +38,8 @@
 		18169642154CADFB00593FEC /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		18169646154CB7D200593FEC /* DropBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBox.h; sourceTree = "<group>"; };
 		18169647154CB7D200593FEC /* DropBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBox.m; sourceTree = "<group>"; };
+		18169649154CD8E000593FEC /* TagInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagInfoController.h; sourceTree = "<group>"; };
+		1816964A154CD8E000593FEC /* TagInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagInfoController.m; sourceTree = "<group>"; };
 		189C84F8153E647400F05E62 /* TagInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagInfo.xib; sourceTree = "<group>"; };
 		189D22C6153D4F190043634A /* soul-sifter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "soul-sifter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		189D22CA153D4F190043634A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -139,6 +142,8 @@
 				189D22DF153D4F190043634A /* MainMenu.xib */,
 				189D22D1153D4F190043634A /* Supporting Files */,
 				189C84F8153E647400F05E62 /* TagInfo.xib */,
+				18169649154CD8E000593FEC /* TagInfoController.h */,
+				1816964A154CD8E000593FEC /* TagInfoController.m */,
 			);
 			path = "soul-sifter";
 			sourceTree = "<group>";
@@ -286,6 +291,7 @@
 				189D22DE153D4F190043634A /* AppDelegate.m in Sources */,
 				18169643154CADFB00593FEC /* AppController.m in Sources */,
 				18169648154CB7D200593FEC /* DropBox.m in Sources */,
+				1816964B154CD8E000593FEC /* TagInfoController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

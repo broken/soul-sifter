@@ -8,18 +8,30 @@
 
 #import "AppDelegate.h"
 
+#import "AppController.h"
+
 @implementation AppDelegate
 
-@synthesize window = _window;
+# pragma mark initialization
 
-- (void)dealloc
-{
+- (void)dealloc {
     [super dealloc];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
 }
+
+# pragma mark actions
+
+- (IBAction)filesDropped:(id)sender {
+    NSLog(@"filesDropped");
+    [appController showTagInfoWindow:sender];
+}
+
+# pragma mark accessors
+
+@synthesize appController;
+@synthesize window = _window;
 
 @end

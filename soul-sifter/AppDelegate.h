@@ -8,8 +8,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@class AppController;
 
-@property (assign) IBOutlet NSWindow *window;
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+@private
+    IBOutlet AppController *appController;
+}
+
+@property(assign) IBOutlet AppController *appController;
+@property(assign) IBOutlet NSWindow *window;
+
+- (IBAction)filesDropped:(id)sender;
 
 @end

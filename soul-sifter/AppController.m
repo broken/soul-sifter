@@ -7,7 +7,18 @@
 //
 
 #import "AppController.h"
+#import "TagInfoController.h"
 
 @implementation AppController
+
+# pragma mark windows
+
+- (IBAction)showTagInfoWindow:(id)sender {
+    NSLog(@"showTagInfoWindow");
+    if (!tagInfoController) {
+        tagInfoController = [[TagInfoController alloc] initWithWindowNibName:@"TagInfo"];
+    }
+    [tagInfoController showWindow:self];
+}
 
 @end
