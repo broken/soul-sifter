@@ -9,15 +9,18 @@
 #import <Foundation/Foundation.h>
 
 @class DropBox;
+@class PreferencesController;
 @class TagInfoController;
 
 @interface AppController : NSObject {
 @private
     IBOutlet DropBox *dropBox;
     
+    PreferencesController *preferencesController;
     TagInfoController *tagInfoController;
 }
 
+- (IBAction)showPreferencesPanel:(id)sender;
 - (IBAction)showTagInfoWindow:(id)sender;
 
 @end

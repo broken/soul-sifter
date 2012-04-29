@@ -9,14 +9,24 @@
 #import "AppController.h"
 
 #import "DropBox.h"
+#import "PreferencesController.h"
 #import "TagInfoController.h"
 
 @implementation AppController
 
 # pragma mark windows
 
+- (IBAction)showPreferencesPanel:(id)sender {
+	NSLog(@"appController.showPreferencesPanel");
+	//[self setGenerateCoverLabel:NO];
+	if (!preferencesController) {
+		preferencesController = [[PreferencesController alloc] init];
+	}
+	[preferencesController showWindow:self];
+}
+
 - (IBAction)showTagInfoWindow:(id)sender {
-    NSLog(@"showTagInfoWindow");
+    NSLog(@"appController.showTagInfoWindow");
     if (!tagInfoController) {
         tagInfoController = [[TagInfoController alloc] initWithWindowNibName:@"TagInfo"];
     }

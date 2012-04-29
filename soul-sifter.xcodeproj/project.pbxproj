@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18144C9C154DC5F0009C36EE /* Preferences.xib */; };
+		18144CA1154DC6AD009C36EE /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA0154DC6AD009C36EE /* PreferencesController.m */; };
+		18144CA4154DCA31009C36EE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA3154DCA31009C36EE /* Constants.m */; };
 		18169643154CADFB00593FEC /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169642154CADFB00593FEC /* AppController.m */; };
 		18169648154CB7D200593FEC /* DropBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169647154CB7D200593FEC /* DropBox.m */; };
 		1816964B154CD8E000593FEC /* TagInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816964A154CD8E000593FEC /* TagInfoController.m */; };
@@ -38,6 +41,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18144C9C154DC5F0009C36EE /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		18144C9F154DC6AD009C36EE /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
+		18144CA0154DC6AD009C36EE /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		18144CA2154DCA31009C36EE /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		18144CA3154DCA31009C36EE /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		18169641154CADFB00593FEC /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		18169642154CADFB00593FEC /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		18169646154CB7D200593FEC /* DropBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBox.h; sourceTree = "<group>"; };
@@ -166,11 +174,16 @@
 				18169642154CADFB00593FEC /* AppController.m */,
 				189D22DC153D4F190043634A /* AppDelegate.h */,
 				189D22DD153D4F190043634A /* AppDelegate.m */,
+				18144CA2154DCA31009C36EE /* Constants.h */,
+				18144CA3154DCA31009C36EE /* Constants.m */,
 				189D22DF153D4F190043634A /* MainMenu.xib */,
-				189D22D1153D4F190043634A /* Supporting Files */,
 				189C84F8153E647400F05E62 /* TagInfo.xib */,
 				18169649154CD8E000593FEC /* TagInfoController.h */,
 				1816964A154CD8E000593FEC /* TagInfoController.m */,
+				18144C9C154DC5F0009C36EE /* Preferences.xib */,
+				18144C9F154DC6AD009C36EE /* PreferencesController.h */,
+				18144CA0154DC6AD009C36EE /* PreferencesController.m */,
+				189D22D1153D4F190043634A /* Supporting Files */,
 			);
 			path = "soul-sifter";
 			sourceTree = "<group>";
@@ -280,6 +293,7 @@
 				189D22DB153D4F190043634A /* Credits.rtf in Resources */,
 				189D22E1153D4F190043634A /* MainMenu.xib in Resources */,
 				189C84F9153E647400F05E62 /* TagInfo.xib in Resources */,
+				18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +336,8 @@
 				18169651154D06EB00593FEC /* MusicManager.mm in Sources */,
 				18169654154D08D900593FEC /* Song.m in Sources */,
 				1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */,
+				18144CA1154DC6AD009C36EE /* PreferencesController.m in Sources */,
+				18144CA4154DCA31009C36EE /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
