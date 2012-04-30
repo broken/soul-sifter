@@ -28,6 +28,12 @@
 - (void)windowDidLoad {
     NSLog(@"tagInfoController.windowDidLoad");
     [super windowDidLoad];
+    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+}
+
+- (IBAction)showWindow:(id)sender {
+    NSLog(@"tagInfoController.showWindow");
+    [super showWindow:sender];
     
     if (!musicManager) {
         musicManager = [[MusicManager alloc] init];
@@ -39,8 +45,10 @@
     if ([song trackNum]) [trackNum setStringValue:[song trackNum]];
     if ([song remix]) [remix setStringValue:[song remix]];
     if ([song featuring]) [featuring setStringValue:[song featuring]];
-    if ([song releaseDate]) [releaseDate setStringValue:[song releaseDate]];
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    if ([song releaseDateYear]) [releaseDateYear setStringValue:[song releaseDateYear]];
+    if ([song releaseDateMonth]) [releaseDateMonth setStringValue:[song releaseDateMonth]];
+    if ([song releaseDateDay]) [releaseDateDay setStringValue:[song releaseDateDay]];
+    else [releaseDateDay setStringValue:@""];
 }
 
 # pragma mark actions
@@ -63,7 +71,9 @@
     [song setTrackNum:[trackNum stringValue]];
     [song setRemix:[remix stringValue]];
     [song setFeaturing:[featuring stringValue]];
-    [song setReleaseDate:[releaseDate stringValue]];
+    [song setReleaseDateYear:[releaseDateYear stringValue]];
+    [song setReleaseDateMonth:[releaseDateMonth stringValue]];
+    [song setReleaseDateDay:[releaseDateDay stringValue]];
     [musicManager writeTags:song toFile:[fileUrls objectAtIndex:index]];
     
     // close window (for now)
@@ -80,10 +90,12 @@
 @synthesize title;
 @synthesize remix;
 @synthesize featuring;
-@synthesize releaseDate;
 @synthesize label;
 @synthesize catalogId;
 @synthesize genre;
+@synthesize releaseDateYear;
+@synthesize releaseDateMonth;
+@synthesize releaseDateDay;
 
 // Side effect - resets index to 0
 - (void)setFileUrls:(NSArray *)newFileUrls {

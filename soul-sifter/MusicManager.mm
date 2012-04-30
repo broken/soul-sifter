@@ -43,7 +43,6 @@
     while (NULL != (frame = iter->GetNext())) {
         const char* desc = frame->GetDescription();
         if (!desc) desc = "";
-        NSLog(@" - frame: %s (%s): ", frame->GetTextID(), desc);
         ID3_FrameID eFrameID = frame->GetID();
         switch (eFrameID) {
             case ID3FID_LEADARTIST: {
@@ -91,47 +90,25 @@
             // numeric string in the DDMM format
             case ID3FID_DATE: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                NSString *tmp = [song releaseDate];
-                // reverse to MMDD format
-                char day1 = sText[0];
-                if (day1) {
-                    char day2 = sText[1];
-                    if (day2) {
-                        char m1 = sText[2];
-                        if (m1) {
-                            char m2 = sText[3];
-                            if (m2) {
-                                sText[0] = m1;
-                                sText[1] = m2;
-                                sText[2] = day1;
-                                sText[3] = day2;
-                            }
-                        }
-                    }
-                }
-                if (tmp) {
-                    [song setReleaseDate:[NSString stringWithFormat:@"%@%@",
-                                          [song releaseDate], tmp]];
-                    [tmp release];
-                } else {
-                    [song setReleaseDate:[NSString stringWithUTF8String:sText]];
-                }
+                char *tmp = new char[3];
+                tmp[0] = sText[0];
+                tmp[1] = sText[1];
+                tmp[2] = '\0';
+                if (tmp[0] != '0' || tmp[1] != '0')
+                    [song setReleaseDateDay:[NSString stringWithUTF8String:tmp]];
+                tmp[0] = sText[2];
+                tmp[1] = sText[3];
+                [song setReleaseDateMonth:[NSString stringWithUTF8String:tmp]];
+                NSLog(@" - frame %s (%s): %s", frame->GetTextID(), desc, sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song releaseDate]);
+                delete [] tmp;
                 break;
             }
             case ID3FID_YEAR: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                NSString *tmp = [song releaseDate];
-                if (tmp) {
-                    [song setReleaseDate:[NSString stringWithFormat:@"%@%@",
-                                          tmp, [song releaseDate]]];
-                    [tmp release];
-                } else {
-                    [song setReleaseDate:[NSString stringWithUTF8String:sText]];
-                }
+                [song setReleaseDateYear:[NSString stringWithUTF8String:sText]];
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song releaseDate]);
+                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song releaseDateYear]);
                 break;
             }
             case ID3FID_PUBLISHER: {
@@ -356,8 +333,21 @@
     [self updateTag:&tag frame:ID3FID_TITLE text:[song title]];
     [self updateTag:&tag frame:ID3FID_MIXARTIST text:[song remix]];
     [self updateTag:&tag frame:ID3FID_BAND text:[song featuring]];
-    //[self updateTag:&tag frame:ID3FID_YEAR text:[song releaseDate]];
     [self updateTag:&tag frame:ID3FID_PUBLISHER text:[song label]];
+    [self updateTag:&tag frame:ID3FID_YEAR text:[song releaseDateYear]];
+    NSString *month = [[song releaseDateMonth] copy];
+    NSString *day = [[song releaseDateDay] copy];
+    if ([month length]) {
+        if ([month length] == 1) {
+            month = [NSString stringWithFormat:@"0%@", month];
+        }
+        if ([day length] == 0) {
+            day = @"00";
+        } else if ([day length] == 1) {
+            day = [NSString stringWithFormat:@"0%@", day];
+        }
+        [self updateTag:&tag frame:ID3FID_DATE text:[NSString stringWithFormat:@"%@%@", day, month]];
+    }
     //[self updateTag:&tag frame:ID3FID_ALBUM text:[song catalogId]];
     tag.Update();
 }
@@ -377,7 +367,7 @@
         // add new tag
         if (tag->Find(frameId) == NULL) {
             frame = new ID3_Frame(frameId);
-            if (frame) {
+            if (frame && [value length]) {
                 frame->GetField(ID3FN_TEXT)->Set(text);
                 tag->AttachFrame(frame);
             }

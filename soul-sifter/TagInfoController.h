@@ -23,10 +23,12 @@
     IBOutlet NSTextField *title;
     IBOutlet NSTextField *remix;
     IBOutlet NSTextField *featuring;
-    IBOutlet NSTextField *releaseDate;
     IBOutlet NSTextField *label;
     IBOutlet NSTextField *catalogId;
-    IBOutlet NSString *genre;
+    IBOutlet NSTextField *genre;
+    IBOutlet NSTextField *releaseDateYear;
+    IBOutlet NSTextField *releaseDateMonth;
+    IBOutlet NSTextField *releaseDateDay;
 }
 
 - (IBAction)processMusicFile:(id)sender;
@@ -39,9 +41,11 @@
 @property(readwrite,retain,nonatomic) NSTextField *title;
 @property(readwrite,retain,nonatomic) NSTextField *remix;
 @property(readwrite,retain,nonatomic) NSTextField *featuring;
-@property(readwrite,retain,nonatomic) NSTextField *releaseDate;
 @property(readwrite,retain,nonatomic) NSTextField *label;
 @property(readwrite,retain,nonatomic) NSTextField *catalogId;
-@property(readwrite,retain,nonatomic) NSString *genre;
+@property(readwrite,retain,nonatomic) NSTextField *genre;
+@property(readwrite,retain) NSTextField *releaseDateYear;
+@property(readwrite,retain) NSTextField *releaseDateMonth;
+@property(readwrite,retain) NSTextField *releaseDateDay;
 
 @end

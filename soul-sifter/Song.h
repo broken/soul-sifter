@@ -16,9 +16,11 @@
     NSString *title;
     NSString *remix;
     NSString *featuring;
-    NSString *releaseDate;
     NSString *label;
     NSString *catalogId;
+    NSString *releaseDateYear;
+    NSString *releaseDateMonth;
+    NSString *releaseDateDay;
 }
 
 @property(readwrite,retain) NSString *artist;
@@ -27,8 +29,10 @@
 @property(readwrite,retain) NSString *title;
 @property(readwrite,retain) NSString *remix;
 @property(readwrite,retain) NSString *featuring;
-@property(readwrite,retain) NSString *releaseDate;
 @property(readwrite,retain) NSString *label;
 @property(readwrite,retain) NSString *catalogId;
+@property(readwrite,retain) NSString *releaseDateYear;
+@property(readwrite,retain) NSString *releaseDateMonth;
+@property(readwrite,retain) NSString *releaseDateDay;
 
 @end

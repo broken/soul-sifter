@@ -18,8 +18,10 @@
 @synthesize title;
 @synthesize remix;
 @synthesize featuring;
-@synthesize releaseDate;
 @synthesize label;
 @synthesize catalogId;
+@synthesize releaseDateYear;
+@synthesize releaseDateMonth;
+@synthesize releaseDateDay;
 
 @end
