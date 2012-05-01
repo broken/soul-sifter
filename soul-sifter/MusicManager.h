@@ -12,11 +12,20 @@
 
 @interface MusicManager : NSObject {
 @private
+    // tags
     Song *lastParsedSong;
     Song *lastSongFixed;
+    
+    // paths
+    NSArray *basicGenres;
+    NSDictionary *artistToGenre;
 }
 
+// tags
 - (Song *)discoverSong:(NSURL *)musicFile;
 - (void)writeTags:(Song *)song toFile:(NSURL *)musicFile;
+
+// paths
+- (NSArray *)basicGenres;
 
 @end

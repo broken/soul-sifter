@@ -20,24 +20,33 @@
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
+        musicManager = [[MusicManager alloc] init];
     }
     
     return self;
+}
+
+- (void)dealloc {
+    NSLog(@"tagInfoController.dealloc");
+    [musicManager release];
+    [super dealloc];
 }
 
 - (void)windowDidLoad {
     NSLog(@"tagInfoController.windowDidLoad");
     [super windowDidLoad];
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    
+    [genreArrayController setContent:[musicManager basicGenres]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] init];
+    [sortDescriptor autorelease];
+    [genreArrayController setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 }
 
 - (IBAction)showWindow:(id)sender {
     NSLog(@"tagInfoController.showWindow");
     [super showWindow:sender];
     
-    if (!musicManager) {
-        musicManager = [[MusicManager alloc] init];
-    }
     Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
     if ([song artist]) [artist setStringValue:[song artist]];
     if ([song album]) [album setStringValue:[song album]];
@@ -57,7 +66,7 @@
     NSLog(@"tagInfoController.processMusicFile");
     
     // unable to move file if any of these are blank
-    if (genre == nil || [artist stringValue] == nil || [album stringValue] == nil) {
+    if ([genreComboBox stringValue] == nil || [artist stringValue] == nil || [album stringValue] == nil) {
         NSBeep();
         return;
     }
@@ -83,6 +92,7 @@
 # pragma mark accessors
 
 @synthesize fileUrls;
+@synthesize genreOptions;
 
 @synthesize artist;
 @synthesize album;
@@ -92,7 +102,6 @@
 @synthesize featuring;
 @synthesize label;
 @synthesize catalogId;
-@synthesize genre;
 @synthesize releaseDateYear;
 @synthesize releaseDateMonth;
 @synthesize releaseDateDay;

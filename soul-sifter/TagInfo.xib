@@ -17,6 +17,7 @@
 			<string>NSWindowTemplate</string>
 			<string>NSCustomObject</string>
 			<string>NSComboBox</string>
+			<string>NSArrayController</string>
 			<string>NSButtonCell</string>
 			<string>NSComboBoxCell</string>
 			<string>NSButton</string>
@@ -1138,6 +1139,16 @@
 			<object class="NSCustomObject" id="966855178">
 				<string key="NSClassName">LowerCaseFormatter</string>
 			</object>
+			<object class="NSArrayController" id="879918486">
+				<bool key="NSEditable">YES</bool>
+				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
+				<bool key="NSAvoidsEmptySelection">YES</bool>
+				<bool key="NSPreservesSelection">YES</bool>
+				<bool key="NSSelectsInsertedObjects">YES</bool>
+				<bool key="NSFilterRestrictsInsertion">YES</bool>
+				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
+				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
+			</object>
 			<object class="NSUserDefaultsController" id="775213098">
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
@@ -1250,20 +1261,36 @@
 					<int key="connectionID">113</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">genreComboBox</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="159782537"/>
+					</object>
+					<int key="connectionID">114</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">genreArrayController</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="879918486"/>
+					</object>
+					<int key="connectionID">117</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: genre</string>
+						<string key="label">content: arrangedObjects</string>
 						<reference key="source" ref="159782537"/>
-						<reference key="destination" ref="1001"/>
+						<reference key="destination" ref="879918486"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="159782537"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: genre</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">genre</string>
+							<reference key="NSDestination" ref="879918486"/>
+							<string key="NSLabel">content: arrangedObjects</string>
+							<string key="NSBinding">content</string>
+							<string key="NSKeyPath">arrangedObjects</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">85</int>
+					<int key="connectionID">126</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1735,6 +1762,11 @@
 						<reference key="object" ref="101549226"/>
 						<reference key="parent" ref="649418628"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">115</int>
+						<reference key="object" ref="879918486"/>
+						<reference key="parent" ref="1002"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1750,6 +1782,7 @@
 					<string>10.IBPluginDependency</string>
 					<string>100.IBPluginDependency</string>
 					<string>11.IBPluginDependency</string>
+					<string>115.IBPluginDependency</string>
 					<string>12.IBPluginDependency</string>
 					<string>13.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
@@ -1870,6 +1903,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -1884,7 +1918,7 @@
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">113</int>
+			<int key="maxID">126</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

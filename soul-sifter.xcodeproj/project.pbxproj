@@ -103,6 +103,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18144CA8154E5BE1009C36EE /* Category */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Category;
+			sourceTree = "<group>";
+		};
 		18169645154CB79900593FEC /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +175,7 @@
 		189D22D0153D4F190043634A /* soul-sifter */ = {
 			isa = PBXGroup;
 			children = (
+				18144CA8154E5BE1009C36EE /* Category */,
 				1816964E154D05F400593FEC /* Organization */,
 				18169645154CB79900593FEC /* View */,
 				18169641154CADFB00593FEC /* AppController.h */,

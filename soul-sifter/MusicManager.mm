@@ -17,13 +17,19 @@
 #include <id3/writers.h>
 
 #import <stdlib.h>
+
+#import "Constants.h"
 #import "Song.h"
 
-// private helper methods
+# pragma mark private method helpers
 
 @interface MusicManager()
 
+// tags
 - (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value;
+
+// paths
+- (void)initializePathMembers;
 
 @end
 
@@ -352,8 +358,6 @@
     tag.Update();
 }
 
-# pragma mark helper methods
-
 - (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value {
     NSLog(@"musicManager.updateTag");
     const char* text = [value cStringUsingEncoding:[NSString defaultCStringEncoding]];
@@ -374,6 +378,67 @@
         }
     }
     return frame;
+}
+
+# pragma mark paths
+
+
+- (NSArray *)basicGenres {
+    NSLog(@"musicManager.basicGenreList");
+    if (!basicGenres) {
+        [self initializePathMembers];
+    }
+    return basicGenres;
+}
+
+- (void)initializePathMembers {
+    NSLog(@"musicManager.initializePathMembers");
+    // temporary variables
+	NSMutableDictionary *artists = [NSMutableDictionary dictionaryWithCapacity:1600];
+	NSMutableArray *genres = [NSMutableArray arrayWithCapacity:24];
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSString *path = [[NSUserDefaults standardUserDefaults] stringForKey:UDMusicPath];
+	
+    // enumerate over path; releasing values with each iteration for better memory management
+	NSDirectoryEnumerator *enumerator  = [fileManager enumeratorAtPath:path];
+	NSString *file;
+	while (file = [enumerator nextObject]) {
+		NSDictionary *fileAttribs = [enumerator fileAttributes];
+		
+        // process first & second tier directories
+		if ([fileAttribs objectForKey:NSFileType] == NSFileTypeDirectory) {
+			if ([file characterAtIndex:0] == '.') {
+				continue;
+			}
+			NSArray *pathComponents = [file pathComponents];
+			if ([pathComponents count] == 1) {
+				[genres addObject:file];
+			} else if ([pathComponents count] == 2) {
+				[artists setObject:[genres lastObject] forKey:[pathComponents objectAtIndex:1]];
+				[enumerator skipDescendents];
+			} else {
+				NSString *msg = [NSString stringWithFormat:@"Should never reach this point, but did with the path %@", file];
+				NSAssert(NO, msg);
+			}
+		}
+	}
+	
+    // set discovered attributes
+    [artistToGenre release];
+	artistToGenre = artists;
+    [artistToGenre retain];
+	
+    /*/ set artist array
+	NSMutableArray *mutableArtistArray = [[[self artists2genres] allKeys] mutableCopy];
+	[artistComboBox setMenuValues:mutableArtistArray];
+	[mutableArtistArray release];*/
+	
+    // sort & set genres array
+	[genres sortUsingSelector:@selector(caseInsensitiveCompare:)];
+    [basicGenres release];
+    basicGenres = genres;
+    [basicGenres retain];
 }
 
 @end
