@@ -24,4 +24,7 @@
 @synthesize releaseDateMonth;
 @synthesize releaseDateDay;
 
+@synthesize basicGenre;
+@synthesize file;
+
 @end

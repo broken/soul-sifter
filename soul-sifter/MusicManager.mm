@@ -330,9 +330,9 @@
     return song;
 }
 
-- (void)writeTags:(Song *)song toFile:(NSURL *)musicFile {
-    NSLog(@"musicManager.writeTags");
-    ID3_Tag tag([[musicFile path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+- (void)writeTagsToSong:(Song *)song {
+    NSLog(@"musicManager.writeTagsToSong");
+    ID3_Tag tag([[[song file] path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
     [self updateTag:&tag frame:ID3FID_LEADARTIST text:[song artist]];
     [self updateTag:&tag frame:ID3FID_ALBUM text:[song album]];
     [self updateTag:&tag frame:ID3FID_TRACKNUM text:[song trackNum]];
@@ -439,6 +439,32 @@
     [basicGenres release];
     basicGenres = genres;
     [basicGenres retain];
+}
+
+- (void)moveSong:(Song *)song {
+    NSLog(@"musicManager.moveSong");
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSError	*error;
+	
+    // create directory
+    NSURL *destDir = [NSURL fileURLWithPathComponents:
+                      [NSArray arrayWithObjects:
+                       [[NSUserDefaults standardUserDefaults] stringForKey:UDMusicPath],
+                       [song basicGenre], [song artist], [song album], nil]];
+    NSLog(@"destination directory: %@", destDir);
+	if (![fileManager createDirectoryAtURL:destDir withIntermediateDirectories:YES attributes:nil error:&error]) {
+		NSString *msg = [NSString stringWithFormat:@"Error occurred while trying to create directory: %@", error];
+		NSAssert(NO, msg);
+	}
+    
+    // move file to dest
+    NSURL *dest = [destDir URLByAppendingPathComponent:[[song file] lastPathComponent]];
+    NSLog(@"moving '%@' to '%@'", [song file], dest);
+    if (![fileManager moveItemAtURL:[song file] toURL:dest error:&error]) {
+        NSString *msg = [NSString stringWithFormat:@"Unable to move file."];
+        NSAssert(NO, msg);
+    }
 }
 
 @end

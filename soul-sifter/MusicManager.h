@@ -23,9 +23,10 @@
 
 // tags
 - (Song *)discoverSong:(NSURL *)musicFile;
-- (void)writeTags:(Song *)song toFile:(NSURL *)musicFile;
+- (void)writeTagsToSong:(Song *)song;
 
 // paths
 - (NSArray *)basicGenres;
+- (void)moveSong:(Song *)song;
 
 @end

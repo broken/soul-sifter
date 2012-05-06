@@ -21,6 +21,9 @@
     NSString *releaseDateYear;
     NSString *releaseDateMonth;
     NSString *releaseDateDay;
+    
+    NSString *basicGenre;
+    NSURL *file;
 }
 
 @property(readwrite,retain) NSString *artist;
@@ -34,5 +37,8 @@
 @property(readwrite,retain) NSString *releaseDateYear;
 @property(readwrite,retain) NSString *releaseDateMonth;
 @property(readwrite,retain) NSString *releaseDateDay;
+
+@property(readwrite,retain) NSString *basicGenre;
+@property(readwrite,retain) NSURL *file;
 
 @end

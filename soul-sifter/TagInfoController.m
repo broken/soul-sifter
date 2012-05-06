@@ -68,9 +68,9 @@
         return;
     }
     
-    // update tag
     Song *song = [[Song alloc] init];
     [song autorelease];
+    [song setFile:[fileUrls objectAtIndex:index]];
     [song setArtist:[artist stringValue]];
     [song setAlbum:[album stringValue]];
     [song setTitle:[title stringValue]];
@@ -80,7 +80,13 @@
     [song setReleaseDateYear:[releaseDateYear stringValue]];
     [song setReleaseDateMonth:[releaseDateMonth stringValue]];
     [song setReleaseDateDay:[releaseDateDay stringValue]];
-    [musicManager writeTags:song toFile:[fileUrls objectAtIndex:index]];
+    [song setBasicGenre:[genreComboBox stringValue]];
+    
+    // update tag
+    [musicManager writeTagsToSong:song];
+    
+    // move file
+    [musicManager moveSong:song];
     
     // close window (for now)
     [self close];
