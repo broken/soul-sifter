@@ -38,9 +38,6 @@
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     
     [genreArrayController setContent:[musicManager basicGenres]];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] init];
-    [sortDescriptor autorelease];
-    [genreArrayController setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 }
 
 - (IBAction)showWindow:(id)sender {
