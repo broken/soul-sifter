@@ -10,3 +10,4 @@
 
 // User Defaults
 extern NSString * const UDMusicPath;
+extern NSString * const UDStagingPath;

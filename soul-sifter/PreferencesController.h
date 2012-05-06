@@ -14,8 +14,8 @@
     IBOutlet NSTextField *stagingPathTextField;
 }
 
-- (NSString *)musicPath;
 - (IBAction)changeMusicPath:(id)sender;
+- (IBAction)changeStagingPath:(id)sender;
 - (IBAction)openPath:(id)sender;
 
 @end

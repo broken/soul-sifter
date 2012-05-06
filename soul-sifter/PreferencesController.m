@@ -25,7 +25,11 @@
 
 - (void)windowDidLoad {
 	NSLog(@"preferencesController.windowDidLoad");
-	[musicPathTextField setStringValue:[self musicPath]];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *musicPath = [defaults stringForKey:UDMusicPath];
+	NSString *stagingPath = [defaults stringForKey:UDStagingPath];
+	[musicPathTextField setStringValue:musicPath ? musicPath : @""];
+	[stagingPathTextField setStringValue:stagingPath ? stagingPath : @""];
 }
 
 # pragma mark actions
@@ -33,16 +37,15 @@
 - (IBAction)changeMusicPath:(id)sender {
 	NSLog(@"preferencesController.changeMusicPath");
 	NSString *text = [musicPathTextField stringValue];
-	
-    // update defaults
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject:text forKey:UDMusicPath];
-	
-    // send notification about change
-	//[[NSNotificationCenter defaultCenter] postNotificationName:DTMusicPathChangedNotification object:self];
-    
-    // close window
-    [self close];
+}
+
+- (IBAction)changeStagingPath:(id)sender {
+	NSLog(@"preferencesController.changeStagingPath");
+	NSString *text = [stagingPathTextField stringValue];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:text forKey:UDStagingPath];
 }
 
 - (IBAction)openPath:(id)sender {
@@ -62,15 +65,6 @@
 	if ([openPanel runModal] == NSOKButton) {
 		[[btn pathTextField] setStringValue:[[openPanel directoryURL] path]];
 	}
-}
-
-# pragma mark accessors
-
-- (NSString	*)musicPath {
-    NSLog(@"preferencesController.musicPath");
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *musicPath = [defaults stringForKey:UDMusicPath];
-    return musicPath ? musicPath : @"";
 }
 
 @end

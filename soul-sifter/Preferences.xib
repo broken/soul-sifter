@@ -194,7 +194,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{341, 17}, {29, 26}}</string>
 							<reference key="NSSuperview" ref="100372262"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:3966</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="430659249">
@@ -237,14 +236,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">changeMusicPath:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="607343639"/>
-					</object>
-					<int key="connectionID">11</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">openPath:</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="1032160112"/>
@@ -261,14 +252,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">changeMusicPath:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="838983702"/>
-					</object>
-					<int key="connectionID">22</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">openPath:</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="897390999"/>
@@ -282,6 +265,22 @@
 						<reference key="destination" ref="838983702"/>
 					</object>
 					<int key="connectionID">28</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeMusicPath:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="607343639"/>
+					</object>
+					<int key="connectionID">31</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeStagingPath:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="838983702"/>
+					</object>
+					<int key="connectionID">32</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -499,7 +498,7 @@
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">32</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
