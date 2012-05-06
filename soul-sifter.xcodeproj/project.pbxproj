@@ -28,6 +28,7 @@
 		189D22EA153D4F190043634A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22CA153D4F190043634A /* Cocoa.framework */; };
 		189D22F2153D4F190043634A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 189D22F0153D4F190043634A /* InfoPlist.strings */; };
 		189D22F5153D4F1A0043634A /* soul_sifterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D22F4153D4F1A0043634A /* soul_sifterTests.m */; };
+		18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FB7CAB15572F0000BEF750 /* PathButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,8 @@
 		189D22F1153D4F190043634A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		189D22F3153D4F190043634A /* soul_sifterTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = soul_sifterTests.h; sourceTree = "<group>"; };
 		189D22F4153D4F1A0043634A /* soul_sifterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = soul_sifterTests.m; sourceTree = "<group>"; };
+		18FB7CAA15572F0000BEF750 /* PathButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathButton.h; sourceTree = "<group>"; };
+		18FB7CAB15572F0000BEF750 /* PathButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 				18169647154CB7D200593FEC /* DropBox.m */,
 				1816965D154D4A2700593FEC /* LowerCaseFormatter.h */,
 				1816965E154D4A2700593FEC /* LowerCaseFormatter.m */,
+				18FB7CAA15572F0000BEF750 /* PathButton.h */,
+				18FB7CAB15572F0000BEF750 /* PathButton.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -346,6 +351,7 @@
 				1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */,
 				18144CA1154DC6AD009C36EE /* PreferencesController.m in Sources */,
 				18144CA4154DCA31009C36EE /* Constants.m in Sources */,
+				18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

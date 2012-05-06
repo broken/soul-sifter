@@ -9,6 +9,7 @@
 #import "PreferencesController.h"
 
 #import "Constants.h"
+#import "PathButton.h"
 
 @implementation PreferencesController
 
@@ -46,19 +47,20 @@
 
 - (IBAction)openPath:(id)sender {
 	NSLog(@"preferencesController.openPath");
+    PathButton *btn = sender;
 	
     // programatically create open (file) panel
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
 	[openPanel setCanChooseFiles:NO];
 	[openPanel setCanChooseDirectories:YES];
 	[openPanel setAllowsMultipleSelection:NO];
-    [openPanel setDirectoryURL:[NSURL fileURLWithPath:[self musicPath] isDirectory:YES]];
+    [openPanel setDirectoryURL:[NSURL fileURLWithPath:[[btn pathTextField] stringValue] isDirectory:YES]];
     [openPanel setAllowedFileTypes:nil];
 	[openPanel setTitle:@"Select folder..."];
 	
     // Display the dialog. If the OK button was pressed, set the new directory;
 	if ([openPanel runModal] == NSOKButton) {
-		[musicPathTextField setStringValue:[[openPanel directoryURL] path]];
+		[[btn pathTextField] setStringValue:[[openPanel directoryURL] path]];
 	}
 }
 
