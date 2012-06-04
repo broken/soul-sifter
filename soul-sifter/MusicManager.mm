@@ -36,6 +36,17 @@
 
 @implementation MusicManager
 
+# pragma mark initialization
+
++ (MusicManager *)default {
+    static dispatch_once_t pred;
+    static MusicManager *musicManager = nil;
+    dispatch_once(&pred, ^{
+        musicManager = [[MusicManager alloc] init];
+    });
+    return musicManager;
+}
+
 # pragma mark tagging
 
 - (Song *)discoverSong:(NSURL *)musicFile {
@@ -382,15 +393,6 @@
 
 # pragma mark paths
 
-
-- (NSArray *)basicGenres {
-    NSLog(@"musicManager.basicGenreList");
-    if (!basicGenres) {
-        [self initializePathMembers];
-    }
-    return basicGenres;
-}
-
 - (void)initializePathMembers {
     NSLog(@"musicManager.initializePathMembers");
     // temporary variables
@@ -465,6 +467,47 @@
         NSString *msg = [NSString stringWithFormat:@"Unable to move file."];
         NSAssert(NO, msg);
     }
+}
+
+// TODO remove old directories from staging
+- (void)populateStagingDirectory {
+    NSLog(@"musicManager.populateStagingDirectory");
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    
+    // enumerate over path; releasing values with each iteration for better memory management
+	NSDirectoryEnumerator *enumerator  = [fileManager enumeratorAtPath:[userDefaults stringForKey:UDMusicPath]];
+	NSString *file;
+	while (file = [enumerator nextObject]) {
+		NSDictionary *fileAttribs = [enumerator fileAttributes];
+		
+        // we process all directories that do not start with a period
+		if ([fileAttribs objectForKey:NSFileType] == NSFileTypeDirectory) {
+			if ([file characterAtIndex:0] == '.') {
+				continue;
+			}
+            NSURL *path = [NSURL fileURLWithPathComponents:
+                           [NSArray arrayWithObjects:
+                            [userDefaults stringForKey:UDStagingPath], file , nil]];
+            NSLog(@"creating directory: %@", path);
+            if (![fileManager createDirectoryAtURL:path withIntermediateDirectories:YES attributes:nil error:&error]) {
+                NSString *msg = [NSString stringWithFormat:@"Error occurred while trying to create directory: %@", error];
+                NSAssert(NO, msg);
+            }
+		}
+	}
+}
+
+# pragma mark paths accessors
+
+- (NSArray *)basicGenres {
+    NSLog(@"musicManager.basicGenreList");
+    if (!basicGenres) {
+        [self initializePathMembers];
+    }
+    return basicGenres;
 }
 
 @end

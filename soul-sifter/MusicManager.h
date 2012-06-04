@@ -21,12 +21,17 @@
     NSDictionary *artistToGenre;
 }
 
++ (MusicManager *)default;
+
 // tags
 - (Song *)discoverSong:(NSURL *)musicFile;
 - (void)writeTagsToSong:(Song *)song;
 
 // paths
-- (NSArray *)basicGenres;
 - (void)moveSong:(Song *)song;
+- (void)populateStagingDirectory;
+
+// paths accessors
+- (NSArray *)basicGenres;
 
 @end

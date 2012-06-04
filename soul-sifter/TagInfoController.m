@@ -20,7 +20,7 @@
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
-        musicManager = [[MusicManager alloc] init];
+        musicManager = [MusicManager default];
     }
     
     return self;

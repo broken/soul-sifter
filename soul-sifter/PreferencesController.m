@@ -48,6 +48,17 @@
 	[defaults setObject:text forKey:UDStagingPath];
 }
 
+- (void)textDidEndEditing:(NSNotification *)notification {
+    NSLog(@"preferencesController.textDidEndEditing");
+    if (notification == musicPathTextField) {
+        [self changeMusicPath:notification];
+    } else if (notification == stagingPathTextField) {
+        [self changeStagingPath:notification];
+    } else {
+        NSAssert(YES, @"Should not be here");
+    }
+}
+
 - (IBAction)openPath:(id)sender {
 	NSLog(@"preferencesController.openPath");
     PathButton *btn = sender;
@@ -55,6 +66,7 @@
     // programatically create open (file) panel
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
 	[openPanel setCanChooseFiles:NO];
+    [openPanel setCanCreateDirectories:YES];
 	[openPanel setCanChooseDirectories:YES];
 	[openPanel setAllowsMultipleSelection:NO];
     [openPanel setDirectoryURL:[NSURL fileURLWithPath:[[btn pathTextField] stringValue] isDirectory:YES]];

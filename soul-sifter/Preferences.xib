@@ -268,14 +268,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">changeMusicPath:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="607343639"/>
-					</object>
-					<int key="connectionID">31</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">changeStagingPath:</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="838983702"/>

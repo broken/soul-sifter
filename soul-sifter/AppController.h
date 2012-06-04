@@ -23,4 +23,6 @@
 - (IBAction)showPreferencesPanel:(id)sender;
 - (IBAction)showTagInfoWindow:(id)sender;
 
+- (IBAction)populateStagingDirectory:(id)sender;
+
 @end

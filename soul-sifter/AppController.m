@@ -9,6 +9,7 @@
 #import "AppController.h"
 
 #import "DropBox.h"
+#import "MusicManager.h"
 #import "PreferencesController.h"
 #import "TagInfoController.h"
 
@@ -32,6 +33,11 @@
     }
     [tagInfoController setFileUrls:[dropBox fileUrls]];
     [tagInfoController showWindow:self];
+}
+
+- (IBAction)populateStagingDirectory:(id)sender {
+    NSLog(@"appController.populateStagingDirectory");
+    [[MusicManager default] populateStagingDirectory];
 }
 
 @end
