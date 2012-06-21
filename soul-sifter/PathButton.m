@@ -10,10 +10,16 @@
 
 @implementation PathButton
 
+# pragma mark initialization
+
+- (void)dealloc {
+    [pathTextField release];
+    
+    [super dealloc];
+}
+
 # pragma mark accessors
 
-- (NSTextField *)pathTextField {
-    return pathTextField;
-}
+@synthesize pathTextField;
 
 @end

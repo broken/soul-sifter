@@ -13,6 +13,6 @@
     IBOutlet NSTextField *pathTextField;
 }
 
-- (NSTextField *)pathTextField;
+@property(readwrite,assign) IBOutlet NSTextField *pathTextField;
 
 @end

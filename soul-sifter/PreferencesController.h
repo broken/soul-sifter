@@ -18,6 +18,4 @@
 - (IBAction)changeStagingPath:(id)sender;
 - (IBAction)openPath:(id)sender;
 
-- (void)textDidEndEditing:(NSNotification *)notification;
-
 @end
