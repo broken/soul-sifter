@@ -8,6 +8,7 @@
 
 #import "TagInfoController.h"
 
+#import "Constants.h"
 #import "MusicManager.h"
 #import "Song.h"
 
@@ -43,6 +44,8 @@
 - (IBAction)showWindow:(id)sender {
     NSLog(@"tagInfoController.showWindow");
     [super showWindow:sender];
+    
+    // TODO alert if directories don't exist
     
     Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
     if ([song artist]) [artist setStringValue:[song artist]];

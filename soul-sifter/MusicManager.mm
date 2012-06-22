@@ -443,17 +443,40 @@
     [basicGenres retain];
 }
 
+- (BOOL)getCopyToPath:(NSString **)path {
+    NSLog(@"musicManager.getCopyToPath");
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDir;
+    
+    if ([fileManager fileExistsAtPath:[userDefaults stringForKey:UDMusicPath] isDirectory:&isDir] &&
+        isDir) {
+        *path = [[[userDefaults stringForKey:UDMusicPath] retain] autorelease];
+        return TRUE;
+    }
+    
+    if ([fileManager fileExistsAtPath:[userDefaults stringForKey:UDStagingPath] isDirectory:&isDir] &&
+        isDir) {
+        *path = [[[userDefaults stringForKey:UDStagingPath] retain] autorelease];
+        return TRUE;
+    }
+    
+    return FALSE;
+}
+
 - (void)moveSong:(Song *)song {
     NSLog(@"musicManager.moveSong");
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSError	*error;
+    
+    NSString *path;
+    NSAssert([self getCopyToPath:&path], @"Cannot find directory to copy music to");
 	
     // create directory
     NSURL *destDir = [NSURL fileURLWithPathComponents:
-                      [NSArray arrayWithObjects:
-                       [[NSUserDefaults standardUserDefaults] stringForKey:UDMusicPath],
-                       [song basicGenre], [song artist], [song album], nil]];
+                      [NSArray arrayWithObjects:path, [song basicGenre], [song artist], [song album], nil]];
     NSLog(@"destination directory: %@", destDir);
 	if (![fileManager createDirectoryAtURL:destDir withIntermediateDirectories:YES attributes:nil error:&error]) {
 		NSString *msg = [NSString stringWithFormat:@"Error occurred while trying to create directory: %@", error];
@@ -478,16 +501,13 @@
     NSError *error;
     
     // verify paths exist
-    BOOL dir;
-    if (![fileManager fileExistsAtPath:[userDefaults stringForKey:UDMusicPath] isDirectory:&dir] ||
-        !dir ||
-        ![fileManager fileExistsAtPath:[userDefaults stringForKey:UDStagingPath] isDirectory:&dir] ||
-        !dir) {
+    NSString *path;
+    if (![self getCopyToPath:&path]) {
         return;
     }
     
     // enumerate over path; releasing values with each iteration for better memory management
-	NSDirectoryEnumerator *enumerator  = [fileManager enumeratorAtPath:[userDefaults stringForKey:UDMusicPath]];
+	NSDirectoryEnumerator *enumerator  = [fileManager enumeratorAtPath:path];
 	NSString *file;
 	while (file = [enumerator nextObject]) {
 		NSDictionary *fileAttribs = [enumerator fileAttributes];

@@ -28,6 +28,7 @@
 - (void)writeTagsToSong:(Song *)song;
 
 // paths
+- (BOOL)getCopyToPath:(NSString **)path;
 - (void)moveSong:(Song *)song;
 - (void)populateStagingDirectory;
 
