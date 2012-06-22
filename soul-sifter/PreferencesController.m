@@ -9,7 +9,19 @@
 #import "PreferencesController.h"
 
 #import "Constants.h"
+#import "MusicManager.h"
 #import "PathButton.h"
+
+
+# pragma mark private method helpers
+
+@interface PreferencesController()
+
+- (void)changeMusicPath:(id)sender;
+- (void)changeStagingPath:(id)sender;
+
+@end
+
 
 @implementation PreferencesController
 
@@ -32,16 +44,23 @@
 	[stagingPathTextField setStringValue:stagingPath ? stagingPath : @""];
 }
 
+-(void)windowWillClose:(NSNotification *)notification {
+    NSLog(@"preferencesController.windowWillClose");
+    [self changeMusicPath:self];
+    [self changeStagingPath:self];
+    [[MusicManager default] populateStagingDirectory];
+}
+
 # pragma mark actions
 
-- (IBAction)changeMusicPath:(id)sender {
+- (void)changeMusicPath:(id)sender {
 	NSLog(@"preferencesController.changeMusicPath");
 	NSString *text = [musicPathTextField stringValue];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject:text forKey:UDMusicPath];
 }
 
-- (IBAction)changeStagingPath:(id)sender {
+- (void)changeStagingPath:(id)sender {
 	NSLog(@"preferencesController.changeStagingPath");
 	NSString *text = [stagingPathTextField stringValue];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

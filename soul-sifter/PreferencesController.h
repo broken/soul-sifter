@@ -8,14 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PreferencesController : NSWindowController {
+@interface PreferencesController : NSWindowController <NSWindowDelegate> {
 @public
     IBOutlet NSTextField *musicPathTextField;
     IBOutlet NSTextField *stagingPathTextField;
 }
 
-- (IBAction)changeMusicPath:(id)sender;
-- (IBAction)changeStagingPath:(id)sender;
 - (IBAction)openPath:(id)sender;
 
 @end

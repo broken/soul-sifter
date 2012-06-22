@@ -477,6 +477,15 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     
+    // verify paths exist
+    BOOL dir;
+    if (![fileManager fileExistsAtPath:[userDefaults stringForKey:UDMusicPath] isDirectory:&dir] ||
+        !dir ||
+        ![fileManager fileExistsAtPath:[userDefaults stringForKey:UDStagingPath] isDirectory:&dir] ||
+        !dir) {
+        return;
+    }
+    
     // enumerate over path; releasing values with each iteration for better memory management
 	NSDirectoryEnumerator *enumerator  = [fileManager enumeratorAtPath:[userDefaults stringForKey:UDMusicPath]];
 	NSString *file;
