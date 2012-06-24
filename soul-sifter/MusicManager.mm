@@ -47,6 +47,14 @@
     return musicManager;
 }
 
+- (MusicManager *)init {
+    NSLog(@"musicManager.init");
+    [super init];
+    lastParsedSong = NULL;
+    lastSongFixed = NULL;
+    return self;
+}
+
 # pragma mark tagging
 
 - (Song *)discoverSong:(NSURL *)musicFile {
@@ -333,6 +341,46 @@
         }
     }
     delete iter;
+    
+    // compare with last
+    if (lastParsedSong && lastSongFixed) {
+        if ([[song artist] isEqualToString:[lastParsedSong artist]]) {
+            [song setArtist:[lastSongFixed artist]];
+        }
+        if ([[song album] isEqualToString:[lastParsedSong album]]) {
+            [song setAlbum:[lastSongFixed album]];
+        }
+        if ([[song trackNum] isEqualToString:[lastParsedSong trackNum]]) {
+            [song setTrackNum:[lastSongFixed trackNum]];
+        }
+        if ([[song title] isEqualToString:[lastParsedSong title]]) {
+            [song setTitle:[lastSongFixed title]];
+        }
+        if ([[song remix] isEqualToString:[lastParsedSong remix]]) {
+            [song setRemix:[lastSongFixed remix]];
+        }
+        if ([[song featuring] isEqualToString:[lastParsedSong featuring]]) {
+            [song setFeaturing:[lastSongFixed featuring]];
+        }
+        if ([[song label] isEqualToString:[lastParsedSong label]]) {
+            [song setLabel:[lastSongFixed label]];
+        }
+        if ([[song catalogId] isEqualToString:[lastParsedSong catalogId]]) {
+            [song setCatalogId:[lastSongFixed catalogId]];
+        }
+        if ([[song releaseDateYear] isEqualToString:[lastParsedSong releaseDateYear]]) {
+            [song setReleaseDateYear:[lastSongFixed releaseDateYear]];
+        }
+        if ([[song releaseDateMonth] isEqualToString:[lastParsedSong releaseDateMonth]]) {
+            [song setReleaseDateMonth:[lastSongFixed releaseDateMonth]];
+        }
+        if ([[song releaseDateDay] isEqualToString:[lastParsedSong releaseDateDay]]) {
+            [song setReleaseDateDay:[lastSongFixed releaseDateDay]];
+        }
+        if ([[song basicGenre] isEqualToString:[lastParsedSong basicGenre]]) {
+            [song setBasicGenre:[lastSongFixed basicGenre]];
+        }
+    }
 
     [lastParsedSong release];
     lastParsedSong = song;

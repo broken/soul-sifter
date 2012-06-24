@@ -75,16 +75,16 @@
     Song *song = [[Song alloc] init];
     [song autorelease];
     [song setFile:[fileUrls objectAtIndex:index]];
-    [song setArtist:[[artist stringValue] lowercaseString]];
-    [song setAlbum:[[album stringValue] lowercaseString]];
-    [song setTitle:[[title stringValue] lowercaseString]];
-    [song setTrackNum:[[trackNum stringValue] lowercaseString]];
-    [song setRemix:[[remix stringValue] lowercaseString]];
-    [song setFeaturing:[[featuring stringValue] lowercaseString]];
-    [song setReleaseDateYear:[[releaseDateYear stringValue] lowercaseString]];
-    [song setReleaseDateMonth:[[releaseDateMonth stringValue] lowercaseString]];
-    [song setReleaseDateDay:[[releaseDateDay stringValue] lowercaseString]];
-    [song setBasicGenre:[[genreComboBox stringValue] lowercaseString]];
+    [song setArtist:[artist stringValue]];
+    [song setAlbum:[album stringValue]];
+    [song setTitle:[title stringValue]];
+    [song setTrackNum:[trackNum stringValue]];
+    [song setRemix:[remix stringValue]];
+    [song setFeaturing:[featuring stringValue]];
+    [song setReleaseDateYear:[releaseDateYear stringValue]];
+    [song setReleaseDateMonth:[releaseDateMonth stringValue]];
+    [song setReleaseDateDay:[releaseDateDay stringValue]];
+    [song setBasicGenre:[genreComboBox stringValue]];
     
     // update tag
     [musicManager writeTagsToSong:song];
@@ -102,7 +102,6 @@
         // close window
         [self close];
     }
-    
     Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
     if ([song artist]) [artist setStringValue:[song artist]];
     if ([song album]) [album setStringValue:[song album]];
