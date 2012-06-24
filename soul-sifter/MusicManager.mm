@@ -344,40 +344,52 @@
     
     // compare with last
     if (lastParsedSong && lastSongFixed) {
-        if ([[song artist] isEqualToString:[lastParsedSong artist]]) {
+        if (![song artist] || [[song artist] length] == 0
+            || [[song artist] isEqualToString:[lastParsedSong artist]]) {
             [song setArtist:[lastSongFixed artist]];
         }
-        if ([[song album] isEqualToString:[lastParsedSong album]]) {
+        if (![song album] || [[song album] length] == 0
+            || [[song album] isEqualToString:[lastParsedSong album]]) {
             [song setAlbum:[lastSongFixed album]];
         }
-        if ([[song trackNum] isEqualToString:[lastParsedSong trackNum]]) {
+        if (![song trackNum] || [[song trackNum] length] == 0
+            || [[song trackNum] isEqualToString:[lastParsedSong trackNum]]) {
             [song setTrackNum:[lastSongFixed trackNum]];
         }
-        if ([[song title] isEqualToString:[lastParsedSong title]]) {
+        if (![song title] || [[song title] length] == 0
+            || [[song title] isEqualToString:[lastParsedSong title]]) {
             [song setTitle:[lastSongFixed title]];
         }
-        if ([[song remix] isEqualToString:[lastParsedSong remix]]) {
+        if (![song remix] || [[song remix] length] == 0
+            || [[song remix] isEqualToString:[lastParsedSong remix]]) {
             [song setRemix:[lastSongFixed remix]];
         }
-        if ([[song featuring] isEqualToString:[lastParsedSong featuring]]) {
+        if (![song featuring] || [[song featuring] length] == 0
+            || [[song featuring] isEqualToString:[lastParsedSong featuring]]) {
             [song setFeaturing:[lastSongFixed featuring]];
         }
-        if ([[song label] isEqualToString:[lastParsedSong label]]) {
+        if (![song label] || [[song label] length] == 0
+            || [[song label] isEqualToString:[lastParsedSong label]]) {
             [song setLabel:[lastSongFixed label]];
         }
-        if ([[song catalogId] isEqualToString:[lastParsedSong catalogId]]) {
+        if (![song catalogId] || [[song catalogId] length] == 0
+            || [[song catalogId] isEqualToString:[lastParsedSong catalogId]]) {
             [song setCatalogId:[lastSongFixed catalogId]];
         }
-        if ([[song releaseDateYear] isEqualToString:[lastParsedSong releaseDateYear]]) {
+        if (![song releaseDateYear] || [[song releaseDateYear] length] == 0
+            || [[song releaseDateYear] isEqualToString:[lastParsedSong releaseDateYear]]) {
             [song setReleaseDateYear:[lastSongFixed releaseDateYear]];
         }
-        if ([[song releaseDateMonth] isEqualToString:[lastParsedSong releaseDateMonth]]) {
+        if (![song releaseDateMonth] || [[song releaseDateMonth] length] == 0
+            || [[song releaseDateMonth] isEqualToString:[lastParsedSong releaseDateMonth]]) {
             [song setReleaseDateMonth:[lastSongFixed releaseDateMonth]];
         }
-        if ([[song releaseDateDay] isEqualToString:[lastParsedSong releaseDateDay]]) {
+        if (![song releaseDateDay] || [[song releaseDateDay] length] == 0
+            || [[song releaseDateDay] isEqualToString:[lastParsedSong releaseDateDay]]) {
             [song setReleaseDateDay:[lastSongFixed releaseDateDay]];
         }
-        if ([[song basicGenre] isEqualToString:[lastParsedSong basicGenre]]) {
+        if (![song basicGenre] || [[song basicGenre] length] == 0
+            || [[song basicGenre] isEqualToString:[lastParsedSong basicGenre]]) {
             [song setBasicGenre:[lastSongFixed basicGenre]];
         }
     }
@@ -391,6 +403,11 @@
 
 - (void)writeTagsToSong:(Song *)song {
     NSLog(@"musicManager.writeTagsToSong");
+    
+    [lastSongFixed release];
+    lastSongFixed = song;
+    [lastSongFixed retain];
+    
     ID3_Tag tag([[[song file] path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
     [self updateTag:&tag frame:ID3FID_LEADARTIST text:[song artist]];
     [self updateTag:&tag frame:ID3FID_ALBUM text:[song album]];

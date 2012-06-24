@@ -98,7 +98,7 @@
 }
 
 - (void)loadSong {
-    if (![fileUrls objectAtIndex:index]) {
+    if ([fileUrls count] >= index) {
         // close window
         [self close];
     }
