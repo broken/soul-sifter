@@ -12,6 +12,16 @@
 #import "MusicManager.h"
 #import "Song.h"
 
+
+# pragma mark private method helpers
+
+@interface TagInfoController()
+
+- (void)loadSong;
+
+@end
+
+
 @implementation TagInfoController
 
 # pragma mark initialization
@@ -47,17 +57,8 @@
     
     // TODO alert if directories don't exist
     
-    Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
-    if ([song artist]) [artist setStringValue:[song artist]];
-    if ([song album]) [album setStringValue:[song album]];
-    if ([song title]) [title setStringValue:[song title]];
-    if ([song trackNum]) [trackNum setStringValue:[song trackNum]];
-    if ([song remix]) [remix setStringValue:[song remix]];
-    if ([song featuring]) [featuring setStringValue:[song featuring]];
-    if ([song releaseDateYear]) [releaseDateYear setStringValue:[song releaseDateYear]];
-    if ([song releaseDateMonth]) [releaseDateMonth setStringValue:[song releaseDateMonth]];
-    if ([song releaseDateDay]) [releaseDateDay setStringValue:[song releaseDateDay]];
-    else [releaseDateDay setStringValue:@""];
+    index = 0;
+    [self loadSong];
 }
 
 # pragma mark actions
@@ -74,16 +75,16 @@
     Song *song = [[Song alloc] init];
     [song autorelease];
     [song setFile:[fileUrls objectAtIndex:index]];
-    [song setArtist:[artist stringValue]];
-    [song setAlbum:[album stringValue]];
-    [song setTitle:[title stringValue]];
-    [song setTrackNum:[trackNum stringValue]];
-    [song setRemix:[remix stringValue]];
-    [song setFeaturing:[featuring stringValue]];
-    [song setReleaseDateYear:[releaseDateYear stringValue]];
-    [song setReleaseDateMonth:[releaseDateMonth stringValue]];
-    [song setReleaseDateDay:[releaseDateDay stringValue]];
-    [song setBasicGenre:[genreComboBox stringValue]];
+    [song setArtist:[[artist stringValue] lowercaseString]];
+    [song setAlbum:[[album stringValue] lowercaseString]];
+    [song setTitle:[[title stringValue] lowercaseString]];
+    [song setTrackNum:[[trackNum stringValue] lowercaseString]];
+    [song setRemix:[[remix stringValue] lowercaseString]];
+    [song setFeaturing:[[featuring stringValue] lowercaseString]];
+    [song setReleaseDateYear:[[releaseDateYear stringValue] lowercaseString]];
+    [song setReleaseDateMonth:[[releaseDateMonth stringValue] lowercaseString]];
+    [song setReleaseDateDay:[[releaseDateDay stringValue] lowercaseString]];
+    [song setBasicGenre:[[genreComboBox stringValue] lowercaseString]];
     
     // update tag
     [musicManager writeTagsToSong:song];
@@ -91,8 +92,28 @@
     // move file
     [musicManager moveSong:song];
     
-    // close window (for now)
-    [self close];
+    // load next song
+    ++index;
+    [self loadSong];
+}
+
+- (void)loadSong {
+    if (![fileUrls objectAtIndex:index]) {
+        // close window
+        [self close];
+    }
+    
+    Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
+    if ([song artist]) [artist setStringValue:[song artist]];
+    if ([song album]) [album setStringValue:[song album]];
+    if ([song title]) [title setStringValue:[song title]];
+    if ([song trackNum]) [trackNum setStringValue:[song trackNum]];
+    if ([song remix]) [remix setStringValue:[song remix]];
+    if ([song featuring]) [featuring setStringValue:[song featuring]];
+    if ([song releaseDateYear]) [releaseDateYear setStringValue:[song releaseDateYear]];
+    if ([song releaseDateMonth]) [releaseDateMonth setStringValue:[song releaseDateMonth]];
+    if ([song releaseDateDay]) [releaseDateDay setStringValue:[song releaseDateDay]];
+    else [releaseDateDay setStringValue:@""];
 }
 
 # pragma mark accessors
@@ -111,14 +132,5 @@
 @synthesize releaseDateYear;
 @synthesize releaseDateMonth;
 @synthesize releaseDateDay;
-
-// Side effect - resets index to 0
-- (void)setFileUrls:(NSArray *)newFileUrls {
-    NSLog(@"tagInfoController.setFileUrls");
-    index = 0;
-    [newFileUrls retain];
-    [fileUrls release];
-    fileUrls = newFileUrls;
-}
 
 @end

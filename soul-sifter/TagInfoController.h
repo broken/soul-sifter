@@ -35,7 +35,7 @@
 
 - (IBAction)processMusicFile:(id)sender;
 
-@property(retain,nonatomic) NSArray *fileUrls;
+@property(readwrite,retain,nonatomic) NSArray *fileUrls;
 @property(readwrite,retain) NSArray *genreOptions;
 
 @property(readwrite,retain,nonatomic) NSTextField *artist;

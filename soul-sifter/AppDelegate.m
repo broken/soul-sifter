@@ -25,7 +25,7 @@
 # pragma mark actions
 
 - (IBAction)filesDropped:(id)sender {
-    NSLog(@"filesDropped");
+    NSLog(@"appDelegate.filesDropped");
     [appController showTagInfoWindow:sender];
 }
 
