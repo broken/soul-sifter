@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "MusicManager.h"
+#import "RapidEvolutionManager.h"
 #import "Song.h"
 
 
@@ -93,6 +94,9 @@
     
     // move file
     [musicManager moveSong:song];
+    
+    // write rapid evolution xml
+    [[RapidEvolutionManager default] writeSongToXml:song];
     
     // load next song
     ++index;

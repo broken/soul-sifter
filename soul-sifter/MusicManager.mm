@@ -599,6 +599,9 @@
         NSString *msg = [NSString stringWithFormat:@"Unable to move file."];
         NSAssert(NO, msg);
     }
+    
+    // update song path
+    [song setFile:dest];
 }
 
 // TODO remove old directories from staging
