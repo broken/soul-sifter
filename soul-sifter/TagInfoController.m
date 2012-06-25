@@ -49,6 +49,7 @@
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     
     [genreArrayController setContent:[musicManager basicGenres]];
+    [self loadSong];
 }
 
 - (IBAction)showWindow:(id)sender {
@@ -58,7 +59,6 @@
     // TODO alert if directories don't exist
     
     index = 0;
-    [self loadSong];
 }
 
 # pragma mark actions
@@ -77,10 +77,12 @@
     [song setFile:[fileUrls objectAtIndex:index]];
     [song setArtist:[artist stringValue]];
     [song setAlbum:[album stringValue]];
-    [song setTitle:[title stringValue]];
     [song setTrackNum:[trackNum stringValue]];
+    [song setTitle:[title stringValue]];
     [song setRemix:[remix stringValue]];
     [song setFeaturing:[featuring stringValue]];
+    [song setLabel:[label stringValue]];
+    [song setCatalogId:[catalogId stringValue]];
     [song setReleaseDateYear:[releaseDateYear stringValue]];
     [song setReleaseDateMonth:[releaseDateMonth stringValue]];
     [song setReleaseDateDay:[releaseDateDay stringValue]];
@@ -98,6 +100,7 @@
 }
 
 - (void)loadSong {
+    NSLog(@"tagInfoController.loadSong");
     if ([fileUrls count] >= index) {
         // close window
         [self close];
@@ -105,14 +108,17 @@
     Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
     if ([song artist]) [artist setStringValue:[song artist]];
     if ([song album]) [album setStringValue:[song album]];
-    if ([song title]) [title setStringValue:[song title]];
     if ([song trackNum]) [trackNum setStringValue:[song trackNum]];
+    if ([song title]) [title setStringValue:[song title]];
     if ([song remix]) [remix setStringValue:[song remix]];
     if ([song featuring]) [featuring setStringValue:[song featuring]];
+    if ([song label]) [label setStringValue:[song label]];
+    if ([song catalogId]) [catalogId setStringValue:[song catalogId]];
     if ([song releaseDateYear]) [releaseDateYear setStringValue:[song releaseDateYear]];
     if ([song releaseDateMonth]) [releaseDateMonth setStringValue:[song releaseDateMonth]];
     if ([song releaseDateDay]) [releaseDateDay setStringValue:[song releaseDateDay]];
     else [releaseDateDay setStringValue:@""];
+    if ([song basicGenre]) [genreComboBox setStringValue:[song basicGenre]];
 }
 
 # pragma mark accessors

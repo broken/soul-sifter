@@ -21,12 +21,20 @@
 #import "Constants.h"
 #import "Song.h"
 
+
+#define id3CatalogId @"catalogId"
+
+
 # pragma mark private method helpers
 
 @interface MusicManager()
 
 // tags
 - (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value;
+- (ID3_Frame *)updateTag:(ID3_Tag *)tag
+                 inFrame:(ID3_FrameID)frameId
+                withText:(NSString *)value
+          andDescription:(NSString *)desc;
 
 // paths
 - (void)initializePathMembers;
@@ -143,6 +151,16 @@
                 NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song label]);
                 break;
             }
+            case ID3FID_USERTEXT: {
+                char *sText = ID3_GetString(frame, ID3FN_TEXT),
+                     *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
+                NSString *description = [NSString stringWithUTF8String:sDesc];
+                if ([description isEqualTo:id3CatalogId]) {
+                    [song setCatalogId:[NSString stringWithUTF8String:sText]];
+                }
+                NSLog(@" - frame %s (%s): %s", frame->GetTextID(), sDesc, sText);
+                break;
+            }
             // the rest will just log messages
             case ID3FID_BPM:
             case ID3FID_COMPOSER:
@@ -172,8 +190,7 @@
             case ID3FID_NETRADIOOWNER:
             case ID3FID_SIZE:
             case ID3FID_ISRC:
-            case ID3FID_ENCODERSETTINGS:
-            case ID3FID_USERTEXT: {
+            case ID3FID_ENCODERSETTINGS: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT),
                      *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
                 NSLog(@" - frame %s (%s): %s", frame->GetTextID(), sDesc, sText);
@@ -416,6 +433,7 @@
     [self updateTag:&tag frame:ID3FID_MIXARTIST text:[song remix]];
     [self updateTag:&tag frame:ID3FID_BAND text:[song featuring]];
     [self updateTag:&tag frame:ID3FID_PUBLISHER text:[song label]];
+    [self updateTag:&tag inFrame:ID3FID_USERTEXT withText:[song catalogId] andDescription:id3CatalogId];
     [self updateTag:&tag frame:ID3FID_YEAR text:[song releaseDateYear]];
     NSString *month = [[song releaseDateMonth] copy];
     NSString *day = [[song releaseDateDay] copy];
@@ -430,12 +448,11 @@
         }
         [self updateTag:&tag frame:ID3FID_DATE text:[NSString stringWithFormat:@"%@%@", day, month]];
     }
-    //[self updateTag:&tag frame:ID3FID_ALBUM text:[song catalogId]];
     tag.Update();
 }
 
 - (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value {
-    NSLog(@"musicManager.updateTag");
+    NSLog(@"musicManager.updateTag:frame:text");
     const char* text = [value cStringUsingEncoding:[NSString defaultCStringEncoding]];
     ID3_Frame* frame = NULL;
     if (NULL != tag && NULL != text && strlen(text) > 0) {
@@ -449,6 +466,30 @@
             frame = new ID3_Frame(frameId);
             if (frame && [value length]) {
                 frame->GetField(ID3FN_TEXT)->Set(text);
+                tag->AttachFrame(frame);
+            }
+        }
+    }
+    return frame;
+}
+
+- (ID3_Frame *)updateTag:(ID3_Tag *)tag inFrame:(ID3_FrameID)frameId withText:(NSString *)value andDescription:(NSString *)desc {
+    NSLog(@"musicManager.updateTag:inFrame:withText:andDescription");
+    const char* text = [value cStringUsingEncoding:[NSString defaultCStringEncoding]];
+    const char* description = [desc cStringUsingEncoding:[NSString defaultCStringEncoding]];
+    ID3_Frame* frame = NULL;
+    if (NULL != tag && NULL != text && strlen(text) > 0) {
+        // remove previous tag
+        while ((frame = tag->Find(frameId, ID3FN_DESCRIPTION, description))) {
+            frame = tag->RemoveFrame(frame);
+            delete frame;
+        }
+        // add new tag
+        if (tag->Find(frameId, ID3FN_DESCRIPTION, description) == NULL) {
+            frame = new ID3_Frame(frameId);
+            if (frame && [value length]) {
+                frame->GetField(ID3FN_TEXT)->Set(text);
+                frame->GetField(ID3FN_DESCRIPTION)->Set(description);
                 tag->AttachFrame(frame);
             }
         }
