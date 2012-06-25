@@ -68,7 +68,9 @@
     NSLog(@"tagInfoController.processMusicFile");
     
     // unable to move file if any of these are blank
-    if ([genreComboBox stringValue] == nil || [artist stringValue] == nil || [album stringValue] == nil) {
+    if ([genreComboBox stringValue] == nil || [[genreComboBox stringValue] length] <= 0 ||
+        [artist stringValue] == nil || [[artist stringValue] length] <= 0 ||
+        [album stringValue] == nil || [[album stringValue] length] <= 0) {
         NSBeep();
         return;
     }
@@ -105,9 +107,10 @@
 
 - (void)loadSong {
     NSLog(@"tagInfoController.loadSong");
-    if ([fileUrls count] >= index) {
+    if ([fileUrls count] <= index) {
         // close window
         [self close];
+        return;
     }
     Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
     if ([song artist]) [artist setStringValue:[song artist]];
