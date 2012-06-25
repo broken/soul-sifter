@@ -465,7 +465,10 @@
 	NSMutableArray *genres = [NSMutableArray arrayWithCapacity:24];
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *path = [[NSUserDefaults standardUserDefaults] stringForKey:UDMusicPath];
+	NSString *path;
+    if (![[MusicManager default] getCopyToPath:&path]) {
+        return;
+    }
 	
     // enumerate over path; releasing values with each iteration for better memory management
 	NSDirectoryEnumerator *enumerator  = [fileManager enumeratorAtPath:path];
