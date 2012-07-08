@@ -11,4 +11,5 @@
 // user defaults are separately stored by application domain
 
 NSString * const UDMusicPath = @"MusicPath";
+NSString * const UDRapidEvolutionPath = @"RapidEvolutionPath";
 NSString * const UDStagingPath = @"StagingPath";

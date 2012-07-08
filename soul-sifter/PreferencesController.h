@@ -11,6 +11,7 @@
 @interface PreferencesController : NSWindowController <NSWindowDelegate> {
 @public
     IBOutlet NSTextField *musicPathTextField;
+    IBOutlet NSTextField *rapidEvolutionPathTextField;
     IBOutlet NSTextField *stagingPathTextField;
 }
 

@@ -18,6 +18,7 @@
 @interface PreferencesController()
 
 - (void)changeMusicPath:(id)sender;
+- (void)changeRapidEvolutionPath:(id)sender;
 - (void)changeStagingPath:(id)sender;
 
 @end
@@ -39,14 +40,17 @@
 	NSLog(@"preferencesController.windowDidLoad");
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *musicPath = [defaults stringForKey:UDMusicPath];
+	NSString *rapidEvolutionPath = [defaults stringForKey:UDRapidEvolutionPath];
 	NSString *stagingPath = [defaults stringForKey:UDStagingPath];
 	[musicPathTextField setStringValue:musicPath ? musicPath : @""];
+	[rapidEvolutionPathTextField setStringValue:rapidEvolutionPath ? rapidEvolutionPath : @""];
 	[stagingPathTextField setStringValue:stagingPath ? stagingPath : @""];
 }
 
 -(void)windowWillClose:(NSNotification *)notification {
     NSLog(@"preferencesController.windowWillClose");
     [self changeMusicPath:self];
+    [self changeRapidEvolutionPath:self];
     [self changeStagingPath:self];
     [[MusicManager default] populateStagingDirectory];
 }
@@ -58,6 +62,13 @@
 	NSString *text = [musicPathTextField stringValue];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject:text forKey:UDMusicPath];
+}
+
+- (void)changeRapidEvolutionPath:(id)sender {
+	NSLog(@"preferencesController.changeRapidEvolutionPath");
+	NSString *text = [rapidEvolutionPathTextField stringValue];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:text forKey:UDRapidEvolutionPath];
 }
 
 - (void)changeStagingPath:(id)sender {
