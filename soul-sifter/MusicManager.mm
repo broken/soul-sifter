@@ -648,8 +648,8 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     BOOL isDir;
-    NSURL *stagingUrl = [[NSURL URLWithString:[userDefaults stringForKey:UDStagingPath]] standardizedURL];
-    NSURL *musicUrl = [[NSURL URLWithString:[userDefaults stringForKey:UDMusicPath]] standardizedURL];
+    NSURL *stagingUrl = [[NSURL fileURLWithPath:[userDefaults stringForKey:UDStagingPath]] standardizedURL];
+    NSURL *musicUrl = [[NSURL fileURLWithPath:[userDefaults stringForKey:UDMusicPath]] standardizedURL];
     
     if (![fileManager fileExistsAtPath:[musicUrl path] isDirectory:&isDir]
         || !isDir) {
@@ -680,6 +680,7 @@
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:[stagingUrl path]];
     NSString *file;
     while (file = [enumerator nextObject]) {
+        file = [file stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		NSDictionary *fileAttribs = [enumerator fileAttributes];
         if ([fileAttribs objectForKey:NSFileType] == NSFileTypeRegular) {
             NSURL *fileUrl = [NSURL URLWithString:file relativeToURL:stagingUrl];

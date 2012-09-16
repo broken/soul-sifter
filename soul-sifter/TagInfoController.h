@@ -14,7 +14,7 @@
 @interface TagInfoController : NSWindowController {
 @private
     int index;
-    NSArray *fileUrls;
+    NSMutableArray *fileUrls;
     MusicManager *musicManager;
     
     IBOutlet NSComboBox *genreComboBox;

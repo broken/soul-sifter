@@ -18,7 +18,7 @@
 
 @interface TagInfoController()
 
-- (void)loadSong;
+- (void)loadNextFile;
 
 @end
 
@@ -50,7 +50,8 @@
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     
     [genreArrayController setContent:[musicManager basicGenres]];
-    [self loadSong];
+    index = -1;
+    [self loadNextFile];
 }
 
 - (IBAction)showWindow:(id)sender {
@@ -58,8 +59,6 @@
     [super showWindow:sender];
     
     // TODO alert if directories don't exist
-    
-    index = 0;
 }
 
 # pragma mark actions
@@ -101,18 +100,49 @@
     [[RapidEvolutionManager default] writeSongToXml:song];
     
     // load next song
-    ++index;
-    [self loadSong];
+    [self loadNextFile];
 }
 
-- (void)loadSong {
-    NSLog(@"tagInfoController.loadSong");
+- (void)loadNextFile {
+    NSLog(@"tagInfoController.loadNextFile");
+    ++index;
+    
+    // close window if no more files to process
     if ([fileUrls count] <= index) {
-        // close window
+        NSLog(@"No more files to process; closing tag info window");
         [self close];
         return;
     }
-    Song *song = [musicManager discoverSong:[fileUrls objectAtIndex:index]];
+    
+    // skip files starting with period
+    NSURL *fileUrl = [fileUrls objectAtIndex:index];
+    if ([[fileUrl lastPathComponent] characterAtIndex:0] == '.') {
+        NSLog(@"skipping %@", fileUrl);
+        [self loadNextFile];
+        return;
+    }
+    
+    // if file is directory, enumerate over it and add files 
+    NSDictionary *fileAttribs = [[NSFileManager defaultManager] attributesOfItemAtPath:[fileUrl path]
+                                                                                 error:nil];
+    if ([fileAttribs objectForKey:NSFileType] == NSFileTypeDirectory) {
+        NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager]
+                                             enumeratorAtPath:[fileUrl path]];
+        NSString *childFile;
+        while (childFile = [enumerator nextObject]) {
+            NSDictionary *childFileAttribs = [enumerator fileAttributes];
+            if ([childFileAttribs objectForKey:NSFileType] == NSFileTypeRegular) {
+                childFile = [childFile stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSURL *url = [NSURL URLWithString:childFile relativeToURL:fileUrl];
+                [fileUrls addObject:url];
+            }
+        }
+        [self loadNextFile];
+        return;
+    }
+    
+    // at this point it should be a normal file that needs processing
+    Song *song = [musicManager discoverSong:fileUrl];
     if ([song artist]) [artist setStringValue:[song artist]];
     if ([song album]) [album setStringValue:[song album]];
     if ([song trackNum]) [trackNum setStringValue:[song trackNum]];
