@@ -641,6 +641,61 @@
 	}
 }
 
+- (void)flushStagingDirectory {
+    NSLog(@"musicManager.flushStagingDirectory");
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    BOOL isDir;
+    NSURL *stagingUrl = [[NSURL URLWithString:[userDefaults stringForKey:UDStagingPath]] standardizedURL];
+    NSURL *musicUrl = [[NSURL URLWithString:[userDefaults stringForKey:UDMusicPath]] standardizedURL];
+    
+    if (![fileManager fileExistsAtPath:[musicUrl path] isDirectory:&isDir]
+        || !isDir) {
+        NSLog(@"Music path does not exist");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Damn"];
+        [alert setMessageText:@"Flushing staging directory failed"];
+        [alert setInformativeText:@"Music path does not exist"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        [alert release];
+        return;
+    }
+    if (![fileManager fileExistsAtPath:[stagingUrl path] isDirectory:&isDir]
+        || !isDir) {
+        NSLog(@"Staging path does not exist");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Damn"];
+        [alert setMessageText:@"Flushing staging directory failed"];
+        [alert setInformativeText:@"Staging path does not exist"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        [alert release];
+        return;
+    }
+    
+    // enumerate over paths
+    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:[stagingUrl path]];
+    NSString *file;
+    while (file = [enumerator nextObject]) {
+		NSDictionary *fileAttribs = [enumerator fileAttributes];
+        if ([fileAttribs objectForKey:NSFileType] == NSFileTypeRegular) {
+            NSURL *fileUrl = [NSURL URLWithString:file relativeToURL:stagingUrl];
+            if ([[fileUrl lastPathComponent] characterAtIndex:0] == '.') {
+				continue;
+			}
+            NSURL *dest = [NSURL URLWithString:file relativeToURL:musicUrl];
+            NSLog(@"moving '%@' to '%@'", fileUrl, dest);
+            if (![fileManager moveItemAtURL:fileUrl toURL:dest error:&error]) {
+                NSString *msg = [NSString stringWithFormat:@"Unable to move %@", file];
+                NSAssert(NO, msg);
+            }
+        }
+    }
+}
+
 # pragma mark paths accessors
 
 - (NSArray *)basicGenres {
