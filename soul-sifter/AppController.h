@@ -24,5 +24,6 @@
 - (IBAction)showTagInfoWindow:(id)sender;
 
 - (IBAction)populateStagingDirectory:(id)sender;
+- (IBAction)flushStagingDirectory:(id)sender;
 
 @end

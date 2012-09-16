@@ -11,6 +11,7 @@
 #import "DropBox.h"
 #import "MusicManager.h"
 #import "PreferencesController.h"
+#import "RapidEvolutionManager.h"
 #import "TagInfoController.h"
 
 @implementation AppController
@@ -38,6 +39,11 @@
 - (IBAction)populateStagingDirectory:(id)sender {
     NSLog(@"appController.populateStagingDirectory");
     [[MusicManager default] populateStagingDirectory];
+}
+
+- (IBAction)flushStagingDirectory:(id)sender {
+    NSLog(@"appController.flushStagingDirectory");
+    [[RapidEvolutionManager default] flushXml];
 }
 
 @end

@@ -25,6 +25,7 @@
 - (NSString*)readLine;
 - (NSString*)readLineBackwards;
 - (NSString*)readTrimmedLine;
+- (void)resetToBeginning;
 
 #if NS_BLOCKS_AVAILABLE
 - (void)enumerateLinesUsingBlock:(void(^)(NSString*, BOOL*))block;

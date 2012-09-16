@@ -17,6 +17,8 @@
 		18169654154D08D900593FEC /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169653154D08D900593FEC /* Song.m */; };
 		18169656154D34A400593FEC /* libid3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18169655154D34A300593FEC /* libid3.dylib */; };
 		1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816965E154D4A2700593FEC /* LowerCaseFormatter.m */; };
+		182DC5F01605132A00AA9011 /* FileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5ED1605132A00AA9011 /* FileReader.m */; };
+		182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5EF1605132A00AA9011 /* NSDataExtensions.m */; };
 		187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E640B15984AD300091546 /* RapidEvolutionManager.m */; };
 		189C84F9153E647400F05E62 /* TagInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189C84F8153E647400F05E62 /* TagInfo.xib */; };
 		189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22CA153D4F190043634A /* Cocoa.framework */; };
@@ -61,6 +63,10 @@
 		18169655154D34A300593FEC /* libid3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libid3.dylib; path = usr/local/lib/libid3.dylib; sourceTree = SDKROOT; };
 		1816965D154D4A2700593FEC /* LowerCaseFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LowerCaseFormatter.h; sourceTree = "<group>"; };
 		1816965E154D4A2700593FEC /* LowerCaseFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LowerCaseFormatter.m; sourceTree = "<group>"; };
+		182DC5EC1605132A00AA9011 /* FileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileReader.h; sourceTree = "<group>"; };
+		182DC5ED1605132A00AA9011 /* FileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileReader.m; sourceTree = "<group>"; };
+		182DC5EE1605132A00AA9011 /* NSDataExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataExtensions.h; sourceTree = "<group>"; };
+		182DC5EF1605132A00AA9011 /* NSDataExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataExtensions.m; sourceTree = "<group>"; };
 		187E640A15984AD200091546 /* RapidEvolutionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionManager.h; sourceTree = "<group>"; };
 		187E640B15984AD300091546 /* RapidEvolutionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RapidEvolutionManager.m; sourceTree = "<group>"; };
 		189C84F8153E647400F05E62 /* TagInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagInfo.xib; sourceTree = "<group>"; };
@@ -142,6 +148,17 @@
 			name = Organization;
 			sourceTree = "<group>";
 		};
+		182DC5F31605133500AA9011 /* LineReader (to package) */ = {
+			isa = PBXGroup;
+			children = (
+				182DC5EC1605132A00AA9011 /* FileReader.h */,
+				182DC5ED1605132A00AA9011 /* FileReader.m */,
+				182DC5EE1605132A00AA9011 /* NSDataExtensions.h */,
+				182DC5EF1605132A00AA9011 /* NSDataExtensions.m */,
+			);
+			name = "LineReader (to package)";
+			sourceTree = "<group>";
+		};
 		189D22BB153D4F190043634A = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +202,7 @@
 		189D22D0153D4F190043634A /* soul-sifter */ = {
 			isa = PBXGroup;
 			children = (
+				182DC5F31605133500AA9011 /* LineReader (to package) */,
 				18144CA8154E5BE1009C36EE /* Category */,
 				1816964E154D05F400593FEC /* Organization */,
 				18169645154CB79900593FEC /* View */,
@@ -358,6 +376,8 @@
 				18144CA4154DCA31009C36EE /* Constants.m in Sources */,
 				18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */,
 				187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */,
+				182DC5F01605132A00AA9011 /* FileReader.m in Sources */,
+				182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

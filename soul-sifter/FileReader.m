@@ -201,6 +201,12 @@
 	return [[self readLine] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
+- (void)resetToBeginning {
+    [m_fileHandle seekToFileOffset:0];
+    m_currentOffset = 0ULL;
+    m_currentInset = m_totalFileLength;
+    m_prevDelimiterRange = NSMakeRange(m_currentInset, 1);
+}
 
 
 #if NS_BLOCKS_AVAILABLE

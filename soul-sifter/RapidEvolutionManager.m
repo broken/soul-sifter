@@ -11,6 +11,8 @@
 #import "Constants.h"
 #import "Song.h"
 
+#import "FileReader.h"
+
 
 @implementation RapidEvolutionManager
 
@@ -23,6 +25,136 @@
         rapidEvolutionManager = [[RapidEvolutionManager alloc] init];
     });
     return rapidEvolutionManager;
+}
+
+- (void)flushXml {
+    NSLog(@"rapidEvolutionManager.flushXml");
+    
+    NSString *rePath = [[NSUserDefaults standardUserDefaults] stringForKey:UDRapidEvolutionPath];
+    NSString *reFilePath = [NSString stringWithFormat:@"%@/music_database.xml", rePath];
+    FileReader *reFileReader = [[FileReader alloc] initWithFilePath:reFilePath];
+    if (!reFileReader) {
+        NSLog(@"Unable to locate Rapid Evolution music database");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Damn"];
+        [alert setMessageText:@"Flushing staging XML failed"];
+        [alert setInformativeText:@"Unable to locate Rapid Evolution music database"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        [alert release];
+        return;
+    }
+    
+    NSString *reTmpFilePath = [NSString stringWithFormat:@"%@/music_database.xml.tmp", rePath];
+    [[NSFileManager defaultManager] createFileAtPath:reTmpFilePath contents:nil attributes:nil];
+    NSFileHandle *reTmpFileHandle = [NSFileHandle fileHandleForWritingAtPath:reTmpFilePath];
+    if (!reTmpFileHandle) {
+        [reFileReader release];
+        NSLog(@"Unable to create file for temporary Rapid Evolution music database");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Damn"];
+        [alert setMessageText:@"Flushing staging XML failed"];
+        [alert setInformativeText:@"Unable to create file for temporary Rapid Evolution music database"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        [alert release];
+        return;
+    }
+    
+    NSString *stagingPath = [[NSUserDefaults standardUserDefaults] stringForKey:UDStagingPath];
+    NSString *stagingFilePath = [NSString stringWithFormat:@"%@/staging_music_database.xml", stagingPath];
+    FileReader *stagingFileReader = [[FileReader alloc] initWithFilePath:stagingFilePath];
+    if (!stagingFileReader) {
+        [reFileReader release];
+        NSLog(@"Unable to locate staging music database");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Damn"];
+        [alert setMessageText:@"Flushing staging XML failed"];
+        [alert setInformativeText:@"Unable to locate staging music database"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        [alert release];
+        return;
+    }
+    
+    // first count the number of songs we are adding
+    int numSongsAdding = 0;
+    NSString *line = nil;
+    while ((line = [stagingFileReader readLine])) {
+        if ([line isEqualToString:@"<unique_id></unique_id>\n"]) ++numSongsAdding;
+    };
+       
+    // copy first section up to songs of music database
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^(<songs .* max_unique_id=\")(\\d*)(\".*)$"
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    NSTextCheckingResult *match = nil;
+    while ((line = [reFileReader readLine])) {
+        if ((match = [regex firstMatchInString:line options:0 range:NSMakeRange(0, [line length])])) {
+            NSLog(@"Found songs with line %@", line);
+            break;
+        }
+        [reTmpFileHandle writeData:[line dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    // write new line songs line
+    long maxUniqueId = [[line substringWithRange:[match rangeAtIndex:2]] integerValue];
+    NSLog(@"new max unique id = %ld", maxUniqueId + numSongsAdding);
+    NSString *newLine = [regex stringByReplacingMatchesInString:line
+                                                        options:0
+                                                          range:NSMakeRange(0, [line length])
+                                                   withTemplate:[NSString stringWithFormat:@"$1%ld$3",
+                                                                 (maxUniqueId + numSongsAdding)]];
+    NSLog(@"new songs line: %@", newLine);
+    [reTmpFileHandle writeData:[newLine dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // write songs
+    [stagingFileReader resetToBeginning];
+    while ((line = [stagingFileReader readLine])) {
+        if ([line isEqualToString:@"<unique_id></unique_id>\n"]) {
+            newLine = [NSString stringWithFormat:@"<unique_id>%d</unique_id>\n", maxUniqueId++];
+            [reTmpFileHandle writeData:[newLine dataUsingEncoding:NSUTF8StringEncoding]];
+        } else {
+            [reTmpFileHandle writeData:[line dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+    }
+    
+    // finish outputting previous file
+    //[reFileReader enumerateLinesUsingBlock:^(NSSTring *line, BOOL *stop) {
+    while ((line = [reFileReader readLine])) {
+        [reTmpFileHandle writeData:[line dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    [reFileReader release];
+    [stagingFileReader release];
+    
+    // switch files
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+    NSString *reBackupFilePath = [NSString stringWithFormat:@"%@.%0.0f", reFilePath, timestamp];
+    NSLog(@"moving '%@' to '%@'", reFilePath, reBackupFilePath);
+    if (![fileManager moveItemAtURL:[NSURL fileURLWithPath:reFilePath]
+                              toURL:[NSURL fileURLWithPath:reBackupFilePath]
+                              error:&error]) {
+        NSString *msg = [NSString stringWithFormat:@"Unable to move Rapid Evolution database file."];
+        NSAssert(NO, msg);
+    }
+    NSLog(@"moving '%@' to '%@'", reTmpFilePath, reFilePath);
+    if (![fileManager moveItemAtURL:[NSURL fileURLWithPath:reTmpFilePath]
+                              toURL:[NSURL fileURLWithPath:reFilePath]
+                              error:&error]) {
+        NSString *msg = [NSString stringWithFormat:@"Unable to move temporary Rapid Evolution database file."];
+        NSAssert(NO, msg);
+    }
+    NSString *stagingBackupFilePath = [NSString stringWithFormat:@"%@.%0.0f", stagingFilePath, timestamp];
+    NSLog(@"moving '%@' to '%@'", stagingFilePath, stagingBackupFilePath);
+    if (![fileManager moveItemAtURL:[NSURL fileURLWithPath:stagingFilePath]
+                              toURL:[NSURL fileURLWithPath:stagingBackupFilePath]
+                              error:&error]) {
+        NSString *msg = [NSString stringWithFormat:@"Unable to move staging file to back."];
+        NSAssert(NO, msg);
+    }
 }
 
 - (void)writeSongToXml:(Song *)song {

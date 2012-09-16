@@ -15,5 +15,6 @@
 + (RapidEvolutionManager *)default;
 
 - (void)writeSongToXml:(Song *)song;
+- (void)flushXml;
 
 @end
