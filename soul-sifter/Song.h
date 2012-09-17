@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Song : NSObject {
+@interface Song : NSObject <NSCopying> {
 @private
     NSString *artist;
     NSString *album;
@@ -40,5 +40,7 @@
 
 @property(readwrite,retain) NSString *basicGenre;
 @property(readwrite,retain) NSURL *file;
+
+- (id)copyWithZone:(NSZone *)zone;
 
 @end

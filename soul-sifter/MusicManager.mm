@@ -359,6 +359,8 @@
     }
     delete iter;
     
+    Song *songBeforeFixing = [song copyWithZone:NULL];
+    
     // compare with last
     if (lastParsedSong && lastSongFixed) {
         if (![song artist] || [[song artist] length] == 0
@@ -412,7 +414,7 @@
     }
 
     [lastParsedSong release];
-    lastParsedSong = song;
+    lastParsedSong = songBeforeFixing;
     [lastParsedSong retain];
 
     return song;
