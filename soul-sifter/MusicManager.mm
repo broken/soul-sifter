@@ -598,12 +598,32 @@
     NSURL *dest = [destDir URLByAppendingPathComponent:[[song file] lastPathComponent]];
     NSLog(@"moving '%@' to '%@'", [song file], dest);
     if (![fileManager moveItemAtURL:[song file] toURL:dest error:&error]) {
-        NSString *msg = [NSString stringWithFormat:@"Unable to move file."];
+        NSString *msg = [NSString stringWithFormat:@"Unable to move file. %@", error];
         NSAssert(NO, msg);
     }
     
     // update song path
     [song setFile:dest];
+}
+
+- (void)moveImage:(NSURL *)fileUrl {
+    NSLog(@"moveImage");
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSError	*error;
+    NSString *path;
+    NSAssert([self getCopyToPath:&path], @"Cannot find directory to copy music to");
+    
+    NSURL *dest = [[NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:path,
+                                                    [lastSongFixed basicGenre],
+                                                    [lastSongFixed artist],
+                                                    [lastSongFixed album],
+                                                    nil]]
+                   URLByAppendingPathComponent:[fileUrl lastPathComponent]];
+    NSLog(@"moving '%@' to '%@'", fileUrl, dest);
+    if (![fileManager moveItemAtURL:fileUrl toURL:dest error:&error]) {
+        NSString *msg = [NSString stringWithFormat:@"Unable to move file. %@", error];
+        NSAssert(NO, msg);
+    }
 }
 
 // TODO remove old directories from staging

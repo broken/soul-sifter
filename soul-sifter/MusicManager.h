@@ -30,6 +30,7 @@
 // paths
 - (BOOL)getCopyToPath:(NSString **)path;
 - (void)moveSong:(Song *)song;
+- (void)moveImage:(NSURL *)file;
 - (void)populateStagingDirectory;
 - (void)flushStagingDirectory;
 

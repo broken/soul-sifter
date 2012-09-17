@@ -50,8 +50,6 @@
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     
     [genreArrayController setContent:[musicManager basicGenres]];
-    index = -1;
-    [self loadNextFile];
 }
 
 - (IBAction)showWindow:(id)sender {
@@ -59,6 +57,8 @@
     [super showWindow:sender];
     
     // TODO alert if directories don't exist
+    index = -1;
+    [self loadNextFile];
 }
 
 # pragma mark actions
@@ -137,6 +137,17 @@
                 [fileUrls addObject:url];
             }
         }
+        [self loadNextFile];
+        return;
+    }
+    
+    // straight move images to last directory
+    // TODO we should make this smarter
+    if ([[[fileUrl pathExtension] lowercaseString] isEqualToString:@"jpg"] ||
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"jpeg"] ||
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"gif"] ||
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"png"]) {
+        [musicManager moveImage:fileUrl];
         [self loadNextFile];
         return;
     }
