@@ -128,6 +128,7 @@
     
     [reFileReader release];
     [stagingFileReader release];
+    [reTmpFileHandle closeFile];
     
     // switch files
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -153,6 +154,88 @@
                               toURL:[NSURL fileURLWithPath:stagingBackupFilePath]
                               error:&error]) {
         NSString *msg = [NSString stringWithFormat:@"Unable to move staging file to back."];
+        NSAssert(NO, msg);
+    }
+}
+
+- (void)updateXml {
+    NSLog(@"rapidEvolutionManager.updateXml");
+    
+    NSString *rePath = [[NSUserDefaults standardUserDefaults] stringForKey:UDRapidEvolutionPath];
+    NSString *reFilePath = [NSString stringWithFormat:@"%@/music_database.xml", rePath];
+    FileReader *reFileReader = [[FileReader alloc] initWithFilePath:reFilePath];
+    if (!reFileReader) {
+        NSLog(@"Unable to locate Rapid Evolution music database");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Damn"];
+        [alert setMessageText:@"Flushing staging XML failed"];
+        [alert setInformativeText:@"Unable to locate Rapid Evolution music database"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        [alert release];
+        return;
+    }
+    
+    NSString *reTmpFilePath = [NSString stringWithFormat:@"%@/music_database.xml.tmp", rePath];
+    [[NSFileManager defaultManager] createFileAtPath:reTmpFilePath contents:nil attributes:nil];
+    NSFileHandle *reTmpFileHandle = [NSFileHandle fileHandleForWritingAtPath:reTmpFilePath];
+    if (!reTmpFileHandle) {
+        [reFileReader release];
+        NSLog(@"Unable to create file for temporary Rapid Evolution music database");
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Damn"];
+        [alert setMessageText:@"Flushing staging XML failed"];
+        [alert setInformativeText:@"Unable to create file for temporary Rapid Evolution music database"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+        [alert release];
+        return;
+    }
+    
+    // create regex for substitution
+    NSError *error = nil;
+    NSString *stagingPath = [[NSUserDefaults standardUserDefaults] stringForKey:UDStagingPath];
+    NSString *pattern = [NSRegularExpression escapedPatternForString:stagingPath];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    
+    // loop through file and replace directory
+    NSString *line;
+    NSTextCheckingResult *match = nil;
+    NSString *musicPath = [[NSUserDefaults standardUserDefaults] stringForKey:UDMusicPath];
+    while ((line = [reFileReader readLine])) {
+        if ((match = [regex firstMatchInString:line options:0 range:NSMakeRange(0, [line length])])) {
+            NSString *newLine = [regex stringByReplacingMatchesInString:line
+                                                                options:0
+                                                                  range:NSMakeRange(0, [line length])
+                                                           withTemplate:musicPath];
+            NSLog(@"Replacing %@\twith %@", line, newLine);
+            [reTmpFileHandle writeData:[newLine dataUsingEncoding:NSUTF8StringEncoding]];
+        } else {
+            [reTmpFileHandle writeData:[line dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+    }
+    
+    [reFileReader release];
+    [reTmpFileHandle closeFile];
+    
+    // switch files
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+    NSString *reBackupFilePath = [NSString stringWithFormat:@"%@.%0.0f", reFilePath, timestamp];
+    NSLog(@"moving '%@' to '%@'", reFilePath, reBackupFilePath);
+    if (![fileManager moveItemAtURL:[NSURL fileURLWithPath:reFilePath]
+                              toURL:[NSURL fileURLWithPath:reBackupFilePath]
+                              error:&error]) {
+        NSString *msg = [NSString stringWithFormat:@"Unable to move Rapid Evolution database file."];
+        NSAssert(NO, msg);
+    }
+    NSLog(@"moving '%@' to '%@'", reTmpFilePath, reFilePath);
+    if (![fileManager moveItemAtURL:[NSURL fileURLWithPath:reTmpFilePath]
+                              toURL:[NSURL fileURLWithPath:reFilePath]
+                              error:&error]) {
+        NSString *msg = [NSString stringWithFormat:@"Unable to move temporary Rapid Evolution database file."];
         NSAssert(NO, msg);
     }
 }

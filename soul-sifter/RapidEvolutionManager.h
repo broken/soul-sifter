@@ -16,5 +16,6 @@
 
 - (void)writeSongToXml:(Song *)song;
 - (void)flushXml;
+- (void)updateXml;
 
 @end

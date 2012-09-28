@@ -44,7 +44,8 @@
 - (IBAction)flushStagingDirectory:(id)sender {
     NSLog(@"appController.flushStagingDirectory");
     [[MusicManager default] flushStagingDirectory];
-    [[RapidEvolutionManager default] flushXml];
+    //[[RapidEvolutionManager default] flushXml];
+    [[RapidEvolutionManager default] updateXml];
 }
 
 @end
