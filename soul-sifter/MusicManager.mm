@@ -607,7 +607,7 @@
 }
 
 - (void)moveImage:(NSURL *)fileUrl {
-    NSLog(@"moveImage");
+    NSLog(@"musicManager.moveImage");
     NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSError	*error;
     NSString *path;
@@ -710,6 +710,15 @@
 				continue;
 			}
             NSURL *dest = [NSURL URLWithString:file relativeToURL:musicUrl];
+            // create directory if it doesn't exist
+            if (![fileManager createDirectoryAtURL:[dest URLByDeletingLastPathComponent]
+                       withIntermediateDirectories:YES
+                                        attributes:nil
+                                             error:&error]) {
+                NSString *msg = [NSString stringWithFormat:@"Error occurred while trying to create directory: %@", error];
+                NSAssert(NO, msg);
+            }
+            // move file
             NSLog(@"moving '%@' to '%@'", fileUrl, dest);
             if (![fileManager moveItemAtURL:fileUrl toURL:dest error:&error]) {
                 NSString *msg = [NSString stringWithFormat:@"Unable to move %@", file];
