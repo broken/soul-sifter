@@ -12,6 +12,7 @@
 #import "MusicManager.h"
 #import "PreferencesController.h"
 #import "RapidEvolutionManager.h"
+#import "RapidEvolutionMusicDatabaseReader.h"
 #import "TagInfoController.h"
 
 @implementation AppController
@@ -46,6 +47,13 @@
     [[MusicManager default] flushStagingDirectory];
     //[[RapidEvolutionManager default] flushXml];
     [[RapidEvolutionManager default] updateXml];
+}
+
+- (IBAction)readRapidEvolutionDatabase:(id)sender {
+    NSLog(@"appController.readRapidEvolutionDatabase");
+    RapidEvolutionMusicDatabaseReader *musicDatabaseReader = [[RapidEvolutionMusicDatabaseReader alloc] init];
+    [musicDatabaseReader read];
+    [musicDatabaseReader release];
 }
 
 @end

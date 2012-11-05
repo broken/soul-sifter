@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		18028C391647747C00938259 /* DVDRipper.icns in Resources */ = {isa = PBXBuildFile; fileRef = 18028C381647747C00938259 /* DVDRipper.icns */; };
 		18028C3A16477A0D00938259 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18028C341647673500938259 /* libxerces-c-3.1.dylib */; };
+		18028C401647870A00938259 /* RapidEvolutionMusicDatabaseReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18028C3F1647870A00938259 /* RapidEvolutionMusicDatabaseReader.mm */; };
+		18028C471647A55800938259 /* RapidEvolutionDatabaseHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C451647A55800938259 /* RapidEvolutionDatabaseHandler.cpp */; };
+		18028C4A1647B66F00938259 /* RapidEvolutionDatabaseSongsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C481647B66E00938259 /* RapidEvolutionDatabaseSongsHandler.cpp */; };
+		18028C4D1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C4B1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp */; };
+		18028C501647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C4E1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp */; };
+		18028C531647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C511647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp */; };
 		18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18144C9C154DC5F0009C36EE /* Preferences.xib */; };
 		18144CA1154DC6AD009C36EE /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA0154DC6AD009C36EE /* PreferencesController.m */; };
 		18144CA4154DCA31009C36EE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA3154DCA31009C36EE /* Constants.m */; };
@@ -49,6 +55,18 @@
 /* Begin PBXFileReference section */
 		18028C341647673500938259 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 		18028C381647747C00938259 /* DVDRipper.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DVDRipper.icns; sourceTree = "<group>"; };
+		18028C3E1647870A00938259 /* RapidEvolutionMusicDatabaseReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionMusicDatabaseReader.h; sourceTree = "<group>"; };
+		18028C3F1647870A00938259 /* RapidEvolutionMusicDatabaseReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RapidEvolutionMusicDatabaseReader.mm; sourceTree = "<group>"; };
+		18028C451647A55800938259 /* RapidEvolutionDatabaseHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseHandler.cpp; sourceTree = "<group>"; };
+		18028C461647A55800938259 /* RapidEvolutionDatabaseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseHandler.h; sourceTree = "<group>"; };
+		18028C481647B66E00938259 /* RapidEvolutionDatabaseSongsHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseSongsHandler.cpp; sourceTree = "<group>"; };
+		18028C491647B66E00938259 /* RapidEvolutionDatabaseSongsHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseSongsHandler.h; sourceTree = "<group>"; };
+		18028C4B1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseSongsSongHandler.cpp; sourceTree = "<group>"; };
+		18028C4C1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseSongsSongHandler.h; sourceTree = "<group>"; };
+		18028C4E1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseStylesHandler.cpp; sourceTree = "<group>"; };
+		18028C4F1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseStylesHandler.h; sourceTree = "<group>"; };
+		18028C511647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseAbstractHandler.cpp; sourceTree = "<group>"; };
+		18028C521647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseAbstractHandler.h; sourceTree = "<group>"; };
 		18144C9C154DC5F0009C36EE /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		18144C9F154DC6AD009C36EE /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		18144CA0154DC6AD009C36EE /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
@@ -120,6 +138,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18028C4116478E1700938259 /* RE DB SAX Parsers */ = {
+			isa = PBXGroup;
+			children = (
+				18028C451647A55800938259 /* RapidEvolutionDatabaseHandler.cpp */,
+				18028C461647A55800938259 /* RapidEvolutionDatabaseHandler.h */,
+				18028C481647B66E00938259 /* RapidEvolutionDatabaseSongsHandler.cpp */,
+				18028C491647B66E00938259 /* RapidEvolutionDatabaseSongsHandler.h */,
+				18028C4B1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp */,
+				18028C4C1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.h */,
+				18028C4E1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp */,
+				18028C4F1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.h */,
+				18028C511647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp */,
+				18028C521647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.h */,
+			);
+			name = "RE DB SAX Parsers";
+			sourceTree = "<group>";
+		};
 		18144CA8154E5BE1009C36EE /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,12 +178,15 @@
 		1816964E154D05F400593FEC /* Organization */ = {
 			isa = PBXGroup;
 			children = (
+				18028C4116478E1700938259 /* RE DB SAX Parsers */,
 				1816964F154D06EB00593FEC /* MusicManager.h */,
 				18169650154D06EB00593FEC /* MusicManager.mm */,
 				187E640A15984AD200091546 /* RapidEvolutionManager.h */,
 				187E640B15984AD300091546 /* RapidEvolutionManager.m */,
 				18169652154D08D900593FEC /* Song.h */,
 				18169653154D08D900593FEC /* Song.m */,
+				18028C3E1647870A00938259 /* RapidEvolutionMusicDatabaseReader.h */,
+				18028C3F1647870A00938259 /* RapidEvolutionMusicDatabaseReader.mm */,
 			);
 			name = Organization;
 			sourceTree = "<group>";
@@ -386,6 +424,12 @@
 				187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */,
 				182DC5F01605132A00AA9011 /* FileReader.m in Sources */,
 				182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */,
+				18028C401647870A00938259 /* RapidEvolutionMusicDatabaseReader.mm in Sources */,
+				18028C471647A55800938259 /* RapidEvolutionDatabaseHandler.cpp in Sources */,
+				18028C4A1647B66F00938259 /* RapidEvolutionDatabaseSongsHandler.cpp in Sources */,
+				18028C4D1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp in Sources */,
+				18028C501647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp in Sources */,
+				18028C531647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
