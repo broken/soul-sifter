@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		18028C351647673500938259 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18028C341647673500938259 /* libxerces-c-3.1.dylib */; };
+		18028C391647747C00938259 /* DVDRipper.icns in Resources */ = {isa = PBXBuildFile; fileRef = 18028C381647747C00938259 /* DVDRipper.icns */; };
+		18028C3A16477A0D00938259 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18028C341647673500938259 /* libxerces-c-3.1.dylib */; };
 		18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18144C9C154DC5F0009C36EE /* Preferences.xib */; };
 		18144CA1154DC6AD009C36EE /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA0154DC6AD009C36EE /* PreferencesController.m */; };
 		18144CA4154DCA31009C36EE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA3154DCA31009C36EE /* Constants.m */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		18028C341647673500938259 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
+		18028C381647747C00938259 /* DVDRipper.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DVDRipper.icns; sourceTree = "<group>"; };
 		18144C9C154DC5F0009C36EE /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		18144C9F154DC6AD009C36EE /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		18144CA0154DC6AD009C36EE /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
@@ -100,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18028C351647673500938259 /* libxerces-c-3.1.dylib in Frameworks */,
+				18028C3A16477A0D00938259 /* libxerces-c-3.1.dylib in Frameworks */,
 				18169656154D34A400593FEC /* libid3-3.8.3.0.0.dylib in Frameworks */,
 				189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */,
 			);
@@ -165,6 +167,7 @@
 		189D22BB153D4F190043634A = {
 			isa = PBXGroup;
 			children = (
+				18028C381647747C00938259 /* DVDRipper.icns */,
 				18028C341647673500938259 /* libxerces-c-3.1.dylib */,
 				18169655154D34A300593FEC /* libid3-3.8.3.0.0.dylib */,
 				189D22D0153D4F190043634A /* soul-sifter */,
@@ -334,6 +337,7 @@
 				189D22E1153D4F190043634A /* MainMenu.xib in Resources */,
 				189C84F9153E647400F05E62 /* TagInfo.xib in Resources */,
 				18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */,
+				18028C391647747C00938259 /* DVDRipper.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,7 +493,9 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -501,7 +507,9 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
