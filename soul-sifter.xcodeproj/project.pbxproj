@@ -34,6 +34,8 @@
 		188E1B1A1648EAA1004754F4 /* RapidEvolutionDatabaseMixoutsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B181648EAA1004754F4 /* RapidEvolutionDatabaseMixoutsHandler.cpp */; };
 		188E1B1D1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B1B1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.cpp */; };
 		188E1B201648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B1E1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp */; };
+		188E1B221648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 188E1B211648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib */; };
+		188E1B241648FADB004754F4 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 188E1B231648FADB004754F4 /* libmysqlclient.18.dylib */; };
 		189C84F9153E647400F05E62 /* TagInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189C84F8153E647400F05E62 /* TagInfo.xib */; };
 		189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22CA153D4F190043634A /* Cocoa.framework */; };
 		189D22D5153D4F190043634A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 189D22D3153D4F190043634A /* InfoPlist.strings */; };
@@ -109,6 +111,8 @@
 		188E1B1C1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseAlbumcoversHandler.h; sourceTree = "<group>"; };
 		188E1B1E1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseStylesStyleHandler.cpp; sourceTree = "<group>"; };
 		188E1B1F1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseStylesStyleHandler.h; sourceTree = "<group>"; };
+		188E1B211648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlcppconn.5.1.1.0.dylib; path = "../../../../../../../usr/local/Cellar/mysql-connector-c++/1.1.0/lib/libmysqlcppconn.5.1.1.0.dylib"; sourceTree = "<group>"; };
+		188E1B231648FADB004754F4 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = ../../../../../../../usr/local/Cellar/mysql/5.5.27/lib/libmysqlclient.18.dylib; sourceTree = "<group>"; };
 		189C84F8153E647400F05E62 /* TagInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagInfo.xib; sourceTree = "<group>"; };
 		189D22C6153D4F190043634A /* soul-sifter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "soul-sifter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		189D22CA153D4F190043634A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -138,6 +142,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				188E1B241648FADB004754F4 /* libmysqlclient.18.dylib in Frameworks */,
+				188E1B221648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */,
 				18028C3A16477A0D00938259 /* libxerces-c-3.1.dylib in Frameworks */,
 				18169656154D34A400593FEC /* libid3-3.8.3.0.0.dylib in Frameworks */,
 				189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */,
@@ -235,6 +241,8 @@
 		189D22BB153D4F190043634A = {
 			isa = PBXGroup;
 			children = (
+				188E1B231648FADB004754F4 /* libmysqlclient.18.dylib */,
+				188E1B211648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib */,
 				18028C381647747C00938259 /* DVDRipper.icns */,
 				18028C341647673500938259 /* libxerces-c-3.1.dylib */,
 				18169655154D34A300593FEC /* libid3-3.8.3.0.0.dylib */,
@@ -575,6 +583,11 @@
 				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+					/usr/local/Cellar/mysql/5.5.27/lib,
+				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -589,6 +602,11 @@
 				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+					/usr/local/Cellar/mysql/5.5.27/lib,
+				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
