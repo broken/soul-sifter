@@ -43,21 +43,22 @@ void RapidEvolutionDatabaseAbstractHandler::startElement(const   XMLCh* const   
         for (int i = 0; (handler = childHandlers[i]); ++i) {
             if (!XMLString::compareString(qname, handler->getQname())) {
                 parser->setContentHandler(handler);
+                handler->startElement(uri, localname, qname, attrs);
                 break;
             }
         }
     }
     
-    char* message = XMLString::transcode(localname);
-    cout << "abstract saw element: "<< message << endl;
-    XMLString::release(&message);
+    //char* message = XMLString::transcode(localname);
+    //cout << "abstract saw element: "<< message << endl;
+    //XMLString::release(&message);
 }
 
 
 void RapidEvolutionDatabaseAbstractHandler::endElement(const XMLCh* const uri,
                                                        const XMLCh* const localName,
                                                        const XMLCh* const qName) {
-    if (XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
+    if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
     }
 }

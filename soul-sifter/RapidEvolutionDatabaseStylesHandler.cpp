@@ -11,6 +11,7 @@
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "RapidEvolutionDatabaseStylesStyleHandler.h"
 
 using namespace xercesc;
 
@@ -18,4 +19,7 @@ RapidEvolutionDatabaseStylesHandler::RapidEvolutionDatabaseStylesHandler(SAX2XML
                                                                          RapidEvolutionDatabaseAbstractHandler* parentHandler) :
 RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("styles")) {
+    childHandlers = new RapidEvolutionDatabaseAbstractHandler*[2];
+    childHandlers[0] = new RapidEvolutionDatabaseStylesStyleHandler(parser, this);
+    childHandlers[1] = NULL;
 }

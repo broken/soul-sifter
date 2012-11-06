@@ -27,7 +27,7 @@ void RapidEvolutionDatabaseSongsSongHandler::startElement(const   XMLCh* const  
                                                           const   XMLCh* const    localname,
                                                           const   XMLCh* const    qname,
                                                           const   Attributes&     attrs) {
-    char* message = XMLString::transcode(localname);
-    cout << "I saw element: "<< message << endl;
-    XMLString::release(&message);
+    //char* message = XMLString::transcode(qname);
+    //cout << "I saw element: "<< message << endl;
+    //XMLString::release(&message);
 }

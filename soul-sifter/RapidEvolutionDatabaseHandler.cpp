@@ -11,6 +11,11 @@
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "RapidEvolutionDatabaseAlbumcoversHandler.h"
+#include "RapidEvolutionDatabaseArtistsHandler.h"
+#include "RapidEvolutionDatabaseConfigHandler.h"
+#include "RapidEvolutionDatabaseExcludesHandler.h"
+#include "RapidEvolutionDatabaseMixoutsHandler.h"
 #include "RapidEvolutionDatabaseSongsHandler.h"
 #include "RapidEvolutionDatabaseStylesHandler.h"
 
@@ -20,9 +25,14 @@ RapidEvolutionDatabaseHandler::RapidEvolutionDatabaseHandler(SAX2XMLReader* pars
                                                              RapidEvolutionDatabaseAbstractHandler* parentHandler) :
 RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("music_database")) {
-    childHandlers = new RapidEvolutionDatabaseAbstractHandler*[3];
-    childHandlers[0] = new RapidEvolutionDatabaseSongsHandler(parser, this);
+    childHandlers = new RapidEvolutionDatabaseAbstractHandler*[7];
+    childHandlers[0] = new RapidEvolutionDatabaseConfigHandler(parser, this);
     childHandlers[1] = new RapidEvolutionDatabaseStylesHandler(parser, this);
-    childHandlers[2] = NULL;
+    childHandlers[2] = new RapidEvolutionDatabaseSongsHandler(parser, this);
+    childHandlers[3] = new RapidEvolutionDatabaseMixoutsHandler(parser, this);
+    childHandlers[4] = new RapidEvolutionDatabaseExcludesHandler(parser, this);
+    childHandlers[5] = new RapidEvolutionDatabaseArtistsHandler(parser, this);
+    childHandlers[6] = new RapidEvolutionDatabaseAlbumcoversHandler(parser, this);
+    childHandlers[7] = NULL;
 }
 
