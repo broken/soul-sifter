@@ -359,6 +359,33 @@
     }
     delete iter;
     
+    // split remix from title
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@" \\((.* ((remix)|(rmx)|(mix)|(refix))\\)$"
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    NSTextCheckingResult *match = nil;
+    if ((match = [regex firstMatchInString:[song title] options:0 range:NSMakeRange(0, [[song title] length])])) {
+        if (![song remix] || [[song remix] length] == 0) {
+            [song setRemix:[[song title] substringWithRange:[match rangeAtIndex:1]]];
+        }
+        [song setTitle:[regex stringByReplacingMatchesInString:[song title]
+                                                       options:0
+                                                         range:NSMakeRange(0, [[song title] length])
+                                                  withTemplate:@""]];
+    }
+    // split featuring from artist
+    regex = [NSRegularExpression regularExpressionWithPattern:@" \\(?((ft)|(featuring)|(feat))\\.? (.*)\\)?$"
+                                                      options:NSRegularExpressionCaseInsensitive
+                                                        error:&error];
+    if ((match = [regex firstMatchInString:[song artist] options:0 range:NSMakeRange(0, [[song artist] length])])) {
+        [song setFeaturing:[[song artist] substringWithRange:[match rangeAtIndex:5]]];
+        [song setArtist:[regex stringByReplacingMatchesInString:[song artist]
+                                                        options:0
+                                                          range:NSMakeRange(0, [[song artist] length])
+                                                   withTemplate:@""]];
+    }
+    
     Song *songBeforeFixing = [song copyWithZone:NULL];
     
     // compare with last
