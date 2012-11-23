@@ -54,7 +54,6 @@ void RapidEvolutionDatabaseAbstractHandler::startElement(const   XMLCh* const   
     //XMLString::release(&message);
 }
 
-
 void RapidEvolutionDatabaseAbstractHandler::endElement(const XMLCh* const uri,
                                                        const XMLCh* const localName,
                                                        const XMLCh* const qName) {

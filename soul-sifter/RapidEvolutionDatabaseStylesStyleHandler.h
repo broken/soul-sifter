@@ -10,11 +10,15 @@
 #define __soul_sifter__RapidEvolutionDatabaseStylesStyleHandler__
 
 #include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "Style.h"
+
+class MysqlAccess;
 
 class RapidEvolutionDatabaseStylesStyleHandler : public RapidEvolutionDatabaseAbstractHandler {
 public:
     RapidEvolutionDatabaseStylesStyleHandler(xercesc::SAX2XMLReader* parser,
-                                             RapidEvolutionDatabaseAbstractHandler* parentHandler);
+                                             RapidEvolutionDatabaseAbstractHandler* parentHandler,
+                                             MysqlAccess* mysqlAccess);
     
     const XMLCh* const getQname() {
         return qname;
@@ -24,8 +28,14 @@ public:
                       const XMLCh* const localname,
                       const XMLCh* const qname,
                       const xercesc::Attributes& attrs);
+    
+    void endElement(const XMLCh* const uri,
+                    const XMLCh* const localName,
+                    const XMLCh* const qName);
 private:
+    MysqlAccess* mysqlAccess;
     const XMLCh* const qname;
+    Style style;
     
     // attributes
     const XMLCh* const category_only_attrib;

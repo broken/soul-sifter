@@ -15,20 +15,25 @@
 #include <xercesc/util/XMLChar.hpp>
 #include <xercesc/util/XMLString.hpp>
 
+#include "MysqlAccess.h"
 #include "RapidEvolutionDatabaseAbstractHandler.h"
 
 using namespace xercesc;
 
 RapidEvolutionDatabaseStylesStyleHandler::RapidEvolutionDatabaseStylesStyleHandler(SAX2XMLReader* parser,
-                                                                                   RapidEvolutionDatabaseAbstractHandler* parentHandler) :
+                                                                                   RapidEvolutionDatabaseAbstractHandler* parentHandler,
+                                                                                   MysqlAccess* mysqlAccess) :
 RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
+mysqlAccess(mysqlAccess),
 qname(XMLString::transcode("style")),
+style(),
 category_only_attrib(XMLString::transcode("category_only")),
 child_ids_attrib(XMLString::transcode("child_ids")),
 description_attrib(XMLString::transcode("description")),
 id_attrib(XMLString::transcode("id")),
 name_attrib(XMLString::transcode("name")),
 parent_ids_attrib(XMLString::transcode("parent_ids")) {
+    mysqlAccess->connect();
 }
 
 void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const    uri,
@@ -36,9 +41,20 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
                                                             const   XMLCh* const    qname,
                                                             const   Attributes&     attrs) {
     if (!XMLString::compareString(qname, getQname())) {
-        const XMLCh* name = attrs.getValue(name_attrib);
-        char* msg = XMLString::transcode(name);
-        std::cout << "style: " << msg << ", " << XMLString::transcode(qname) << std::endl;
-        XMLString::release(&msg);
+        const XMLCh* name_xml = attrs.getValue(name_attrib);
+        char* name = XMLString::transcode(name_xml);
+        delete name_xml;
+        std::cout << "style: " << name << ", " << XMLString::transcode(qname) << std::endl;
+        delete style.name;
+        style.name = name;
+    }
+}
+
+void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri,
+                                                          const XMLCh* const localName,
+                                                          const XMLCh* const qName) {
+    if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
+        parser->setContentHandler(parentHandler);
+        mysqlAccess->saveStyle(style);
     }
 }

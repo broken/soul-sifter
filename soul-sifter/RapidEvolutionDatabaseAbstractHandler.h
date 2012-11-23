@@ -19,13 +19,13 @@ public:
     ~RapidEvolutionDatabaseAbstractHandler();
     
     virtual void startElement(const XMLCh* const uri,
-                      const XMLCh* const localname,
-                      const XMLCh* const qname,
-                      const xercesc::Attributes& attrs);
+                              const XMLCh* const localname,
+                              const XMLCh* const qname,
+                              const xercesc::Attributes& attrs);
     
     virtual void endElement(const XMLCh* const uri,
-                    const XMLCh* const localName,
-                    const XMLCh* const qName);
+                            const XMLCh* const localName,
+                            const XMLCh* const qName);
     
     virtual const XMLCh* const getQname() = 0;
 protected:
