@@ -29,7 +29,7 @@ public:
     bool connect();
     bool disconnect();
     
-    Style* getStyle();
+    void getStyle(int id, Style* style);
     bool updateStyle(const Style& style);
     bool saveStyle(const Style& style);
 private:

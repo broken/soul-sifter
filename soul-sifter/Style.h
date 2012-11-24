@@ -9,14 +9,19 @@
 #ifndef __soul_sifter__Style__
 #define __soul_sifter__Style__
 
+#include <string>
+
 struct Style {
-    int db_id;
+    int id;
+    std::string name;
     int re_id;
-    char* name;
-    int index;
+    std::string re_name;
     
     Style() :
-    name(0) {
+    id(0),
+    name(""),
+    re_id(0),
+    re_name("") {
     }
 };
 

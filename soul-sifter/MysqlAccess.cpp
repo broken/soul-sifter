@@ -62,7 +62,9 @@ bool MysqlAccess::connect() {
         connection->setSchema(database);
     } catch (SQLException &e) {
         handleException(e);
+        return false;
 	}
+    return true;
 }
     
 bool MysqlAccess::disconnect() {
@@ -71,31 +73,34 @@ bool MysqlAccess::disconnect() {
         delete connection;
     } catch (SQLException &e) {
         handleException(e);
+        return false;
     }
+    return true;
 }
 
-Style* MysqlAccess::getStyle() {
+void MysqlAccess::getStyle(int id, Style* style) {
     try {
         /* create a statement object */
         stmt = connection->createStatement();
         
         /* run a query which returns exactly one result set */
-        res = stmt->executeQuery ("select * from styles where id = XXX");  // todo
-        
-        /* retrieve the data from the result set and display on stdout */
-        //retrieve_data_and_print(res, NUMOFFSET, 1, string("style"));
+        res = stmt->executeQuery ("select id, name, re_id, re_name from styles where id = " + id);
+        res->next();
+        style->id = res->getInt(0);
+        style->name = res->getString(1);
+        style->re_id = res->getInt(2);
+        style->re_name = res->getString(3);
         
         /* retrieve and display the result set metadata */
         //retrieve_rsmetadata_and_print (res);
     } catch (SQLException &e) {
         handleException(e);
     }
-    return NULL;
 }
 
 bool MysqlAccess::updateStyle(const Style& style) {
     try {
-        Style* style = getStyle();
+        //Style* style = getStyle();
     } catch (SQLException &e) {
         handleException(e);
     }
@@ -105,15 +110,18 @@ bool MysqlAccess::updateStyle(const Style& style) {
 bool MysqlAccess::saveStyle(const Style& style) {
     try {
         /* insert couple of rows of data into City table using Prepared Statements */
-        prep_stmt = connection->prepareStatement ("insert into styles (name) values (?)");
-    
-        prep_stmt->setString (1, style.name);
+        prep_stmt = connection->prepareStatement("insert into styles (id, name, re_id, re_name) values (?, ?, ?, ?)");
+        
+        prep_stmt->setInt (1, style.re_id);
+        prep_stmt->setString (2, style.name.size() > 0 ? style.name : style.re_name);
+        prep_stmt->setInt (3, style.re_id);
+        prep_stmt->setString (4, style.re_name);
         int updatecount = prep_stmt->executeUpdate();
         connection->commit();
     
         /* re-use result set object */
         res = NULL;
-        res = stmt -> executeQuery ("SELECT * FROM City");
+       // res = stmt -> executeQuery ("SELECT * FROM City");
     
         /* retrieve the data from the result set and display on stdout */
         //retrieve_data_and_print (res, COLNAME, 1, string ("CityName"));
@@ -122,10 +130,7 @@ bool MysqlAccess::saveStyle(const Style& style) {
         
         /* Clean up */
         delete res;
-        delete stmt;
         delete prep_stmt;
-        connection->close();
-        delete connection;
     
 	} catch (SQLException &e) {
 		handleException(e);

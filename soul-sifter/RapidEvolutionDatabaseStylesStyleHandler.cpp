@@ -13,6 +13,7 @@
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 #include <xercesc/util/XMLChar.hpp>
+#include <xercesc/util/XMLInteger.hpp>
 #include <xercesc/util/XMLString.hpp>
 
 #include "MysqlAccess.h"
@@ -42,11 +43,10 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
                                                             const   Attributes&     attrs) {
     if (!XMLString::compareString(qname, getQname())) {
         const XMLCh* name_xml = attrs.getValue(name_attrib);
-        char* name = XMLString::transcode(name_xml);
-        delete name_xml;
-        std::cout << "style: " << name << ", " << XMLString::transcode(qname) << std::endl;
-        delete style.name;
-        style.name = name;
+        const XMLCh* id_xml = attrs.getValue(id_attrib);
+        style.re_name = XMLString::transcode(name_xml);
+        style.re_id = XMLString::parseInt(id_xml);
+        std::cout << "style: " << name_xml << ", " << XMLString::transcode(qname) << ", " << id_xml << std::endl;
     }
 }
 

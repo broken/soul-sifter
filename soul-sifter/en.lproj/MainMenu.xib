@@ -312,7 +312,7 @@
 								<object class="NSMenuItem" id="52710246">
 									<reference key="NSMenu" ref="1050465082"/>
 									<string key="NSTitle">Populate Staging</string>
-									<string key="NSKeyEquiv">d</string>
+									<string key="NSKeyEquiv">p</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="1047407121"/>
@@ -339,7 +339,8 @@
 								<object class="NSMenuItem" id="927009991">
 									<reference key="NSMenu" ref="1050465082"/>
 									<string key="NSTitle">Read RE DB</string>
-									<string key="NSKeyEquiv"/>
+									<string key="NSKeyEquiv">d</string>
+									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="1047407121"/>
 									<reference key="NSMixedImage" ref="72086391"/>
@@ -888,6 +889,7 @@
 									<string key="NSFrame">{{1, 1}, {148, 148}}</string>
 									<reference key="NSSuperview" ref="479470107"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 									<string key="NSReuseIdentifierKey">_NS:21</string>
 								</object>
 							</array>
