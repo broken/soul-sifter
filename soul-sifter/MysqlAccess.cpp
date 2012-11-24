@@ -24,6 +24,14 @@
 
 using namespace sql;
 
+namespace persistence {
+
+    sql::Connection* getConnection() {
+        return NULL; //TODO
+    }
+
+}
+
 MysqlAccess::MysqlAccess() :
 driver(0),
 connection(0) {

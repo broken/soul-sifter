@@ -22,6 +22,10 @@ class ResultSet;
 class Savepoint;
 class Statement;
 
+namespace persistence {
+    sql::Connection* getConnection();
+}
+
 class MysqlAccess {
 public:
     MysqlAccess();
