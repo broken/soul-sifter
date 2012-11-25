@@ -8,6 +8,7 @@
 
 #import "TagInfoController.h"
 
+#import "ArchiveUtil.h"
 #import "Constants.h"
 #import "MusicManager.h"
 #import "RapidEvolutionManager.h"
@@ -152,7 +153,26 @@
         return;
     }
     
+    // unarchive zips & rars, adding extracted files
+    if ([[NSPredicate predicateWithFormat:@"self matches[c] \".+\\.part\\d+\\.rar$\""] evaluateWithObject:[fileUrl lastPathComponent]]) {
+        // TODO be smarter; now we rely on hitting part1 first
+        if ([[fileUrl path] hasSuffix:@".part1.rar"]) {
+            [fileUrls addObject:[ArchiveUtil unrarFile:fileUrl]];
+        }
+        NSLog(@"trashing file %@", fileUrl);
+        [[NSFileManager defaultManager] trashItemAtURL:fileUrl resultingItemURL:nil error:nil];
+    } else if ([[fileUrl pathExtension] isEqualToString:@"rar"]) {
+        [fileUrls addObject:[ArchiveUtil unrarFile:fileUrl]];
+        NSLog(@"trashing file %@", fileUrl);
+        [[NSFileManager defaultManager] trashItemAtURL:fileUrl resultingItemURL:nil error:nil];
+    } else if ([[fileUrl pathExtension] isEqualToString:@"zip"]) {
+        [fileUrls addObject:[ArchiveUtil unzipFile:fileUrl]];
+        NSLog(@"trashing file %@", fileUrl);
+        [[NSFileManager defaultManager] trashItemAtURL:fileUrl resultingItemURL:nil error:nil];
+    }
+    
     // at this point it should be a normal file that needs processing
+    [filePath setStringValue:[fileUrl lastPathComponent]];
     Song *song = [musicManager discoverSong:fileUrl];
     if ([song artist]) [artist setStringValue:[song artist]];
     if ([song album]) [album setStringValue:[song album]];
@@ -173,6 +193,8 @@
 
 @synthesize fileUrls;
 @synthesize genreOptions;
+
+@synthesize filePath;
 
 @synthesize artist;
 @synthesize album;

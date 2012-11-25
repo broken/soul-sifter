@@ -20,6 +20,8 @@
     IBOutlet NSComboBox *genreComboBox;
     IBOutlet NSArrayController *genreArrayController;
     
+    IBOutlet NSTextField *filePath;
+    
     IBOutlet NSTextField *artist;
     IBOutlet NSTextField *album;
     IBOutlet NSTextField *trackNum;
@@ -37,6 +39,8 @@
 
 @property(readwrite,retain,nonatomic) NSArray *fileUrls;
 @property(readwrite,retain) NSArray *genreOptions;
+
+@property(readwrite,retain,nonatomic) NSTextField *filePath;
 
 @property(readwrite,retain,nonatomic) NSTextField *artist;
 @property(readwrite,retain,nonatomic) NSTextField *album;
