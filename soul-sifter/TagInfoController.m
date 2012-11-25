@@ -42,6 +42,7 @@
 - (void)dealloc {
     NSLog(@"tagInfoController.dealloc");
     [musicManager release];
+    [filesToTrash release];
     [super dealloc];
 }
 
@@ -50,6 +51,7 @@
     [super windowDidLoad];
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     
+    filesToTrash = [[NSMutableArray alloc] init];
     [genreArrayController setContent:[musicManager basicGenres]];
 }
 
@@ -111,6 +113,13 @@
     // close window if no more files to process
     if ([fileUrls count] <= index) {
         NSLog(@"No more files to process; closing tag info window");
+        // trash files if desired
+        NSURL *fileToTrash;
+        for (fileToTrash in filesToTrash) {
+            NSLog(@"trashing file %@", fileToTrash);
+            [[NSFileManager defaultManager] trashItemAtURL:fileToTrash resultingItemURL:nil error:nil];
+        }
+        [filesToTrash removeAllObjects];
         [self close];
         return;
     }
@@ -132,12 +141,12 @@
         NSString *childFile;
         while (childFile = [enumerator nextObject]) {
             NSDictionary *childFileAttribs = [enumerator fileAttributes];
+            // this enumerator recurses directories. so no need to add them.
             if ([childFileAttribs objectForKey:NSFileType] == NSFileTypeRegular) {
-                childFile = [childFile stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                NSURL *url = [NSURL URLWithString:childFile relativeToURL:fileUrl];
-                [fileUrls addObject:url];
+                [fileUrls addObject:[fileUrl URLByAppendingPathComponent:childFile]];
             }
         }
+        [filesToTrash addObject:fileUrl];
         [self loadNextFile];
         return;
     }
@@ -159,16 +168,19 @@
         if ([[fileUrl path] hasSuffix:@".part1.rar"]) {
             [fileUrls addObject:[ArchiveUtil unrarFile:fileUrl]];
         }
-        NSLog(@"trashing file %@", fileUrl);
-        [[NSFileManager defaultManager] trashItemAtURL:fileUrl resultingItemURL:nil error:nil];
+        [filesToTrash addObject:fileUrl];
+        [self loadNextFile];
+        return;
     } else if ([[fileUrl pathExtension] isEqualToString:@"rar"]) {
         [fileUrls addObject:[ArchiveUtil unrarFile:fileUrl]];
-        NSLog(@"trashing file %@", fileUrl);
-        [[NSFileManager defaultManager] trashItemAtURL:fileUrl resultingItemURL:nil error:nil];
+        [filesToTrash addObject:fileUrl];
+        [self loadNextFile];
+        return;
     } else if ([[fileUrl pathExtension] isEqualToString:@"zip"]) {
         [fileUrls addObject:[ArchiveUtil unzipFile:fileUrl]];
-        NSLog(@"trashing file %@", fileUrl);
-        [[NSFileManager defaultManager] trashItemAtURL:fileUrl resultingItemURL:nil error:nil];
+        [filesToTrash addObject:fileUrl];
+        [self loadNextFile];
+        return;
     }
     
     // at this point it should be a normal file that needs processing
@@ -192,6 +204,7 @@
 # pragma mark accessors
 
 @synthesize fileUrls;
+@synthesize filesToTrash;
 @synthesize genreOptions;
 
 @synthesize filePath;

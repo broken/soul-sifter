@@ -15,6 +15,7 @@
 @private
     int index;
     NSMutableArray *fileUrls;
+    NSMutableArray *filesToTrash;
     MusicManager *musicManager;
     
     IBOutlet NSComboBox *genreComboBox;
@@ -38,6 +39,7 @@
 - (IBAction)processMusicFile:(id)sender;
 
 @property(readwrite,retain,nonatomic) NSArray *fileUrls;
+@property(readwrite,retain,nonatomic) NSArray *filesToTrash;
 @property(readwrite,retain) NSArray *genreOptions;
 
 @property(readwrite,retain,nonatomic) NSTextField *filePath;

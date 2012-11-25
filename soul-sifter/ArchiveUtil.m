@@ -20,7 +20,7 @@
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/usr/local/bin/unrar"];
 	[task setCurrentDirectoryPath:[[fileUrl URLByDeletingLastPathComponent] path]];
-	NSArray *args = [NSArray arrayWithObjects:[fileUrl lastPathComponent], outputPath, nil];
+	NSArray *args = [NSArray arrayWithObjects:@"-o+", [fileUrl lastPathComponent], outputPath, nil];
 	[task setArguments:args];
 	
     // create the pipe to read from
@@ -55,7 +55,7 @@
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/usr/local/bin/unrar"];
 	[task setCurrentDirectoryPath:path];
-	NSArray *args = [NSArray arrayWithObjects:@"e", [file lastPathComponent], nil];
+	NSArray *args = [NSArray arrayWithObjects:@"-e", [file lastPathComponent], nil];
 	[task setArguments:args];
 	
     // create the pipe to read from
@@ -88,7 +88,7 @@
 	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath:@"/usr/bin/unzip"];
 	[task setCurrentDirectoryPath:[[fileUrl URLByDeletingLastPathComponent] path]];
-	NSArray *args = [NSArray arrayWithObjects:[fileUrl lastPathComponent], @"-d", outputPath, nil];
+	NSArray *args = [NSArray arrayWithObjects: @"-o", [fileUrl lastPathComponent], @"-d", outputPath, nil];
 	[task setArguments:args];
 	
     // create the pipe to read from
@@ -109,7 +109,7 @@
 	
     // check status
 	NSString *output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	NSLog(@"unrar ended with status %i & output:\n%@", status, output);
+	NSLog(@"unzip ended with status %i & output:\n%@", status, output);
 	[output release];
     
     // return output path
