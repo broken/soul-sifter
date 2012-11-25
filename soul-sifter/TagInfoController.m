@@ -172,6 +172,7 @@
     }
     
     // at this point it should be a normal file that needs processing
+    [filePath setStringValue:[fileUrl lastPathComponent]];
     Song *song = [musicManager discoverSong:fileUrl];
     if ([song artist]) [artist setStringValue:[song artist]];
     if ([song album]) [album setStringValue:[song album]];
@@ -192,6 +193,8 @@
 
 @synthesize fileUrls;
 @synthesize genreOptions;
+
+@synthesize filePath;
 
 @synthesize artist;
 @synthesize album;
