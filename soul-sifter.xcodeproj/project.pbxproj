@@ -27,6 +27,7 @@
 		1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816965E154D4A2700593FEC /* LowerCaseFormatter.m */; };
 		182DC5F01605132A00AA9011 /* FileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5ED1605132A00AA9011 /* FileReader.m */; };
 		182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5EF1605132A00AA9011 /* NSDataExtensions.m */; };
+		185C3FB71662EC6C004DE6B6 /* ReSong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185C3FB51662EC6C004DE6B6 /* ReSong.cpp */; };
 		187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E640B15984AD300091546 /* RapidEvolutionManager.m */; };
 		188AB0391660F78B00CE162C /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188AB0371660F78B00CE162C /* Track.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
@@ -102,6 +103,8 @@
 		182DC5ED1605132A00AA9011 /* FileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileReader.m; sourceTree = "<group>"; };
 		182DC5EE1605132A00AA9011 /* NSDataExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataExtensions.h; sourceTree = "<group>"; };
 		182DC5EF1605132A00AA9011 /* NSDataExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataExtensions.m; sourceTree = "<group>"; };
+		185C3FB51662EC6C004DE6B6 /* ReSong.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReSong.cpp; sourceTree = "<group>"; };
+		185C3FB61662EC6C004DE6B6 /* ReSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReSong.h; sourceTree = "<group>"; };
 		187E640A15984AD200091546 /* RapidEvolutionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionManager.h; sourceTree = "<group>"; };
 		187E640B15984AD300091546 /* RapidEvolutionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RapidEvolutionManager.m; sourceTree = "<group>"; };
 		188AB0371660F78B00CE162C /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
@@ -258,6 +261,8 @@
 		188E1B25164E1968004754F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				185C3FB51662EC6C004DE6B6 /* ReSong.cpp */,
+				185C3FB61662EC6C004DE6B6 /* ReSong.h */,
 				188E1B26164E198C004754F4 /* Style.cpp */,
 				188E1B27164E198C004754F4 /* Style.h */,
 				188AB0371660F78B00CE162C /* Track.cpp */,
@@ -520,6 +525,7 @@
 				188AB0391660F78B00CE162C /* Track.cpp in Sources */,
 				18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */,
 				18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */,
+				185C3FB71662EC6C004DE6B6 /* ReSong.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,9 +15,10 @@ using namespace std;
 
 class Style {
 public:
+    // main params
     int id;
     string name;
-    
+    // rapid evolution params
     int re_id;
     string re_name;
     
