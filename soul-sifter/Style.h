@@ -11,18 +11,25 @@
 
 #include <string>
 
-struct Style {
+using namespace std;
+
+class Style {
+public:
     int id;
-    std::string name;
-    int re_id;
-    std::string re_name;
+    string name;
     
-    Style() :
-    id(0),
-    name(""),
-    re_id(0),
-    re_name("") {
-    }
+    int re_id;
+    string re_name;
+    
+    Style();
+    ~Style();
+    
+    static bool findStyle(Style* style);
+    
+    bool update();
+    bool save();
+    
+    void clear();
 };
 
 #endif /* defined(__soul_sifter__Style__) */

@@ -9,43 +9,43 @@
 #ifndef __soul_sifter__MysqlAccess__
 #define __soul_sifter__MysqlAccess__
 
+#include <map>
+#include <string>
+
 #include <cppconn/connection.h>
 #include <cppconn/exception.h>
+#include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
-
-#include "Style.h"
 
 class Connection;
 class Driver;
-class PreparedStatement;
-class ResultSet;
-class Savepoint;
-class Statement;
-
-namespace persistence {
-    sql::Connection* getConnection();
-}
 
 class MysqlAccess {
 public:
+    ~MysqlAccess();
+    
+    static MysqlAccess& getInstance() {
+        static MysqlAccess instance;  // guaranteed to be destroyed
+        // instantiated on first use
+        return instance;
+    }
+
+    sql::Connection *getConnection() {
+        return connection;
+    }
+    
+    sql::PreparedStatement* getPreparedStatement(std::string query);
+    
+private:
     MysqlAccess();
+    MysqlAccess(MysqlAccess const&);
+    void operator=(MysqlAccess const&);
     
     bool connect();
     bool disconnect();
-    
-    void getStyle(int id, Style* style);
-    bool updateStyle(const Style& style);
-    bool saveStyle(const Style& style);
-private:
     sql::Driver *driver;
     sql::Connection *connection;
-    
-    sql::Statement *stmt;
-    sql::ResultSet *res;
-    sql::PreparedStatement *prep_stmt;
-    sql::Savepoint *savept;
-    
-    void handleException(const sql::SQLException& e);
+    std::map<std::string, sql::PreparedStatement*> preparedStatements;
 };
 
 #endif /* defined(__soul_sifter__MysqlAccess__) */

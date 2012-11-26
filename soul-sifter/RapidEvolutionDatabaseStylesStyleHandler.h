@@ -12,13 +12,10 @@
 #include "RapidEvolutionDatabaseAbstractHandler.h"
 #include "Style.h"
 
-class MysqlAccess;
-
 class RapidEvolutionDatabaseStylesStyleHandler : public RapidEvolutionDatabaseAbstractHandler {
 public:
     RapidEvolutionDatabaseStylesStyleHandler(xercesc::SAX2XMLReader* parser,
-                                             RapidEvolutionDatabaseAbstractHandler* parentHandler,
-                                             MysqlAccess* mysqlAccess);
+                                             RapidEvolutionDatabaseAbstractHandler* parentHandler);
     
     const XMLCh* const getQname() {
         return qname;
@@ -33,7 +30,6 @@ public:
                     const XMLCh* const localName,
                     const XMLCh* const qName);
 private:
-    MysqlAccess* mysqlAccess;
     const XMLCh* const qname;
     Style style;
     

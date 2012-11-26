@@ -42,7 +42,7 @@ Track::~Track() {
 
 void Track::getTrack(Track* track) {
     try {
-        sql::Connection* connection = persistence::getConnection();
+        sql::Connection* connection = MysqlAccess::getInstance().getConnection();
         sql::Statement* stmt = connection->createStatement();
         sql::ResultSet* result;
         if (track->id > 0) {

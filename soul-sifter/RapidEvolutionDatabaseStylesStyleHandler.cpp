@@ -16,16 +16,14 @@
 #include <xercesc/util/XMLInteger.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-#include "MysqlAccess.h"
 #include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "Style.h"
 
 using namespace xercesc;
 
 RapidEvolutionDatabaseStylesStyleHandler::RapidEvolutionDatabaseStylesStyleHandler(SAX2XMLReader* parser,
-                                                                                   RapidEvolutionDatabaseAbstractHandler* parentHandler,
-                                                                                   MysqlAccess* mysqlAccess) :
+                                                                                   RapidEvolutionDatabaseAbstractHandler* parentHandler) :
 RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
-mysqlAccess(mysqlAccess),
 qname(XMLString::transcode("style")),
 style(),
 category_only_attrib(XMLString::transcode("category_only")),
@@ -34,7 +32,6 @@ description_attrib(XMLString::transcode("description")),
 id_attrib(XMLString::transcode("id")),
 name_attrib(XMLString::transcode("name")),
 parent_ids_attrib(XMLString::transcode("parent_ids")) {
-    mysqlAccess->connect();
 }
 
 void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const    uri,
@@ -44,9 +41,10 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
     if (!XMLString::compareString(qname, getQname())) {
         const XMLCh* name_xml = attrs.getValue(name_attrib);
         const XMLCh* id_xml = attrs.getValue(id_attrib);
+        style.clear();
         style.re_name = XMLString::transcode(name_xml);
         style.re_id = XMLString::parseInt(id_xml);
-        std::cout << "style: " << name_xml << ", " << XMLString::transcode(qname) << ", " << id_xml << std::endl;
+        std::cout << "style: " << style.re_name << ", " << XMLString::transcode(qname) << ", " << style.re_id << std::endl;
     }
 }
 
@@ -55,6 +53,16 @@ void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri
                                                           const XMLCh* const qName) {
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
-        mysqlAccess->saveStyle(style);
+        Style::findStyle(&style);
+        if (style.name.length() == 0) {
+            style.name = style.re_name;
+        }
+        if (style.id > 0) {
+            bool success = style.update();
+            cout << "update style. success = " << success << endl;
+        } else {
+            bool success = style.save();
+            cout << "update style. success = " << success << endl;
+        }
     }
 }
