@@ -37,8 +37,8 @@ title(),
 time(),
 time_signature(),
 filename(),
-digital_only(true),
-compilation(false),
+digital_only(),
+compilation(),
 key_start(),
 key_accuracy(0),
 bpm_start(0),
@@ -53,7 +53,7 @@ comments(),
 release_date(),
 featuring(),
 key_end(),
-disabled(false),
+disabled(),
 bpm_end(0),
 beat_intensity(0),
 replay_gain(0),
@@ -76,8 +76,8 @@ void ReSong::clear() {
     time.clear();
     time_signature.clear();
     filename.clear();
-    digital_only = true;
-    compilation = false;
+    digital_only.clear();
+    compilation.clear();
     key_start.clear();
     key_accuracy = 0;
     bpm_start = 0;
@@ -92,7 +92,7 @@ void ReSong::clear() {
     release_date.clear();
     featuring.clear();
     key_end.clear();
-    disabled = false;
+    disabled.clear();
     bpm_end = 0;
     beat_intensity = 0;
     replay_gain = 0;
@@ -193,8 +193,16 @@ bool ReSong::lookup(ReSong *song) {
                 cout << "updating filename of RE song from " << song->filename << " to " << result->getString("filename") << endl;
             song->filename = result->getString("filename");
         }
-        song->digital_only = result->getBoolean("digital_only");
-        song->compilation = result->getBoolean("compilation");
+        if (song->digital_only.compare(result->getString("digital_only"))) {
+            if (song->digital_only.length() > 0)
+                cout << "updating digital_only of RE song from " << song->digital_only << " to " << result->getString("digital_only") << endl;
+            song->digital_only = result->getString("digital_only");
+        }
+        if (song->compilation.compare(result->getString("compilation"))) {
+            if (song->compilation.length() > 0)
+                cout << "updating compilation of RE song from " << song->compilation << " to " << result->getString("compilation") << endl;
+            song->compilation = result->getString("compilation");
+        }
         if (song->key_start.compare(result->getString("key_start"))) {
             if (song->key_start.length() > 0)
                 cout << "updating key_start of RE song from " << song->key_start << " to " << result->getString("key_start") << endl;
@@ -265,7 +273,11 @@ bool ReSong::lookup(ReSong *song) {
                 cout << "updating key_end of RE song from " << song->key_end << " to " << result->getString("key_end") << endl;
             song->key_end = result->getString("key_end");
         }
-        song->disabled = result->getBoolean("disabled");
+        if (song->disabled.compare(result->getString("disabled"))) {
+            if (song->disabled.length() > 0)
+                cout << "updating disabled of RE song from " << song->disabled << " to " << result->getString("disabled") << endl;
+            song->disabled = result->getString("disabled");
+        }
         if (song->bpm_end != result->getDouble("bpm_end")) {
             if (song->bpm_end > 0)
                 cout << "updating bpm_end of RE song from " << song->bpm_end << " to " << result->getDouble("bpm_end") << endl;
@@ -304,7 +316,7 @@ bool ReSong::lookup(ReSong *song) {
 bool ReSong::update() {
     cout << "reSong::update" << endl;
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update resongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_onlyl=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, album_cover=? where unique_id=?");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update resongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, album_cover=? where unique_id=?");
         ps->setString(1, songid_winfo);
         ps->setString(2, songid);
         ps->setString(3, shortid);
@@ -316,8 +328,8 @@ bool ReSong::update() {
         ps->setString(9, time);
         ps->setString(10, time_signature);
         ps->setString(11, filename);
-        ps->setBoolean(12, digital_only);
-        ps->setBoolean(13, compilation);
+        ps->setString(12, digital_only);
+        ps->setString(13, compilation);
         ps->setString(14, key_start);
         ps->setInt(15, key_accuracy);
         ps->setDouble(16, bpm_start);
@@ -332,7 +344,7 @@ bool ReSong::update() {
         ps->setString(25, release_date);
         ps->setString(26, featuring);
         ps->setString(27, key_end);
-        ps->setBoolean(28, disabled);
+        ps->setString(28, disabled);
         ps->setDouble(29, bpm_end);
         ps->setInt(30, beat_intensity);
         ps->setDouble(31, replay_gain);
@@ -353,7 +365,7 @@ bool ReSong::update() {
 bool ReSong::save() {
     cout << "reSong::save" << endl;
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into resongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_onlyl, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into resongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, songid_winfo);
         ps->setString(2, songid);
         ps->setString(3, shortid);
@@ -365,8 +377,8 @@ bool ReSong::save() {
         ps->setString(9, time);
         ps->setString(10, time_signature);
         ps->setString(11, filename);
-        ps->setBoolean(12, digital_only);
-        ps->setBoolean(13, compilation);
+        ps->setString(12, digital_only);
+        ps->setString(13, compilation);
         ps->setString(14, key_start);
         ps->setInt(15, key_accuracy);
         ps->setDouble(16, bpm_start);
@@ -381,7 +393,7 @@ bool ReSong::save() {
         ps->setString(25, release_date);
         ps->setString(26, featuring);
         ps->setString(27, key_end);
-        ps->setBoolean(28, disabled);
+        ps->setString(28, disabled);
         ps->setDouble(29, bpm_end);
         ps->setInt(30, beat_intensity);
         ps->setDouble(31, replay_gain);

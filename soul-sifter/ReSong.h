@@ -27,23 +27,23 @@ public:
     string time;
     string time_signature;
     string filename;
-    bool digital_only;
-    bool compilation;
+    string digital_only;
+    string compilation;
     string key_start;
     int key_accuracy;
     double bpm_start;
     int bpm_accuracy;
     short rating;
     string date_added;
-    string catalog_id;
-    string label;
+    string catalog_id;  // custom4
+    string label;  // custom3
     string remix;
     int num_plays;
     string comments;
-    string release_date;
-    string featuring;
+    string release_date;  // custom2
+    string featuring;  // custom1
     string key_end;
-    bool disabled;
+    string disabled;
     double bpm_end;
     int beat_intensity;
     double replay_gain;
