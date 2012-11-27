@@ -9,6 +9,7 @@
 #include "ReSong.h"
 
 #include <iostream>
+#include <math.h>
 #include <string>
 
 #include <cppconn/connection.h>
@@ -19,6 +20,8 @@
 #include <cppconn/warning.h>
 
 #include "MysqlAccess.h"
+
+#define EPSILON 0.0000001
 
 using namespace std;
 
@@ -102,7 +105,6 @@ void ReSong::clear() {
 # pragma mark persistence
 
 bool ReSong::lookup(ReSong *song) {
-    cout << "reSong::lookup" << endl;
     try {
         // use various means to try and retrieve the song
         sql::ResultSet *result;
@@ -119,16 +121,16 @@ bool ReSong::lookup(ReSong *song) {
             ps->setInt(1, song->unique_id);
             result = ps->executeQuery();
         } else {
-            cout << "Nothing to search for style by" << endl;
+            cout << "Nothing to search for re song by" << endl;
             return false;
         }
         
         // did we get a unique result?
         if (!result->next()) {
-            cout << "No RE song found." << endl;
+            cout << "No RE song found for " << song->shortid << endl;
             return false;
         } else if (!result->isLast()) {
-            cout << "Ambigious result returned." << endl;
+            cout << "Ambigious result returned for " << song->shortid << endl;
             return false;
         }
         
@@ -213,7 +215,7 @@ bool ReSong::lookup(ReSong *song) {
                 cout << "updating key_accuracy of RE song from " << song->key_accuracy << " to " << result->getInt("key_accuracy") << endl;
             song->key_accuracy = result->getInt("key_accuracy");
         }
-        if (song->bpm_start != result->getDouble("bpm_start")) {
+        if (fabs(song->bpm_start - result->getDouble("bpm_start")) > EPSILON) {
             if (song->bpm_start > 0)
                 cout << "updating bpm_start of RE song from " << song->bpm_start << " to " << result->getDouble("bpm_start") << endl;
             song->bpm_start = result->getDouble("bpm_start");
@@ -278,7 +280,7 @@ bool ReSong::lookup(ReSong *song) {
                 cout << "updating disabled of RE song from " << song->disabled << " to " << result->getString("disabled") << endl;
             song->disabled = result->getString("disabled");
         }
-        if (song->bpm_end != result->getDouble("bpm_end")) {
+        if (fabs(song->bpm_end - result->getDouble("bpm_end")) > EPSILON) {
             if (song->bpm_end > 0)
                 cout << "updating bpm_end of RE song from " << song->bpm_end << " to " << result->getDouble("bpm_end") << endl;
             song->bpm_end = result->getDouble("bpm_end");
@@ -288,7 +290,7 @@ bool ReSong::lookup(ReSong *song) {
                 cout << "updating beat_intensity of RE song from " << song->beat_intensity << " to " << result->getInt("beat_intensity") << endl;
             song->beat_intensity = result->getInt("beat_intensity");
         }
-        if (song->replay_gain != result->getDouble("replay_gain")) {
+        if (fabs(song->replay_gain - result->getDouble("replay_gain")) > EPSILON) {
             if (song->replay_gain > 0)
                 cout << "updating replay_gain of RE song from " << song->replay_gain << " to " << result->getDouble("replay_gain") << endl;
             song->replay_gain = result->getDouble("replay_gain");
@@ -314,7 +316,6 @@ bool ReSong::lookup(ReSong *song) {
 }
 
 bool ReSong::update() {
-    cout << "reSong::update" << endl;
     try {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update resongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, album_cover=? where unique_id=?");
         ps->setString(1, songid_winfo);
@@ -363,7 +364,6 @@ bool ReSong::update() {
 }
 
 bool ReSong::save() {
-    cout << "reSong::save" << endl;
     try {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into resongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, songid_winfo);
