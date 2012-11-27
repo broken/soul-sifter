@@ -25,6 +25,7 @@ RapidEvolutionDatabaseHandler::RapidEvolutionDatabaseHandler(SAX2XMLReader* pars
                                                              RapidEvolutionDatabaseAbstractHandler* parentHandler) :
 RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("music_database")) {
+    startTagCount = 0;
     childHandlers = new RapidEvolutionDatabaseAbstractHandler*[8];
     childHandlers[0] = new RapidEvolutionDatabaseConfigHandler(parser, this);
     childHandlers[1] = new RapidEvolutionDatabaseStylesHandler(parser, this);

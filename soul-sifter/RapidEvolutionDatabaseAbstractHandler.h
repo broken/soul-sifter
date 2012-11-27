@@ -11,7 +11,6 @@
 
 #include <xercesc/sax2/DefaultHandler.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/util/XMLChar.hpp>
 
 class RapidEvolutionDatabaseAbstractHandler : public xercesc::DefaultHandler {
 public:
@@ -28,9 +27,9 @@ public:
                             const XMLCh* const localName,
                             const XMLCh* const qName);
     
-    virtual void characters(const XMLCh* const chars, const XMLSize_t length) {
-        xercesc::DefaultHandler::characters(chars, length);
-    }
+    virtual void characters(const XMLCh* const chars, const XMLSize_t length);
+    
+    unsigned long getStartTagCount();
     
     virtual const XMLCh* const getQname() = 0;
 protected:
@@ -38,6 +37,7 @@ protected:
     // This variable must end in a NULL pointer
     RapidEvolutionDatabaseAbstractHandler** childHandlers;
     xercesc::SAX2XMLReader* parser;
+    static unsigned long startTagCount;
 };
 
 

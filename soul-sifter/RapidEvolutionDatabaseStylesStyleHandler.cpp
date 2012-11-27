@@ -38,6 +38,7 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
                                                             const   XMLCh* const    localname,
                                                             const   XMLCh* const    qname,
                                                             const   Attributes&     attrs) {
+    startTagCount++;
     if (!XMLString::compareString(qname, getQname())) {
         const XMLCh* name_xml = attrs.getValue(name_attrib);
         const XMLCh* id_xml = attrs.getValue(id_attrib);

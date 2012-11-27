@@ -12,9 +12,14 @@
 
 #include <xercesc/sax2/DefaultHandler.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
+#include <xercesc/util/XMLChar.hpp>
 
 using namespace std;
 using namespace xercesc;
+
+# pragma mark initialization
+
+unsigned long RapidEvolutionDatabaseAbstractHandler::startTagCount = 0;
 
 RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(SAX2XMLReader* parser,
                                                                              RapidEvolutionDatabaseAbstractHandler* parentHandler) :
@@ -34,10 +39,13 @@ RapidEvolutionDatabaseAbstractHandler::~RapidEvolutionDatabaseAbstractHandler() 
     }
 }
 
+# pragma mark xml default handler overrides
+
 void RapidEvolutionDatabaseAbstractHandler::startElement(const   XMLCh* const    uri,
                                                          const   XMLCh* const    localname,
                                                          const   XMLCh* const    qname,
                                                          const   Attributes&     attrs) {
+    startTagCount++;
     if (childHandlers != NULL) {
         RapidEvolutionDatabaseAbstractHandler* handler;
         for (int i = 0; (handler = childHandlers[i]); ++i) {
@@ -48,10 +56,6 @@ void RapidEvolutionDatabaseAbstractHandler::startElement(const   XMLCh* const   
             }
         }
     }
-    
-    //char* message = XMLString::transcode(localname);
-    //cout << "abstract saw element: "<< message << endl;
-    //XMLString::release(&message);
 }
 
 void RapidEvolutionDatabaseAbstractHandler::endElement(const XMLCh* const uri,
@@ -60,4 +64,14 @@ void RapidEvolutionDatabaseAbstractHandler::endElement(const XMLCh* const uri,
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
     }
+}
+
+# pragma mark accessors
+
+void RapidEvolutionDatabaseAbstractHandler::characters(const XMLCh* const chars, const XMLSize_t length) {
+    xercesc::DefaultHandler::characters(chars, length);
+}
+
+unsigned long RapidEvolutionDatabaseAbstractHandler::getStartTagCount() {
+    return startTagCount;
 }

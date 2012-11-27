@@ -10,6 +10,7 @@
 
 @class DropBox;
 @class PreferencesController;
+@class ProcessProgressController;
 @class TagInfoController;
 
 @interface AppController : NSObject {
@@ -18,10 +19,12 @@
     
     PreferencesController *preferencesController;
     TagInfoController *tagInfoController;
+    ProcessProgressController *processProgressController;
 }
 
 - (IBAction)showPreferencesPanel:(id)sender;
 - (IBAction)showTagInfoWindow:(id)sender;
+- (IBAction)showProcessProgressWindow:(id)sender;
 
 - (IBAction)populateStagingDirectory:(id)sender;
 - (IBAction)flushStagingDirectory:(id)sender;

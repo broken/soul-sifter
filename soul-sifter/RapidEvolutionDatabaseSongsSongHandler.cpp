@@ -64,6 +64,7 @@ void RapidEvolutionDatabaseSongsSongHandler::startElement(const   XMLCh* const  
                                                           const   XMLCh* const    localname,
                                                           const   XMLCh* const    qname,
                                                           const   Attributes&     attrs) {
+    startTagCount++;
     if (!XMLString::compareString(qname, getQname())) {
         song.clear();
         fieldPointer = NULL;

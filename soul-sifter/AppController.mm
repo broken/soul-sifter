@@ -11,8 +11,8 @@
 #import "DropBox.h"
 #import "MusicManager.h"
 #import "PreferencesController.h"
+#import "ProcessProgressController.h"
 #import "RapidEvolutionManager.h"
-#import "RapidEvolutionMusicDatabaseReader.h"
 #import "TagInfoController.h"
 
 @implementation AppController
@@ -37,6 +37,14 @@
     [tagInfoController showWindow:self];
 }
 
+- (IBAction)showProcessProgressWindow:(id)sender {
+    NSLog(@"appController.showProcessProgressWindow");
+    if (!processProgressController) {
+        processProgressController = [[ProcessProgressController alloc] initWithWindowNibName:@"ProcessProgress"];
+    }
+    [processProgressController showWindow:self];
+}
+
 - (IBAction)populateStagingDirectory:(id)sender {
     NSLog(@"appController.populateStagingDirectory");
     [[MusicManager default] populateStagingDirectory];
@@ -51,9 +59,9 @@
 
 - (IBAction)readRapidEvolutionDatabase:(id)sender {
     NSLog(@"appController.readRapidEvolutionDatabase");
-    RapidEvolutionMusicDatabaseReader *musicDatabaseReader = [[RapidEvolutionMusicDatabaseReader alloc] init];
-    [musicDatabaseReader read];
-    [musicDatabaseReader release];
+    [self showProcessProgressWindow:self];
 }
+
+# pragma mark accessors
 
 @end

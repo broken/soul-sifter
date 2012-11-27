@@ -6,10 +6,30 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+#ifndef __soul_sifter__RapidEvolutionMusicDatabaseReader__
+#define __soul_sifter__RapidEvolutionMusicDatabaseReader__
 
-@interface RapidEvolutionMusicDatabaseReader : NSObject
+#include "RapidEvolutionDatabaseHandler.h"
 
-- (bool)read;
+class RapidEvolutionMusicDatabaseReader {
+public:
+    RapidEvolutionMusicDatabaseReader();
+    
+    bool read();
+    unsigned long getSrcOffset() {
+        return processing ? reDbHandler->getStartTagCount() : 0;
+    }
+    bool isProcessing();
+    unsigned long getSrcLength() {
+        return length;
+    }
+    
+private:
+    bool processing;
+    unsigned long length;
+    RapidEvolutionDatabaseHandler* reDbHandler;
+    
+    void computeMusicDatabaseLength();
+};
 
-@end
+#endif /* defined(__soul_sifter__RapidEvolutionMusicDatabaseReader__) */
