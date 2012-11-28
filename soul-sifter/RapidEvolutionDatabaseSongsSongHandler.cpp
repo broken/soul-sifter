@@ -57,7 +57,8 @@ disabled_elem(XMLString::transcode("disabled")),
 bpm_end_elem(XMLString::transcode("bpm_end")),
 beat_intensity_elem(XMLString::transcode("beat_intensity")),
 replay_gain_elem(XMLString::transcode("replay_gain")),
-album_cover_elem(XMLString::transcode("album_cover")) {
+album_cover_elem(XMLString::transcode("album_cover")),
+styles_bitmask_elem(XMLString::transcode("styles_bitmask")) {
 }
 
 void RapidEvolutionDatabaseSongsSongHandler::startElement(const   XMLCh* const    uri,
@@ -134,6 +135,8 @@ void RapidEvolutionDatabaseSongsSongHandler::startElement(const   XMLCh* const  
         fieldPointer = &song.replay_gain;
     } else if (!XMLString::compareString(qname, album_cover_elem)) {
         fieldPointer = &song.album_cover;
+    } else if (!XMLString::compareString(qname, styles_bitmask_elem)) {
+        fieldPointer = &song.styles_bitmask;
     } else {
         cout << "ERROR:: no album processor for " << XMLString::transcode(qname) << endl;
     }

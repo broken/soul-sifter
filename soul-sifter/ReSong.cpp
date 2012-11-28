@@ -60,7 +60,8 @@ disabled(),
 bpm_end(0),
 beat_intensity(0),
 replay_gain(0),
-album_cover() {
+album_cover(),
+styles_bitmask() {
 }
 
 ReSong::~ReSong() {
@@ -100,6 +101,7 @@ void ReSong::clear() {
     beat_intensity = 0;
     replay_gain = 0;
     album_cover.clear();
+    styles_bitmask.clear();
 }
 
 # pragma mark persistence
@@ -300,6 +302,11 @@ bool ReSong::lookup(ReSong *song) {
                 cout << "updating album_cover of RE song from " << song->album_cover << " to " << result->getString("album_cover") << endl;
             song->album_cover = result->getString("album_cover");
         }
+        if (song->styles_bitmask.compare(result->getString("styles_bitmask"))) {
+            if (song->styles_bitmask.length() > 0)
+                cout << "updating styles_bitmask of RE song from " << song->styles_bitmask << " to " << result->getString("styles_bitmask") << endl;
+            song->styles_bitmask = result->getString("styles_bitmask");
+        }
         
         // clean up
         delete result;
@@ -317,7 +324,7 @@ bool ReSong::lookup(ReSong *song) {
 
 bool ReSong::update() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update resongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, album_cover=? where unique_id=?");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update resongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, album_cover=?, styles_bitmask=? where unique_id=?");
         ps->setString(1, songid_winfo);
         ps->setString(2, songid);
         ps->setString(3, shortid);
@@ -350,7 +357,8 @@ bool ReSong::update() {
         ps->setInt(30, beat_intensity);
         ps->setDouble(31, replay_gain);
         ps->setString(32, album_cover);
-        ps->setInt(33, unique_id);
+        ps->setString(33, styles_bitmask);
+        ps->setInt(34, unique_id);
         ps->executeUpdate();
         return true;
 	} catch (sql::SQLException &e) {
@@ -365,7 +373,7 @@ bool ReSong::update() {
 
 bool ReSong::save() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into resongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into resongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, styles_bitmask, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, songid_winfo);
         ps->setString(2, songid);
         ps->setString(3, shortid);
@@ -398,7 +406,8 @@ bool ReSong::save() {
         ps->setInt(30, beat_intensity);
         ps->setDouble(31, replay_gain);
         ps->setString(32, album_cover);
-        ps->setInt(33, unique_id);
+        ps->setString(33, styles_bitmask);
+        ps->setInt(34, unique_id);
         return ps->executeUpdate() > 0;
 	} catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;

@@ -49,6 +49,8 @@ public:
     double replay_gain;
     string album_cover;
     
+    string styles_bitmask;
+    
     ReSong();
     ~ReSong();
     
