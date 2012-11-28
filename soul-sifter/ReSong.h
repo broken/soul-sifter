@@ -48,7 +48,6 @@ public:
     int beat_intensity;
     double replay_gain;
     string album_cover;
-    
     string styles_bitmask;
     
     ReSong();

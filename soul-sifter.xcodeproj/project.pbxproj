@@ -54,6 +54,8 @@
 		18A73F7016635B280074E137 /* ProcessProgress.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18A73F6F16635B270074E137 /* ProcessProgress.xib */; };
 		18A73F7416635D900074E137 /* ProcessProgressController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F7316635D900074E137 /* ProcessProgressController.mm */; };
 		18A73F771663F3600074E137 /* XMLStartTagCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F751663F35F0074E137 /* XMLStartTagCounter.cpp */; };
+		18A73F7A1665EEFC0074E137 /* Song.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F781665EEFC0074E137 /* Song.cpp */; };
+		18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */; };
 		18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9DA166189A800912FD3 /* ArchiveUtil.m */; };
 		18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9E21661978400912FD3 /* NSString+MD5.mm */; };
 		18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FB7CAB15572F0000BEF750 /* PathButton.m */; };
@@ -155,6 +157,10 @@
 		18A73F7316635D900074E137 /* ProcessProgressController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProcessProgressController.mm; sourceTree = "<group>"; };
 		18A73F751663F35F0074E137 /* XMLStartTagCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLStartTagCounter.cpp; sourceTree = "<group>"; };
 		18A73F761663F35F0074E137 /* XMLStartTagCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLStartTagCounter.h; sourceTree = "<group>"; };
+		18A73F781665EEFC0074E137 /* Song.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Song.cpp; sourceTree = "<group>"; };
+		18A73F791665EEFC0074E137 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
+		18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicGenre.cpp; sourceTree = "<group>"; };
+		18A73F7C1665EFFA0074E137 /* BasicGenre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicGenre.h; sourceTree = "<group>"; };
 		18C5F9D9166189A800912FD3 /* ArchiveUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveUtil.h; sourceTree = "<group>"; };
 		18C5F9DA166189A800912FD3 /* ArchiveUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveUtil.m; sourceTree = "<group>"; };
 		18C5F9E11661978400912FD3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -271,8 +277,12 @@
 		188E1B25164E1968004754F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */,
+				18A73F7C1665EFFA0074E137 /* BasicGenre.h */,
 				185C3FB51662EC6C004DE6B6 /* ReSong.cpp */,
 				185C3FB61662EC6C004DE6B6 /* ReSong.h */,
+				18A73F781665EEFC0074E137 /* Song.cpp */,
+				18A73F791665EEFC0074E137 /* Song.h */,
 				188E1B26164E198C004754F4 /* Style.cpp */,
 				188E1B27164E198C004754F4 /* Style.h */,
 				188AB0371660F78B00CE162C /* Track.cpp */,
@@ -542,6 +552,8 @@
 				185C3FB71662EC6C004DE6B6 /* ReSong.cpp in Sources */,
 				18A73F7416635D900074E137 /* ProcessProgressController.mm in Sources */,
 				18A73F771663F3600074E137 /* XMLStartTagCounter.cpp in Sources */,
+				18A73F7A1665EEFC0074E137 /* Song.cpp in Sources */,
+				18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

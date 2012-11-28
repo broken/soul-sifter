@@ -21,7 +21,7 @@
 
 #include "MysqlAccess.h"
 
-#define EPSILON 0.0000001
+#define EPSILON 0.0001
 
 using namespace std;
 
