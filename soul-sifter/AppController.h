@@ -29,5 +29,6 @@
 - (IBAction)populateStagingDirectory:(id)sender;
 - (IBAction)flushStagingDirectory:(id)sender;
 - (IBAction)readRapidEvolutionDatabase:(id)sender;
+- (IBAction)updateBasicGenres:(id)sender;
 
 @end

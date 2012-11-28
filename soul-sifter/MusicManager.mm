@@ -9,6 +9,8 @@
 
 #import "MusicManager.h"
 
+#include <string>
+
 #include <stdio.h>
 #include <id3/misc_support.h>
 #include <id3/readers.h>
@@ -18,6 +20,7 @@
 
 #import <stdlib.h>
 
+#include "BasicGenre.h"
 #import "Constants.h"
 #import "NSSong.h"
 
@@ -758,6 +761,21 @@
                 NSAssert(NO, msg);
             }
         }
+    }
+}
+
+# pragma mark db updates
+
+- (void)updateDatabaseBasicGenres {
+    for (NSString *genre in [self basicGenres]) {
+        std::string genre_string([genre UTF8String]);
+        const BasicGenre *basicGenre = BasicGenre::findByName(genre_string);
+        if (!basicGenre) {
+            BasicGenre newGenre;
+            newGenre.setName(genre_string);
+            newGenre.save();
+        }
+        // don't delete the basic genres since they are static
     }
 }
 

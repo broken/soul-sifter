@@ -18,5 +18,6 @@
 
 - (IBAction)showWindow:(id)sender;
 - (IBAction)readRapidEvolutionDatabase:(id)sender;
+- (IBAction)updateBasicGenres:(id)sender;
 
 @end

@@ -37,4 +37,7 @@
 // paths accessors
 - (NSArray *)basicGenres;
 
+// db updates
+- (void)updateDatabaseBasicGenres;
+
 @end

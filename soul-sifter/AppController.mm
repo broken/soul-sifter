@@ -60,6 +60,17 @@
 - (IBAction)readRapidEvolutionDatabase:(id)sender {
     NSLog(@"appController.readRapidEvolutionDatabase");
     [self showProcessProgressWindow:self];
+    [NSThread detachNewThreadSelector:@selector(readRapidEvolutionDatabase:)
+                             toTarget:processProgressController
+                           withObject:self];
+}
+
+- (IBAction)updateBasicGenres:(id)sender {
+    NSLog(@"appController.updateBasicGenres");
+    [self showProcessProgressWindow:self];
+    [NSThread detachNewThreadSelector:@selector(updateBasicGenres:)
+                             toTarget:processProgressController
+                           withObject:self];
 }
 
 # pragma mark accessors

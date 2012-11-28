@@ -54,7 +54,6 @@ const BasicGenre* BasicGenre::findById(const int id) {
     genre->setId(result->getInt("id"));
     genre->setName(result->getString("name"));
     delete result;
-    delete ps;
     
     // add to static
     basicGenres.push_back(genre);
@@ -83,7 +82,6 @@ const BasicGenre* BasicGenre::findByName(const string& name) {
     genre->setId(result->getInt("id"));
     genre->setName(result->getString("name"));
     delete result;
-    delete ps;
     
     // add to static
     basicGenres.push_back(genre);

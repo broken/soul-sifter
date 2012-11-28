@@ -9,6 +9,7 @@
 #import "ProcessProgressController.h"
 
 #import "Constants.h"
+#include "MusicManager.h"
 #include "RapidEvolutionMusicDatabaseReader.h"
 
 # pragma mark private method helpers
@@ -16,7 +17,6 @@
 @interface ProcessProgressController()
 
 - (void)startProgressBar:(id)sender;
-- (void)setProgressBar:(id)sender;
 - (void)incrementProgressBar:(id)sender;
 
 @end
@@ -26,32 +26,35 @@
 # pragma mark initialization
 
 - (IBAction)showWindow:(id)sender {
-    musicDatabaseReader = new RapidEvolutionMusicDatabaseReader();
-    [NSThread detachNewThreadSelector:@selector(readRapidEvolutionDatabase:) toTarget:self withObject:self];
+    [[self window] setTitle:@"Process Progress"];
     [[self window] makeKeyAndOrderFront:self];
+    [progressIndicator startAnimation:self];
+    [progressIndicator setIndeterminate:TRUE];
     [self startProgressBar:self];
 }
 
-# pragma mark progress bar
-
+// this must be able to handle all jobs
 - (void)startProgressBar:(id)sender {
-    [progressIndicator startAnimation:self];
-    [progressIndicator setIndeterminate:TRUE];
-    [self performSelector:@selector(setProgressBar:) withObject:self afterDelay:1];
+    if (musicDatabaseReader != NULL && musicDatabaseReader->getSrcLength()) {
+        [progressIndicator setMinValue:0.0];
+        [progressIndicator setMaxValue:musicDatabaseReader->getSrcLength()];
+        [progressIndicator setDoubleValue:musicDatabaseReader->getSrcOffset()];
+        [progressIndicator setIndeterminate:FALSE];
+        [self performSelector:@selector(incrementProgressBar:) withObject:self afterDelay:1];
+    }
+    [self performSelector:@selector(startProgressBar:) withObject:self afterDelay:1];
+}
+# pragma mark update basic genres
+
+- (IBAction)updateBasicGenres:(id)sender {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    [[self window] setTitle:@"Updating Basic Genres"];
+    [[MusicManager default] updateDatabaseBasicGenres];
+    [[self window] close];
+    [pool release];
 }
 
-- (void)setProgressBar:(id)sender {
-    if (!musicDatabaseReader->getSrcLength()) {
-        [self performSelector:@selector(preprocessingProgressBar:) withObject:self afterDelay:1];
-        return;
-    }
-    
-    [progressIndicator setMinValue:0.0];
-    [progressIndicator setMaxValue:musicDatabaseReader->getSrcLength()];
-    [progressIndicator setDoubleValue:musicDatabaseReader->getSrcOffset()];
-    [progressIndicator setIndeterminate:FALSE];
-    [self performSelector:@selector(incrementProgressBar:) withObject:self afterDelay:1];
-}
+# pragma mark read re db
 
 - (void)incrementProgressBar:(id)sender {
     if (!musicDatabaseReader->isProcessing()) {
@@ -64,10 +67,11 @@
     [self performSelector:@selector(incrementProgressBar:) withObject:self afterDelay:1];
 }
 
-# pragma mark read db
-
 - (IBAction)readRapidEvolutionDatabase:(id)sender {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    musicDatabaseReader = new RapidEvolutionMusicDatabaseReader();
+    [self startProgressBar:self];
+    [[self window] setTitle:@"Reading RapidEvolution Database"];
     NSLog(@"processProgressController.readRapidEvolutionDatabase");
     musicDatabaseReader->read();
     [[self window] close];
