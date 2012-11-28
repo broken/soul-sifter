@@ -41,12 +41,6 @@
 }
 
 - (void)setProgressBar:(id)sender {
-    if (!musicDatabaseReader->isProcessing()) {
-        [progressIndicator stopAnimation:self];
-        delete musicDatabaseReader;
-        return;
-    }
-    
     if (!musicDatabaseReader->getSrcLength()) {
         [self performSelector:@selector(preprocessingProgressBar:) withObject:self afterDelay:1];
         return;
