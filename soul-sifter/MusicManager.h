@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class Song;
+@class NSSong;
 
 @interface MusicManager : NSObject {
 @private
     // tags
-    Song *lastParsedSong;
-    Song *lastSongFixed;
+    NSSong *lastParsedSong;
+    NSSong *lastSongFixed;
     
     // paths
     NSArray *basicGenres;
@@ -24,12 +24,12 @@
 + (MusicManager *)default;
 
 // tags
-- (Song *)discoverSong:(NSURL *)musicFile;
-- (void)writeTagsToSong:(Song *)song;
+- (NSSong *)discoverSong:(NSURL *)musicFile;
+- (void)writeTagsToSong:(NSSong *)song;
 
 // paths
 - (BOOL)getCopyToPath:(NSString **)path;
-- (void)moveSong:(Song *)song;
+- (void)moveSong:(NSSong *)song;
 - (void)moveImage:(NSURL *)file;
 - (void)populateStagingDirectory;
 - (void)flushStagingDirectory;

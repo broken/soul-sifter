@@ -19,7 +19,7 @@
 #import <stdlib.h>
 
 #import "Constants.h"
-#import "Song.h"
+#import "NSSong.h"
 
 
 #define id3CatalogId @"catalogId"
@@ -65,10 +65,10 @@
 
 # pragma mark tagging
 
-- (Song *)discoverSong:(NSURL *)musicFile {
+- (NSSong *)discoverSong:(NSURL *)musicFile {
     NSLog(@"musicManager.discoverSong");
 	NSLog(@"looking at '%@'", musicFile);
-    Song *song = [[Song alloc] init];
+    NSSong *song = [[NSSong alloc] init];
     ID3_Tag tag([[musicFile path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
     // TODO use an std::auto_ptr here to handle object cleanup automatically(void) ID3Tag_Link(tag, filename);
     ID3_Tag::Iterator* iter = tag.CreateIterator();
@@ -392,7 +392,7 @@
         }
     }
     
-    Song *songBeforeFixing = [song copyWithZone:NULL];
+    NSSong *songBeforeFixing = [song copyWithZone:NULL];
     
     // compare with last
     if (lastParsedSong && lastSongFixed) {
@@ -453,7 +453,7 @@
     return song;
 }
 
-- (void)writeTagsToSong:(Song *)song {
+- (void)writeTagsToSong:(NSSong *)song {
     NSLog(@"musicManager.writeTagsToSong");
     
     [lastSongFixed release];
@@ -609,7 +609,7 @@
     return FALSE;
 }
 
-- (void)moveSong:(Song *)song {
+- (void)moveSong:(NSSong *)song {
     NSLog(@"musicManager.moveSong");
     
     NSFileManager *fileManager = [NSFileManager defaultManager];

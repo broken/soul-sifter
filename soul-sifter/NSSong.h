@@ -1,5 +1,5 @@
 //
-//  Song.h
+//  NSSong.h
 //  soul-sifter
 //
 //  Created by Robby Neale on 4/28/12.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Song : NSObject <NSCopying> {
+@interface NSSong : NSObject <NSCopying> {
 @private
     NSString *artist;
     NSString *album;

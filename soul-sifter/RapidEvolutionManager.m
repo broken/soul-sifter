@@ -9,7 +9,7 @@
 #import "RapidEvolutionManager.h"
 
 #import "Constants.h"
-#import "Song.h"
+#import "NSSong.h"
 
 #import "FileReader.h"
 
@@ -240,7 +240,7 @@
     }
 }
 
-- (void)writeSongToXml:(Song *)song {
+- (void)writeSongToXml:(NSSong *)song {
     NSLog(@"rapidEvolutionManager.writeSongToXml");
     
     NSString *path = [[NSUserDefaults standardUserDefaults] stringForKey:UDStagingPath];

@@ -12,7 +12,7 @@
 #import "Constants.h"
 #import "MusicManager.h"
 #import "RapidEvolutionManager.h"
-#import "Song.h"
+#import "NSSong.h"
 
 
 # pragma mark private method helpers
@@ -77,7 +77,7 @@
         return;
     }
     
-    Song *song = [[Song alloc] init];
+    NSSong *song = [[NSSong alloc] init];
     [song autorelease];
     [song setFile:[fileUrls objectAtIndex:index]];
     [song setArtist:[artist stringValue]];
@@ -185,7 +185,7 @@
     
     // at this point it should be a normal file that needs processing
     [filePath setStringValue:[fileUrl lastPathComponent]];
-    Song *song = [musicManager discoverSong:fileUrl];
+    NSSong *song = [musicManager discoverSong:fileUrl];
     if ([song artist]) [artist setStringValue:[song artist]];
     if ([song album]) [album setStringValue:[song album]];
     if ([song trackNum]) [trackNum setStringValue:[song trackNum]];

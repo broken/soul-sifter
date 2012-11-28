@@ -1,19 +1,19 @@
 //
-//  Song.m
+//  NSSong.m
 //  soul-sifter
 //
 //  Created by Robby Neale on 4/28/12.
 //  Copyright (c) 2012 Dogatech. All rights reserved.
 //
 
-#import "Song.h"
+#import "NSSong.h"
 
-@implementation Song
+@implementation NSSong
 
 # pragma mark nscopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    Song *copy = [[Song allocWithZone:zone] init];
+    NSSong *copy = [[NSSong allocWithZone:zone] init];
     [copy setArtist:[artist copyWithZone:zone]];
     [copy setAlbum:[album copyWithZone:zone]];
     [copy setTrackNum:[trackNum copyWithZone:zone]];

@@ -22,7 +22,7 @@
 		18169648154CB7D200593FEC /* DropBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169647154CB7D200593FEC /* DropBox.m */; };
 		1816964B154CD8E000593FEC /* TagInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816964A154CD8E000593FEC /* TagInfoController.m */; };
 		18169651154D06EB00593FEC /* MusicManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18169650154D06EB00593FEC /* MusicManager.mm */; };
-		18169654154D08D900593FEC /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169653154D08D900593FEC /* Song.m */; };
+		18169654154D08D900593FEC /* NSSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169653154D08D900593FEC /* NSSong.m */; };
 		18169656154D34A400593FEC /* libid3-3.8.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18169655154D34A300593FEC /* libid3-3.8.3.0.0.dylib */; };
 		1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816965E154D4A2700593FEC /* LowerCaseFormatter.m */; };
 		182DC5F01605132A00AA9011 /* FileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5ED1605132A00AA9011 /* FileReader.m */; };
@@ -97,8 +97,8 @@
 		1816964A154CD8E000593FEC /* TagInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagInfoController.m; sourceTree = "<group>"; };
 		1816964F154D06EB00593FEC /* MusicManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicManager.h; sourceTree = "<group>"; };
 		18169650154D06EB00593FEC /* MusicManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MusicManager.mm; sourceTree = "<group>"; };
-		18169652154D08D900593FEC /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
-		18169653154D08D900593FEC /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+		18169652154D08D900593FEC /* NSSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSong.h; sourceTree = "<group>"; };
+		18169653154D08D900593FEC /* NSSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSong.m; sourceTree = "<group>"; };
 		18169655154D34A300593FEC /* libid3-3.8.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libid3-3.8.3.0.0.dylib"; path = "/usr/local/Cellar/id3lib/3.8.3/lib/libid3-3.8.3.0.0.dylib"; sourceTree = "<absolute>"; };
 		1816965D154D4A2700593FEC /* LowerCaseFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LowerCaseFormatter.h; sourceTree = "<group>"; };
 		1816965E154D4A2700593FEC /* LowerCaseFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LowerCaseFormatter.m; sourceTree = "<group>"; };
@@ -247,12 +247,12 @@
 				18028C4116478E1700938259 /* RE DB SAX Parsers */,
 				1816964F154D06EB00593FEC /* MusicManager.h */,
 				18169650154D06EB00593FEC /* MusicManager.mm */,
+				18169652154D08D900593FEC /* NSSong.h */,
+				18169653154D08D900593FEC /* NSSong.m */,
 				187E640A15984AD200091546 /* RapidEvolutionManager.h */,
 				187E640B15984AD300091546 /* RapidEvolutionManager.m */,
-				18169652154D08D900593FEC /* Song.h */,
-				18169653154D08D900593FEC /* Song.m */,
-				18028C3E1647870A00938259 /* RapidEvolutionMusicDatabaseReader.h */,
 				18028C3F1647870A00938259 /* RapidEvolutionMusicDatabaseReader.cpp */,
+				18028C3E1647870A00938259 /* RapidEvolutionMusicDatabaseReader.h */,
 			);
 			name = Organization;
 			sourceTree = "<group>";
@@ -514,7 +514,7 @@
 				18169648154CB7D200593FEC /* DropBox.m in Sources */,
 				1816964B154CD8E000593FEC /* TagInfoController.m in Sources */,
 				18169651154D06EB00593FEC /* MusicManager.mm in Sources */,
-				18169654154D08D900593FEC /* Song.m in Sources */,
+				18169654154D08D900593FEC /* NSSong.m in Sources */,
 				1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */,
 				18144CA1154DC6AD009C36EE /* PreferencesController.m in Sources */,
 				18144CA4154DCA31009C36EE /* Constants.m in Sources */,
