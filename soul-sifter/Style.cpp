@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -20,22 +21,94 @@
 
 #include "MysqlAccess.h"
 
-using namespace sql;
 using namespace std;
+
+# pragma mark helpers
+
+namespace {
+    
+    static void populateFields(const sql::ResultSet* rs, Style* style) {
+        style->setId(rs->getInt("id"));
+        style->setName(rs->getString("name"));
+        style->setREId(rs->getInt("re_id"));
+        style->setREName(rs->getString("re_name"));
+    }
+}
 
 # pragma mark initialization
 
 Style::Style() :
 id(0),
 name(),
-re_id(),
+re_id(0),
 re_name() {
 }
 
 Style::~Style() {
 }
 
-# pragma mark static functions
+void Style::clear() {
+    id = 0;
+    name.clear();
+    re_id = 0;
+    re_name.clear();
+}
+
+# pragma mark static methods
+
+const Style* Style::findById(const int id) {
+    static vector<const Style*> styles;
+    
+    // first check for our static genre
+    for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+        if ((*it)->id == id) {
+            return *it;
+        }
+    }
+    
+    // lookup in db
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles where id = ?");
+    ps->setInt(1, id);
+    sql::ResultSet *rs = ps->executeQuery();
+    Style *style = NULL;
+    if (rs->next()) {
+        populateFields(rs, style);
+    }
+    rs->close();
+    delete rs;
+    
+    // add to static
+    styles.push_back(style);
+    
+    return style;
+}
+
+const Style* Style::findByREId(const int re_id) {
+    static vector<const Style*> styles;
+    
+    // first check for our static genre
+    for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+        if ((*it)->re_id == re_id) {
+            return *it;
+        }
+    }
+    
+    // lookup in db
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles where re_id = ?");
+    ps->setInt(1, re_id);
+    sql::ResultSet *rs = ps->executeQuery();
+    Style *style = NULL;
+    if (rs->next()) {
+        populateFields(rs, style);
+    }
+    rs->close();
+    delete rs;
+    
+    // add to static
+    styles.push_back(style);
+    
+    return style;
+}
 
 bool Style::findStyle(Style* style) {
     cout << "style::findStyle" << endl;
@@ -98,7 +171,7 @@ bool Style::findStyle(Style* style) {
         delete result;
         
         return true;
-    } catch (SQLException &e) {
+    } catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
         std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
         std::cout << "ERROR: " << e.what();
@@ -111,7 +184,6 @@ bool Style::findStyle(Style* style) {
 # pragma mark persistence
 
 bool Style::update() {
-    cout << "style::update" << endl;
     try {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update styles set name=?, re_id=?, re_name=? where id=?");
         ps->setString(1, name);
@@ -120,7 +192,7 @@ bool Style::update() {
         ps->setInt(4, id);
         ps->executeUpdate();
         return true;
-	} catch (SQLException &e) {
+	} catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
         std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
         std::cout << "ERROR: " << e.what();
@@ -130,27 +202,42 @@ bool Style::update() {
 	}
 }
 
-bool Style::save() {
-    cout << "style::save" << endl;
+const Style* Style::save() {
     try {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into styles (name, re_id, re_name) values (?, ?, ?)");
         ps->setString(1, name);
         ps->setInt(2, re_id);
         ps->setString(3, re_name);
-        return ps->executeUpdate() > 0;
-	} catch (SQLException &e) {
+        if (ps->executeUpdate() == 0) {
+            return NULL;
+        } else {
+            const int id = MysqlAccess::getInstance().getLastInsertId();
+            if (id == 0) {
+                cout << "ERROR: Inserted style, but unable to retrieve inserted ID." << endl;
+            } else {
+                return findById(id);
+            }
+        }
+	} catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
         std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
         std::cout << "ERROR: " << e.what();
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
-        return false;
+        return NULL;
 	}
 }
 
-void Style::clear() {
-    id = 0;
-    name.clear();
-    re_id = 0;
-    re_name.clear();
-}
+#pragma mark accessors
+
+const int Style::getId() const { return id; }
+void Style::setId(const int id) { this->id = id; }
+
+const string& Style::getName() const { return name; }
+void Style::setName(const string& name) { this->name = name; }
+
+const int Style::getREId() const { return re_id; }
+void Style::setREId(const int re_id) { this->re_id = re_id; }
+
+const string& Style::getREName() const { return re_name; }
+void Style::setREName(const string& re_name) { this->re_name = re_name; }

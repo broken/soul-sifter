@@ -44,6 +44,7 @@
     }
     [self performSelector:@selector(startProgressBar:) withObject:self afterDelay:1];
 }
+
 # pragma mark update basic genres
 
 - (IBAction)updateBasicGenres:(id)sender {

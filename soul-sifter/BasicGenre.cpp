@@ -34,10 +34,10 @@ BasicGenre::~BasicGenre() {
 #pragma mark static methods
 
 const BasicGenre* BasicGenre::findById(const int id) {
-    static vector<BasicGenre*> basicGenres;
+    static vector<const BasicGenre*> basicGenres;
     
     // first check for our static genre
-    for (vector<BasicGenre*>::iterator it = basicGenres.begin(); it != basicGenres.end(); ++it) {
+    for (vector<const BasicGenre*>::iterator it = basicGenres.begin(); it != basicGenres.end(); ++it) {
         if ((*it)->id == id) {
             return *it;
         }
@@ -47,12 +47,13 @@ const BasicGenre* BasicGenre::findById(const int id) {
     sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where id = ?");
     ps->setInt(1, id);
     sql::ResultSet *result = ps->executeQuery();
-    if (!result->next()) {
-        return NULL;
+    BasicGenre *genre = NULL;
+    if (result->next()) {
+        genre = new BasicGenre();
+        genre->setId(result->getInt("id"));
+        genre->setName(result->getString("name"));
     }
-    BasicGenre *genre = new BasicGenre();
-    genre->setId(result->getInt("id"));
-    genre->setName(result->getString("name"));
+    result->close();
     delete result;
     
     // add to static
@@ -62,10 +63,10 @@ const BasicGenre* BasicGenre::findById(const int id) {
 }
 
 const BasicGenre* BasicGenre::findByName(const string& name) {
-    static vector<BasicGenre*> basicGenres;
+    static vector<const BasicGenre*> basicGenres;
     
     // first check for our static genre
-    for (vector<BasicGenre*>::iterator it = basicGenres.begin(); it != basicGenres.end(); ++it) {
+    for (vector<const BasicGenre*>::iterator it = basicGenres.begin(); it != basicGenres.end(); ++it) {
         if (!(*it)->name.compare(name)) {
             return *it;
         }
@@ -75,12 +76,13 @@ const BasicGenre* BasicGenre::findByName(const string& name) {
     sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where name = ?");
     ps->setString(1, name);
     sql::ResultSet *result = ps->executeQuery();
-    if (!result->next()) {
-        return NULL;
+    BasicGenre *genre = NULL;
+    if (result->next()) {
+        genre = new BasicGenre();
+        genre->setId(result->getInt("id"));
+        genre->setName(result->getString("name"));
     }
-    BasicGenre *genre = new BasicGenre();
-    genre->setId(result->getInt("id"));
-    genre->setName(result->getString("name"));
+    result->close();
     delete result;
     
     // add to static

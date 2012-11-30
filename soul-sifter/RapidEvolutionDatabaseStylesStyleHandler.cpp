@@ -43,9 +43,9 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
         const XMLCh* name_xml = attrs.getValue(name_attrib);
         const XMLCh* id_xml = attrs.getValue(id_attrib);
         style.clear();
-        style.re_name = XMLString::transcode(name_xml);
-        style.re_id = XMLString::parseInt(id_xml);
-        std::cout << "style: " << style.re_name << ", " << XMLString::transcode(qname) << ", " << style.re_id << std::endl;
+        style.setREName(XMLString::transcode(name_xml));
+        style.setREId(XMLString::parseInt(id_xml));
+        std::cout << "style: " << style.getREName() << ", " << XMLString::transcode(qname) << ", " << style.getREId() << std::endl;
     }
 }
 
@@ -55,15 +55,13 @@ void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
         Style::findStyle(&style);
-        if (style.name.length() == 0) {
-            style.name = style.re_name;
+        if (style.getName().length() == 0) {
+            style.setName(style.getREName());
         }
-        if (style.id > 0) {
-            bool success = style.update();
-            cout << "update style. success = " << success << endl;
+        if (style.getId() > 0) {
+            style.update();
         } else {
-            bool success = style.save();
-            cout << "update style. success = " << success << endl;
+            style.save();
         }
     }
 }

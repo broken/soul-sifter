@@ -25,6 +25,48 @@
 
 using namespace std;
 
+# pragma mark helpers
+
+namespace {
+    
+    static void populateFields(const sql::ResultSet* rs, RESong* song) {
+        song->setUniqueId(rs->getInt("unique_id"));
+        song->setSongIdWInfo(rs->getString("songid_winfo"));
+        song->setSongId(rs->getString("songid"));
+        song->setShortId(rs->getString("shortid"));
+        song->setShortIdWInfo(rs->getString("shortid_winfo"));
+        song->setArtist(rs->getString("artist"));
+        song->setAlbum(rs->getString("album"));
+        song->setTrack(rs->getString("track"));
+        song->setTitle(rs->getString("title"));
+        song->setTime(rs->getString("time"));
+        song->setTimeSignature(rs->getString("time_signature"));
+        song->setFilename(rs->getString("filename"));
+        song->setDigitalOnly(rs->getString("digital_only"));
+        song->setCompilation(rs->getString("compilation"));
+        song->setKeyStart(rs->getString("key_start"));
+        song->setKeyAccuracy(rs->getInt("key_accuracy"));
+        song->setBPMStart(rs->getDouble("bpm_start"));
+        song->setBPMAccuracy(rs->getInt("bpm_accuracy"));
+        song->setRating(rs->getInt("rating"));
+        song->setDateAdded(rs->getString("date_added"));
+        song->setCatalogId(rs->getString("catalogId"));
+        song->setLabel(rs->getString("label"));
+        song->setRemix(rs->getString("remix"));
+        song->setNumPlays(rs->getInt("num_plays"));
+        song->setComments(rs->getString("comments"));
+        song->setReleaseDate(rs->getString("release_date"));
+        song->setFeaturing(rs->getString("featuring"));
+        song->setKeyEnd(rs->getString("key_end"));
+        song->setDisabled(rs->getString("disabled"));
+        song->setBPMEnd(rs->getDouble("bpm_end"));
+        song->setBeatIntensity(rs->getInt("beat_intensity"));
+        song->setReplayGain(rs->getDouble("replay_gain"));
+        song->setAlbumCover(rs->getString("album_cover"));
+        song->setStylesBitmask(rs->getString("styles_bitmask"));
+    }
+}
+
 # pragma mark initialization
 
 RESong::RESong() :
@@ -104,7 +146,35 @@ void RESong::clear() {
     styles_bitmask.clear();
 }
 
-# pragma mark persistence
+# pragma mark static
+
+RESong* RESong::findByUniqueId(const int uniqueId) {
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
+    ps->setInt(1, uniqueId);
+    sql::ResultSet *rs = ps->executeQuery();
+    RESong *song = NULL;
+    if (rs->next()) {
+        song = new RESong();
+        populateFields(rs, song);
+    }
+    rs->close();
+    delete rs;
+    return song;
+}
+
+RESong* RESong::findBySongId(const string& songId) {
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where songId = ?");
+    ps->setString(1, songId);
+    sql::ResultSet *rs = ps->executeQuery();
+    RESong *song = NULL;
+    if (rs->next()) {
+        song = new RESong();
+        populateFields(rs, song);
+    }
+    rs->close();
+    delete rs;
+    return song;
+}
 
 bool RESong::lookup(RESong *song) {
     try {
@@ -342,7 +412,7 @@ bool RESong::update() {
         ps->setInt(15, key_accuracy);
         ps->setDouble(16, bpm_start);
         ps->setInt(17, bpm_accuracy);
-        ps->setInt(18, (int) rating);
+        ps->setInt(18, rating);
         ps->setString(19, date_added);
         ps->setString(20, catalog_id);
         ps->setString(21, label);
@@ -371,7 +441,7 @@ bool RESong::update() {
 	}
 }
 
-bool RESong::save() {
+const RESong* RESong::save() {
     try {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, styles_bitmask, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, songid_winfo);
@@ -391,7 +461,7 @@ bool RESong::save() {
         ps->setInt(15, key_accuracy);
         ps->setDouble(16, bpm_start);
         ps->setInt(17, bpm_accuracy);
-        ps->setInt(18, (int) rating);
+        ps->setInt(18, rating);
         ps->setString(19, date_added);
         ps->setString(20, catalog_id);
         ps->setString(21, label);
@@ -408,7 +478,11 @@ bool RESong::save() {
         ps->setString(32, album_cover);
         ps->setString(33, styles_bitmask);
         ps->setInt(34, unique_id);
-        return ps->executeUpdate() > 0;
+        if (ps->executeUpdate() == 0) {
+            return NULL;
+        } else {
+            return this;
+        }
 	} catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
         std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
@@ -418,3 +492,107 @@ bool RESong::save() {
         return false;
 	}
 }
+
+# pragma mark accessors
+
+const int RESong::getUniqueId() const { return unique_id; }
+void RESong::setUniqueId(const int unique_id) { this->unique_id = unique_id; }
+
+const string& RESong::getSongIdWInfo() const { return songid_winfo; }
+void RESong::setSongIdWInfo(const string& songid_winfo) { this->songid_winfo = songid_winfo; }
+
+const string& RESong::getSongId() const { return songid; }
+void RESong::setSongId(const string& songid) { this->songid = songid; }
+
+const string& RESong::getShortId() const { return shortid; }
+void RESong::setShortId(const string& shortid) { this->shortid = shortid; }
+
+const string& RESong::getShortIdWInfo() const { return shortid_winfo; }
+void RESong::setShortIdWInfo(const string& shortid_winfo) { this->shortid_winfo = shortid_winfo; }
+
+const string& RESong::getArtist() const { return artist; }
+void RESong::setArtist(const string& artist) { this->artist = artist; }
+
+const string& RESong::getAlbum() const { return album; }
+void RESong::setAlbum(const string& album) { this->album = album; }
+
+const string& RESong::getTrack() const { return track; }
+void RESong::setTrack(const string& track) { this->track = track; }
+
+const string& RESong::getTitle() const { return title; }
+void RESong::setTitle(const string& title) { this->title = title; }
+
+const string& RESong::getTime() const { return time; }
+void RESong::setTime(const string& time) { this->time = time; }
+
+const string& RESong::getTimeSignature() const { return time_signature; }
+void RESong::setTimeSignature(const string& time_signature) { this->time_signature = time_signature; }
+
+const string& RESong::getFilename() const { return filename; }
+void RESong::setFilename(const string& filename) { this->filename = filename; }
+
+const string& RESong::getDigitalOnly() const { return digital_only; }
+void RESong::setDigitalOnly(const string& digital_only) { this->digital_only = digital_only; }
+
+const string& RESong::getCompilation() const { return compilation; }
+void RESong::setCompilation(const string& compilation) { this->compilation = compilation; }
+
+const string& RESong::getKeyStart() const { return key_start; }
+void RESong::setKeyStart(const string& key_start) { this->key_start = key_start; }
+
+const int RESong::getKeyAccuracy() const { return key_accuracy; }
+void RESong::setKeyAccuracy(const int key_accuracy) { this->key_accuracy = key_accuracy; }
+
+const double RESong::getBPMStart() const { return bpm_start; }
+void RESong::setBPMStart(const double bpm_start) { this->bpm_start = bpm_start; }
+
+const int RESong::getBPMAccuracy() const { return bpm_accuracy; }
+void RESong::setBPMAccuracy(const int bpm_accuracy) { this->bpm_accuracy = bpm_accuracy; }
+
+const int RESong::getRating() const { return rating; }
+void RESong::setRating(const int rating) { this->rating = rating; }
+
+const string& RESong::getDateAdded() const { return date_added; }
+void RESong::setDateAdded(const string& date_added) { this->date_added = date_added; }
+
+const string& RESong::getCatalogId() const { return catalog_id; }
+void RESong::setCatalogId(const string& catalogId) { this->catalog_id = catalogId; }
+
+const string& RESong::getLabel() const { return label; }
+void RESong::setLabel(const string& label) { this->label = label; }
+
+const string& RESong::getRemix() const { return remix; }
+void RESong::setRemix(const string& remix) { this->remix = remix; }
+
+const int RESong::getNumPlays() const { return num_plays; }
+void RESong::setNumPlays(const int num_plays) { this->num_plays = num_plays; }
+
+const string& RESong::getComments() const { return comments; }
+void RESong::setComments(const string& comments) { this->comments = comments; }
+
+const string& RESong::getReleaseDate() const { return release_date; }
+void RESong::setReleaseDate(const string& release_date) { this->release_date = release_date; }
+
+const string& RESong::getFeaturing() const { return featuring; }
+void RESong::setFeaturing(const string& featuring) { this->featuring = featuring; }
+
+const string& RESong::getKeyEnd() const { return key_end; }
+void RESong::setKeyEnd(const string& key_end) { this->key_end = key_end; }
+
+const string& RESong::getDisabled() const { return disabled; }
+void RESong::setDisabled(const string& disabled) { this->disabled = disabled; }
+
+const double RESong::getBPMEnd() const { return bpm_end; }
+void RESong::setBPMEnd(const double bpm_end) { this->bpm_end = bpm_end; }
+
+const int RESong::getBeatIntensity() const { return beat_intensity; }
+void RESong::setBeatIntensity(const int beat_intensity) { this->beat_intensity = beat_intensity; }
+
+const double RESong::getReplayGain() const { return replay_gain; }
+void RESong::setReplayGain(const double replay_gain) { this->replay_gain = replay_gain; }
+
+const string& RESong::getAlbumCover() const { return album_cover; }
+void RESong::setAlbumCover(const string& album_cover) { this->album_cover = album_cover; }
+
+const string& RESong::getStylesBitmask() const { return styles_bitmask; }
+void RESong::setStylesBitmask(const string& styles_bitmask) { this->styles_bitmask = styles_bitmask; }

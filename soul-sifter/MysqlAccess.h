@@ -36,6 +36,8 @@ public:
     
     sql::PreparedStatement* getPreparedStatement(std::string query);
     
+    const int getLastInsertId();
+    
 private:
     MysqlAccess();
     MysqlAccess(MysqlAccess const&);

@@ -89,3 +89,15 @@ sql::PreparedStatement* MysqlAccess::getPreparedStatement(std::string query) {
     }
     return ps;
 }
+
+const int MysqlAccess::getLastInsertId() {
+    sql::PreparedStatement *ps = getPreparedStatement("select LAST_INSERT_ID()");
+    sql::ResultSet *rs = ps->executeQuery();
+    int id = 0;
+    if (rs->next()) {
+        id = rs->getInt(1);
+    }
+    rs->close();
+    delete rs;
+    return id;
+}

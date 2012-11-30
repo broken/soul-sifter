@@ -15,22 +15,34 @@ using namespace std;
 
 class Style {
 public:
+    Style();
+    ~Style();
+    
+    static const Style* findById(const int id);
+    static const Style* findByREId(const int reId);
+    static bool findStyle(Style* style);  // deprecated
+    
+    bool update();
+    const Style* save();
+    
+    void clear();  // deprecated
+    
+    const int getId() const;
+    void setId(const int id);
+    const string& getName() const;
+    void setName(const string& name);
+    const int getREId() const;
+    void setREId(const int reId);
+    const string& getREName() const;
+    void setREName(const string& reName);
+    
+private:
     // main params
     int id;
     string name;
     // rapid evolution params
     int re_id;
     string re_name;
-    
-    Style();
-    ~Style();
-    
-    static bool findStyle(Style* style);
-    
-    bool update();
-    bool save();
-    
-    void clear();
 };
 
 #endif /* defined(__soul_sifter__Style__) */
