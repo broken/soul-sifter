@@ -1,19 +1,19 @@
 //
-//  ReSong.h
+//  RESong.h
 //  soul-sifter
 //
 //  Created by Robby Neale on 11/24/12.
 //
 //
 
-#ifndef __soul_sifter__ReSong__
-#define __soul_sifter__ReSong__
+#ifndef __soul_sifter__RESong__
+#define __soul_sifter__RESong__
 
 #include <string>
 
 using namespace std;
 
-class ReSong {
+class RESong {
 public:
     int unique_id;
     string songid_winfo;
@@ -50,10 +50,10 @@ public:
     string album_cover;
     string styles_bitmask;
     
-    ReSong();
-    ~ReSong();
+    RESong();
+    ~RESong();
     
-    static bool lookup(ReSong *song);
+    static bool lookup(RESong *song);
     
     bool update();
     bool save();
@@ -61,4 +61,4 @@ public:
     void clear();
 };
 
-#endif /* defined(__soul_sifter__ReSong__) */
+#endif /* defined(__soul_sifter__RESong__) */

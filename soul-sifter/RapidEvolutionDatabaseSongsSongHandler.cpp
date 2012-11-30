@@ -14,7 +14,7 @@
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "RapidEvolutionDatabaseAbstractHandler.h"
-#include "ReSong.h"
+#include "RESong.h"
 
 using namespace std;
 using namespace xercesc;
@@ -148,7 +148,7 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
     fieldPointer = NULL;
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
-        if (ReSong::lookup(&song)) {
+        if (RESong::lookup(&song)) {
             song.update();
         } else {
             song.save();

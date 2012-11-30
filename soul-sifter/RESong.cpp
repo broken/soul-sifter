@@ -1,12 +1,12 @@
 //
-//  ReSong.cpp
+//  RESong.cpp
 //  soul-sifter
 //
 //  Created by Robby Neale on 11/24/12.
 //
 //
 
-#include "ReSong.h"
+#include "RESong.h"
 
 #include <iostream>
 #include <math.h>
@@ -27,7 +27,7 @@ using namespace std;
 
 # pragma mark initialization
 
-ReSong::ReSong() :
+RESong::RESong() :
 unique_id(0),
 songid_winfo(),
 songid(),
@@ -64,10 +64,10 @@ album_cover(),
 styles_bitmask() {
 }
 
-ReSong::~ReSong() {
+RESong::~RESong() {
 }
 
-void ReSong::clear() {
+void RESong::clear() {
     unique_id = 0;
     songid_winfo.clear();
     songid.clear();
@@ -106,20 +106,20 @@ void ReSong::clear() {
 
 # pragma mark persistence
 
-bool ReSong::lookup(ReSong *song) {
+bool RESong::lookup(RESong *song) {
     try {
         // use various means to try and retrieve the song
         sql::ResultSet *result;
         if (song->songid.length() > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from resongs where songid = ?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where songid = ?");
             ps->setString(1, song->songid);
             result = ps->executeQuery();
         } else if (song->shortid.length() > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from resongs where shortid = ?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where shortid = ?");
             ps->setString(1, song->shortid);
             result = ps->executeQuery();
         } else if (song->unique_id > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from resongs where unique_id = ?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
             ps->setInt(1, song->unique_id);
             result = ps->executeQuery();
         } else {
@@ -322,9 +322,9 @@ bool ReSong::lookup(ReSong *song) {
     }
 }
 
-bool ReSong::update() {
+bool RESong::update() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update resongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, album_cover=?, styles_bitmask=? where unique_id=?");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update RESongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, album_cover=?, styles_bitmask=? where unique_id=?");
         ps->setString(1, songid_winfo);
         ps->setString(2, songid);
         ps->setString(3, shortid);
@@ -371,9 +371,9 @@ bool ReSong::update() {
 	}
 }
 
-bool ReSong::save() {
+bool RESong::save() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into resongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, styles_bitmask, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, album_cover, styles_bitmask, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, songid_winfo);
         ps->setString(2, songid);
         ps->setString(3, shortid);

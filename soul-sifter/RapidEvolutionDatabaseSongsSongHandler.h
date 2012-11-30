@@ -15,7 +15,7 @@
 
 #include <boost/any.hpp>
 
-#include "ReSong.h"
+#include "RESong.h"
 
 class RapidEvolutionDatabaseSongsSongHandler : public RapidEvolutionDatabaseAbstractHandler {
 public:
@@ -38,7 +38,7 @@ public:
     void characters(const XMLCh* const chars, const XMLSize_t length);
 private:
     const XMLCh* const qname;
-    ReSong song;
+    RESong song;
     
     boost::any fieldPointer;
     

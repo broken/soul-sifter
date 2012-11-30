@@ -12,8 +12,10 @@
 #include <string>
 #include <vector>
 
+#include <cppconn/resultset.h>
+
 #include "BasicGenre.h"
-#include "ReSong.h"
+#include "RESong.h"
 #include "Style.h"
 
 using namespace std;
@@ -36,9 +38,11 @@ private:
     int releaseDateMonth;
     int releaseDateDay;
     string filepath;
-    BasicGenre *basicGenre;
-    ReSong *reSong;
-    vector<Style> styles;
+    int basicGenreId;
+    const BasicGenre *basicGenre;
+    int reSongId;
+    RESong *reSong;
+    vector<const Style*> styles;
 };
 
 #endif /* defined(__soul_sifter__Song__) */
