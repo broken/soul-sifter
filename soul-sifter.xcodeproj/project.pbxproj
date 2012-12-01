@@ -53,7 +53,7 @@
 		189D22F5153D4F1A0043634A /* soul_sifterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D22F4153D4F1A0043634A /* soul_sifterTests.m */; };
 		18A73F7016635B280074E137 /* ProcessProgress.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18A73F6F16635B270074E137 /* ProcessProgress.xib */; };
 		18A73F7416635D900074E137 /* ProcessProgressController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F7316635D900074E137 /* ProcessProgressController.mm */; };
-		18A73F771663F3600074E137 /* XMLStartTagCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F751663F35F0074E137 /* XMLStartTagCounter.cpp */; };
+		18A73F771663F3600074E137 /* DTStartTagCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F751663F35F0074E137 /* DTStartTagCounter.cpp */; };
 		18A73F7A1665EEFC0074E137 /* Song.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F781665EEFC0074E137 /* Song.cpp */; };
 		18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */; };
 		18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9DA166189A800912FD3 /* ArchiveUtil.m */; };
@@ -155,8 +155,8 @@
 		18A73F6F16635B270074E137 /* ProcessProgress.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessProgress.xib; sourceTree = "<group>"; };
 		18A73F7216635D900074E137 /* ProcessProgressController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProcessProgressController.h; sourceTree = "<group>"; };
 		18A73F7316635D900074E137 /* ProcessProgressController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProcessProgressController.mm; sourceTree = "<group>"; };
-		18A73F751663F35F0074E137 /* XMLStartTagCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLStartTagCounter.cpp; sourceTree = "<group>"; };
-		18A73F761663F35F0074E137 /* XMLStartTagCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLStartTagCounter.h; sourceTree = "<group>"; };
+		18A73F751663F35F0074E137 /* DTStartTagCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DTStartTagCounter.cpp; sourceTree = "<group>"; };
+		18A73F761663F35F0074E137 /* DTStartTagCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTStartTagCounter.h; sourceTree = "<group>"; };
 		18A73F781665EEFC0074E137 /* Song.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Song.cpp; sourceTree = "<group>"; };
 		18A73F791665EEFC0074E137 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 		18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicGenre.cpp; sourceTree = "<group>"; };
@@ -276,8 +276,8 @@
 			children = (
 				18028C511647BA9D00938259 /* DTAbstractHandler.cpp */,
 				18028C521647BA9D00938259 /* DTAbstractHandler.h */,
-				18A73F751663F35F0074E137 /* XMLStartTagCounter.cpp */,
-				18A73F761663F35F0074E137 /* XMLStartTagCounter.h */,
+				18A73F751663F35F0074E137 /* DTStartTagCounter.cpp */,
+				18A73F761663F35F0074E137 /* DTStartTagCounter.h */,
 			);
 			name = "Generic Parsers";
 			sourceTree = "<group>";
@@ -558,7 +558,7 @@
 				18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */,
 				18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */,
 				18A73F7416635D900074E137 /* ProcessProgressController.mm in Sources */,
-				18A73F771663F3600074E137 /* XMLStartTagCounter.cpp in Sources */,
+				18A73F771663F3600074E137 /* DTStartTagCounter.cpp in Sources */,
 				18A73F7A1665EEFC0074E137 /* Song.cpp in Sources */,
 				18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */,
 				1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */,

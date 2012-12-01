@@ -18,7 +18,7 @@
 #include <xercesc/util/XMLString.hpp>
 
 #include "RapidEvolutionDatabaseHandler.h"
-#include "XMLStartTagCounter.h"
+#include "DTStartTagCounter.h"
 
 using namespace std;
 using namespace xercesc;
@@ -35,7 +35,7 @@ reDbHandler(NULL) {
 
 void RapidEvolutionMusicDatabaseReader::computeMusicDatabaseLength() {
     xercesc::SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-    XMLStartTagCounter* startTagCounter = new XMLStartTagCounter(parser, NULL);
+    DTStartTagCounter* startTagCounter = new DTStartTagCounter(parser, NULL);
     parser->setContentHandler(startTagCounter);
     parser->setErrorHandler(startTagCounter);
     try {
