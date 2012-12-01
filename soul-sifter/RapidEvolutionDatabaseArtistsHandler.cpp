@@ -10,12 +10,12 @@
 
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 
 using namespace xercesc;
 
 RapidEvolutionDatabaseArtistsHandler::RapidEvolutionDatabaseArtistsHandler(SAX2XMLReader* parser,
-                                                                           RapidEvolutionDatabaseAbstractHandler* parentHandler) :
-RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
+                                                                           DTAbstractHandler* parentHandler) :
+DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("artists")) {
 }

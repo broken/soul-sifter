@@ -13,15 +13,15 @@
 #include <boost/any.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 #include "RESong.h"
 
 using namespace std;
 using namespace xercesc;
 
 RapidEvolutionDatabaseSongsSongHandler::RapidEvolutionDatabaseSongsSongHandler(SAX2XMLReader* parser,
-                                                                               RapidEvolutionDatabaseAbstractHandler* parentHandler) :
-RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
+                                                                               DTAbstractHandler* parentHandler) :
+DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("song")),
 song(),
 fieldPointer(NULL),

@@ -14,7 +14,7 @@
 		18028C4A1647B66F00938259 /* RapidEvolutionDatabaseSongsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C481647B66E00938259 /* RapidEvolutionDatabaseSongsHandler.cpp */; };
 		18028C4D1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C4B1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp */; };
 		18028C501647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C4E1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp */; };
-		18028C531647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C511647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp */; };
+		18028C531647BA9D00938259 /* DTAbstractHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C511647BA9D00938259 /* DTAbstractHandler.cpp */; };
 		18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18144C9C154DC5F0009C36EE /* Preferences.xib */; };
 		18144CA1154DC6AD009C36EE /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA0154DC6AD009C36EE /* PreferencesController.m */; };
 		18144CA4154DCA31009C36EE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA3154DCA31009C36EE /* Constants.m */; };
@@ -84,8 +84,8 @@
 		18028C4C1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseSongsSongHandler.h; sourceTree = "<group>"; };
 		18028C4E1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseStylesHandler.cpp; sourceTree = "<group>"; };
 		18028C4F1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseStylesHandler.h; sourceTree = "<group>"; };
-		18028C511647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseAbstractHandler.cpp; sourceTree = "<group>"; };
-		18028C521647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseAbstractHandler.h; sourceTree = "<group>"; };
+		18028C511647BA9D00938259 /* DTAbstractHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DTAbstractHandler.cpp; sourceTree = "<group>"; };
+		18028C521647BA9D00938259 /* DTAbstractHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTAbstractHandler.h; sourceTree = "<group>"; };
 		18144C9C154DC5F0009C36EE /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		18144C9F154DC6AD009C36EE /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		18144CA0154DC6AD009C36EE /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
@@ -197,8 +197,6 @@
 		18028C4116478E1700938259 /* RE DB SAX Parsers */ = {
 			isa = PBXGroup;
 			children = (
-				18028C511647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp */,
-				18028C521647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.h */,
 				188E1B1B1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.cpp */,
 				188E1B1C1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.h */,
 				188E1B151648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp */,
@@ -219,8 +217,6 @@
 				18028C4F1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.h */,
 				188E1B1E1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp */,
 				188E1B1F1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.h */,
-				18A73F751663F35F0074E137 /* XMLStartTagCounter.cpp */,
-				18A73F761663F35F0074E137 /* XMLStartTagCounter.h */,
 			);
 			name = "RE DB SAX Parsers";
 			sourceTree = "<group>";
@@ -250,6 +246,7 @@
 		1816964E154D05F400593FEC /* Organization */ = {
 			isa = PBXGroup;
 			children = (
+				185A727E166A99A600D14E96 /* Generic Parsers */,
 				18028C4116478E1700938259 /* RE DB SAX Parsers */,
 				1816964F154D06EB00593FEC /* MusicManager.h */,
 				18169650154D06EB00593FEC /* MusicManager.mm */,
@@ -272,6 +269,17 @@
 				182DC5EF1605132A00AA9011 /* NSDataExtensions.m */,
 			);
 			name = "LineReader (to package)";
+			sourceTree = "<group>";
+		};
+		185A727E166A99A600D14E96 /* Generic Parsers */ = {
+			isa = PBXGroup;
+			children = (
+				18028C511647BA9D00938259 /* DTAbstractHandler.cpp */,
+				18028C521647BA9D00938259 /* DTAbstractHandler.h */,
+				18A73F751663F35F0074E137 /* XMLStartTagCounter.cpp */,
+				18A73F761663F35F0074E137 /* XMLStartTagCounter.h */,
+			);
+			name = "Generic Parsers";
 			sourceTree = "<group>";
 		};
 		188E1B25164E1968004754F4 /* Model */ = {
@@ -537,7 +545,7 @@
 				18028C4A1647B66F00938259 /* RapidEvolutionDatabaseSongsHandler.cpp in Sources */,
 				18028C4D1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp in Sources */,
 				18028C501647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp in Sources */,
-				18028C531647BA9D00938259 /* RapidEvolutionDatabaseAbstractHandler.cpp in Sources */,
+				18028C531647BA9D00938259 /* DTAbstractHandler.cpp in Sources */,
 				188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */,
 				188E1B141648E973004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp in Sources */,
 				188E1B171648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp in Sources */,

@@ -10,13 +10,13 @@
 
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 
 using namespace xercesc;
 
 XMLStartTagCounter::XMLStartTagCounter(SAX2XMLReader* parser,
-                                       RapidEvolutionDatabaseAbstractHandler* parentHandler) :
-RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler) {
+                                       DTAbstractHandler* parentHandler) :
+DTAbstractHandler::DTAbstractHandler(parser, parentHandler) {
     startTagCount = 0;
 }
 

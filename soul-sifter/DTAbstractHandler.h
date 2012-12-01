@@ -1,22 +1,22 @@
 //
-//  RapidEvolutionDatabaseAbstractHandler.h
+//  DTAbstractHandler.h
 //  soul-sifter
 //
 //  Created by Robby Neale on 11/5/12.
 //
 //
 
-#ifndef __soul_sifter__RapidEvolutionDatabaseAbstractHandler__
-#define __soul_sifter__RapidEvolutionDatabaseAbstractHandler__
+#ifndef __soul_sifter__DTAbstractHandler__
+#define __soul_sifter__DTAbstractHandler__
 
 #include <xercesc/sax2/DefaultHandler.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 
-class RapidEvolutionDatabaseAbstractHandler : public xercesc::DefaultHandler {
+class DTAbstractHandler : public xercesc::DefaultHandler {
 public:
-    RapidEvolutionDatabaseAbstractHandler(xercesc::SAX2XMLReader* parser,
-                                          RapidEvolutionDatabaseAbstractHandler* parentHandler);
-    ~RapidEvolutionDatabaseAbstractHandler();
+    DTAbstractHandler(xercesc::SAX2XMLReader* parser,
+                                          DTAbstractHandler* parentHandler);
+    ~DTAbstractHandler();
     
     virtual void startElement(const XMLCh* const uri,
                               const XMLCh* const localname,
@@ -33,12 +33,12 @@ public:
     
     virtual const XMLCh* const getQname() = 0;
 protected:
-    RapidEvolutionDatabaseAbstractHandler* parentHandler;
+    DTAbstractHandler* parentHandler;
     // This variable must end in a NULL pointer
-    RapidEvolutionDatabaseAbstractHandler** childHandlers;
+    DTAbstractHandler** childHandlers;
     xercesc::SAX2XMLReader* parser;
     static unsigned long startTagCount;
 };
 
 
-#endif /* defined(__soul_sifter__RapidEvolutionDatabaseAbstractHandler__) */
+#endif /* defined(__soul_sifter__DTAbstractHandler__) */

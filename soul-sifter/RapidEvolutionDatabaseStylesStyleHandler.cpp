@@ -16,14 +16,14 @@
 #include <xercesc/util/XMLInteger.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 #include "Style.h"
 
 using namespace xercesc;
 
 RapidEvolutionDatabaseStylesStyleHandler::RapidEvolutionDatabaseStylesStyleHandler(SAX2XMLReader* parser,
-                                                                                   RapidEvolutionDatabaseAbstractHandler* parentHandler) :
-RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
+                                                                                   DTAbstractHandler* parentHandler) :
+DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("style")),
 style(),
 category_only_attrib(XMLString::transcode("category_only")),

@@ -9,12 +9,12 @@
 #ifndef __soul_sifter__RapidEvolutionDatabaseExcludesHandler__
 #define __soul_sifter__RapidEvolutionDatabaseExcludesHandler__
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 
-class RapidEvolutionDatabaseExcludesHandler : public RapidEvolutionDatabaseAbstractHandler {
+class RapidEvolutionDatabaseExcludesHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseExcludesHandler(xercesc::SAX2XMLReader* parser,
-                                          RapidEvolutionDatabaseAbstractHandler* parentHandler);
+                                          DTAbstractHandler* parentHandler);
     
     const XMLCh* const getQname() {
         return qname;

@@ -10,7 +10,7 @@
 
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 #include "RapidEvolutionDatabaseAlbumcoversHandler.h"
 #include "RapidEvolutionDatabaseArtistsHandler.h"
 #include "RapidEvolutionDatabaseConfigHandler.h"
@@ -22,11 +22,11 @@
 using namespace xercesc;
 
 RapidEvolutionDatabaseHandler::RapidEvolutionDatabaseHandler(SAX2XMLReader* parser,
-                                                             RapidEvolutionDatabaseAbstractHandler* parentHandler) :
-RapidEvolutionDatabaseAbstractHandler::RapidEvolutionDatabaseAbstractHandler(parser, parentHandler),
+                                                             DTAbstractHandler* parentHandler) :
+DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("music_database")) {
     startTagCount = 0;
-    childHandlers = new RapidEvolutionDatabaseAbstractHandler*[8];
+    childHandlers = new DTAbstractHandler*[8];
     childHandlers[0] = new RapidEvolutionDatabaseConfigHandler(parser, this);
     childHandlers[1] = new RapidEvolutionDatabaseStylesHandler(parser, this);
     childHandlers[2] = new RapidEvolutionDatabaseSongsHandler(parser, this);

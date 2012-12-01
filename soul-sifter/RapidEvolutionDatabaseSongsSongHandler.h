@@ -9,7 +9,7 @@
 #ifndef __soul_sifter__RapidEvolutionDatabaseSongsSongHandler__
 #define __soul_sifter__RapidEvolutionDatabaseSongsSongHandler__
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 
 #include <string>
 
@@ -17,10 +17,10 @@
 
 #include "RESong.h"
 
-class RapidEvolutionDatabaseSongsSongHandler : public RapidEvolutionDatabaseAbstractHandler {
+class RapidEvolutionDatabaseSongsSongHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseSongsSongHandler(xercesc::SAX2XMLReader* parser,
-                                           RapidEvolutionDatabaseAbstractHandler* parentHandler);
+                                           DTAbstractHandler* parentHandler);
     
     const XMLCh* const getQname() {
         return qname;

@@ -9,13 +9,13 @@
 #ifndef __soul_sifter__RapidEvolutionDatabaseStylesStyleHandler__
 #define __soul_sifter__RapidEvolutionDatabaseStylesStyleHandler__
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 #include "Style.h"
 
-class RapidEvolutionDatabaseStylesStyleHandler : public RapidEvolutionDatabaseAbstractHandler {
+class RapidEvolutionDatabaseStylesStyleHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseStylesStyleHandler(xercesc::SAX2XMLReader* parser,
-                                             RapidEvolutionDatabaseAbstractHandler* parentHandler);
+                                             DTAbstractHandler* parentHandler);
     
     const XMLCh* const getQname() {
         return qname;

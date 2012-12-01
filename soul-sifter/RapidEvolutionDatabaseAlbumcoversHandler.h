@@ -9,12 +9,12 @@
 #ifndef __soul_sifter__RapidEvolutionDatabaseAlbumcoversHandler__
 #define __soul_sifter__RapidEvolutionDatabaseAlbumcoversHandler__
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 
-class RapidEvolutionDatabaseAlbumcoversHandler : public RapidEvolutionDatabaseAbstractHandler {
+class RapidEvolutionDatabaseAlbumcoversHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseAlbumcoversHandler(xercesc::SAX2XMLReader* parser,
-                                             RapidEvolutionDatabaseAbstractHandler* parentHandler);
+                                             DTAbstractHandler* parentHandler);
     
     const XMLCh* const getQname() {
         return qname;

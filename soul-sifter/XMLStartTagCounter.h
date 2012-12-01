@@ -9,12 +9,12 @@
 #ifndef __soul_sifter__XMLStartTagCounter__
 #define __soul_sifter__XMLStartTagCounter__
 
-#include "RapidEvolutionDatabaseAbstractHandler.h"
+#include "DTAbstractHandler.h"
 
-class XMLStartTagCounter : public RapidEvolutionDatabaseAbstractHandler {
+class XMLStartTagCounter : public DTAbstractHandler {
 public:
     XMLStartTagCounter(xercesc::SAX2XMLReader* parser,
-                       RapidEvolutionDatabaseAbstractHandler* parentHandler);
+                       DTAbstractHandler* parentHandler);
     
     const XMLCh* const getQname() {
         return NULL;
