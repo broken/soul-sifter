@@ -59,10 +59,8 @@
 # pragma mark read re db
 
 - (void)incrementProgressBar:(id)sender {
-    if (!musicDatabaseReader->isProcessing()) {
+    if (!musicDatabaseReader || !musicDatabaseReader->isProcessing()) {
         [progressIndicator stopAnimation:self];
-        delete musicDatabaseReader;
-        musicDatabaseReader = NULL;
         return;
     }
     
@@ -72,11 +70,15 @@
 
 - (IBAction)readRapidEvolutionDatabase:(id)sender {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSLog(@"processProgressController.readRapidEvolutionDatabase");
     musicDatabaseReader = new RapidEvolutionMusicDatabaseReader();
     [self startProgressBar:self];
     [[self window] setTitle:@"Reading RapidEvolution Database"];
-    NSLog(@"processProgressController.readRapidEvolutionDatabase");
     musicDatabaseReader->read();
+    delete musicDatabaseReader;
+    musicDatabaseReader = NULL;
+    [[self window] close];
+    [pool release];
 }
 
 - (IBAction)exportToRapidEvolutionDatabase:(id)sender {
