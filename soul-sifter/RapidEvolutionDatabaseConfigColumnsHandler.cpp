@@ -8,33 +8,38 @@
 
 #include "RapidEvolutionDatabaseConfigColumnsHandler.h"
 
+#include <iostream>
+
 #include <xercesc/util/XMLString.hpp>
 
 #include "REXML.h"
 
+using namespace std;
 using namespace xercesc;
 
 RapidEvolutionDatabaseConfigColumnsHandler::RapidEvolutionDatabaseConfigColumnsHandler(SAX2XMLReader* parser,
                                                                                        DTAbstractHandler* parentHandler) :
 DTCopyHandler::DTCopyHandler(parser, parentHandler),
-qname(XMLString::transcode("columns")) {
+qname(XMLString::transcode("columns")),
+xml() {
 }
 
 void RapidEvolutionDatabaseConfigColumnsHandler::init() {
-    xml = REXML::findByName("columns");
-    if (!xml) {
-        xml = new REXML();
-        xml->setName("columns");
-    }
-    text = &xml->getXmlRef();
+    xml.setName("columns");
+    text = &xml.getXmlRef();
 }
 
 void RapidEvolutionDatabaseConfigColumnsHandler::commit() {
-    if (xml->getId()) {
-        xml->update();
+    REXML* dbXml = REXML::findByName("columns");
+    if (dbXml->getId()) {
+        if (dbXml->getXml().compare(xml.getXml())) {
+            dbXml->setXml(xml.getXml());
+            cout << "updating xml text for columns" << endl;
+            dbXml->update();
+        }
+        delete dbXml;
     } else {
-        REXML* saved = xml->save();
-        delete saved;
-        delete xml;
+        xml.save();
     }
+    xml.clear();
 }

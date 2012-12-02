@@ -42,13 +42,19 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     vector<const RESetting*> settings;
     RESetting::findAll(&settings);
     for (vector<const RESetting*>::iterator it = settings.begin(); it != settings.end(); ++it) {
-        f << "<" << (*it)->getName() << ">" << (*it)->getValue() << "</" << (*it)->getName() << ">" << endl;
+        f << "<" << (*it)->getName();
+        if ((*it)->getValue().length() > 0) {
+            f << ">" << (*it)->getValue() << "</" << (*it)->getName() << ">" << endl;
+        } else {
+            f << "/>" << endl;
+        }
     }
     f << "</settings>" << endl;
     
-    f << REXML::findByName("columns")->getXml() << endl;
-    f << REXML::findByName("tables")->getXml() << endl;
-    f << REXML::findByName("user")->getXml() << endl;
+    // XML in these contains the newline at the end
+    f << REXML::findByName("columns")->getXml();
+    f << REXML::findByName("tables")->getXml();
+    f << REXML::findByName("user")->getXml();
     
     const vector<const Style*>* styles;
     Style::findAll(&styles);

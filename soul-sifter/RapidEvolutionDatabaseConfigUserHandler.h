@@ -10,8 +10,7 @@
 #define __soul_sifter__RapidEvolutionDatabaseConfigUserHandler__
 
 #include "DTCopyHandler.h"
-
-class REXML;
+#include "REXML.h"
 
 class RapidEvolutionDatabaseConfigUserHandler : public DTCopyHandler {
 public:
@@ -27,7 +26,7 @@ public:
     
 private:
     const XMLCh* const qname;
-    REXML* xml;
+    REXML xml;
 };
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseConfigUserHandler__) */

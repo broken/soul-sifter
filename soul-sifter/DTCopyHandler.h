@@ -33,8 +33,10 @@ public:
     
     virtual void init() = 0;
     virtual void commit() = 0;
+    
 protected:
     std::string* text;
+    bool data;
 };
 
 #endif /* defined(__soul_sifter__DTCopyHandler__) */

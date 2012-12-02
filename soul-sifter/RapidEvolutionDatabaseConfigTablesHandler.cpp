@@ -8,33 +8,38 @@
 
 #include "RapidEvolutionDatabaseConfigTablesHandler.h"
 
+#include <iostream>
+
 #include <xercesc/util/XMLString.hpp>
 
 #include "REXML.h"
 
+using namespace std;
 using namespace xercesc;
 
 RapidEvolutionDatabaseConfigTablesHandler::RapidEvolutionDatabaseConfigTablesHandler(SAX2XMLReader* parser,
                                                                                      DTAbstractHandler* parentHandler) :
 DTCopyHandler::DTCopyHandler(parser, parentHandler),
-qname(XMLString::transcode("tables")) {
+qname(XMLString::transcode("tables")),
+xml() {
 }
 
 void RapidEvolutionDatabaseConfigTablesHandler::init() {
-    xml = REXML::findByName("tables");
-    if (!xml) {
-        xml = new REXML();
-        xml->setName("tables");
-    }
-    text = &xml->getXmlRef();
+    xml.setName("tables");
+    text = &xml.getXmlRef();
 }
 
 void RapidEvolutionDatabaseConfigTablesHandler::commit() {
-    if (xml->getId()) {
-        xml->update();
+    REXML* dbXml = REXML::findByName("tables");
+    if (dbXml->getId()) {
+        if (dbXml->getXml().compare(xml.getXml())) {
+            dbXml->setXml(xml.getXml());
+            cout << "updating xml text for tables" << endl;
+            dbXml->update();
+        }
+        delete dbXml;
     } else {
-        REXML* saved = xml->save();
-        delete saved;
-        delete xml;
+        xml.save();
     }
+    xml.clear();
 }

@@ -17,13 +17,13 @@ class REXML {
 public:
     REXML();
     ~REXML();
+    void clear();
     
     static REXML* findById(const int id);
     static REXML* findByName(const string& name);
     
     bool update();
-    REXML* save();
-    void clear();
+    int save();
     
     const int getId() const;
     void setId(const int id);
@@ -32,6 +32,7 @@ public:
     const string& getXml() const;
     string& getXmlRef();
     void setXml(const string& value);
+    
 private:
     int id;
     string name;

@@ -39,6 +39,12 @@ xml() {
 REXML::~REXML() {
 }
 
+void REXML::clear() {
+    id = 0;
+    name.clear();
+    xml.clear();
+}
+
 #pragma mark static methods
 
 REXML* REXML::findById(const int id) {
@@ -93,7 +99,7 @@ bool REXML::update() {
 	}
 }
 
-REXML* REXML::save() {
+int REXML::save() {
     try {
         if (name.length() == 0) {
             return NULL;
@@ -101,25 +107,15 @@ REXML* REXML::save() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into REXML (name, xml) values (?, ?)");
         ps->setString(1, name);
         ps->setString(2, xml);
-        if (ps->executeUpdate() == 0) {
-            return NULL;
-        } else {
-            return findByName(name);
-        }
+        return ps->executeUpdate();
 	} catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
         std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
         std::cout << "ERROR: " << e.what();
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
-        return NULL;
+        return 0;
 	}
-}
-
-void REXML::clear() {
-    id = 0;
-    name.clear();
-    xml.clear();
 }
 
 #pragma mark accessors

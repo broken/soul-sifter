@@ -24,7 +24,8 @@ using namespace xercesc;
 DTCopyHandler::DTCopyHandler(SAX2XMLReader* parser,
                              DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
-text() {
+text(),
+data(false) {
 }
 
 void DTCopyHandler::startElement(const XMLCh* const uri,
@@ -40,20 +41,29 @@ void DTCopyHandler::startElement(const XMLCh* const uri,
         text->append(" ").append(XMLString::transcode(attrs.getQName(i)));
         text->append("=\"").append(XMLString::transcode(attrs.getValue(i))).append("\"");
     }
-    text->append(">");
+    data = false;
 }
 
 void DTCopyHandler::endElement(const XMLCh* const uri,
                                const XMLCh* const localName,
                                const XMLCh* const qname) {
-    text->append("</").append(XMLString::transcode(qname)).append(">");
-    if (!XMLString::compareString(getQname(), qname)) {
-        parser->setContentHandler(parentHandler);
-        text->append("\n");
-        commit();
+    if (data) {
+        text->append("</").append(XMLString::transcode(qname)).append(">");
+        if (!XMLString::compareString(getQname(), qname)) {
+            parser->setContentHandler(parentHandler);
+            text->append("\n");
+            commit();
+        }
+    } else {
+        text->append("/>");
+        data = true;
     }
 }
 
 void DTCopyHandler::characters(const XMLCh* const chars, const XMLSize_t length) {
+    if (!data) {
+        data = true;
+        text->append(">");
+    }
     text->append(XMLString::transcode(chars));
 }

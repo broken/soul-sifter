@@ -8,33 +8,38 @@
 
 #include "RapidEvolutionDatabaseConfigUserHandler.h"
 
+#include <iostream>
+
 #include <xercesc/util/XMLString.hpp>
 
 #include "REXML.h"
 
+using namespace std;
 using namespace xercesc;
 
 RapidEvolutionDatabaseConfigUserHandler::RapidEvolutionDatabaseConfigUserHandler(SAX2XMLReader* parser,
                                                                                  DTAbstractHandler* parentHandler) :
 DTCopyHandler::DTCopyHandler(parser, parentHandler),
-qname(XMLString::transcode("user")) {
+qname(XMLString::transcode("user")),
+xml() {
 }
 
 void RapidEvolutionDatabaseConfigUserHandler::init() {
-    xml = REXML::findByName("user");
-    if (!xml) {
-        xml = new REXML();
-        xml->setName("user");
-    }
-    text = &xml->getXmlRef();
+    xml.setName("user");
+    text = &xml.getXmlRef();
 }
 
 void RapidEvolutionDatabaseConfigUserHandler::commit() {
-    if (xml->getId()) {
-        xml->update();
+    REXML* dbXml = REXML::findByName("user");
+    if (dbXml->getId()) {
+        if (dbXml->getXml().compare(xml.getXml())) {
+            dbXml->setXml(xml.getXml());
+            cout << "updating xml text for user" << endl;
+            dbXml->update();
+        }
+        delete dbXml;
     } else {
-        REXML* saved = xml->save();
-        delete saved;
-        delete xml;
+        xml.save();
     }
+    xml.clear();
 }
