@@ -120,17 +120,9 @@ bool Style::findStyle(Style* style) {
             sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select id, name, re_id, re_name from styles where id = ?");
             ps->setInt(1, style->id);
             result = ps->executeQuery();
-        } else if (style->re_name.length() > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select id, name, re_id, re_name from styles where re_name = ?");
-            ps->setString(1, style->re_name);
-            result = ps->executeQuery();
         } else if (style->re_id > 0) {
             sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select id, name, re_id, re_name from styles where re_id = ?");
             ps->setInt(1, style->re_id);
-            result = ps->executeQuery();
-        } else if (style->name.length() > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select id, name, re_id, re_name from styles where name = ?");
-            ps->setString(1, style->name);
             result = ps->executeQuery();
         } else {
             cout << "Nothing to search for style by" << endl;
