@@ -50,7 +50,7 @@ namespace {
         song->setBPMAccuracy(rs->getInt("bpm_accuracy"));
         song->setRating(rs->getInt("rating"));
         song->setDateAdded(rs->getString("date_added"));
-        song->setCatalogId(rs->getString("catalogId"));
+        song->setCatalogId(rs->getString("catalog_id"));
         song->setLabel(rs->getString("label"));
         song->setRemix(rs->getString("remix"));
         song->setNumPlays(rs->getInt("num_plays"));
@@ -171,6 +171,13 @@ RESong* RESong::findBySongId(const string& songId) {
     rs->close();
     delete rs;
     return song;
+}
+
+RESong::RESongIterator* RESong::findAll() {
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs");
+    sql::ResultSet *rs = ps->executeQuery();
+    RESongIterator *it = new RESongIterator(rs);
+    return it;
 }
 
 bool RESong::lookup(RESong *song) {
@@ -583,3 +590,23 @@ void RESong::setReplayGain(const double replay_gain) { this->replay_gain = repla
 
 const string& RESong::getStylesBitmask() const { return styles_bitmask; }
 void RESong::setStylesBitmask(const string& styles_bitmask) { this->styles_bitmask = styles_bitmask; }
+
+# pragma mark RESongIterator
+
+RESong::RESongIterator::RESongIterator(sql::ResultSet* resultset) :
+rs(resultset) {
+}
+
+RESong::RESongIterator::~RESongIterator() {
+    delete rs;
+}
+    
+bool RESong::RESongIterator::next(RESong* song) {
+    if (rs->next()) {
+        populateFields(rs, song);
+        return true;
+    } else {
+        return false;
+    }
+}
+

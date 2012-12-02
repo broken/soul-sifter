@@ -11,6 +11,10 @@
 
 #include <string>
 
+namespace sql {
+    class ResultSet;
+}
+
 using namespace std;
 
 class REAlbumCover {
@@ -18,8 +22,21 @@ public:
     REAlbumCover();
     ~REAlbumCover();
     
+    class REAlbumCoverIterator {
+    public:
+        explicit REAlbumCoverIterator(sql::ResultSet* resultset);
+        ~REAlbumCoverIterator();
+        
+        bool next(REAlbumCover* albumcover);
+    private:
+        sql::ResultSet* rs;
+        
+        REAlbumCoverIterator();
+    };
+    
     static REAlbumCover* findById(const int id);
     static REAlbumCover* findByREId(const string& reId);
+    static REAlbumCoverIterator* findAll();
     
     int update();
     int save();

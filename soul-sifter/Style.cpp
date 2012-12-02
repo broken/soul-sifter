@@ -182,6 +182,25 @@ bool Style::findStyle(Style* style) {
     }
 }
 
+void Style::findAll(const vector<const Style*>** stylesPtr) {
+    static vector<const Style*> styles;
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles");
+    sql::ResultSet *rs = ps->executeQuery();
+    while (rs->next()) {
+        for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+            if ((*it)->id == rs->getInt("id")) {
+                continue;
+            }
+        }
+        Style *style = new Style();
+        populateFields(rs, style);
+        styles.push_back(style);
+    }
+    rs->close();
+    delete rs;
+    (*stylesPtr) = &styles;
+}
+
 # pragma mark persistence
 
 bool Style::update() {
@@ -215,6 +234,7 @@ const Style* Style::save() {
             const int id = MysqlAccess::getInstance().getLastInsertId();
             if (id == 0) {
                 cout << "ERROR: Inserted style, but unable to retrieve inserted ID." << endl;
+                return NULL;
             } else {
                 return findById(id);
             }
@@ -242,3 +262,4 @@ void Style::setREId(const int re_id) { this->re_id = re_id; }
 
 const string& Style::getREName() const { return re_name; }
 void Style::setREName(const string& re_name) { this->re_name = re_name; }
+

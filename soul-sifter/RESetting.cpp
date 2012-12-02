@@ -75,6 +75,18 @@ RESetting* RESetting::findByName(const string& name) {
     return setting;
 }
 
+void RESetting::findAll(vector<const RESetting*>* settings) {
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings");
+    sql::ResultSet *rs = ps->executeQuery();
+    while (rs->next()) {
+        RESetting *setting = new RESetting();
+        populateFields(rs, setting);
+        settings->push_back(setting);
+    }
+    rs->close();
+    delete rs;
+}
+
 #pragma mark persistence
 
 bool RESetting::update() {

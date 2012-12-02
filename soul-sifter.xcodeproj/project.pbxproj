@@ -36,6 +36,7 @@
 		185A7290166B103200D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A728E166B103000D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp */; };
 		185A7293166B104B00D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7291166B104900D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp */; };
 		185A7296166B154300D14E96 /* REAlbumCover.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7294166B154200D14E96 /* REAlbumCover.cpp */; };
+		185A7299166B221F00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7297166B221D00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp */; };
 		187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E640B15984AD300091546 /* RapidEvolutionManager.m */; };
 		188AB0391660F78B00CE162C /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188AB0371660F78B00CE162C /* Track.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
@@ -133,6 +134,8 @@
 		185A7292166B104A00D14E96 /* RapidEvolutionDatabaseConfigUserHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseConfigUserHandler.h; sourceTree = "<group>"; };
 		185A7294166B154200D14E96 /* REAlbumCover.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REAlbumCover.cpp; sourceTree = "<group>"; };
 		185A7295166B154300D14E96 /* REAlbumCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REAlbumCover.h; sourceTree = "<group>"; };
+		185A7297166B221D00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionMusicDatabaseWriter.cpp; sourceTree = "<group>"; };
+		185A7298166B221E00D14E96 /* RapidEvolutionMusicDatabaseWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionMusicDatabaseWriter.h; sourceTree = "<group>"; };
 		185C3FB61662EC6C004DE6B6 /* RESong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESong.h; sourceTree = "<group>"; };
 		187E640A15984AD200091546 /* RapidEvolutionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionManager.h; sourceTree = "<group>"; };
 		187E640B15984AD300091546 /* RapidEvolutionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RapidEvolutionManager.m; sourceTree = "<group>"; };
@@ -225,10 +228,16 @@
 				188E1B1C1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.h */,
 				188E1B151648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp */,
 				188E1B161648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.h */,
+				185A7288166B005600D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp */,
+				185A7289166B005700D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.h */,
 				188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */,
 				188E1B101648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.h */,
 				185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */,
 				185A7283166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.h */,
+				185A728E166B103000D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp */,
+				185A728F166B103100D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.h */,
+				185A7291166B104900D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp */,
+				185A7292166B104A00D14E96 /* RapidEvolutionDatabaseConfigUserHandler.h */,
 				188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */,
 				188E1B131648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.h */,
 				18028C451647A55800938259 /* RapidEvolutionDatabaseHandler.cpp */,
@@ -243,12 +252,6 @@
 				18028C4F1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.h */,
 				188E1B1E1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp */,
 				188E1B1F1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.h */,
-				185A7288166B005600D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp */,
-				185A7289166B005700D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.h */,
-				185A728E166B103000D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp */,
-				185A728F166B103100D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.h */,
-				185A7291166B104900D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp */,
-				185A7292166B104A00D14E96 /* RapidEvolutionDatabaseConfigUserHandler.h */,
 			);
 			name = "RE DB SAX Parsers";
 			sourceTree = "<group>";
@@ -288,6 +291,8 @@
 				187E640B15984AD300091546 /* RapidEvolutionManager.m */,
 				18028C3F1647870A00938259 /* RapidEvolutionMusicDatabaseReader.cpp */,
 				18028C3E1647870A00938259 /* RapidEvolutionMusicDatabaseReader.h */,
+				185A7297166B221D00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp */,
+				185A7298166B221E00D14E96 /* RapidEvolutionMusicDatabaseWriter.h */,
 			);
 			name = Organization;
 			sourceTree = "<group>";
@@ -610,6 +615,7 @@
 				185A7290166B103200D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp in Sources */,
 				185A7293166B104B00D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp in Sources */,
 				185A7296166B154300D14E96 /* REAlbumCover.cpp in Sources */,
+				185A7299166B221F00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

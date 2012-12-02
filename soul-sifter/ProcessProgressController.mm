@@ -11,6 +11,7 @@
 #import "Constants.h"
 #include "MusicManager.h"
 #include "RapidEvolutionMusicDatabaseReader.h"
+#include "RapidEvolutionMusicDatabaseWriter.h"
 
 # pragma mark private method helpers
 
@@ -76,6 +77,15 @@
     [[self window] setTitle:@"Reading RapidEvolution Database"];
     NSLog(@"processProgressController.readRapidEvolutionDatabase");
     musicDatabaseReader->read();
+}
+
+- (IBAction)exportToRapidEvolutionDatabase:(id)sender {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSLog(@"processProgressController.exportToRapidEvolutionDatabase");
+    [self startProgressBar:self];
+    [[self window] setTitle:@"Exporting to RapidEvolution Database"];
+    RapidEvolutionMusicDatabaseWriter writer;
+    writer.write();
     [[self window] close];
     [pool release];
 }

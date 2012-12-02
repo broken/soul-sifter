@@ -10,6 +10,7 @@
 #define __soul_sifter__RESetting__
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
     
     static RESetting* findById(const int id);
     static RESetting* findByName(const string& name);
+    static void findAll(vector<const RESetting*>* settings);
     
     bool update();
     RESetting* save();

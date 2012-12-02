@@ -13,9 +13,25 @@
 
 using namespace std;
 
+namespace sql {
+    class ResultSet;
+}
+
 class RESong {
 public:
     friend class RapidEvolutionDatabaseSongsSongHandler;
+    
+    class RESongIterator {
+    public:
+        explicit RESongIterator(sql::ResultSet* resultset);
+        ~RESongIterator();
+        
+        bool next(RESong* song);
+    private:
+        sql::ResultSet* rs;
+        
+        RESongIterator();
+    };
     
     RESong();
     ~RESong();
@@ -23,6 +39,7 @@ public:
     static RESong* findByUniqueId(const int uniqueId);
     static RESong* findBySongId(const string& songId);
     static bool lookup(RESong *song);  // deprecated
+    static RESongIterator* findAll();
     
     bool update();
     const RESong* save();

@@ -10,6 +10,7 @@
 #define __soul_sifter__Style__
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ public:
     static const Style* findById(const int id);
     static const Style* findByREId(const int reId);
     static bool findStyle(Style* style);  // deprecated
+    static void findAll(const vector<const Style*>** stylesPtr);
     
     bool update();
     const Style* save();

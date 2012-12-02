@@ -73,6 +73,14 @@
                            withObject:self];
 }
 
+- (IBAction)exportToRapidEvolutionDatabase:(id)sender {
+    NSLog(@"exportToRapidEvolutionDatabase");
+    [self showProcessProgressWindow:self];
+    [NSThread detachNewThreadSelector:@selector(exportToRapidEvolutionDatabase:)
+                             toTarget:processProgressController
+                           withObject:self];
+}
+
 # pragma mark accessors
 
 @end
