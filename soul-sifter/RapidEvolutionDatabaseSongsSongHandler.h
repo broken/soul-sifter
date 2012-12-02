@@ -75,7 +75,6 @@ private:
     const XMLCh* const bpm_end_elem;
     const XMLCh* const beat_intensity_elem;
     const XMLCh* const replay_gain_elem;
-    const XMLCh* const album_cover_elem;
     const XMLCh* const styles_bitmask_elem;
 };
 

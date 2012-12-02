@@ -93,8 +93,6 @@ public:
     void setBeatIntensity(const int beat_intensity);
     const double getReplayGain() const;
     void setReplayGain(const double replay_gain);
-    const string& getAlbumCover() const;
-    void setAlbumCover(const string& album_cover);
     const string& getStylesBitmask() const;
     void setStylesBitmask(const string& styles_bitmask);
     
@@ -131,7 +129,6 @@ private:
     double bpm_end;
     int beat_intensity;
     double replay_gain;
-    string album_cover;
     string styles_bitmask;
 };
 
