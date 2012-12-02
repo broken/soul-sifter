@@ -61,6 +61,7 @@
     if (!musicDatabaseReader->isProcessing()) {
         [progressIndicator stopAnimation:self];
         delete musicDatabaseReader;
+        musicDatabaseReader = NULL;
         return;
     }
     

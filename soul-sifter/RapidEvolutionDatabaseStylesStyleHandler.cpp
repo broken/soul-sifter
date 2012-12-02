@@ -45,7 +45,6 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
         style.clear();
         style.setREName(XMLString::transcode(name_xml));
         style.setREId(XMLString::parseInt(id_xml));
-        std::cout << "style: " << style.getREName() << ", " << XMLString::transcode(qname) << ", " << style.getREId() << std::endl;
     }
 }
 

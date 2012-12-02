@@ -113,7 +113,6 @@ const Style* Style::findByREId(const int re_id) {
 }
 
 bool Style::findStyle(Style* style) {
-    cout << "style::findStyle" << endl;
     try {
         // use various means to try and retrieve the style
         sql::ResultSet *result;
