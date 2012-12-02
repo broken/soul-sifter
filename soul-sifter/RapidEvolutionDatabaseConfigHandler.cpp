@@ -11,6 +11,7 @@
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "DTAbstractHandler.h"
+#include "RapidEvolutionDatabaseConfigSettingsHandler.h"
 
 using namespace xercesc;
 
@@ -18,4 +19,7 @@ RapidEvolutionDatabaseConfigHandler::RapidEvolutionDatabaseConfigHandler(SAX2XML
                                                                          DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("config")) {
+    childHandlers = new DTAbstractHandler*[2];
+    childHandlers[0] = new RapidEvolutionDatabaseConfigSettingsHandler(parser, this);
+    childHandlers[1] = NULL;
 }

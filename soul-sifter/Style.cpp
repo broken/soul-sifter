@@ -72,6 +72,7 @@ const Style* Style::findById(const int id) {
     sql::ResultSet *rs = ps->executeQuery();
     Style *style = NULL;
     if (rs->next()) {
+        style = new Style();
         populateFields(rs, style);
     }
     rs->close();
@@ -99,6 +100,7 @@ const Style* Style::findByREId(const int re_id) {
     sql::ResultSet *rs = ps->executeQuery();
     Style *style = NULL;
     if (rs->next()) {
+        style = new Style();
         populateFields(rs, style);
     }
     rs->close();

@@ -29,6 +29,7 @@
 		182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5EF1605132A00AA9011 /* NSDataExtensions.m */; };
 		1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1834E3B216689EBC00E4A761 /* RESong.cpp */; };
 		185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A727F166AE69B00D14E96 /* RESetting.cpp */; };
+		185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */; };
 		187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E640B15984AD300091546 /* RapidEvolutionManager.m */; };
 		188AB0391660F78B00CE162C /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188AB0371660F78B00CE162C /* Track.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
@@ -112,6 +113,8 @@
 		1834E3B216689EBC00E4A761 /* RESong.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESong.cpp; sourceTree = "<group>"; };
 		185A727F166AE69B00D14E96 /* RESetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESetting.cpp; sourceTree = "<group>"; };
 		185A7280166AE69B00D14E96 /* RESetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESetting.h; sourceTree = "<group>"; };
+		185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigSettingsHandler.cpp; sourceTree = "<group>"; };
+		185A7283166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseConfigSettingsHandler.h; sourceTree = "<group>"; };
 		185C3FB61662EC6C004DE6B6 /* RESong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESong.h; sourceTree = "<group>"; };
 		187E640A15984AD200091546 /* RapidEvolutionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionManager.h; sourceTree = "<group>"; };
 		187E640B15984AD300091546 /* RapidEvolutionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RapidEvolutionManager.m; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 				188E1B161648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.h */,
 				188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */,
 				188E1B101648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.h */,
+				185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */,
+				185A7283166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.h */,
 				188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */,
 				188E1B131648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.h */,
 				18028C451647A55800938259 /* RapidEvolutionDatabaseHandler.cpp */,
@@ -568,6 +573,7 @@
 				18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */,
 				1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */,
 				185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */,
+				185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

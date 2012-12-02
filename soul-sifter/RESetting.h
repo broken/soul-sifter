@@ -18,16 +18,21 @@ public:
     RESetting();
     ~RESetting();
     
+    static RESetting* findById(const int id);
     static RESetting* findByName(const string& name);
     
     bool update();
     RESetting* save();
     
+    const int getId() const;
+    void setId(const int id);
     const string& getName() const;
     void setName(const string& name);
     const string& getValue() const;
+    string& getValueRef();
     void setValue(const string& value);
 private:
+    int id;
     string name;
     string value;
 };

@@ -24,6 +24,7 @@ using namespace std;
 namespace {
     
     static void populateFields(const sql::ResultSet* rs, RESetting* setting) {
+        setting->setId(rs->getInt("id"));
         setting->setName(rs->getString("name"));
         setting->setValue(rs->getString("value"));
     }
@@ -32,6 +33,7 @@ namespace {
 #pragma mark initialization
 
 RESetting::RESetting() :
+id(0),
 name(),
 value() {
 }
@@ -41,6 +43,22 @@ RESetting::~RESetting() {
 
 #pragma mark static methods
 
+RESetting* RESetting::findById(const int id) {
+    // lookup in db
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings where id = ?");
+    ps->setInt(1, id);
+    sql::ResultSet *rs = ps->executeQuery();
+    RESetting *setting = NULL;
+    if (rs->next()) {
+        setting = new RESetting();
+        populateFields(rs, setting);
+    }
+    rs->close();
+    delete rs;
+    
+    return setting;
+}
+
 RESetting* RESetting::findByName(const string& name) {
     // lookup in db
     sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings where name = ?");
@@ -48,6 +66,7 @@ RESetting* RESetting::findByName(const string& name) {
     sql::ResultSet *rs = ps->executeQuery();
     RESetting *setting = NULL;
     if (rs->next()) {
+        setting = new RESetting();
         populateFields(rs, setting);
     }
     rs->close();
@@ -60,9 +79,10 @@ RESetting* RESetting::findByName(const string& name) {
 
 bool RESetting::update() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update RESettings set value=? where name=?");
-        ps->setString(1, value);
-        ps->setString(2, name);
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update RESettings set name=?, value=? where id=?");
+        ps->setString(1, name);
+        ps->setString(2, value);
+        ps->setInt(3, id);
         ps->executeUpdate();
         return true;
 	} catch (sql::SQLException &e) {
@@ -100,8 +120,12 @@ RESetting* RESetting::save() {
 
 #pragma mark accessors
 
+const int RESetting::getId() const { return id; }
+void RESetting::setId(const int id) { this->id = id; }
+
 const string& RESetting::getName() const { return name; }
 void RESetting::setName(const string& name) { this->name = name; }
 
 const string& RESetting::getValue() const { return value; }
+string& RESetting::getValueRef() { return value; }
 void RESetting::setValue(const string& value) { this->value = value; }
