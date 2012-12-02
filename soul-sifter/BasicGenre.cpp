@@ -21,6 +21,16 @@
 
 using namespace std;
 
+# pragma mark helpers
+
+namespace {
+    
+    static void populateFields(const sql::ResultSet* rs, BasicGenre* genre) {
+        genre->setId(rs->getInt("id"));
+        genre->setName(rs->getString("name"));
+    }
+}
+
 #pragma mark initialization
 
 BasicGenre::BasicGenre() :
@@ -46,15 +56,14 @@ const BasicGenre* BasicGenre::findById(const int id) {
     // lookup in db
     sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where id = ?");
     ps->setInt(1, id);
-    sql::ResultSet *result = ps->executeQuery();
+    sql::ResultSet *rs = ps->executeQuery();
     BasicGenre *genre = NULL;
-    if (result->next()) {
+    if (rs->next()) {
         genre = new BasicGenre();
-        genre->setId(result->getInt("id"));
-        genre->setName(result->getString("name"));
+        populateFields(rs, genre);
     }
-    result->close();
-    delete result;
+    rs->close();
+    delete rs;
     
     // add to static
     basicGenres.push_back(genre);
@@ -75,15 +84,14 @@ const BasicGenre* BasicGenre::findByName(const string& name) {
     // lookup in db
     sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where name = ?");
     ps->setString(1, name);
-    sql::ResultSet *result = ps->executeQuery();
+    sql::ResultSet *rs = ps->executeQuery();
     BasicGenre *genre = NULL;
-    if (result->next()) {
+    if (rs->next()) {
         genre = new BasicGenre();
-        genre->setId(result->getInt("id"));
-        genre->setName(result->getString("name"));
+        populateFields(rs, genre);
     }
-    result->close();
-    delete result;
+    rs->close();
+    delete rs;
     
     // add to static
     basicGenres.push_back(genre);
@@ -110,18 +118,14 @@ bool BasicGenre::update() {
 	}
 }
 
-const BasicGenre* BasicGenre::save() {
+int BasicGenre::save() {
     try {
         if (name.length() == 0) {
             return NULL;
         }
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into BasicGenres (name) values (?)");
         ps->setString(1, name);
-        if (ps->executeUpdate() == 0) {
-            return NULL;
-        } else {
-            return findByName(name);
-        }
+        return ps->executeUpdate();
 	} catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
         std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
@@ -130,6 +134,25 @@ const BasicGenre* BasicGenre::save() {
         std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
         return NULL;
 	}
+}
+
+void BasicGenre::findAll(const vector<const BasicGenre*>** genresPtr) {
+    static vector<const BasicGenre*> basicGenres;
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres");
+    sql::ResultSet *rs = ps->executeQuery();
+    while (rs->next()) {
+        for (vector<const BasicGenre*>::iterator it = basicGenres.begin(); it != basicGenres.end(); ++it) {
+            if ((*it)->id == rs->getInt("id")) {
+                continue;
+            }
+        }
+        BasicGenre *genre = new BasicGenre();
+        populateFields(rs, genre);
+        basicGenres.push_back(genre);
+    }
+    rs->close();
+    delete rs;
+    (*genresPtr) = &basicGenres;
 }
 
 #pragma mark accessors

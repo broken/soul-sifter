@@ -10,6 +10,7 @@
 #define __soul_sifter__BasicGenre__
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -20,9 +21,10 @@ public:
     
     static const BasicGenre* findById(const int id);
     static const BasicGenre* findByName(const string& name);
+    static void findAll(const vector<const BasicGenre*>** genresPtr);
     
     bool update();
-    const BasicGenre* save();
+    int save();
     
     const int getId() const;
     void setId(const int id);
