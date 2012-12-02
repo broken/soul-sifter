@@ -30,7 +30,7 @@ namespace {
     }
 }
 
-#pragma mark initialization
+# pragma mark initialization
 
 RESetting::RESetting() :
 id(0),
@@ -41,7 +41,13 @@ value() {
 RESetting::~RESetting() {
 }
 
-#pragma mark static methods
+void RESetting::clear() {
+    id = 0;
+    name.clear();
+    value.clear();
+}
+
+# pragma mark static methods
 
 RESetting* RESetting::findById(const int id) {
     // lookup in db
@@ -87,7 +93,7 @@ void RESetting::findAll(vector<const RESetting*>* settings) {
     delete rs;
 }
 
-#pragma mark persistence
+# pragma mark persistence
 
 bool RESetting::update() {
     try {
@@ -130,7 +136,7 @@ RESetting* RESetting::save() {
 	}
 }
 
-#pragma mark accessors
+# pragma mark accessors
 
 const int RESetting::getId() const { return id; }
 void RESetting::setId(const int id) { this->id = id; }

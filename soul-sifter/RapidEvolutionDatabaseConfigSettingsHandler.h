@@ -10,8 +10,7 @@
 #define __soul_sifter__RapidEvolutionDatabaseConfigSettingsHandler__
 
 #include "DTAbstractHandler.h"
-
-class RESetting;
+#include "RESetting.h"
 
 class RapidEvolutionDatabaseConfigSettingsHandler : public DTAbstractHandler {
 public:
@@ -34,7 +33,7 @@ public:
     void characters(const XMLCh* const chars, const XMLSize_t length);
 private:
     const XMLCh* const qname;
-    RESetting* reSetting;
+    RESetting reSetting;
 };
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseConfigSettingsHandler__) */

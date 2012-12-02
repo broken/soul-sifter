@@ -25,7 +25,7 @@ RapidEvolutionDatabaseConfigSettingsHandler::RapidEvolutionDatabaseConfigSetting
                                                                                          DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("settings")),
-reSetting(NULL) {
+reSetting() {
 }
 
 void RapidEvolutionDatabaseConfigSettingsHandler::startElement(const   XMLCh* const    uri,
@@ -34,11 +34,7 @@ void RapidEvolutionDatabaseConfigSettingsHandler::startElement(const   XMLCh* co
                                                                const   Attributes&     attrs) {
     startTagCount++;
     if (XMLString::compareString(qname, getQname())) {
-        reSetting = RESetting::findByName(XMLString::transcode(qname));
-        if (!reSetting) {
-            reSetting = new RESetting();
-            reSetting->setName(XMLString::transcode(qname));
-        }
+        reSetting.setName(XMLString::transcode(qname));
     }
 }
 
@@ -48,26 +44,33 @@ void RapidEvolutionDatabaseConfigSettingsHandler::endElement(const XMLCh* const 
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
     } else {
-        if (reSetting) {
-            if (!XMLString::compareString(qName, XMLString::transcode(reSetting->getName().c_str()))) {
-                if (reSetting->getId()) {
-                    reSetting->update();
+        if (reSetting.getName().length() > 0) {
+            if (!XMLString::compareString(qName, XMLString::transcode(reSetting.getName().c_str()))) {
+                RESetting* dbSetting = RESetting::findByName(reSetting.getName());
+                if (dbSetting) {
+                    if (dbSetting->getValue().compare(reSetting.getValue())) {
+                        cout << "updating setting " << reSetting.getName() << " from " << dbSetting->getValue() << " to " << reSetting.getValue() << endl;
+                        dbSetting->setValue(reSetting.getValue());
+                        dbSetting->update();
+                    }
+                    delete dbSetting;
                 } else {
-                    reSetting->save();
+                    reSetting.save();
                 }
             } else {
-                cout << "ERROR :: closing tag of no setting " << reSetting->getName() << " vs " << XMLString::transcode(qName) << endl;
+                cout << "ERROR: closing tag of no setting " << reSetting.getName() << " vs " << XMLString::transcode(qName) << endl;
             }
+            reSetting.clear();
         } else {
-            cout << "ERROR :: no setting to save for element " << XMLString::transcode(qName) << endl;
+            cout << "ERROR: no setting to save for element " << XMLString::transcode(qName) << endl;
         }
     }
 }
 
 void RapidEvolutionDatabaseConfigSettingsHandler::characters(const XMLCh* const chars,
                                                              const XMLSize_t length) {
-    if (reSetting) {
-        reSetting->getValueRef().append(XMLString::transcode(chars));
+    if (reSetting.getName().length() > 0) {
+        reSetting.getValueRef().append(XMLString::transcode(chars));
     }
 }
 

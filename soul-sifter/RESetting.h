@@ -18,6 +18,7 @@ class RESetting {
 public:
     RESetting();
     ~RESetting();
+    void clear();
     
     static RESetting* findById(const int id);
     static RESetting* findByName(const string& name);
