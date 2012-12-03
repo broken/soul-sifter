@@ -78,61 +78,91 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             f << (*jt)->getREId();
             first = false;
         }
-        f << "\">" << endl;
-        // TODO includes
+        if (first) f << "-1";
+        f << "\"/>" << endl;
+        // TODO includes maybe?
     }
+    f << "</styles>" << endl;
     
-    // TODO total songs
-    f << "<songs check_unique_id=\"no\" max_unique_id=\"\">" << endl;
+    f << "<songs check_unique_id=\"no\" max_unique_id=\"" << RESong::maxREId() + 1 << "\">" << endl;
     RESong::RESongIterator* songs = RESong::findAll();
     RESong song;
     while (songs->next(&song)) {
         // TODO mixouts
-        // TODO don't print on empty
         f << "<song num_excludes=\"0\" num_mixouts=\"0\">" << endl;
         f << "<unique_id>" << song.getUniqueId() << "</unique_id>" << endl;
         f << "<songid_winfo>" << song.getSongIdWInfo() << "</songid_winfo>" << endl;
         f << "<songid>" << song.getSongId() << "</songid>" << endl;
         f << "<shortid>" << song.getShortId() << "</shortid>" << endl;
         f << "<shortid_winfo>" << song.getShortIdWInfo() << "</shortid_winfo>" << endl;
-        f << "<artist>" << song.getArtist() << "</artist>" << endl;
-        f << "<album>" << song.getAlbum() << "</album>" << endl;
-        f << "<track>" << song.getTrack() << "</track>" << endl;
-        f << "<title>" << song.getTitle() << "</title>" << endl;
-        f << "<remix>" << song.getRemix() << "</remix>" << endl;
-        f << "<comments>" << song.getComments() << "</comments>" << endl;
-        f << "<custom1>" << song.getFeaturing() << "</custom1>" << endl;
-        f << "<custom2>" << song.getReleaseDate() << "</custom2>" << endl;
-        f << "<custom3>" << song.getLabel() << "</custom3>" << endl;
-        f << "<custom4>" << song.getCatalogId() << "</custom4>" << endl;
-        f << "<time>" << song.getTime() << "</time>" << endl;
-        f << "<time_signature>" << song.getTimeSignature() << "</time_signature>" << endl;
-        f << "<filename>" << song.getFilename() << "</filename>" << endl;
-        f << "<digital_only>" << song.getDigitalOnly() << "</digital_only>" << endl;
-        f << "<disabled>" << song.getDisabled() << "</disabled>" << endl;
-        f << "<compilation>" << song.getCompilation() << "</compilation>" << endl;
-        f << "<key_start>" << song.getKeyStart() << "</key_start>" << endl;
-        f << "<key_end>" << song.getKeyEnd() << "</key_end>" << endl;
-        f << "<key_accuracy>" << song.getKeyAccuracy() << "</key_accuracy>" << endl;
-        f << "<bpm_start>" << song.getBPMStart() << "</bpm_start>" << endl;
-        f << "<bpm_end>" << song.getBPMEnd() << "</bpm_end>" << endl;
-        f << "<bpm_accuracy>" << song.getBPMAccuracy() << "</bpm_accuracy>" << endl;
-        f << "<beat_intensity>" << song.getBeatIntensity() << "</beat_intensity>" << endl;
-        f << "<replay_gain>" << song.getReplayGain() << "</replay_gain>" << endl;
-        f << "<num_plays>" << song.getNumPlays() << "</num_plays>" << endl;
-        f << "<rating>" << song.getRating() << "</rating>" << endl;
-        f << "<date_added>" << song.getDateAdded() << "</date_added>" << endl;
-        f << "<styles_bitmask>" << song.getStylesBitmask() << "</styles_bitmask>" << endl;
+        if (song.getArtist().length() > 0)
+            f << "<artist>" << song.getArtist() << "</artist>" << endl;
+        if (song.getAlbum().length() > 0)
+            f << "<album>" << song.getAlbum() << "</album>" << endl;
+        if (song.getTrack().length() > 0)
+            f << "<track>" << song.getTrack() << "</track>" << endl;
+        if (song.getTitle().length() > 0)
+            f << "<title>" << song.getTitle() << "</title>" << endl;
+        if (song.getRemix().length() > 0)
+            f << "<remix>" << song.getRemix() << "</remix>" << endl;
+        if (song.getComments().length() > 0)
+            f << "<comments>" << song.getComments() << "</comments>" << endl;
+        if (song.getFeaturing().length() > 0)
+            f << "<custom1>" << song.getFeaturing() << "</custom1>" << endl;
+        if (song.getReleaseDate().length() > 0)
+            f << "<custom2>" << song.getReleaseDate() << "</custom2>" << endl;
+        if (song.getLabel().length() > 0)
+            f << "<custom3>" << song.getLabel() << "</custom3>" << endl;
+        if (song.getCatalogId().length() > 0)
+            f << "<custom4>" << song.getCatalogId() << "</custom4>" << endl;
+        if (song.getTime().length() > 0)
+            f << "<time>" << song.getTime() << "</time>" << endl;
+        if (song.getTimeSignature().length() > 0)
+            f << "<time_signature>" << song.getTimeSignature() << "</time_signature>" << endl;
+        if (song.getFilename().length() > 0)
+            f << "<filename>" << song.getFilename() << "</filename>" << endl;
+        if (song.getDigitalOnly().length() > 0)
+            f << "<digital_only>" << song.getDigitalOnly() << "</digital_only>" << endl;
+        if (song.getDisabled().length() > 0)
+            f << "<disabled>" << song.getDisabled() << "</disabled>" << endl;
+        if (song.getCompilation().length() > 0)
+            f << "<compilation>" << song.getCompilation() << "</compilation>" << endl;
+        if (song.getKeyStart().length() > 0)
+            f << "<key_start>" << song.getKeyStart() << "</key_start>" << endl;
+        if (song.getKeyEnd().length() > 0)
+            f << "<key_end>" << song.getKeyEnd() << "</key_end>" << endl;
+        if (song.getKeyAccuracy() > 0)
+            f << "<key_accuracy>" << song.getKeyAccuracy() << "</key_accuracy>" << endl;
+        if (song.getBPMStart() > 0) 
+            f << "<bpm_start>" << song.getBPMStart() << "</bpm_start>" << endl;
+        if (song.getBPMEnd() > 0)
+            f << "<bpm_end>" << song.getBPMEnd() << "</bpm_end>" << endl;
+        if (song.getBPMAccuracy() > 0)
+            f << "<bpm_accuracy>" << song.getBPMAccuracy() << "</bpm_accuracy>" << endl;
+        if (song.getBeatIntensity() > 0)
+            f << "<beat_intensity>" << song.getBeatIntensity() << "</beat_intensity>" << endl;
+        if (song.getReplayGain() > 0)
+            f << "<replay_gain>" << song.getReplayGain() << "</replay_gain>" << endl;
+        if (song.getNumPlays() > 0)
+            f << "<num_plays>" << song.getNumPlays() << "</num_plays>" << endl;
+        if (song.getRating() > 0)
+            f << "<rating>" << song.getRating() << "</rating>" << endl;
+        if (song.getDateAdded().length() > 0)
+            f << "<date_added>" << song.getDateAdded() << "</date_added>" << endl;
+        if (song.getStylesBitmask().length() > 0)
+            f << "<styles_bitmask>" << song.getStylesBitmask() << "</styles_bitmask>" << endl;
         f << "</song>" << endl;
     }
     delete songs;
     f << "</songs>" << endl;
     
     // TODO mixouts
+    f << "<mixouts/>" << endl;
     
     f << "<excludes/>" << endl;
     
     // TODO artists?
+    f << "<artists/>" << endl;
     
     f << "<albumcovers>" << endl;
     REAlbumCover::REAlbumCoverIterator* covers = REAlbumCover::findAll();

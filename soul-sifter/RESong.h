@@ -40,6 +40,7 @@ public:
     static RESong* findBySongId(const string& songId);
     static bool lookup(RESong *song);  // deprecated
     static RESongIterator* findAll();
+    static const int maxREId();
     
     bool update();
     const RESong* save();

@@ -145,6 +145,17 @@ void RESong::clear() {
 
 # pragma mark static
 
+const int RESong::maxREId() {
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");
+    sql::ResultSet *rs = ps->executeQuery();
+    int max = 0;
+    if (rs->next())
+        max = rs->getInt(1);
+    rs->close();
+    delete rs;
+    return max;
+}
+
 RESong* RESong::findByUniqueId(const int uniqueId) {
     sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
     ps->setInt(1, uniqueId);
@@ -174,7 +185,7 @@ RESong* RESong::findBySongId(const string& songId) {
 }
 
 RESong::RESongIterator* RESong::findAll() {
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs");
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs order by songid");
     sql::ResultSet *rs = ps->executeQuery();
     RESongIterator *it = new RESongIterator(rs);
     return it;
