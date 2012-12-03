@@ -25,6 +25,7 @@ RapidEvolutionDatabaseAlbumcoversHandler::RapidEvolutionDatabaseAlbumcoversHandl
                                                                                    DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("albumcovers")),
+acQname(XMLString::transcode("albumcover")),
 albumcover(NULL),
 id_attrib(XMLString::transcode("id")),
 thumbnail_attrib(XMLString::transcode("thumbnail")) {
@@ -35,7 +36,7 @@ void RapidEvolutionDatabaseAlbumcoversHandler::startElement(const   XMLCh* const
                                                             const   XMLCh* const    qname,
                                                             const   Attributes&     attrs) {
     startTagCount++;
-    if (!XMLString::compareString(qname, getQname())) {
+    if (!XMLString::compareString(acQname, qname)) {
         const XMLCh* id_xml = attrs.getValue(id_attrib);
         const XMLCh* tn_xml = attrs.getValue(thumbnail_attrib);
         string reId = XMLString::transcode(id_xml);
@@ -50,9 +51,10 @@ void RapidEvolutionDatabaseAlbumcoversHandler::startElement(const   XMLCh* const
 
 void RapidEvolutionDatabaseAlbumcoversHandler::endElement(const XMLCh* const uri,
                                                           const XMLCh* const localName,
-                                                          const XMLCh* const qName) {
-    if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
+                                                          const XMLCh* const qname) {
+    if (!XMLString::compareString(qname, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
+    } else if (!XMLString::compareString(qname, acQname)) {
         if (albumcover->getId()) {
             albumcover->update();
         } else {

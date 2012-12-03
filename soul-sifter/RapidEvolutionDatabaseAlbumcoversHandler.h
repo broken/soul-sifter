@@ -32,6 +32,7 @@ public:
                     const XMLCh* const qName);
 private:
     const XMLCh* const qname;
+    const XMLCh* const acQname;
     REAlbumCover* albumcover;
     
     // attributes
