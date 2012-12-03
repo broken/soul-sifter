@@ -31,7 +31,7 @@ void RapidEvolutionDatabaseConfigTablesHandler::init() {
 
 void RapidEvolutionDatabaseConfigTablesHandler::commit() {
     REXML* dbXml = REXML::findByName("tables");
-    if (dbXml->getId()) {
+    if (dbXml) {
         if (dbXml->getXml().compare(xml.getXml())) {
             dbXml->setXml(xml.getXml());
             cout << "updating xml text for tables" << endl;

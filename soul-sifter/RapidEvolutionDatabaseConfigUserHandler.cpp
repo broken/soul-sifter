@@ -31,7 +31,7 @@ void RapidEvolutionDatabaseConfigUserHandler::init() {
 
 void RapidEvolutionDatabaseConfigUserHandler::commit() {
     REXML* dbXml = REXML::findByName("user");
-    if (dbXml->getId()) {
+    if (dbXml) {
         if (dbXml->getXml().compare(xml.getXml())) {
             dbXml->setXml(xml.getXml());
             cout << "updating xml text for user" << endl;

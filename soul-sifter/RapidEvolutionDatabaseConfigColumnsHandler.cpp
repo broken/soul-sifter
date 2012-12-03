@@ -31,7 +31,7 @@ void RapidEvolutionDatabaseConfigColumnsHandler::init() {
 
 void RapidEvolutionDatabaseConfigColumnsHandler::commit() {
     REXML* dbXml = REXML::findByName("columns");
-    if (dbXml->getId()) {
+    if (dbXml) {
         if (dbXml->getXml().compare(xml.getXml())) {
             dbXml->setXml(xml.getXml());
             cout << "updating xml text for columns" << endl;
