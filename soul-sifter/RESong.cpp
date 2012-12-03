@@ -620,4 +620,3 @@ bool RESong::RESongIterator::next(RESong* song) {
         return false;
     }
 }
-

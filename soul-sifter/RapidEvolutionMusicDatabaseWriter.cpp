@@ -12,6 +12,7 @@
 #include <fstream>
 #include <vector>
 
+#include "Mix.h"
 #include "REAlbumCover.h"
 #include "RESetting.h"
 #include "RESong.h"
@@ -157,7 +158,24 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     f << "</songs>" << endl;
     
     // TODO mixouts
-    f << "<mixouts/>" << endl;
+    f << "<mixouts>" << endl;
+    Mix::MixResultSet* mixes = Mix::findAll();
+    Mix mix;
+    while (mixes->next(&mix)) {
+        f << "<mixout>" << endl;
+        f << "<from_unique_id>" << mix.getOutSong()->getRESongId() << "</from_unique_id>" << endl;
+        f << "<to_unique_id>" << mix.getInSong()->getRESongId() << "</to_unique_id>" << endl;
+        if (mix.getBPMDiff() > 0)
+            f << "<bpm_diff>" << mix.getBPMDiff() << "</bpm_diff>" << endl;
+        if (mix.getRank() > 0)
+            f << "<rank>" << mix.getRank() << "</rank>" << endl;
+        if (mix.getComments().length() > 0)
+            f << "<comments>" << mix.getComments() << "</comments>" << endl;
+        if (mix.getAddon())
+            f << "<addon>yes</addon>" << endl;
+        f << "</mixout>" << endl;
+    }
+    f << "</mixouts>" << endl;
     
     f << "<excludes/>" << endl;
     

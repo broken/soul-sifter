@@ -11,6 +11,7 @@
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "DTAbstractHandler.h"
+#include "RapidEvolutionDatabaseMixoutsMixoutHandler.h"
 
 using namespace xercesc;
 
@@ -18,4 +19,7 @@ RapidEvolutionDatabaseMixoutsHandler::RapidEvolutionDatabaseMixoutsHandler(SAX2X
                                                                            DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("mixouts")) {
+    childHandlers = new DTAbstractHandler*[2];
+    childHandlers[0] = new RapidEvolutionDatabaseMixoutsMixoutHandler(parser, this);
+    childHandlers[1] = NULL;
 }
