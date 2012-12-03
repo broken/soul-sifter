@@ -9,13 +9,18 @@
 #ifndef __soul_sifter__RapidEvolutionDatabaseStylesStyleHandler__
 #define __soul_sifter__RapidEvolutionDatabaseStylesStyleHandler__
 
+#include <vector>
+
 #include "DTAbstractHandler.h"
 #include "Style.h"
+
+using namespace std;
 
 class RapidEvolutionDatabaseStylesStyleHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseStylesStyleHandler(xercesc::SAX2XMLReader* parser,
-                                             DTAbstractHandler* parentHandler);
+                                             DTAbstractHandler* parentHandler,
+                                             vector<pair<int, int> >* childStyles);
     
     const XMLCh* const getQname() {
         return qname;
@@ -32,6 +37,7 @@ public:
 private:
     const XMLCh* const qname;
     Style style;
+    vector<pair<int, int> >* childStyles;
     
     // attributes
     const XMLCh* const category_only_attrib;

@@ -9,7 +9,13 @@
 #ifndef __soul_sifter__RapidEvolutionDatabaseStylesHandler__
 #define __soul_sifter__RapidEvolutionDatabaseStylesHandler__
 
+#include <vector>
+
 #include "DTAbstractHandler.h"
+
+using namespace std;
+
+class Style;
 
 class RapidEvolutionDatabaseStylesHandler : public DTAbstractHandler {
 public:
@@ -19,8 +25,15 @@ public:
     const XMLCh* const getQname() {
         return qname;
     }
+    
+    void endElement(const XMLCh* const uri,
+                    const XMLCh* const localName,
+                    const XMLCh* const qName);
+    
 private:
     const XMLCh* const qname;
+    
+    vector<pair<int, int> > childStyles;  // re_id -> child re_id
 };
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseStylesHandler__) */

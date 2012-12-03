@@ -41,7 +41,9 @@ Style::Style() :
 id(0),
 name(),
 re_id(0),
-re_name() {
+re_name(),
+children(),
+parents() {
 }
 
 Style::~Style() {
@@ -52,145 +54,73 @@ void Style::clear() {
     name.clear();
     re_id = 0;
     re_name.clear();
+    children.clear();
+    parents.clear();
 }
 
 # pragma mark static methods
 
-const Style* Style::findById(const int id) {
-    static vector<const Style*> styles;
-    
-    // first check for our static genre
-    for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+Style* Style::findByIdMutable(const int id) {
+    vector<Style*>* styles = getStaticStyles();
+    for (vector<Style*>::iterator it = styles->begin(); it != styles->end(); ++it) {
         if ((*it)->id == id) {
             return *it;
         }
     }
-    
-    // lookup in db
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles where id = ?");
-    ps->setInt(1, id);
-    sql::ResultSet *rs = ps->executeQuery();
-    Style *style = NULL;
-    if (rs->next()) {
-        style = new Style();
-        populateFields(rs, style);
-    }
-    rs->close();
-    delete rs;
-    
-    // add to static
-    styles.push_back(style);
-    
-    return style;
+    return NULL;
 }
 
-const Style* Style::findByREId(const int re_id) {
-    static vector<const Style*> styles;
-    
-    // first check for our static genre
-    for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+const Style* Style::findById(const int id) {
+    return findByIdMutable(id);
+}
+
+Style* Style::findByREId(const int re_id) {
+    vector<Style*>* styles = getStaticStyles();
+    for (vector<Style*>::iterator it = styles->begin(); it != styles->end(); ++it) {
         if ((*it)->re_id == re_id) {
             return *it;
         }
     }
-    
-    // lookup in db
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles where re_id = ?");
-    ps->setInt(1, re_id);
-    sql::ResultSet *rs = ps->executeQuery();
-    Style *style = NULL;
-    if (rs->next()) {
-        style = new Style();
-        populateFields(rs, style);
-    }
-    rs->close();
-    delete rs;
-    
-    // add to static
-    styles.push_back(style);
-    
-    return style;
+    return NULL;
 }
 
-bool Style::findStyle(Style* style) {
-    try {
-        // use various means to try and retrieve the style
-        sql::ResultSet *result;
-        if (style->id > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select id, name, re_id, re_name from styles where id = ?");
-            ps->setInt(1, style->id);
-            result = ps->executeQuery();
-        } else if (style->re_id > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select id, name, re_id, re_name from styles where re_id = ?");
-            ps->setInt(1, style->re_id);
-            result = ps->executeQuery();
-        } else {
-            cout << "Nothing to search for style by" << endl;
-            return false;
-        }
-        
-        // did we get a unique result?
-        if (!result->next()) {
-            cout << "No style found." << endl;
-            return false;
-        } else if (!result->isLast()) {
-            cout << "Ambigious result returned." << endl;
-            return false;
-        }
-        
-        // update fields
-        if (style->id != result->getInt("id")) {
-            if (style->id > 0)
-                cout << "updating id of style from " << style->id << " to " << result->getInt("id") << endl;
-            style->id = result->getInt("id");
-        }
-        if (style->re_id != result->getInt("re_id")) {
-            if (style->re_id > 0)
-                cout << "updating re_id of style from " << style->re_id << " to " << result->getInt("re_id") << endl;
-            style->re_id = result->getInt("re_id");
-        }
-        if (style->name.compare(result->getString("name"))) {
-            if (style->name.length() > 0)
-                cout << "updating name of style from " << style->name << " to " << result->getInt("name") << endl;
-            style->name = result->getString("name");
-        }
-        if (style->re_name.compare(result->getString("re_name"))) {
-            if (style->re_name.length() > 0)
-                cout << "updating re_name of style from " << style->re_name << " to " << result->getInt("re_name") << endl;
-            style->re_name = result->getString("re_name");
-        }
-        
-        // clean up
-        delete result;
-        
-        return true;
-    } catch (sql::SQLException &e) {
-        std::cout << "ERROR: SQLException in " << __FILE__;
-        std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
-        std::cout << "ERROR: " << e.what();
-        std::cout << " (MySQL error code: " << e.getErrorCode();
-        std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
-        return false;
-    }
+void Style::findAll(const vector<Style*>** stylesPtr) {
+    vector<Style*>* styles = getStaticStyles();
+    (*stylesPtr) = styles;
 }
 
-void Style::findAll(const vector<const Style*>** stylesPtr) {
-    static vector<const Style*> styles;
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles");
-    sql::ResultSet *rs = ps->executeQuery();
-    while (rs->next()) {
-        for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
-            if ((*it)->id == rs->getInt("id")) {
-                continue;
+vector<Style*>* Style::getStaticStyles() {
+    static vector<Style*> styles;
+    if (styles.empty()) {
+        // get all styles
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles");
+        sql::ResultSet *rs = ps->executeQuery();
+        while (rs->next()) {
+            for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+                if ((*it)->id == rs->getInt("id")) {
+                    continue;
+                }
             }
+            Style *style = new Style();
+            populateFields(rs, style);
+            styles.push_back(style);
         }
-        Style *style = new Style();
-        populateFields(rs, style);
-        styles.push_back(style);
+        rs->close();
+        delete rs;
+    
+        // set all parents & children
+        ps = MysqlAccess::getInstance().getPreparedStatement("select * from StyleChildren");
+        rs = ps->executeQuery();
+        while (rs->next()) {
+            Style *parent = findByIdMutable(rs->getInt("parentId"));
+            Style *child = findByIdMutable(rs->getInt("childId"));
+            child->parents.push_back(parent);
+            parent->children.push_back(child);
+        }
+        rs->close();
+        delete rs;
     }
-    rs->close();
-    delete rs;
-    (*stylesPtr) = &styles;
+    return &styles;
 }
 
 # pragma mark persistence
@@ -214,24 +144,56 @@ bool Style::update() {
 	}
 }
 
-const Style* Style::save() {
+int Style::save() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into styles (name, re_id, re_name) values (?, ?, ?)");
+        vector<Style*>* styles = getStaticStyles();
+        
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Styles (name, re_id, re_name) values (?, ?, ?)");
         ps->setString(1, name);
         ps->setInt(2, re_id);
         ps->setString(3, re_name);
-        if (ps->executeUpdate() == 0) {
-            return NULL;
+        int result = ps->executeUpdate();
+        
+        // add to static styles
+        ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles where re_id = ?");
+        ps->setInt(1, re_id);
+        sql::ResultSet *rs = ps->executeQuery();
+        Style *style = NULL;
+        if (rs->next()) {
+            style = new Style();
+            populateFields(rs, style);
+            styles->push_back(style);
         } else {
-            const int id = MysqlAccess::getInstance().getLastInsertId();
-            if (id == 0) {
-                cout << "ERROR: Inserted style, but unable to retrieve inserted ID." << endl;
-                return NULL;
-            } else {
-                return findById(id);
+            cout << "Error: cannot find newly saved style" << endl;
+        }
+        rs->close();
+        delete rs;
+        
+        return result;
+	} catch (sql::SQLException &e) {
+        std::cout << "ERROR: SQLException in " << __FILE__;
+        std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+        std::cout << "ERROR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+        return NULL;
+	}
+}
+
+int Style::addChild(Style* child) {
+    try {
+        for (vector<Style*>::const_iterator it = children.begin(); it != children.end(); ++it) {
+            if ((*it)->getId() == child->getId()) {
+                return 0;
             }
         }
-	} catch (sql::SQLException &e) {
+        children.push_back(child);
+        child->parents.push_back(this);
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into StyleChildren (parentId, childId) values (?, ?)");
+        ps->setInt(1, id);
+        ps->setInt(2, child->getId());
+        return ps->executeUpdate();
+    } catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
         std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
         std::cout << "ERROR: " << e.what();
@@ -255,3 +217,12 @@ void Style::setREId(const int re_id) { this->re_id = re_id; }
 const string& Style::getREName() const { return re_name; }
 void Style::setREName(const string& re_name) { this->re_name = re_name; }
 
+void Style::getChildren(const vector<Style*>** stylesPtr) const {
+    getStaticStyles();
+    (*stylesPtr) = &children;
+}
+
+void Style::getParents(const vector<Style*>** stylesPtr) const {
+    getStaticStyles();
+    (*stylesPtr) = &parents;
+}

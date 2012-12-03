@@ -56,11 +56,29 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     f << REXML::findByName("tables")->getXml();
     f << REXML::findByName("user")->getXml();
     
-    const vector<const Style*>* styles;
+    const vector<Style*>* styles;
+    const vector<Style*>* children;
+    const vector<Style*>* parents;
     Style::findAll(&styles);
     f << "<styles dirty=\"no\" num_styles=\"" << styles->size() << "\">" << endl;
-    for (vector<const Style*>::const_iterator it = styles->begin(); it != styles->end(); ++it) {
-        f << "<style category_only=\"no\" child_ids=\"\" description=\"\" id=\"" << (*it)->getREId() << "\" name=\"" << (*it)->getREName() << "\" parent_ids\"\">" << endl;  // TODO child & parent ids
+    for (vector<Style*>::const_iterator it = styles->begin(); it != styles->end(); ++it) {
+        f << "<style category_only=\"no\" child_ids=\"";
+        (*it)->getChildren(&children);
+        bool first = true;
+        for (vector<Style*>::const_iterator jt = children->begin(); jt != children->end(); ++jt) {
+            if (!first) f << ",";
+            f << (*jt)->getREId();
+            first = false;
+        }
+        f << "\" description=\"\" id=\"" << (*it)->getREId() << "\" name=\"" << (*it)->getREName() << "\" parent_ids=\"";
+        (*it)->getParents(&parents);
+        first = true;
+        for (vector<Style*>::const_iterator jt = parents->begin(); jt != parents->end(); ++jt) {
+            if (!first) f << ",";
+            f << (*jt)->getREId();
+            first = false;
+        }
+        f << "\">" << endl;
         // TODO includes
     }
     

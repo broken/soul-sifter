@@ -18,16 +18,15 @@ class Style {
 public:
     Style();
     ~Style();
+    void clear();
     
     static const Style* findById(const int id);
-    static const Style* findByREId(const int reId);
-    static bool findStyle(Style* style);  // deprecated
-    static void findAll(const vector<const Style*>** stylesPtr);
+    static Style* findByREId(const int reId);
+    static void findAll(const vector<Style*>** stylesPtr);
     
     bool update();
-    const Style* save();
-    
-    void clear();  // deprecated
+    int save();
+    int addChild(Style* child);
     
     const int getId() const;
     void setId(const int id);
@@ -38,6 +37,9 @@ public:
     const string& getREName() const;
     void setREName(const string& reName);
     
+    void getChildren(const vector<Style*>** stylesPtr) const;
+    void getParents(const vector<Style*>** stylesPtr) const;
+    
 private:
     // main params
     int id;
@@ -45,6 +47,12 @@ private:
     // rapid evolution params
     int re_id;
     string re_name;
+    
+    vector<Style*> children;
+    vector<Style*> parents;
+    
+    static vector<Style*>* getStaticStyles();
+    static Style* findByIdMutable(const int id);
 };
 
 #endif /* defined(__soul_sifter__Style__) */

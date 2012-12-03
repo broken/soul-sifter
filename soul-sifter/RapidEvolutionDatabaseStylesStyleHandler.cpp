@@ -9,7 +9,10 @@
 #include "RapidEvolutionDatabaseStylesStyleHandler.h"
 
 #include <iostream>
+#include <string>
+#include <vector>
 
+#include <boost/algorithm/string.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 #include <xercesc/util/XMLChar.hpp>
@@ -22,10 +25,12 @@
 using namespace xercesc;
 
 RapidEvolutionDatabaseStylesStyleHandler::RapidEvolutionDatabaseStylesStyleHandler(SAX2XMLReader* parser,
-                                                                                   DTAbstractHandler* parentHandler) :
+                                                                                   DTAbstractHandler* parentHandler,
+                                                                                   vector<pair<int, int> >* styles) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("style")),
 style(),
+childStyles(styles),
 category_only_attrib(XMLString::transcode("category_only")),
 child_ids_attrib(XMLString::transcode("child_ids")),
 description_attrib(XMLString::transcode("description")),
@@ -42,9 +47,19 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
     if (!XMLString::compareString(qname, getQname())) {
         const XMLCh* name_xml = attrs.getValue(name_attrib);
         const XMLCh* id_xml = attrs.getValue(id_attrib);
+        const XMLCh* child_ids_xml = attrs.getValue(child_ids_attrib);
         style.clear();
         style.setREName(XMLString::transcode(name_xml));
         style.setREId(XMLString::parseInt(id_xml));
+        string ids = XMLString::transcode(child_ids_xml);
+        if (!ids.empty()) {
+            vector<string> children;
+            boost::split(children, ids, boost::is_any_of(","));
+            for (vector<string>::iterator it = children.begin(); it != children.end(); ++it) {
+                pair<int, int> relationship(style.getREId(), atoi((*it).c_str()));
+                childStyles->push_back(relationship);
+            }
+        }
     }
 }
 
@@ -53,13 +68,18 @@ void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri
                                                           const XMLCh* const qName) {
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
-        Style::findStyle(&style);
-        if (style.getName().length() == 0) {
-            style.setName(style.getREName());
-        }
-        if (style.getId() > 0) {
-            style.update();
+        Style* dbStyle = Style::findByREId(style.getREId());
+        if (dbStyle) {
+            // TODO revisit update style
+            if (dbStyle->getREName().compare(style.getREName())) {
+                cout << "updating style " << style.getId() << " re name from " << dbStyle->getREName() << " to " << style.getREName() << endl;
+                dbStyle->setREName(style.getREName());
+                dbStyle->update();
+            }
         } else {
+            if (style.getName().length() == 0) {
+                style.setName(style.getREName());
+            }
             style.save();
         }
     }
