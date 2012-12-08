@@ -20,9 +20,13 @@ public:
     ~Style();
     void clear();
     
+    bool operator<(const Style& style) const;
+    bool operator>(const Style& style) const;
+    
     static const Style* findById(const int id);
     static Style* findByREId(const int reId);
     static void findAll(const vector<Style*>** stylesPtr);
+    static void findAllSorted(const vector<Style*>** stylesPtr);
     
     bool update();
     int save();

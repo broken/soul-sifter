@@ -27,6 +27,12 @@ using namespace std;
 
 namespace {
     
+    struct lessThanKey {
+        inline bool operator()(const Style* v1, const Style* v2) {
+            return (*v1) < (*v2);
+        }
+    };
+    
     static void populateFields(const sql::ResultSet* rs, Style* style) {
         style->setId(rs->getInt("id"));
         style->setName(rs->getString("name"));
@@ -58,6 +64,16 @@ void Style::clear() {
     parents.clear();
 }
 
+# pragma mark operator overrides
+
+bool Style::operator<(const Style& style) const {
+    return name.compare(style.getName()) < 0;
+}
+
+bool Style::operator>(const Style& style) const {
+    return name.compare(style.getName()) > 0;
+}
+
 # pragma mark static methods
 
 Style* Style::findByIdMutable(const int id) {
@@ -86,6 +102,12 @@ Style* Style::findByREId(const int re_id) {
 
 void Style::findAll(const vector<Style*>** stylesPtr) {
     vector<Style*>* styles = getStaticStyles();
+    (*stylesPtr) = styles;
+}
+
+void Style::findAllSorted(const vector<Style*>** stylesPtr) {
+    vector<Style*>* styles = getStaticStyles();
+    sort(styles->begin(), styles->end(), lessThanKey());
     (*stylesPtr) = styles;
 }
 
