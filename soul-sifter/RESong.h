@@ -35,6 +35,7 @@ public:
     
     RESong();
     ~RESong();
+    void clear();  // deprecated
     
     static RESong* findByUniqueId(const int uniqueId);
     static RESong* findBySongId(const string& songId);
@@ -45,7 +46,7 @@ public:
     bool update();
     const RESong* save();
     
-    void clear();  // deprecated
+    const int getMixoutCount() const;
     
     const int getUniqueId() const;
     void setUniqueId(const int unique_id);
@@ -148,6 +149,9 @@ private:
     int beat_intensity;
     double replay_gain;
     string styles_bitmask;
+    
+    // internal usage
+    int mixoutCount;
 };
 
 #endif /* defined(__soul_sifter__RESong__) */

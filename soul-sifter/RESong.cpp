@@ -185,7 +185,7 @@ RESong* RESong::findBySongId(const string& songId) {
 }
 
 RESong::RESongIterator* RESong::findAll() {
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs order by songid");
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select re.*, count(*) as cnt from RESongs re join Songs s on re.unique_id = s.reSongId left join Mixes m on s.id = m.outSongId group by re.unique_id order by re.songId");
     sql::ResultSet *rs = ps->executeQuery();
     RESongIterator *it = new RESongIterator(rs);
     return it;
@@ -503,6 +503,9 @@ const RESong* RESong::save() {
 
 # pragma mark accessors
 
+
+const int RESong::getMixoutCount() const { return mixoutCount; }
+
 const int RESong::getUniqueId() const { return unique_id; }
 void RESong::setUniqueId(const int unique_id) { this->unique_id = unique_id; }
 
@@ -615,6 +618,7 @@ RESong::RESongIterator::~RESongIterator() {
 bool RESong::RESongIterator::next(RESong* song) {
     if (rs->next()) {
         populateFields(rs, song);
+        song->mixoutCount = rs->getInt("cnt");
         return true;
     } else {
         return false;

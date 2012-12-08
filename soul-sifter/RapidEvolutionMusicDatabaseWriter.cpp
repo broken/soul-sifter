@@ -89,7 +89,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     //f << "<styles dirty=\"no\" num_styles=\"" << styles->size() << "\">" << endl;
     attribs.clear();
     attribs.push_back(pair<string,string>("dirty","no"));
-    attribs.push_back(pair<string,string>("num_styles", int2str(styles->size())));
+    attribs.push_back(pair<string,string>("num_styles", int2str((int)styles->size())));
     w.startElement("styles", &attribs)->writeNewline();
     for (vector<Style*>::const_iterator it = styles->begin(); it != styles->end(); ++it) {
         //f << "<style category_only=\"no\" child_ids=\"";
@@ -136,7 +136,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         //f << "<song num_excludes=\"0\" num_mixouts=\"0\">" << endl;
         attribs.clear();
         attribs.push_back(pair<string,string>("num_excludes","0"));
-        attribs.push_back(pair<string,string>("num_mixouts","0"));
+        attribs.push_back(pair<string,string>("num_mixouts",int2str(song.getMixoutCount())));
         w.startElement("song", &attribs)->writeNewline();
         //f << "<unique_id>" << song.getUniqueId() << "</unique_id>" << endl;
         w.startElement("unique_id", NULL)->writeChars(song.getUniqueId())->endElement("unique_id");
