@@ -171,7 +171,7 @@ const Song* Mix::getOutSong() {
 }
 void Mix::setOutSong(Song* song) {
     this->outSong = song;
-    this->outSongId = outSong->getId();
+    this->outSongId = song->getId();
 }
 
 const int Mix::getInSongId() const { return inSongId; }
@@ -186,8 +186,8 @@ const Song* Mix::getInSong() {
     return inSong;
 }
 void Mix::setInSong(Song* song) {
-    this->inSong = inSong;
-    this->inSongId = inSong->getId();
+    this->inSong = song;
+    this->inSongId = song->getId();
 }
 
 const double Mix::getBPMDiff() const { return bpmDiff; }

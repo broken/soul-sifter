@@ -20,7 +20,7 @@ using namespace std;
 
 class Mix {
 public:
-    friend RapidEvolutionDatabaseMixoutsMixoutHandler;
+    friend class RapidEvolutionDatabaseMixoutsMixoutHandler;
     
     class MixResultSet {
     public:

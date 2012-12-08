@@ -509,8 +509,7 @@
 											<object class="NSMenuItem" id="159080638">
 												<reference key="NSMenu" ref="963351320"/>
 												<string key="NSTitle">Use Selection for Find</string>
-												<string key="NSKeyEquiv">e</string>
-												<int key="NSKeyEquivModMask">1048576</int>
+												<string key="NSKeyEquiv"/>
 												<int key="NSMnemonicLoc">2147483647</int>
 												<reference key="NSOnImage" ref="1047407121"/>
 												<reference key="NSMixedImage" ref="72086391"/>
@@ -888,6 +887,7 @@
 									<int key="NSvFlags">274</int>
 									<string key="NSFrame">{{1, 1}, {148, 148}}</string>
 									<reference key="NSSuperview" ref="479470107"/>
+									<reference key="NSNextKeyView"/>
 									<string key="NSReuseIdentifierKey">_NS:21</string>
 								</object>
 							</array>
