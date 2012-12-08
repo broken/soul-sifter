@@ -39,6 +39,7 @@
 		185A7299166B221F00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7297166B221D00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp */; };
 		185A729F166C9C7600D14E96 /* Mix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A729D166C9C6C00D14E96 /* Mix.cpp */; };
 		185A72A2166CA89D00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72A0166CA89A00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp */; };
+		185A72B2166FECE300D14E96 /* DTXMLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72B0166FECE300D14E96 /* DTXMLWriter.cpp */; };
 		187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E640B15984AD300091546 /* RapidEvolutionManager.m */; };
 		188AB0391660F78B00CE162C /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188AB0371660F78B00CE162C /* Track.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
@@ -142,6 +143,8 @@
 		185A729E166C9C6E00D14E96 /* Mix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mix.h; sourceTree = "<group>"; };
 		185A72A0166CA89A00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseMixoutsMixoutHandler.cpp; sourceTree = "<group>"; };
 		185A72A1166CA89B00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseMixoutsMixoutHandler.h; sourceTree = "<group>"; };
+		185A72B0166FECE300D14E96 /* DTXMLWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DTXMLWriter.cpp; sourceTree = "<group>"; };
+		185A72B1166FECE300D14E96 /* DTXMLWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTXMLWriter.h; sourceTree = "<group>"; };
 		185C3FB61662EC6C004DE6B6 /* RESong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESong.h; sourceTree = "<group>"; };
 		187E640A15984AD200091546 /* RapidEvolutionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionManager.h; sourceTree = "<group>"; };
 		187E640B15984AD300091546 /* RapidEvolutionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RapidEvolutionManager.m; sourceTree = "<group>"; };
@@ -289,7 +292,7 @@
 		1816964E154D05F400593FEC /* Organization */ = {
 			isa = PBXGroup;
 			children = (
-				185A727E166A99A600D14E96 /* Generic Parsers */,
+				185A727E166A99A600D14E96 /* Generic SAX Parsers */,
 				18028C4116478E1700938259 /* RE DB SAX Parsers */,
 				1816964F154D06EB00593FEC /* MusicManager.h */,
 				18169650154D06EB00593FEC /* MusicManager.mm */,
@@ -316,7 +319,7 @@
 			name = "LineReader (to package)";
 			sourceTree = "<group>";
 		};
-		185A727E166A99A600D14E96 /* Generic Parsers */ = {
+		185A727E166A99A600D14E96 /* Generic SAX Parsers */ = {
 			isa = PBXGroup;
 			children = (
 				18028C511647BA9D00938259 /* DTAbstractHandler.cpp */,
@@ -325,8 +328,10 @@
 				18A73F761663F35F0074E137 /* DTStartTagCounter.h */,
 				185A7285166AF8D200D14E96 /* DTCopyHandler.cpp */,
 				185A7286166AF8D200D14E96 /* DTCopyHandler.h */,
+				185A72B0166FECE300D14E96 /* DTXMLWriter.cpp */,
+				185A72B1166FECE300D14E96 /* DTXMLWriter.h */,
 			);
-			name = "Generic Parsers";
+			name = "Generic SAX Parsers";
 			sourceTree = "<group>";
 		};
 		188E1B25164E1968004754F4 /* Model */ = {
@@ -628,6 +633,7 @@
 				185A7299166B221F00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp in Sources */,
 				185A729F166C9C7600D14E96 /* Mix.cpp in Sources */,
 				185A72A2166CA89D00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp in Sources */,
+				185A72B2166FECE300D14E96 /* DTXMLWriter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
