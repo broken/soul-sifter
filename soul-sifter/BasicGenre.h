@@ -21,6 +21,7 @@ public:
     
     static const BasicGenre* findById(const int id);
     static const BasicGenre* findByName(const string& name);
+    static const BasicGenre* findByFilepath(const string& filepath);
     static void findAll(const vector<const BasicGenre*>** genresPtr);
     
     bool update();

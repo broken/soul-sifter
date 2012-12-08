@@ -66,7 +66,8 @@ const BasicGenre* BasicGenre::findById(const int id) {
     delete rs;
     
     // add to static
-    basicGenres.push_back(genre);
+    if (genre)
+        basicGenres.push_back(genre);
     
     return genre;
 }
@@ -94,9 +95,26 @@ const BasicGenre* BasicGenre::findByName(const string& name) {
     delete rs;
     
     // add to static
-    basicGenres.push_back(genre);
+    if (genre)
+        basicGenres.push_back(genre);
     
     return genre;
+}
+
+const BasicGenre* BasicGenre::findByFilepath(const string& filepath) {
+    unsigned long pos = filepath.find("/mp3/");
+    if (pos != string::npos) {
+        pos += 5;
+        unsigned long pos2 = filepath.find("/", pos);
+        return findByName(filepath.substr(pos, pos2-pos));
+    }
+    pos = filepath.find("/staging/");
+    if (pos != string::npos) {
+        pos += 9;
+        unsigned long pos2 = filepath.find("/", pos);
+        return findByName(filepath.substr(pos, pos2-pos));
+    }
+    return NULL;
 }
 
 #pragma mark persistence
