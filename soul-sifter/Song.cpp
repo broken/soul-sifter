@@ -39,7 +39,9 @@ namespace {
         song->setReleaseDateDay(rs->getInt("releaseDateDay"));
         song->setFilepath(rs->getString("filepath"));
         song->setBasicGenreId(rs->getInt("basicGenreId"));
-        song->setBasicGenre(BasicGenre::findById(song->getBasicGenreId()));
+        int basicGenreId = song->getBasicGenreId();
+        if (basicGenreId)
+            song->setBasicGenre(BasicGenre::findById(basicGenreId));
         song->setRESongId(rs->getInt("reSongId"));
         song->setRESong(RESong::findByUniqueId(song->getRESongId()));
         // TODO set styles
@@ -58,18 +60,86 @@ remix(),
 featuring(),
 label(),
 catalogId(),
-releaseDateYear(),
-releaseDateMonth(),
-releaseDateDay(),
+releaseDateYear(0),
+releaseDateMonth(0),
+releaseDateDay(0),
 filepath(),
 basicGenreId(0),
-basicGenre(),
+basicGenre(NULL),
 reSongId(0),
-reSong(),
+reSong(NULL),
 styles() {
 }
 
+Song::Song(RESong* song) :
+id(0),
+artist(song->getArtist()),
+album(song->getAlbum()),
+track(song->getTrack()),
+title(song->getTitle()),
+remix(song->getRemix()),
+featuring(song->getFeaturing()),
+label(song->getLabel()),
+catalogId(song->getCatalogId()),
+releaseDateYear(0),
+releaseDateMonth(0),
+releaseDateDay(0),
+filepath(song->getFilename()),
+basicGenreId(0),
+basicGenre(NULL),
+reSongId(song->getUniqueId()),
+reSong(song),
+styles() {
+    
+    // release dates
+    string releaseDate = song->getReleaseDate();
+    if (releaseDate.length() >=4) {
+        releaseDateYear = atoi(releaseDate.substr(0,4).c_str());
+        if (releaseDate.length() >= 6) {
+            releaseDateMonth = atoi(releaseDate.substr(4,2).c_str());
+            if (releaseDate.length() >= 8) {
+                releaseDateDay = atoi(releaseDate.substr(6,2).c_str());
+            }
+        }
+    }
+    
+    // basic genre
+    const BasicGenre *genre = BasicGenre::findByFilepath(song->getFilename());
+    if (genre)
+        setBasicGenre(genre);
+    
+    // styles
+    const vector<Style*>* allStyles;
+    Style::findAllSorted(&allStyles);
+    unsigned long pos = song->getStylesBitmask().find('1', 0);
+    while (pos != string::npos) {
+        styles.push_back(allStyles->at(pos));
+        pos = song->getStylesBitmask().find('1', ++pos);
+    }
+}
+
 Song::~Song() {
+}
+
+void Song::clear() {
+    id = 0;
+    artist.clear();
+    album.clear();
+    track.clear();
+    title.clear();
+    remix.clear();
+    featuring.clear();
+    label.clear();
+    catalogId.clear();
+    releaseDateYear = 0;
+    releaseDateMonth = 0;
+    releaseDateDay = 0;
+    filepath.clear();
+    basicGenreId = 0;
+    basicGenre = NULL;
+    reSongId = 0;
+    reSong = NULL;
+    styles.clear();
 }
 
 # pragma mark static methods
@@ -115,9 +185,12 @@ bool Song::update() {
         ps->setString(6, featuring);
         ps->setString(7, label);
         ps->setString(8, catalogId);
-        ps->setInt(9, releaseDateYear);
-        ps->setInt(10, releaseDateMonth);
-        ps->setInt(11, releaseDateDay);
+        if (releaseDateYear == 0) ps->setNull(9, sql::DataType::INTEGER);
+        else ps->setInt(9, releaseDateYear);
+        if (releaseDateMonth == 0) ps->setNull(10, sql::DataType::INTEGER);
+        else ps->setInt(10, releaseDateMonth);
+        if (releaseDateDay == 0) ps->setNull(11, sql::DataType::INTEGER);
+        else ps->setInt(11, releaseDateDay);
         ps->setString(12, filepath);
         ps->setInt(13, basicGenreId);
         ps->setInt(14, reSongId);
@@ -136,7 +209,7 @@ bool Song::update() {
 
 const Song* Song::save() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs set (artist, album, track, title, remix, featuring, label, catalogId, releaseDateYear, releaseDateMonth, releaseDateDay, filepath, basicGenreId, reSongId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, album, track, title, remix, featuring, label, catalogId, releaseDateYear, releaseDateMonth, releaseDateDay, filepath, basicGenreId, reSongId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, artist);
         ps->setString(2, album);
         ps->setString(3, track);
@@ -145,9 +218,12 @@ const Song* Song::save() {
         ps->setString(6, featuring);
         ps->setString(7, label);
         ps->setString(8, catalogId);
-        ps->setInt(9, releaseDateYear);
-        ps->setInt(10, releaseDateMonth);
-        ps->setInt(11, releaseDateDay);
+        if (releaseDateYear == 0) ps->setNull(9, sql::DataType::INTEGER);
+        else ps->setInt(9, releaseDateYear);
+        if (releaseDateMonth == 0) ps->setNull(10, sql::DataType::INTEGER);
+        else ps->setInt(10, releaseDateMonth);
+        if (releaseDateDay == 0) ps->setNull(11, sql::DataType::INTEGER);
+        else ps->setInt(11, releaseDateDay);
         ps->setString(12, filepath);
         ps->setInt(13, basicGenreId);
         ps->setInt(14, reSongId);
@@ -157,9 +233,15 @@ const Song* Song::save() {
             const int id = MysqlAccess::getInstance().getLastInsertId();
             if (id == 0) {
                 cout << "ERROR: Inserted song, but unable to retrieve inserted ID." << endl;
-            } else {
-                return findById(id);
+                return NULL;
             }
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into SongStyles (songId, styleId) values (?, ?)");
+            for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+                ps->setInt(1, id);
+                ps->setInt(2, (*it)->getId());
+                ps->executeUpdate();
+            }
+            return findById(id);
         }
 	} catch (sql::SQLException &e) {
         std::cout << "ERROR: SQLException in " << __FILE__;
@@ -218,7 +300,10 @@ void Song::setBasicGenreId(const int basicGenreId) { this->basicGenreId = basicG
 const BasicGenre* Song::getBasicGenre() const {
     return basicGenre ? basicGenre : BasicGenre::findById(basicGenreId);
 }
-void Song::setBasicGenre(const BasicGenre* basicGenre) { this->basicGenre = basicGenre; }
+void Song::setBasicGenre(const BasicGenre* basicGenre) {
+    this->basicGenreId = basicGenre->getId();
+    this->basicGenre = basicGenre;
+}
 
 const int Song::getRESongId() const { return reSongId; }
 void Song::setRESongId(const int reSongId) { this->reSongId = reSongId; }

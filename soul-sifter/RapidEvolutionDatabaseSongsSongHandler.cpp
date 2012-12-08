@@ -15,6 +15,7 @@
 
 #include "DTAbstractHandler.h"
 #include "RESong.h"
+#include "Song.h"
 
 using namespace std;
 using namespace xercesc;
@@ -145,10 +146,16 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
     fieldPointer = NULL;
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
-        if (RESong::lookup(&song)) {
-            song.update();
+        RESong *dbSong = RESong::findByUniqueId(song.getUniqueId());
+        if (dbSong) {
+            Song *mySong = Song::findByRESongId(dbSong->getUniqueId());
+            // TODO perform update
+            delete dbSong;
+            delete mySong;
         } else {
+            Song mySong(&song);
             song.save();
+            mySong.save();
         }
     }
 }

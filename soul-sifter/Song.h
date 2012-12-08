@@ -23,7 +23,9 @@ using namespace std;
 class Song {
 public:
     Song();
+    explicit Song(RESong* song);
     ~Song();
+    void clear();
     
     static Song* findById(const int id);
     static Song* findByRESongId(const int id);
