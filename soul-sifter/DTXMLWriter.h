@@ -21,25 +21,26 @@ using namespace xercesc;
 class DTXMLWriter {
 public:
     DTXMLWriter(const char* const encodingName,
-                const char* const filepath,
-                const bool expandingNamespaces);
+                const char* const filepath);
     ~DTXMLWriter();
     
     void startDocument();
     void endDocument();
-    DTXMLWriter* startElement(string qname,
-                              const vector<pair<string, string> >* attribs,
-                              bool end = false);
-    DTXMLWriter* endElement(string qname);
+    DTXMLWriter& startElement(string qname,
+                              pair<string,string>* attribs[],
+                              bool close = false);
+    DTXMLWriter& endElement(string qname);
     DTXMLWriter* writeChars(string toWrite, bool encode = true);
-    DTXMLWriter* writeChars(int toWrite);
-    DTXMLWriter* writeChars(double toWrite);
+    DTXMLWriter& writeStr(string toWrite, bool encode = true);
+    DTXMLWriter& writeInt(int toWrite);
+    DTXMLWriter& writeDouble(double toWrite);
+    DTXMLWriter& writeBoolAsYesOrNo(bool toWrite);
     DTXMLWriter* writeNewline();
+    DTXMLWriter& endl();
     
 private:
     LocalFileFormatTarget file;
-    XMLFormatter    fFormatter;
-	bool			fExpandNS ;
+    XMLFormatter xmlFormatter;
 };
 
 #endif /* defined(__soul_sifter__DTXMLWriter__) */

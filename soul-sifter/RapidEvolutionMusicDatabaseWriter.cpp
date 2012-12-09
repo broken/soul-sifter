@@ -26,12 +26,20 @@
 using namespace std;
 using namespace xercesc;
 
+typedef pair<string,string> attrib;
+
 namespace {
     
     string int2str(int num) {
         ostringstream oss;
         oss << num;
         return oss.str();
+    }
+    
+    void deleteAttribs(attrib* attribs[]) {
+        for (int i = 0; attribs[i] != NULL; ++i) {
+            delete attribs[i];
+        }
     }
     
 }
@@ -48,19 +56,15 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     cout << "RapidEvolutionMusicDatabaseWriter.write" << endl;
     
     XMLPlatformUtils::Initialize();
-    DTXMLWriter w("UTF-8", "/Users/rneale/music_database.xml.out", false);
-    vector<pair<string, string> > attribs;
+    DTXMLWriter w("UTF-8", "/Users/rneale/music_database.xml.out");
     
-    //f << L"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
     w.startDocument();
-    //f << "<music_database version=\"1.04\">" << endl;
-    attribs.push_back(pair<string, string>("version","1.04"));
-    w.startElement("music_database", &attribs)->writeNewline();
-    //f << "<config>" << endl;
-    w.startElement("config", NULL)->writeNewline();
+    attrib* dbAttribs[] = { new attrib("version","1.04"), NULL };
+    w.startElement("music_database", dbAttribs).endl();
+    deleteAttribs(dbAttribs);
+    w.startElement("config", NULL).endl();
     
-    //f << "<settings>" << endl;
-    w.startElement("settings", NULL)->writeNewline();
+    w.startElement("settings", NULL).endl();
     vector<const RESetting*> settings;
     RESetting::findAll(&settings);
     for (vector<const RESetting*>::iterator it = settings.begin(); it != settings.end(); ++it) {
@@ -69,7 +73,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             w.writeChars((*it)->getValue());
             w.endElement((*it)->getName());
         } else {
-            w.startElement((*it)->getName(), NULL, true);
+            w.startElement((*it)->getName(), NULL, true).endl();
         }
     }
     //f << "</settings>" << endl;
@@ -87,14 +91,11 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     const vector<Style*>* parents;
     Style::findAll(&styles);
     //f << "<styles dirty=\"no\" num_styles=\"" << styles->size() << "\">" << endl;
-    attribs.clear();
-    attribs.push_back(pair<string,string>("dirty","no"));
-    attribs.push_back(pair<string,string>("num_styles", int2str((int)styles->size())));
-    w.startElement("styles", &attribs)->writeNewline();
+    attrib* styleAttribs[] = { new attrib("dirty","no"), new attrib("num_styles", int2str((int)styles->size())), NULL };
+    w.startElement("styles", styleAttribs).endl();
+    deleteAttribs(styleAttribs);
     for (vector<Style*>::const_iterator it = styles->begin(); it != styles->end(); ++it) {
-        //f << "<style category_only=\"no\" child_ids=\"";
-        attribs.clear();
-        attribs.push_back(pair<string,string>("category_only","no"));
+        // get child ids
         ostringstream osschild;
         (*it)->getChildren(&children);
         bool first = true;
@@ -103,10 +104,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             osschild << (*jt)->getREId();
             first = false;
         }
-        attribs.push_back(pair<string,string>("child_ids",osschild.str()));
-        attribs.push_back(pair<string,string>("id", int2str((*it)->getREId())));
-        //f << "\" description=\"\" id=\"" << (*it)->getREId() << "\" name=\"" << (*it)->getREName() << "\" parent_ids=\"";
-        attribs.push_back(pair<string,string>("name",(*it)->getREName()));
+        // get parent ids
         ostringstream ossparent;
         (*it)->getParents(&parents);
         first = true;
@@ -116,122 +114,141 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             first = false;
         }
         if (first) ossparent << "-1";
-        attribs.push_back(pair<string,string>("parent_ids",ossparent.str()));
-        w.startElement("style", &attribs, true);
-        //f << "\"/>" << endl;
-        // TODO includes maybe?
+        // now create style element
+        attrib* styleAttribs[] = {
+            new attrib("category_only","no"),
+            new attrib("child_ids",osschild.str()),
+            new attrib("description", ""),
+            new attrib("id", int2str((*it)->getREId())),
+            new attrib("name",(*it)->getREName()),
+            new attrib("parent_ids",ossparent.str()),
+            NULL
+        };
+        w.startElement("style", styleAttribs, true).endl();
+        deleteAttribs(styleAttribs);
+        /*w.startElement("include", NULL).endl();
+        w.startElement("songs", NULL).endl();
+        vector<Song*>* songs = NULL;
+        Song::findSongsByStyle((**it), &songs);
+        for (vector<Song*>::iterator it = songs->begin(); it != songs->end(); ++it) {
+            w.startElement("song", NULL).writeInt((*it)->getRESongId()).endElement("song");
+            delete(*it);
+        }*/
     }
     //f << "</styles>" << endl;
     w.endElement("styles");
     
-    //f << "<songs check_unique_id=\"no\" max_unique_id=\"" << RESong::maxREId() + 1 << "\">" << endl;
-    attribs.clear();
-    attribs.push_back(pair<string,string>("check_unique_id","no"));
-    attribs.push_back(pair<string,string>("max_unique_id",int2str(RESong::maxREId() + 1)));
-    w.startElement("songs", &attribs)->writeNewline();
+    attrib* songsAttribs[] = {
+        new attrib("check_unique_id","no"),
+        new attrib("max_unique_id",int2str(RESong::maxREId() + 1)),
+        NULL
+    };
+    w.startElement("songs", songsAttribs).endl();
+    deleteAttribs(songsAttribs);
     RESong::RESongIterator* songs = RESong::findAll();
     RESong song;
     while (songs->next(&song)) {
-        // TODO mixouts
-        //f << "<song num_excludes=\"0\" num_mixouts=\"0\">" << endl;
-        attribs.clear();
-        attribs.push_back(pair<string,string>("num_excludes","0"));
-        attribs.push_back(pair<string,string>("num_mixouts",int2str(song.getMixoutCount())));
-        w.startElement("song", &attribs)->writeNewline();
+        attrib* songAttribs[] = {
+            new attrib("num_excludes","0"),
+            new attrib("num_mixouts",int2str(song.getMixoutCount())),
+            NULL
+        };
+        w.startElement("song", songAttribs).endl();
+        deleteAttribs(songAttribs);
         //f << "<unique_id>" << song.getUniqueId() << "</unique_id>" << endl;
-        w.startElement("unique_id", NULL)->writeChars(song.getUniqueId())->endElement("unique_id");
+        w.startElement("unique_id", NULL).writeInt(song.getUniqueId()).endElement("unique_id");
         //f << "<songid_winfo>" << song.getSongIdWInfo() << "</songid_winfo>" << endl;
-        w.startElement("songid_winfo", NULL)->writeChars(song.getSongIdWInfo())->endElement("songid_winfo");
+        w.startElement("songid_winfo", NULL).writeChars(song.getSongIdWInfo())->endElement("songid_winfo");
         //f << "<songid>" << song.getSongId() << "</songid>" << endl;
-        w.startElement("songid", NULL)->writeChars(song.getSongId())->endElement("songid");
+        w.startElement("songid", NULL).writeChars(song.getSongId())->endElement("songid");
         //f << "<shortid>" << song.getShortId() << "</shortid>" << endl;
-        w.startElement("shortid", NULL)->writeChars(song.getShortId())->endElement("shortid");
+        w.startElement("shortid", NULL).writeChars(song.getShortId())->endElement("shortid");
         //f << "<shortid_winfo>" << song.getShortIdWInfo() << "</shortid_winfo>" << endl;
-        w.startElement("shortid_winfo", NULL)->writeChars(song.getShortIdWInfo())->endElement("shortid_winfo");
+        w.startElement("shortid_winfo", NULL).writeChars(song.getShortIdWInfo())->endElement("shortid_winfo");
         if (song.getArtist().length() > 0)
             //f << "<artist>" << song.getArtist() << "</artist>" << endl;
-            w.startElement("artist", NULL)->writeChars(song.getArtist())->endElement("artist");
+            w.startElement("artist", NULL).writeChars(song.getArtist())->endElement("artist");
         if (song.getAlbum().length() > 0)
             //f << "<album>" << song.getAlbum() << "</album>" << endl;
-            w.startElement("album", NULL)->writeChars(song.getAlbum())->endElement("album");
+            w.startElement("album", NULL).writeChars(song.getAlbum())->endElement("album");
         if (song.getTrack().length() > 0)
             //f << "<track>" << song.getTrack() << "</track>" << endl;
-            w.startElement("track", NULL)->writeChars(song.getTrack())->endElement("track");
+            w.startElement("track", NULL).writeChars(song.getTrack())->endElement("track");
         if (song.getTitle().length() > 0)
             //f << "<title>" << song.getTitle() << "</title>" << endl;
-            w.startElement("title", NULL)->writeChars(song.getTitle())->endElement("title");
+            w.startElement("title", NULL).writeChars(song.getTitle())->endElement("title");
         if (song.getRemix().length() > 0)
             //f << "<remix>" << song.getRemix() << "</remix>" << endl;
-            w.startElement("remix", NULL)->writeChars(song.getRemix())->endElement("remix");
+            w.startElement("remix", NULL).writeChars(song.getRemix())->endElement("remix");
         if (song.getComments().length() > 0)
             //f << "<comments>" << song.getComments() << "</comments>" << endl;
-            w.startElement("comments", NULL)->writeChars(song.getComments())->endElement("comments");
+            w.startElement("comments", NULL).writeChars(song.getComments())->endElement("comments");
         if (song.getFeaturing().length() > 0)
             //f << "<custom1>" << song.getFeaturing() << "</custom1>" << endl;
-            w.startElement("custom1", NULL)->writeChars(song.getFeaturing())->endElement("custom1");
+            w.startElement("custom1", NULL).writeChars(song.getFeaturing())->endElement("custom1");
         if (song.getReleaseDate().length() > 0)
             //f << "<custom2>" << song.getReleaseDate() << "</custom2>" << endl;
-            w.startElement("custom2", NULL)->writeChars(song.getReleaseDate())->endElement("custom2");
+            w.startElement("custom2", NULL).writeChars(song.getReleaseDate())->endElement("custom2");
         if (song.getLabel().length() > 0)
             //f << "<custom3>" << song.getLabel() << "</custom3>" << endl;
-            w.startElement("custom3", NULL)->writeChars(song.getLabel())->endElement("custom3");
+            w.startElement("custom3", NULL).writeChars(song.getLabel())->endElement("custom3");
         if (song.getCatalogId().length() > 0)
             //f << "<custom4>" << song.getCatalogId() << "</custom4>" << endl;
-            w.startElement("custom4", NULL)->writeChars(song.getCatalogId())->endElement("custom4");
+            w.startElement("custom4", NULL).writeChars(song.getCatalogId())->endElement("custom4");
         if (song.getTime().length() > 0)
             //f << "<time>" << song.getTime() << "</time>" << endl;
-            w.startElement("time", NULL)->writeChars(song.getTime())->endElement("time");
+            w.startElement("time", NULL).writeChars(song.getTime())->endElement("time");
         if (song.getTimeSignature().length() > 0)
             //f << "<time_signature>" << song.getTimeSignature() << "</time_signature>" << endl;
-            w.startElement("time_signature", NULL)->writeChars(song.getTimeSignature())->endElement("time_signature");
+            w.startElement("time_signature", NULL).writeChars(song.getTimeSignature())->endElement("time_signature");
         if (song.getFilename().length() > 0)
             //f << "<filename>" << song.getFilename() << "</filename>" << endl;
-            w.startElement("filename", NULL)->writeChars(song.getFilename())->endElement("filename");
+            w.startElement("filename", NULL).writeChars(song.getFilename())->endElement("filename");
         if (song.getDigitalOnly().length() > 0)
             //f << "<digital_only>" << song.getDigitalOnly() << "</digital_only>" << endl;
-            w.startElement("digital_only", NULL)->writeChars(song.getDigitalOnly())->endElement("digital_only");
+            w.startElement("digital_only", NULL).writeChars(song.getDigitalOnly())->endElement("digital_only");
         if (song.getDisabled().length() > 0)
             //f << "<disabled>" << song.getDisabled() << "</disabled>" << endl;
-            w.startElement("disabled", NULL)->writeChars(song.getDisabled())->endElement("disabled");
+            w.startElement("disabled", NULL).writeChars(song.getDisabled())->endElement("disabled");
         if (song.getCompilation().length() > 0)
             //f << "<compilation>" << song.getCompilation() << "</compilation>" << endl;
-            w.startElement("compilation", NULL)->writeChars(song.getCompilation())->endElement("compilation");
+            w.startElement("compilation", NULL).writeChars(song.getCompilation())->endElement("compilation");
         if (song.getKeyStart().length() > 0)
             //f << "<key_start>" << song.getKeyStart() << "</key_start>" << endl;
-            w.startElement("key_start", NULL)->writeChars(song.getKeyStart())->endElement("key_start");
+            w.startElement("key_start", NULL).writeChars(song.getKeyStart())->endElement("key_start");
         if (song.getKeyEnd().length() > 0)
             //f << "<key_end>" << song.getKeyEnd() << "</key_end>" << endl;
-            w.startElement("key_end", NULL)->writeChars(song.getKeyEnd())->endElement("key_end");
+            w.startElement("key_end", NULL).writeChars(song.getKeyEnd())->endElement("key_end");
         if (song.getKeyAccuracy() > 0)
             //f << "<key_accuracy>" << song.getKeyAccuracy() << "</key_accuracy>" << endl;
-            w.startElement("key_accuracy", NULL)->writeChars(song.getKeyAccuracy())->endElement("key_accuracy");
-        if (song.getBPMStart() > 0) 
+            w.startElement("key_accuracy", NULL).writeInt(song.getKeyAccuracy()).endElement("key_accuracy");
+        if (song.getBPMStart().length() > 0)
             //f << "<bpm_start>" << song.getBPMStart() << "</bpm_start>" << endl;
-            w.startElement("bpm_start", NULL)->writeChars(song.getBPMStart())->endElement("bpm_start");
-        if (song.getBPMEnd() > 0)
+            w.startElement("bpm_start", NULL).writeStr(song.getBPMStart()).endElement("bpm_start");
+        if (song.getBPMEnd().length() > 0)
             //f << "<bpm_end>" << song.getBPMEnd() << "</bpm_end>" << endl;
-            w.startElement("bpm_end", NULL)->writeChars(song.getBPMEnd())->endElement("bpm_end");
+            w.startElement("bpm_end", NULL).writeStr(song.getBPMEnd()).endElement("bpm_end");
         if (song.getBPMAccuracy() > 0)
             //f << "<bpm_accuracy>" << song.getBPMAccuracy() << "</bpm_accuracy>" << endl;
-            w.startElement("bpm_accuracy", NULL)->writeChars(song.getBPMAccuracy())->endElement("bpm_accuracy");
+            w.startElement("bpm_accuracy", NULL).writeInt(song.getBPMAccuracy()).endElement("bpm_accuracy");
         if (song.getBeatIntensity() > 0)
             //f << "<beat_intensity>" << song.getBeatIntensity() << "</beat_intensity>" << endl;
-            w.startElement("beat_intensity", NULL)->writeChars(song.getBeatIntensity())->endElement("beat_intensity");
-        if (song.getReplayGain() > 0)
+            w.startElement("beat_intensity", NULL).writeInt(song.getBeatIntensity()).endElement("beat_intensity");
+        if (song.getReplayGain().length() > 0)
             //f << "<replay_gain>" << song.getReplayGain() << "</replay_gain>" << endl;
-            w.startElement("replay_gain", NULL)->writeChars(song.getReplayGain())->endElement("replay_gain");
+            w.startElement("replay_gain", NULL).writeStr(song.getReplayGain()).endElement("replay_gain");
         if (song.getNumPlays() > 0)
             //f << "<num_plays>" << song.getNumPlays() << "</num_plays>" << endl;
-            w.startElement("num_plays", NULL)->writeChars(song.getNumPlays())->endElement("num_plays");
+            w.startElement("num_plays", NULL).writeInt(song.getNumPlays()).endElement("num_plays");
         if (song.getRating() > 0)
             //f << "<rating>" << song.getRating() << "</rating>" << endl;
-            w.startElement("rating", NULL)->writeChars(song.getRating())->endElement("rating");
+            w.startElement("rating", NULL).writeInt(song.getRating()).endElement("rating");
         if (song.getDateAdded().length() > 0)
             //f << "<date_added>" << song.getDateAdded() << "</date_added>" << endl;
-            w.startElement("date_added", NULL)->writeChars(song.getDateAdded())->endElement("date_added");
+            w.startElement("date_added", NULL).writeChars(song.getDateAdded())->endElement("date_added");
         if (song.getStylesBitmask().length() > 0)
             //f << "<styles_bitmask>" << song.getStylesBitmask() << "</styles_bitmask>" << endl;
-            w.startElement("styles_bitmask", NULL)->writeChars(song.getStylesBitmask())->endElement("styles_bitmask");
+            w.startElement("styles_bitmask", NULL).writeChars(song.getStylesBitmask())->endElement("styles_bitmask");
         //f << "</song>" << endl;
         w.endElement("song");
     }
@@ -241,28 +258,26 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     
     // TODO mixouts
     //f << "<mixouts>" << endl;
-    w.startElement("mixouts", NULL)->writeNewline();
+    w.startElement("mixouts", NULL).writeNewline();
     Mix::MixResultSet* mixes = Mix::findAll();
     Mix mix;
     while (mixes->next(&mix)) {
         //f << "<mixout>" << endl;
-        w.startElement("mixout", NULL)->writeNewline();
+        w.startElement("mixout", NULL).writeNewline();
         //f << "<from_unique_id>" << mix.getOutSong()->getRESongId() << "</from_unique_id>" << endl;
-        w.startElement("from_unique_id", NULL)->writeChars(mix.getOutSong()->getRESongId())->endElement("from_unique_id");
+        w.startElement("from_unique_id", NULL).writeInt(mix.getOutSong()->getRESongId()).endElement("from_unique_id");
         //f << "<to_unique_id>" << mix.getInSong()->getRESongId() << "</to_unique_id>" << endl;
-        w.startElement("to_unique_id", NULL)->writeChars(mix.getInSong()->getRESongId())->endElement("to_unique_id");
-        if (mix.getBPMDiff() > 0)
-            //f << "<bpm_diff>" << mix.getBPMDiff() << "</bpm_diff>" << endl;
-            w.startElement("bpm_diff", NULL)->writeChars(mix.getBPMDiff())->endElement("bpm_diff");
+        w.startElement("to_unique_id", NULL).writeInt(mix.getInSong()->getRESongId()).endElement("to_unique_id");
+        w.startElement("bpm_diff", NULL).writeDouble(mix.getBPMDiff()).endElement("bpm_diff");
         if (mix.getRank() > 0)
             //f << "<rank>" << mix.getRank() << "</rank>" << endl;
-            w.startElement("rank", NULL)->writeChars(mix.getRank())->endElement("rank");
+            w.startElement("rank", NULL).writeInt(mix.getRank()).endElement("rank");
         if (mix.getComments().length() > 0)
             //f << "<comments>" << mix.getComments() << "</comments>" << endl;
-            w.startElement("comments", NULL)->writeChars(mix.getComments())->endElement("comments");
+            w.startElement("comments", NULL).writeChars(mix.getComments())->endElement("comments");
         if (mix.getAddon())
             //f << "<addon>yes</addon>" << endl;
-            w.startElement("addon", NULL)->writeChars(mix.getAddon())->endElement("addon");
+            w.startElement("addon", NULL).writeBoolAsYesOrNo(mix.getAddon()).endElement("addon");
         //f << "</mixout>" << endl;
         w.endElement("mixout");
     }
@@ -270,27 +285,27 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     w.endElement("mixouts");
     
     //f << "<excludes/>" << endl;
-    w.startElement("excludes", NULL, true);
+    w.startElement("excludes", NULL, true).endl();
     
     // TODO artists?
     //f << "<artists/>" << endl;
-    w.startElement("artists", NULL, true);
+    w.startElement("artists", NULL, true).endl();
     
     //f << "<albumcovers>" << endl;
-    w.startElement("albumcovers", NULL)->writeNewline();
+    w.startElement("albumcovers", NULL).writeNewline();
     REAlbumCover::REAlbumCoverIterator* covers = REAlbumCover::findAll();
     REAlbumCover ac;
     while (covers->next(&ac)) {
-        attribs.clear();
-        attribs.push_back(pair<string,string>("id", ac.getREId()));
-        attribs.push_back(pair<string,string>("thumbnail",ac.getThumbnail()));
-        //f << "<albumcover id=\"" << ac.getREId() << "\" thumbnail=\"" << ac.getThumbnail() << "\">" << endl;
-        w.startElement("albumcover", &attribs)->writeNewline();
-        //f << "<image filename=\"" << ac.getThumbnail() << "\"/>" << endl;
-        attribs.clear();
-        attribs.push_back(pair<string,string>("filename", ac.getThumbnail()));
-        w.startElement("image", &attribs, true);
-        //f << "</albumcover>" << endl;
+        attrib* acAttribs[] = {
+            new attrib("id", ac.getREId()),
+            new attrib("thumbnail",ac.getThumbnail()),
+            NULL
+        };
+        w.startElement("albumcover", acAttribs).endl();
+        deleteAttribs(acAttribs);
+        attrib* imgAttribs[] = { new attrib("filename", ac.getThumbnail()), NULL };
+        w.startElement("image", imgAttribs, true).endl();
+        deleteAttribs(imgAttribs);
         w.endElement("albumcover");
     }
     delete covers;
