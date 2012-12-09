@@ -21,8 +21,6 @@
 
 #include "MysqlAccess.h"
 
-#define EPSILON 0.0001
-
 using namespace std;
 
 # pragma mark helpers
@@ -46,7 +44,7 @@ namespace {
         song->setCompilation(rs->getString("compilation"));
         song->setKeyStart(rs->getString("key_start"));
         song->setKeyAccuracy(rs->getInt("key_accuracy"));
-        song->setBPMStart(rs->getDouble("bpm_start"));
+        song->setBPMStart(rs->getString("bpm_start"));
         song->setBPMAccuracy(rs->getInt("bpm_accuracy"));
         song->setRating(rs->getInt("rating"));
         song->setDateAdded(rs->getString("date_added"));
@@ -59,9 +57,9 @@ namespace {
         song->setFeaturing(rs->getString("featuring"));
         song->setKeyEnd(rs->getString("key_end"));
         song->setDisabled(rs->getString("disabled"));
-        song->setBPMEnd(rs->getDouble("bpm_end"));
+        song->setBPMEnd(rs->getString("bpm_end"));
         song->setBeatIntensity(rs->getInt("beat_intensity"));
-        song->setReplayGain(rs->getDouble("replay_gain"));
+        song->setReplayGain(rs->getString("replay_gain"));
         song->setStylesBitmask(rs->getString("styles_bitmask"));
     }
 }
@@ -85,7 +83,7 @@ digital_only(),
 compilation(),
 key_start(),
 key_accuracy(0),
-bpm_start(0),
+bpm_start(),
 bpm_accuracy(0),
 rating(0),
 date_added(),
@@ -98,9 +96,9 @@ release_date(),
 featuring(),
 key_end(),
 disabled(),
-bpm_end(0),
+bpm_end(),
 beat_intensity(0),
-replay_gain(0),
+replay_gain(),
 styles_bitmask() {
 }
 
@@ -124,7 +122,7 @@ void RESong::clear() {
     compilation.clear();
     key_start.clear();
     key_accuracy = 0;
-    bpm_start = 0;
+    bpm_start.clear();
     bpm_accuracy = 0;
     rating = 0;
     date_added.clear();
@@ -137,9 +135,9 @@ void RESong::clear() {
     featuring.clear();
     key_end.clear();
     disabled.clear();
-    bpm_end = 0;
+    bpm_end.clear();
     beat_intensity = 0;
-    replay_gain = 0;
+    replay_gain.clear();
     styles_bitmask.clear();
 }
 
@@ -185,7 +183,7 @@ RESong* RESong::findBySongId(const string& songId) {
 }
 
 RESong::RESongIterator* RESong::findAll() {
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select re.*, count(*) as cnt from RESongs re join Songs s on re.unique_id = s.reSongId left join Mixes m on s.id = m.outSongId group by re.unique_id order by re.songId");
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select re.*, count(m.outSongId) as cnt from RESongs re join Songs s on re.unique_id = s.reSongId left join Mixes m on s.id = m.outSongId group by re.unique_id order by re.songId");
     sql::ResultSet *rs = ps->executeQuery();
     RESongIterator *it = new RESongIterator(rs);
     return it;
@@ -302,10 +300,10 @@ bool RESong::lookup(RESong *song) {
                 cout << "updating key_accuracy of RE song from " << song->key_accuracy << " to " << result->getInt("key_accuracy") << endl;
             song->key_accuracy = result->getInt("key_accuracy");
         }
-        if (fabs(song->bpm_start - result->getDouble("bpm_start")) > EPSILON) {
-            if (song->bpm_start > 0)
-                cout << "updating bpm_start of RE song from " << song->bpm_start << " to " << result->getDouble("bpm_start") << endl;
-            song->bpm_start = result->getDouble("bpm_start");
+        if (song->bpm_start.compare(result->getString("bpm_start"))) {
+            if (song->bpm_start.length() > 0)
+                cout << "updating bpm_start of RE song from " << song->bpm_start << " to " << result->getString("bpm_start") << endl;
+            song->bpm_start = result->getString("bpm_start");
         }
         if (song->bpm_accuracy != result->getInt("bpm_accuracy")) {
             if (song->bpm_accuracy > 0)
@@ -367,20 +365,20 @@ bool RESong::lookup(RESong *song) {
                 cout << "updating disabled of RE song from " << song->disabled << " to " << result->getString("disabled") << endl;
             song->disabled = result->getString("disabled");
         }
-        if (fabs(song->bpm_end - result->getDouble("bpm_end")) > EPSILON) {
-            if (song->bpm_end > 0)
-                cout << "updating bpm_end of RE song from " << song->bpm_end << " to " << result->getDouble("bpm_end") << endl;
-            song->bpm_end = result->getDouble("bpm_end");
+        if (song->bpm_end.compare(result->getString("bpm_end"))) {
+            if (song->bpm_end.length() > 0)
+                cout << "updating bpm_end of RE song from " << song->bpm_end << " to " << result->getString("bpm_end") << endl;
+            song->bpm_end = result->getString("bpm_end");
         }
         if (song->beat_intensity != result->getInt("beat_intensity")) {
             if (song->beat_intensity > 0)
                 cout << "updating beat_intensity of RE song from " << song->beat_intensity << " to " << result->getInt("beat_intensity") << endl;
             song->beat_intensity = result->getInt("beat_intensity");
         }
-        if (fabs(song->replay_gain - result->getDouble("replay_gain")) > EPSILON) {
-            if (song->replay_gain > 0)
-                cout << "updating replay_gain of RE song from " << song->replay_gain << " to " << result->getDouble("replay_gain") << endl;
-            song->replay_gain = result->getDouble("replay_gain");
+        if (song->replay_gain.compare(result->getString("replay_gain"))) {
+            if (song->replay_gain.length() > 0)
+                cout << "updating replay_gain of RE song from " << song->replay_gain << " to " << result->getString("replay_gain") << endl;
+            song->replay_gain = result->getString("replay_gain");
         }
         if (song->styles_bitmask.compare(result->getString("styles_bitmask"))) {
             if (song->styles_bitmask.length() > 0)
@@ -420,7 +418,7 @@ bool RESong::update() {
         ps->setString(13, compilation);
         ps->setString(14, key_start);
         ps->setInt(15, key_accuracy);
-        ps->setDouble(16, bpm_start);
+        ps->setString(16, bpm_start);
         ps->setInt(17, bpm_accuracy);
         ps->setInt(18, rating);
         ps->setString(19, date_added);
@@ -433,9 +431,9 @@ bool RESong::update() {
         ps->setString(26, featuring);
         ps->setString(27, key_end);
         ps->setString(28, disabled);
-        ps->setDouble(29, bpm_end);
+        ps->setString(29, bpm_end);
         ps->setInt(30, beat_intensity);
-        ps->setDouble(31, replay_gain);
+        ps->setString(31, replay_gain);
         ps->setString(32, styles_bitmask);
         ps->setInt(33, unique_id);
         ps->executeUpdate();
@@ -468,7 +466,7 @@ const RESong* RESong::save() {
         ps->setString(13, compilation);
         ps->setString(14, key_start);
         ps->setInt(15, key_accuracy);
-        ps->setDouble(16, bpm_start);
+        ps->setString(16, bpm_start);
         ps->setInt(17, bpm_accuracy);
         ps->setInt(18, rating);
         ps->setString(19, date_added);
@@ -481,9 +479,9 @@ const RESong* RESong::save() {
         ps->setString(26, featuring);
         ps->setString(27, key_end);
         ps->setString(28, disabled);
-        ps->setDouble(29, bpm_end);
+        ps->setString(29, bpm_end);
         ps->setInt(30, beat_intensity);
-        ps->setDouble(31, replay_gain);
+        ps->setString(31, replay_gain);
         ps->setString(32, styles_bitmask);
         ps->setInt(33, unique_id);
         if (ps->executeUpdate() == 0) {
@@ -554,8 +552,8 @@ void RESong::setKeyStart(const string& key_start) { this->key_start = key_start;
 const int RESong::getKeyAccuracy() const { return key_accuracy; }
 void RESong::setKeyAccuracy(const int key_accuracy) { this->key_accuracy = key_accuracy; }
 
-const double RESong::getBPMStart() const { return bpm_start; }
-void RESong::setBPMStart(const double bpm_start) { this->bpm_start = bpm_start; }
+const string& RESong::getBPMStart() const { return bpm_start; }
+void RESong::setBPMStart(const string& bpm_start) { this->bpm_start = bpm_start; }
 
 const int RESong::getBPMAccuracy() const { return bpm_accuracy; }
 void RESong::setBPMAccuracy(const int bpm_accuracy) { this->bpm_accuracy = bpm_accuracy; }
@@ -593,14 +591,14 @@ void RESong::setKeyEnd(const string& key_end) { this->key_end = key_end; }
 const string& RESong::getDisabled() const { return disabled; }
 void RESong::setDisabled(const string& disabled) { this->disabled = disabled; }
 
-const double RESong::getBPMEnd() const { return bpm_end; }
-void RESong::setBPMEnd(const double bpm_end) { this->bpm_end = bpm_end; }
+const string& RESong::getBPMEnd() const { return bpm_end; }
+void RESong::setBPMEnd(const string& bpm_end) { this->bpm_end = bpm_end; }
 
 const int RESong::getBeatIntensity() const { return beat_intensity; }
 void RESong::setBeatIntensity(const int beat_intensity) { this->beat_intensity = beat_intensity; }
 
-const double RESong::getReplayGain() const { return replay_gain; }
-void RESong::setReplayGain(const double replay_gain) { this->replay_gain = replay_gain; }
+const string& RESong::getReplayGain() const { return replay_gain; }
+void RESong::setReplayGain(const string& replay_gain) { this->replay_gain = replay_gain; }
 
 const string& RESong::getStylesBitmask() const { return styles_bitmask; }
 void RESong::setStylesBitmask(const string& styles_bitmask) { this->styles_bitmask = styles_bitmask; }

@@ -80,8 +80,8 @@ public:
     void setKeyStart(const string& key_start);
     const int getKeyAccuracy() const;
     void setKeyAccuracy(const int key_accuracy);
-    const double getBPMStart() const;
-    void setBPMStart(const double bpm_start);
+    const string& getBPMStart() const;
+    void setBPMStart(const string& bpm_start);
     const int getBPMAccuracy() const;
     void setBPMAccuracy(const int bpm_accuracy);
     const int getRating() const;
@@ -106,12 +106,12 @@ public:
     void setKeyEnd(const string& key_end);
     const string& getDisabled() const;
     void setDisabled(const string& disabled);
-    const double getBPMEnd() const;
-    void setBPMEnd(const double bpm_end);
+    const string& getBPMEnd() const;
+    void setBPMEnd(const string& bpm_end);
     const int getBeatIntensity() const;
     void setBeatIntensity(const int beat_intensity);
-    const double getReplayGain() const;
-    void setReplayGain(const double replay_gain);
+    const string& getReplayGain() const;
+    void setReplayGain(const string& replay_gain);
     const string& getStylesBitmask() const;
     void setStylesBitmask(const string& styles_bitmask);
     
@@ -132,7 +132,7 @@ private:
     string compilation;
     string key_start;
     int key_accuracy;
-    double bpm_start;
+    string bpm_start;
     int bpm_accuracy;
     int rating;
     string date_added;
@@ -145,9 +145,9 @@ private:
     string featuring;  // custom1
     string key_end;
     string disabled;
-    double bpm_end;
+    string bpm_end;
     int beat_intensity;
-    double replay_gain;
+    string replay_gain;
     string styles_bitmask;
     
     // internal usage
