@@ -172,6 +172,21 @@ Song* Song::findByRESongId(const int id) {
     return song;
 }
 
+void Song::findSongsByStyle(const Style& style, vector<Song*>** songsPtr) {
+    vector<Song*>* songs = new vector<Song*>;
+    (*songsPtr) = songs;
+    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select s.* from SongStyles ss join Songs s on ss.songId = s.id join RESongs re on re.unique_id = s.reSongId where ss.styleId = ? order by re.songId");
+    ps->setInt(1, style.getId());
+    sql::ResultSet *rs = ps->executeQuery();
+    while (rs->next()) {
+        Song* song = new Song();
+        populateFields(rs, song);
+        songs->push_back(song);
+    }
+    rs->close();
+    delete rs;
+}
+
 # pragma mark persistence
 
 bool Song::update() {

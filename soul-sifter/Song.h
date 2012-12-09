@@ -29,6 +29,7 @@ public:
     
     static Song* findById(const int id);
     static Song* findByRESongId(const int id);
+    static void findSongsByStyle(const Style& style, vector<Song*>** songsPtr);
     
     bool update();
     const Song* save();
