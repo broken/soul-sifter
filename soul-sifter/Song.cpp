@@ -8,8 +8,11 @@
 
 #include "Song.h"
 
+#include <sstream>
 #include <vector>
 
+#include <boost/date_time/local_time/local_time.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
@@ -21,11 +24,32 @@
 #include "MysqlAccess.h"
 #include "RESong.h"
 
+using namespace boost;
+using namespace std;
+
 namespace soulsifter {
 
 # pragma mark helpers
 
 namespace {
+    
+    static local_time::local_date_time timeFromeString(const string& str) {
+        istringstream iss(str);
+        local_time::local_time_input_facet* facet = new local_time::local_time_input_facet("%Y-%m-%d %H:%M:%S %z");
+        iss.imbue(locale(iss.getloc(), facet));
+        local_time::local_date_time ldt(gregorian::not_a_date_time);
+        iss >> ldt;
+        cout << ldt.to_string();
+        return ldt;
+    }
+    
+    static string stringFromTime(const local_time::local_date_time& time) {
+        stringstream ss;
+        local_time::local_time_facet* facet = new local_time::local_time_facet("%Y-%m-%d %H:%M:%S %z");
+        ss.imbue(locale(ss.getloc(), facet));
+        ss << time;
+        return ss.str();
+    }
     
     static void populateFields(const sql::ResultSet* rs, Song* song) {
         song->setId(rs->getInt("id"));
@@ -39,6 +63,9 @@ namespace {
         // TODO set styles
         song->setRating(rs->getInt("rating"));
         song->setAlbumId(rs->getInt("albumId"));
+        song->setDateAdded(timeFromeString(rs->getString("dateAdded")));
+        song->setComments(rs->getString("comments"));
+        song->setTrashed(rs->getBoolean("trashed"));
     }
 }
 
@@ -57,12 +84,13 @@ reSong(NULL),
 styles(),
 rating(0),
 albumId(0),
-album(NULL) {
+album(NULL),
+dateAdded(gregorian::not_a_date_time),
+comments(),
+trashed(false) {
 }
 
 Song::~Song() {
-    delete album;
-    delete reSong;
 }
 
 Song::Song(const Song& song) :
@@ -78,8 +106,10 @@ reSong(NULL),
 styles(),  // TODO copy styles
 rating(song.getRating()),
 albumId(song.getAlbumId()),
-album(NULL) {
-    
+album(NULL),
+dateAdded(song.getDateAdded()),
+comments(song.getComments()),
+trashed(song.getTrashed()) {
 }
 
 Song::Song(RESong* song) :
@@ -93,7 +123,10 @@ filepath(song->getFilename()),
 reSongId(song->getUniqueId()),
 reSong(song),
 styles(),
-rating(song->getRating()) {
+rating(song->getRating()),
+dateAdded(gregorian::not_a_date_time),
+comments(song->getComments()),
+trashed(!song->getDisabled().compare("yes")) {
     
     // styles
     const vector<Style*>* allStyles;
@@ -125,6 +158,8 @@ rating(song->getRating()) {
     const BasicGenre *genre = BasicGenre::findByFilepath(song->getFilename());
     if (genre)
         album->setBasicGenre(genre);
+    // date added
+    dateAdded = timeFromeString(song->getDateAdded());
 }
 
 void Song::clear() {
@@ -143,6 +178,9 @@ void Song::clear() {
     albumId = 0;
     delete album;
     album = NULL;
+    //TODO dateAdded = ;
+    comments.clear();
+    trashed = false;
 }
 
 # pragma mark static methods
@@ -194,17 +232,20 @@ void Song::findSongsByStyle(const Style& style, vector<Song*>** songsPtr) {
 
 bool Song::update() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Song set artist=?, track=?, title=?, remix=?, featuring=?, filepath=?, reSongId=?, rating=?, albumId where id=?");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Song set artist=?, track=?, title=?, remix=?, featuring=?, filepath=?, reSongId=?, rating=?, albumId=?, dateAdded=?, comments=?, trashed=? where id=?");
         ps->setString(1, artist);
-        ps->setString(3, track);
-        ps->setString(4, title);
-        ps->setString(5, remix);
-        ps->setString(6, featuring);
-        ps->setString(7, filepath);
-        ps->setInt(8, reSongId);
-        ps->setInt(9, rating);
-        ps->setInt(10, albumId);
-        ps->setInt(11, id);
+        ps->setString(2, track);
+        ps->setString(3, title);
+        ps->setString(4, remix);
+        ps->setString(5, featuring);
+        ps->setString(6, filepath);
+        ps->setInt(7, reSongId);
+        ps->setInt(8, rating);
+        ps->setInt(9, albumId);
+        ps->setString(10, getDateAddedString());
+        ps->setString(11, comments);
+        ps->setBoolean(12, trashed);
+        ps->setInt(13, id);
         ps->executeUpdate();
         return true;
 	} catch (sql::SQLException &e) {
@@ -219,16 +260,19 @@ bool Song::update() {
 
 const Song* Song::save() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, track, title, remix, featuring, filepath, reSongId, rating, albumId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, track, title, remix, featuring, filepath, reSongId, rating, albumId, dateAdded, comments, trashed) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, artist);
-        ps->setString(3, track);
-        ps->setString(4, title);
-        ps->setString(5, remix);
-        ps->setString(6, featuring);
-        ps->setString(7, filepath);
-        ps->setInt(8, reSongId);
-        ps->setInt(9, rating);
-        ps->setInt(10, albumId);
+        ps->setString(2, track);
+        ps->setString(3, title);
+        ps->setString(4, remix);
+        ps->setString(5, featuring);
+        ps->setString(6, filepath);
+        ps->setInt(7, reSongId);
+        ps->setInt(8, rating);
+        ps->setInt(9, albumId);
+        ps->setString(10, getDateAddedString());
+        ps->setString(11, comments);
+        ps->setBoolean(12, trashed);
         if (ps->executeUpdate() == 0) {
             return NULL;
         } else {
@@ -253,6 +297,19 @@ const Song* Song::save() {
         std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
         return false;
 	}
+}
+    
+const string Song::reAlbum() const {
+    if (!getAlbum()->getName().empty()) {
+        return getAlbum()->getName();
+    } else {
+        stringstream ss;
+        ss << title;
+        if (!remix.empty()) {
+            ss << " " << remix;
+        }
+        return ss.str();
+    }
 }
 
 # pragma mark accessors
@@ -313,5 +370,15 @@ void Song::setAlbum(Album* album) {
     this->albumId = album->getId();
     this->album = album;
 }
+
+const string Song::getDateAddedString() const { return stringFromTime(dateAdded); }
+const local_time::local_date_time& Song::getDateAdded() const { return dateAdded; }
+void Song::setDateAdded(const local_time::local_date_time& dateAdded) { this->dateAdded = dateAdded; }
+    
+const string& Song::getComments() const { return comments; }
+void Song::setComments(const string& comments) { this->comments = comments; }
+    
+const bool Song::getTrashed() const { return trashed; }
+void Song::setTrashed(const bool trashed) { this->trashed = trashed; }
 
 }

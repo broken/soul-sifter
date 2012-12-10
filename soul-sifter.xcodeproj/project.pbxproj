@@ -71,6 +71,7 @@
 		18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */; };
 		18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9DA166189A800912FD3 /* ArchiveUtil.m */; };
 		18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9E21661978400912FD3 /* NSString+MD5.mm */; };
+		18D7D3281675D5D80043146B /* libboost_date_time-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18D7D3271675D5D80043146B /* libboost_date_time-mt.dylib */; };
 		18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FB7CAB15572F0000BEF750 /* PathButton.m */; };
 /* End PBXBuildFile section */
 
@@ -203,6 +204,7 @@
 		18C5F9DA166189A800912FD3 /* ArchiveUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveUtil.m; sourceTree = "<group>"; };
 		18C5F9E11661978400912FD3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
 		18C5F9E21661978400912FD3 /* NSString+MD5.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+MD5.mm"; sourceTree = "<group>"; };
+		18D7D3271675D5D80043146B /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
 		18FB7CAA15572F0000BEF750 /* PathButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathButton.h; sourceTree = "<group>"; };
 		18FB7CAB15572F0000BEF750 /* PathButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -212,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18D7D3281675D5D80043146B /* libboost_date_time-mt.dylib in Frameworks */,
 				185A72BE16759C0500D14E96 /* libboost_system-mt.dylib in Frameworks */,
 				185A72BC16759BDE00D14E96 /* libboost_filesystem-mt.dylib in Frameworks */,
 				188E1B241648FADB004754F4 /* libmysqlclient.18.dylib in Frameworks */,
@@ -373,6 +376,7 @@
 		189D22BB153D4F190043634A = {
 			isa = PBXGroup;
 			children = (
+				18D7D3271675D5D80043146B /* libboost_date_time-mt.dylib */,
 				185A72BD16759C0400D14E96 /* libboost_system-mt.dylib */,
 				185A72BB16759BDC00D14E96 /* libboost_filesystem-mt.dylib */,
 				188E1B231648FADB004754F4 /* libmysqlclient.18.dylib */,

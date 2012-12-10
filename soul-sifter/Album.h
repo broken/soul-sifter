@@ -30,6 +30,8 @@ public:
     bool update();
     int save();
     
+    const string reReleaseDate() const;
+    
     const int getId() const;
     void setId(const int id);
     const string& getName() const;

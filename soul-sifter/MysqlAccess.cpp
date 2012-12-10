@@ -81,27 +81,45 @@ bool MysqlAccess::disconnect() {
 }
 
 sql::PreparedStatement* MysqlAccess::getPreparedStatement(std::string query) {
-    sql::PreparedStatement *ps;
-    std::map<std::string, sql::PreparedStatement*>::iterator it = preparedStatements.find(query);
-    if (it == preparedStatements.end()) {
-        ps = connection->prepareStatement(query);
-        preparedStatements.insert(std::pair<std::string, sql::PreparedStatement*>(query, ps));
-    } else {
-        ps = it->second;
+    try {
+        sql::PreparedStatement *ps;
+        std::map<std::string, sql::PreparedStatement*>::iterator it = preparedStatements.find(query);
+        if (it == preparedStatements.end()) {
+            ps = connection->prepareStatement(query);
+            preparedStatements.insert(std::pair<std::string, sql::PreparedStatement*>(query, ps));
+        } else {
+            ps = it->second;
+        }
+        return ps;
+    } catch (sql::SQLException &e) {
+        std::cout << "ERROR: SQLException in " << __FILE__;
+        std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+        std::cout << "ERROR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+        throw e;
     }
-    return ps;
 }
 
 const int MysqlAccess::getLastInsertId() {
-    sql::PreparedStatement *ps = getPreparedStatement("select LAST_INSERT_ID()");
-    sql::ResultSet *rs = ps->executeQuery();
-    int id = 0;
-    if (rs->next()) {
-        id = rs->getInt(1);
+    try {
+        sql::PreparedStatement *ps = getPreparedStatement("select LAST_INSERT_ID()");
+        sql::ResultSet *rs = ps->executeQuery();
+        int id = 0;
+        if (rs->next()) {
+            id = rs->getInt(1);
+        }
+        rs->close();
+        delete rs;
+        return id;
+    } catch (sql::SQLException &e) {
+        std::cout << "ERROR: SQLException in " << __FILE__;
+        std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+        std::cout << "ERROR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+        throw e;
     }
-    rs->close();
-    delete rs;
-    return id;
 }
     
 }

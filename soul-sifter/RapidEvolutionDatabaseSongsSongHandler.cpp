@@ -155,9 +155,10 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
             delete dbSong;
             delete mySong;
         } else {
-            Song mySong(&song);
             song.save();
+            Song mySong(&song);
             mySong.save();
+            delete mySong.getAlbum();
         }
     }
 }

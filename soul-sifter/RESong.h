@@ -11,6 +11,8 @@
 
 #include <string>
 
+#include "Song.h"
+
 using namespace std;
 
 namespace sql {
@@ -39,6 +41,7 @@ public:
     
     RESong();
     ~RESong();
+    RESong(const Song& song);
     void clear();  // deprecated
     
     static RESong* findByUniqueId(const int uniqueId);

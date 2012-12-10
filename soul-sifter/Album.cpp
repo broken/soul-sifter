@@ -8,6 +8,7 @@
 
 #include "Album.h"
 
+#include <sstream>
 #include <string>
 
 #include <cppconn/connection.h>
@@ -170,6 +171,22 @@ int Album::save() {
         std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
         return false;
 	}
+}
+    
+const string Album::reReleaseDate() const {
+    ostringstream oss;
+    if (releaseDateYear) {
+        oss << releaseDateYear;
+        if (releaseDateMonth) {
+            if (releaseDateMonth < 10) oss << "0";
+            oss << releaseDateMonth;
+            if (releaseDateDay) {
+                if (releaseDateDay < 10) oss << "0";
+                oss << releaseDateDay;
+            }
+        }
+    }
+    return oss.str();
 }
 
 #pragma mark accessors
