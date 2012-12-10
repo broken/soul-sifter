@@ -11,6 +11,8 @@
 
 #include <string>
 
+#include "BasicGenre.h"
+
 using namespace std;
 
 class Album {
@@ -34,11 +36,32 @@ public:
     void setCoverFilepath(const string& coverFilepath);
     const bool getMixed() const;
     void setMixed(const bool mixed);
+    const string& getLabel() const;
+    void setLabel(const string& label);
+    const string& getCatalogId() const;
+    void setCatalogId(const string& catalogId);
+    const int getReleaseDateYear() const;
+    void setReleaseDateYear(const int releaseDateYear);
+    const int getReleaseDateMonth() const;
+    void setReleaseDateMonth(const int releaseDateMonth);
+    const int setReleaseDateDay() const;
+    void setReleaseDateDay(const int releaseDateDay);
+    const int getBasicGenreId() const;
+    void setBasicGenreId(const int basicGenreId);
+    const BasicGenre* getBasicGenre() const;
+    void setBasicGenre(const BasicGenre* basicGenre);
 private:
     int id;
     string name;
     string coverFilepath;
     bool mixed;
+    string label;
+    string catalogId;
+    int releaseDateYear;
+    int releaseDateMonth;
+    int releaseDateDay;
+    int basicGenreId;
+    const BasicGenre *basicGenre;
 };
 
 #endif /* defined(__soul_sifter__Album__) */

@@ -30,6 +30,12 @@ namespace {
         album->setName(rs->getString("name"));
         album->setCoverFilepath(rs->getString("coverFilepath"));
         album->setMixed(rs->getBoolean("mixed"));
+        album->setLabel(rs->getString("label"));
+        album->setCatalogId(rs->getString("catalogId"));
+        album->setReleaseDateYear(rs->getInt("releaseDateYear"));
+        album->setReleaseDateMonth(rs->getInt("releaseDateMonth"));
+        album->setReleaseDateDay(rs->getInt("releaseDateDay"));
+        album->setBasicGenreId(rs->getInt("basicGenreId"));
     }
 }
 
@@ -39,7 +45,14 @@ Album::Album() :
 id(0),
 name(),
 coverFilepath(),
-mixed(false) {
+mixed(false),
+label(),
+catalogId(),
+releaseDateYear(0),
+releaseDateMonth(0),
+releaseDateDay(0),
+basicGenreId(0),
+basicGenre(NULL) {
 }
 
 Album::~Album() {
@@ -50,6 +63,13 @@ void Album::clear() {
     name.clear();
     coverFilepath.clear();
     mixed = false;
+    label.clear();
+    catalogId.clear();
+    releaseDateYear = 0;
+    releaseDateMonth = 0;
+    releaseDateDay = 0;
+    basicGenreId = 0;
+    basicGenre = NULL;
 }
 
 #pragma mark static methods
@@ -103,11 +123,17 @@ Album* Album::findByCoverFilepath(const string& filepath) {
 
 bool Album::update() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Albums set name=?, coverFilepath=?, mixed=? where id=?");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Albums set name=?, coverFilepath=?, mixed=?, label=?, catalogId=?, releaseDateYear=?, releaseDateMonth=?, releaseDateDay=?, basicGenreId=? where id=?");
         ps->setString(1, name);
         ps->setString(2, coverFilepath);
         ps->setBoolean(3, mixed);
-        ps->setInt(4, id);
+        ps->setString(4, label);
+        ps->setString(5, catalogId);
+        ps->setInt(6, releaseDateYear);
+        ps->setInt(7, releaseDateMonth);
+        ps->setInt(8, releaseDateDay);
+        ps->setInt(9, basicGenreId);
+        ps->setInt(10, id);
         ps->executeUpdate();
         return true;
 	} catch (sql::SQLException &e) {
@@ -122,11 +148,16 @@ bool Album::update() {
 
 int Album::save() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Albums (name, coverFilepath, mixed) values (?,?,?)");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Albums (name, coverFilepath, mixed, label, catalogId, releaseDateYear, releaseDateMonth, releaseDateDay, basicGenreId) values (?,?,?,?,?,?,?,?,?)");
         ps->setString(1, name);
         ps->setString(2, coverFilepath);
         ps->setBoolean(3, mixed);
-        ps->setInt(4, id);
+        ps->setString(4, label);
+        ps->setString(5, catalogId);
+        ps->setInt(6, releaseDateYear);
+        ps->setInt(7, releaseDateMonth);
+        ps->setInt(8, releaseDateDay);
+        ps->setInt(9, basicGenreId);
         ps->executeUpdate();
         return true;
 	} catch (sql::SQLException &e) {
@@ -152,3 +183,30 @@ void Album::setCoverFilepath(const string& coverFilepath) { this->coverFilepath 
 
 const bool Album::getMixed() const { return mixed; }
 void Album::setMixed(const bool mixed) { this->mixed = mixed; }
+
+const string& Album::getLabel() const { return label; }
+void Album::setLabel(const string& label) { this->label = label; }
+
+const string& Album::getCatalogId() const { return catalogId; }
+void Album::setCatalogId(const string& catalogId) { this->catalogId = catalogId; }
+
+const int Album::getReleaseDateYear() const { return releaseDateYear; }
+void Album::setReleaseDateYear(const int releaseDateYear) { this->releaseDateYear = releaseDateYear; }
+
+const int Album::getReleaseDateMonth() const { return releaseDateMonth; }
+void Album::setReleaseDateMonth(const int releaseDateMonth) { this->releaseDateMonth = releaseDateMonth; }
+
+const int Album::setReleaseDateDay() const { return releaseDateDay; }
+void Album::setReleaseDateDay(const int releaseDateDay) { this->releaseDateDay = releaseDateDay; }
+
+const int Album::getBasicGenreId() const { return basicGenreId; }
+void Album::setBasicGenreId(const int basicGenreId) { this->basicGenreId = basicGenreId; }
+
+const BasicGenre* Album::getBasicGenre() const {
+    return basicGenre ? basicGenre : BasicGenre::findById(basicGenreId);
+}
+void Album::setBasicGenre(const BasicGenre* basicGenre) {
+    this->basicGenreId = basicGenre->getId();
+    this->basicGenre = basicGenre;
+}
+
