@@ -34,6 +34,7 @@
     IBOutlet NSTextField *releaseDateYear;
     IBOutlet NSTextField *releaseDateMonth;
     IBOutlet NSTextField *releaseDateDay;
+    IBOutlet NSLevelIndicator *rating;
 }
 
 - (IBAction)processMusicFile:(id)sender;
@@ -55,5 +56,6 @@
 @property(readwrite,retain) NSTextField *releaseDateYear;
 @property(readwrite,retain) NSTextField *releaseDateMonth;
 @property(readwrite,retain) NSTextField *releaseDateDay;
+@property(readwrite,retain) NSLevelIndicator *rating;
 
 @end

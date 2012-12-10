@@ -40,6 +40,7 @@
 		185A729F166C9C7600D14E96 /* Mix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A729D166C9C6C00D14E96 /* Mix.cpp */; };
 		185A72A2166CA89D00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72A0166CA89A00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp */; };
 		185A72B2166FECE300D14E96 /* DTXMLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72B0166FECE300D14E96 /* DTXMLWriter.cpp */; };
+		185A72B516755C4600D14E96 /* Album.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72B316755C4500D14E96 /* Album.cpp */; };
 		187E640C15984AD300091546 /* RapidEvolutionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E640B15984AD300091546 /* RapidEvolutionManager.m */; };
 		188AB0391660F78B00CE162C /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188AB0371660F78B00CE162C /* Track.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
@@ -145,6 +146,8 @@
 		185A72A1166CA89B00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseMixoutsMixoutHandler.h; sourceTree = "<group>"; };
 		185A72B0166FECE300D14E96 /* DTXMLWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DTXMLWriter.cpp; sourceTree = "<group>"; };
 		185A72B1166FECE300D14E96 /* DTXMLWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTXMLWriter.h; sourceTree = "<group>"; };
+		185A72B316755C4500D14E96 /* Album.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Album.cpp; sourceTree = "<group>"; };
+		185A72B416755C4500D14E96 /* Album.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Album.h; sourceTree = "<group>"; };
 		185C3FB61662EC6C004DE6B6 /* RESong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESong.h; sourceTree = "<group>"; };
 		187E640A15984AD200091546 /* RapidEvolutionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionManager.h; sourceTree = "<group>"; };
 		187E640B15984AD300091546 /* RapidEvolutionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RapidEvolutionManager.m; sourceTree = "<group>"; };
@@ -337,6 +340,8 @@
 		188E1B25164E1968004754F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				185A72B316755C4500D14E96 /* Album.cpp */,
+				185A72B416755C4500D14E96 /* Album.h */,
 				18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */,
 				18A73F7C1665EFFA0074E137 /* BasicGenre.h */,
 				185A729D166C9C6C00D14E96 /* Mix.cpp */,
@@ -634,6 +639,7 @@
 				185A729F166C9C7600D14E96 /* Mix.cpp in Sources */,
 				185A72A2166CA89D00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp in Sources */,
 				185A72B2166FECE300D14E96 /* DTXMLWriter.cpp in Sources */,
+				185A72B516755C4600D14E96 /* Album.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

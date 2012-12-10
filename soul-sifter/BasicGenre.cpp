@@ -8,6 +8,7 @@
 
 #include "BasicGenre.h"
 
+#include <string>
 #include <vector>
 
 #include <cppconn/connection.h>

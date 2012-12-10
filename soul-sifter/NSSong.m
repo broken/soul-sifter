@@ -46,5 +46,6 @@
 
 @synthesize basicGenre;
 @synthesize file;
+@synthesize rating;
 
 @end

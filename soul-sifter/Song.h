@@ -72,6 +72,8 @@ public:
     void setStyles(vector<const Style*> styles);
     void addToStyle(const Style* style);
     void removeFromStyle(const Style* style);
+    const int getRating() const;
+    void setRating(const int rating);
     
 private:
     int id;
@@ -92,6 +94,7 @@ private:
     int reSongId;
     RESong *reSong;
     vector<const Style*> styles;
+    int rating;
 };
 
 #endif /* defined(__soul_sifter__Song__) */

@@ -92,6 +92,7 @@
     [song setReleaseDateMonth:[releaseDateMonth stringValue]];
     [song setReleaseDateDay:[releaseDateDay stringValue]];
     [song setBasicGenre:[genreComboBox stringValue]];
+    [song setRating:[rating intValue]];
     
     // update tag
     [musicManager writeTagsToSong:song];
@@ -100,7 +101,7 @@
     [musicManager moveSong:song];
     
     // write rapid evolution xml
-    [[RapidEvolutionManager default] writeSongToXml:song];
+    //[[RapidEvolutionManager default] writeSongToXml:song];
     
     // load next song
     [self loadNextFile];
@@ -199,6 +200,7 @@
     if ([song releaseDateDay]) [releaseDateDay setStringValue:[song releaseDateDay]];
     else [releaseDateDay setStringValue:@""];
     if ([song basicGenre]) [genreComboBox setStringValue:[song basicGenre]];
+    if ([song rating]) [rating setIntValue:[song rating]];
 }
 
 # pragma mark accessors
@@ -220,5 +222,6 @@
 @synthesize releaseDateYear;
 @synthesize releaseDateMonth;
 @synthesize releaseDateDay;
+@synthesize rating;
 
 @end

@@ -24,6 +24,7 @@
     
     NSString *basicGenre;
     NSURL *file;
+    int rating;
 }
 
 @property(readwrite,retain) NSString *artist;
@@ -40,6 +41,7 @@
 
 @property(readwrite,retain) NSString *basicGenre;
 @property(readwrite,retain) NSURL *file;
+@property(readwrite) int rating;
 
 - (id)copyWithZone:(NSZone *)zone;
 

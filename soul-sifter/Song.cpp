@@ -45,6 +45,7 @@ namespace {
         song->setRESongId(rs->getInt("reSongId"));
         song->setRESong(RESong::findByUniqueId(song->getRESongId()));
         // TODO set styles
+        song->setRating(rs->getInt("rating"));
     }
 }
 
@@ -68,7 +69,8 @@ basicGenreId(0),
 basicGenre(NULL),
 reSongId(0),
 reSong(NULL),
-styles() {
+styles(),
+rating(0) {
 }
 
 Song::Song(RESong* song) :
@@ -89,7 +91,8 @@ basicGenreId(0),
 basicGenre(NULL),
 reSongId(song->getUniqueId()),
 reSong(song),
-styles() {
+styles(),
+rating(song->getRating()) {
     
     // release dates
     string releaseDate = song->getReleaseDate();
@@ -140,6 +143,7 @@ void Song::clear() {
     reSongId = 0;
     reSong = NULL;
     styles.clear();
+    rating = 0;
 }
 
 # pragma mark static methods
@@ -191,7 +195,7 @@ void Song::findSongsByStyle(const Style& style, vector<Song*>** songsPtr) {
 
 bool Song::update() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Song set artist=?, album=?, track=?, title=?, remix=?, featuring=?, label=?, catalogId=?, releaseDateYear=?, releaseDateMonth=?, releaseDateDay=?, filepath=?, basicGenreId=?, reSongId=? where id=?");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Song set artist=?, album=?, track=?, title=?, remix=?, featuring=?, label=?, catalogId=?, releaseDateYear=?, releaseDateMonth=?, releaseDateDay=?, filepath=?, basicGenreId=?, reSongId=?, rating=? where id=?");
         ps->setString(1, artist);
         ps->setString(2, album);
         ps->setString(3, track);
@@ -209,7 +213,8 @@ bool Song::update() {
         ps->setString(12, filepath);
         ps->setInt(13, basicGenreId);
         ps->setInt(14, reSongId);
-        ps->setInt(15, id);
+        ps->setInt(15, rating);
+        ps->setInt(16, id);
         ps->executeUpdate();
         return true;
 	} catch (sql::SQLException &e) {
@@ -224,7 +229,7 @@ bool Song::update() {
 
 const Song* Song::save() {
     try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, album, track, title, remix, featuring, label, catalogId, releaseDateYear, releaseDateMonth, releaseDateDay, filepath, basicGenreId, reSongId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, album, track, title, remix, featuring, label, catalogId, releaseDateYear, releaseDateMonth, releaseDateDay, filepath, basicGenreId, reSongId, rating) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, artist);
         ps->setString(2, album);
         ps->setString(3, track);
@@ -242,6 +247,7 @@ const Song* Song::save() {
         ps->setString(12, filepath);
         ps->setInt(13, basicGenreId);
         ps->setInt(14, reSongId);
+        ps->setInt(15, rating);
         if (ps->executeUpdate() == 0) {
             return NULL;
         } else {
@@ -338,3 +344,6 @@ void Song::removeFromStyle(const Style* style) {
         }
     }
 }
+
+const int Song::getRating() const { return rating; }
+void Song::setRating(const int rating) { this->rating = rating; }
