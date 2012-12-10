@@ -20,7 +20,7 @@
 		18144CA4154DCA31009C36EE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA3154DCA31009C36EE /* Constants.m */; };
 		18169643154CADFB00593FEC /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18169642154CADFB00593FEC /* AppController.mm */; };
 		18169648154CB7D200593FEC /* DropBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169647154CB7D200593FEC /* DropBox.m */; };
-		1816964B154CD8E000593FEC /* TagInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816964A154CD8E000593FEC /* TagInfoController.m */; };
+		1816964B154CD8E000593FEC /* TagInfoController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1816964A154CD8E000593FEC /* TagInfoController.mm */; };
 		18169651154D06EB00593FEC /* MusicManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18169650154D06EB00593FEC /* MusicManager.mm */; };
 		18169654154D08D900593FEC /* NSSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 18169653154D08D900593FEC /* NSSong.m */; };
 		18169656154D34A400593FEC /* libid3-3.8.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18169655154D34A300593FEC /* libid3-3.8.3.0.0.dylib */; };
@@ -109,7 +109,7 @@
 		18169646154CB7D200593FEC /* DropBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBox.h; sourceTree = "<group>"; };
 		18169647154CB7D200593FEC /* DropBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBox.m; sourceTree = "<group>"; };
 		18169649154CD8E000593FEC /* TagInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagInfoController.h; sourceTree = "<group>"; };
-		1816964A154CD8E000593FEC /* TagInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagInfoController.m; sourceTree = "<group>"; };
+		1816964A154CD8E000593FEC /* TagInfoController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TagInfoController.mm; sourceTree = "<group>"; };
 		1816964F154D06EB00593FEC /* MusicManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicManager.h; sourceTree = "<group>"; };
 		18169650154D06EB00593FEC /* MusicManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MusicManager.mm; sourceTree = "<group>"; };
 		18169652154D08D900593FEC /* NSSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSong.h; sourceTree = "<group>"; };
@@ -438,7 +438,7 @@
 				18A73F7316635D900074E137 /* ProcessProgressController.mm */,
 				189C84F8153E647400F05E62 /* TagInfo.xib */,
 				18169649154CD8E000593FEC /* TagInfoController.h */,
-				1816964A154CD8E000593FEC /* TagInfoController.m */,
+				1816964A154CD8E000593FEC /* TagInfoController.mm */,
 				18C5F9D9166189A800912FD3 /* ArchiveUtil.h */,
 				18C5F9DA166189A800912FD3 /* ArchiveUtil.m */,
 				18144C9C154DC5F0009C36EE /* Preferences.xib */,
@@ -595,7 +595,7 @@
 				189D22DE153D4F190043634A /* AppDelegate.mm in Sources */,
 				18169643154CADFB00593FEC /* AppController.mm in Sources */,
 				18169648154CB7D200593FEC /* DropBox.m in Sources */,
-				1816964B154CD8E000593FEC /* TagInfoController.m in Sources */,
+				1816964B154CD8E000593FEC /* TagInfoController.mm in Sources */,
 				18169651154D06EB00593FEC /* MusicManager.mm in Sources */,
 				18169654154D08D900593FEC /* NSSong.m in Sources */,
 				1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */,
