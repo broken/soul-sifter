@@ -19,6 +19,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 namespace {
     
     static void populateFields(const sql::ResultSet* rs, REAlbumCover* ac) {
@@ -152,4 +154,6 @@ bool REAlbumCover::REAlbumCoverIterator::next(REAlbumCover* albumcover) {
     } else {
         return false;
     }
+}
+
 }

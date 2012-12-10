@@ -17,6 +17,8 @@
 
 #include "RESong.h"
 
+namespace soulsifter {
+
 class RapidEvolutionDatabaseSongsSongHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseSongsSongHandler(xercesc::SAX2XMLReader* parser,
@@ -77,5 +79,7 @@ private:
     const XMLCh* const replay_gain_elem;
     const XMLCh* const styles_bitmask_elem;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseSongsSongHandler__) */

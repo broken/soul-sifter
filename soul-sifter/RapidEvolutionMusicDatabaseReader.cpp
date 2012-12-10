@@ -23,6 +23,8 @@
 using namespace std;
 using namespace xercesc;
 
+namespace soulsifter {
+
 # pragma mark initialization
 
 RapidEvolutionMusicDatabaseReader::RapidEvolutionMusicDatabaseReader() :
@@ -115,3 +117,4 @@ bool RapidEvolutionMusicDatabaseReader::isProcessing() {
     return processing;
 }
 
+}

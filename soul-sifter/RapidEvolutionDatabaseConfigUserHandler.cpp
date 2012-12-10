@@ -17,6 +17,8 @@
 using namespace std;
 using namespace xercesc;
 
+namespace soulsifter {
+    
 RapidEvolutionDatabaseConfigUserHandler::RapidEvolutionDatabaseConfigUserHandler(SAX2XMLReader* parser,
                                                                                  DTAbstractHandler* parentHandler) :
 DTCopyHandler::DTCopyHandler(parser, parentHandler),
@@ -42,4 +44,6 @@ void RapidEvolutionDatabaseConfigUserHandler::commit() {
         xml.save();
     }
     xml.clear();
+}
+    
 }

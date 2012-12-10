@@ -23,6 +23,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 # pragma mark helpers
 
 namespace {
@@ -621,4 +623,6 @@ bool RESong::RESongIterator::next(RESong* song) {
     } else {
         return false;
     }
+}
+    
 }

@@ -13,6 +13,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class REXML {
 public:
     REXML();
@@ -38,5 +40,7 @@ private:
     string name;
     string xml;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__REXML__) */

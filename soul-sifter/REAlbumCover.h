@@ -17,6 +17,8 @@ namespace sql {
 
 using namespace std;
 
+namespace soulsifter {
+
 class REAlbumCover {
 public:
     REAlbumCover();
@@ -53,5 +55,7 @@ private:
     string reId;
     string thumbnail;
 };
+
+}
 
 #endif /* defined(__soul_sifter__REAlbumCover__) */

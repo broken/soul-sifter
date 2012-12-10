@@ -14,6 +14,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class Track {
     int id;
     int re_id;
@@ -38,5 +40,7 @@ class Track {
     
     static void getTrack(Track* track);
 };
+    
+}
 
 #endif /* defined(__soul_sifter__Track__) */

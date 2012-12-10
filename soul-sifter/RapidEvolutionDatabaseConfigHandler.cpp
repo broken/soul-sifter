@@ -18,6 +18,8 @@
 
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseConfigHandler::RapidEvolutionDatabaseConfigHandler(SAX2XMLReader* parser,
                                                                          DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
@@ -28,4 +30,6 @@ qname(XMLString::transcode("config")) {
     childHandlers[2] = new RapidEvolutionDatabaseConfigTablesHandler(parser, this);
     childHandlers[3] = new RapidEvolutionDatabaseConfigUserHandler(parser, this);
     childHandlers[4] = NULL;
+}
+    
 }

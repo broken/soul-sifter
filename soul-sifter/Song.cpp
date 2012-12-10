@@ -21,6 +21,8 @@
 #include "MysqlAccess.h"
 #include "RESong.h"
 
+namespace soulsifter {
+
 # pragma mark helpers
 
 namespace {
@@ -56,6 +58,28 @@ styles(),
 rating(0),
 albumId(0),
 album(NULL) {
+}
+
+Song::~Song() {
+    delete album;
+    delete reSong;
+}
+
+Song::Song(const Song& song) :
+id(song.getId()),
+artist(song.getArtist()),
+track(song.getTrack()),
+title(song.getTitle()),
+remix(song.getRemix()),
+featuring(song.getFeaturing()),
+filepath(song.getFilepath()),
+reSongId(song.getRESongId()),
+reSong(NULL),
+styles(),  // TODO copy styles
+rating(song.getRating()),
+albumId(song.getAlbumId()),
+album(NULL) {
+    
 }
 
 Song::Song(RESong* song) :
@@ -103,9 +127,6 @@ rating(song->getRating()) {
         album->setBasicGenre(genre);
 }
 
-Song::~Song() {
-}
-
 void Song::clear() {
     id = 0;
     artist.clear();
@@ -115,10 +136,12 @@ void Song::clear() {
     featuring.clear();
     filepath.clear();
     reSongId = 0;
+    delete reSong;
     reSong = NULL;
     styles.clear();
     rating = 0;
     albumId = 0;
+    delete album;
     album = NULL;
 }
 
@@ -283,10 +306,12 @@ void Song::setRating(const int rating) { this->rating = rating; }
 const int Song::getAlbumId() const { return albumId; }
 void Song::setAlbumId(const int albumId) { this->albumId = albumId; }
 
-const Album* Song::getAlbum() const {
-    return album ? album : Album::findById(albumId);
+Album* Song::getAlbum() const {
+    return album ? album : albumId ? Album::findById(albumId) : NULL;
 }
 void Song::setAlbum(Album* album) {
     this->albumId = album->getId();
     this->album = album;
+}
+
 }

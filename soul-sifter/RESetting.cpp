@@ -21,6 +21,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 namespace {
     
     static void populateFields(const sql::ResultSet* rs, RESetting* setting) {
@@ -147,3 +149,5 @@ void RESetting::setName(const string& name) { this->name = name; }
 const string& RESetting::getValue() const { return value; }
 string& RESetting::getValueRef() { return value; }
 void RESetting::setValue(const string& value) { this->value = value; }
+
+}

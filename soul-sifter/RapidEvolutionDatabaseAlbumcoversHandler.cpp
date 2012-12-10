@@ -21,6 +21,8 @@
 
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseAlbumcoversHandler::RapidEvolutionDatabaseAlbumcoversHandler(SAX2XMLReader* parser,
                                                                                    DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
@@ -62,4 +64,6 @@ void RapidEvolutionDatabaseAlbumcoversHandler::endElement(const XMLCh* const uri
         }
         delete albumcover;
     }
+}
+    
 }

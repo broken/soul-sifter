@@ -1,5 +1,5 @@
 //
-//  TagInfoController.m
+//  TagInfoController.mm
 //  soul-sifter
 //
 //  Created by Robby Neale on 4/28/12.
@@ -8,11 +8,12 @@
 
 #import "TagInfoController.h"
 
+#include "Album.h"
 #import "ArchiveUtil.h"
+#include "BasicGenre.h"
 #import "Constants.h"
-#import "MusicManager.h"
-#import "RapidEvolutionManager.h"
-#import "NSSong.h"
+#include "MusicManager.h"
+#include "Song.h"
 
 
 # pragma mark private method helpers
@@ -33,7 +34,6 @@
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
-        musicManager = [MusicManager default];
     }
     
     return self;
@@ -41,7 +41,6 @@
 
 - (void)dealloc {
     NSLog(@"tagInfoController.dealloc");
-    [musicManager release];
     [filesToTrash release];
     [super dealloc];
 }
@@ -52,7 +51,14 @@
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     
     filesToTrash = [[NSMutableArray alloc] init];
-    [genreArrayController setContent:[musicManager basicGenres]];
+    
+    const vector<const soulsifter::BasicGenre*>* genres;
+    soulsifter::BasicGenre::findAll(&genres);
+    NSMutableArray* genresArray = [[NSMutableArray alloc] init];
+    for (vector<const soulsifter::BasicGenre*>::const_iterator it = genres->begin(); it != genres->end(); ++it) {
+        [genresArray addObject:[NSString stringWithUTF8String:(*it)->getName().c_str()]];
+    }
+    [genreArrayController setContent:genresArray];
 }
 
 - (IBAction)showWindow:(id)sender {
@@ -77,31 +83,28 @@
         return;
     }
     
-    NSSong *song = [[NSSong alloc] init];
-    [song autorelease];
-    [song setFile:[fileUrls objectAtIndex:index]];
-    [song setArtist:[artist stringValue]];
-    [song setAlbum:[album stringValue]];
-    [song setTrackNum:[trackNum stringValue]];
-    [song setTitle:[title stringValue]];
-    [song setRemix:[remix stringValue]];
-    [song setFeaturing:[featuring stringValue]];
-    [song setLabel:[label stringValue]];
-    [song setCatalogId:[catalogId stringValue]];
-    [song setReleaseDateYear:[releaseDateYear stringValue]];
-    [song setReleaseDateMonth:[releaseDateMonth stringValue]];
-    [song setReleaseDateDay:[releaseDateDay stringValue]];
-    [song setBasicGenre:[genreComboBox stringValue]];
-    [song setRating:[rating intValue]];
+    soulsifter::Song song;
+    song.setAlbum(new soulsifter::Album());
+    song.setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
+    song.setArtist([[artist stringValue] UTF8String]);
+    song.getAlbum()->setName([[album stringValue] UTF8String]);
+    song.setTrack([[trackNum stringValue] UTF8String]);
+    song.setTitle([[title stringValue] UTF8String]);
+    song.setRemix([[remix stringValue] UTF8String]);
+    song.setFeaturing([[featuring stringValue] UTF8String]);
+    song.getAlbum()->setLabel([[label stringValue] UTF8String]);
+    song.getAlbum()->setCatalogId([[catalogId stringValue] UTF8String]);
+    song.getAlbum()->setReleaseDateYear([releaseDateYear intValue]);
+    song.getAlbum()->setReleaseDateMonth([releaseDateMonth intValue]);
+    song.getAlbum()->setReleaseDateDay([releaseDateDay intValue]);
+    song.setRating([rating intValue]);
+    song.getAlbum()->setBasicGenre(soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
     
     // update tag
-    [musicManager writeTagsToSong:song];
+    soulsifter::MusicManager::getInstance().writeTagsToSong(&song);
     
     // move file
-    [musicManager moveSong:song];
-    
-    // write rapid evolution xml
-    //[[RapidEvolutionManager default] writeSongToXml:song];
+    soulsifter::MusicManager::getInstance().moveSong(&song);
     
     // load next song
     [self loadNextFile];
@@ -158,7 +161,7 @@
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"jpeg"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"gif"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"png"]) {
-        [musicManager moveImage:fileUrl];
+        //TODO [musicManager moveImage:fileUrl];
         [self loadNextFile];
         return;
     }
@@ -186,21 +189,23 @@
     
     // at this point it should be a normal file that needs processing
     [filePath setStringValue:[fileUrl lastPathComponent]];
-    NSSong *song = [musicManager discoverSong:fileUrl];
-    if ([song artist]) [artist setStringValue:[song artist]];
-    if ([song album]) [album setStringValue:[song album]];
-    if ([song trackNum]) [trackNum setStringValue:[song trackNum]];
-    if ([song title]) [title setStringValue:[song title]];
-    if ([song remix]) [remix setStringValue:[song remix]];
-    if ([song featuring]) [featuring setStringValue:[song featuring]];
-    if ([song label]) [label setStringValue:[song label]];
-    if ([song catalogId]) [catalogId setStringValue:[song catalogId]];
-    if ([song releaseDateYear]) [releaseDateYear setStringValue:[song releaseDateYear]];
-    if ([song releaseDateMonth]) [releaseDateMonth setStringValue:[song releaseDateMonth]];
-    if ([song releaseDateDay]) [releaseDateDay setStringValue:[song releaseDateDay]];
+    soulsifter::Song *song = new soulsifter::Song();
+    song->setFilepath([[fileUrl path] UTF8String]);
+    soulsifter::MusicManager::getInstance().readTagsFromSong(song);
+    if (!song->getArtist().empty()) [artist setStringValue:[NSString stringWithUTF8String:song->getArtist().c_str()]];
+    if (!song->getAlbum()->getName().empty()) [album setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getName().c_str()]];
+    if (!song->getTrack().empty()) [trackNum setStringValue:[NSString stringWithUTF8String:song->getTrack().c_str()]];
+    if (!song->getTitle().empty()) [title setStringValue:[NSString stringWithUTF8String:song->getTitle().c_str()]];
+    if (!song->getRemix().empty()) [remix setStringValue:[NSString stringWithUTF8String:song->getRemix().c_str()]];
+    if (!song->getFeaturing().empty()) [featuring setStringValue:[NSString stringWithUTF8String:song->getFeaturing().c_str()]];
+    if (!song->getAlbum()->getLabel().empty()) [label setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getLabel().c_str()]];
+    if (!song->getAlbum()->getCatalogId().empty()) [catalogId setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getCatalogId().c_str()]];
+    if (song->getAlbum()->getReleaseDateYear()) [releaseDateYear setStringValue:[NSString stringWithFormat:@"%i",song->getAlbum()->getReleaseDateYear()]];
+    if (song->getAlbum()->getReleaseDateMonth()) [releaseDateMonth setStringValue:[NSString stringWithFormat:@"%i",song->getAlbum()->getReleaseDateMonth()]];
+    if (song->getAlbum()->getReleaseDateDay()) [releaseDateDay setStringValue:[NSString stringWithFormat:@"%i",song->getAlbum()->getReleaseDateDay()]];
     else [releaseDateDay setStringValue:@""];
-    if ([song basicGenre]) [genreComboBox setStringValue:[song basicGenre]];
-    if ([song rating]) [rating setIntValue:[song rating]];
+    //if (!song->getAlbum()->getBasicGenre().empty()) [genreComboBox setStringValue:[NSString stringWithUTF8String:song->getAlubm()->getBasicGenre()];
+    if (song->getRating()) [rating setIntValue:song->getRating()];
 }
 
 # pragma mark accessors

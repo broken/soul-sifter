@@ -17,6 +17,10 @@ namespace sql {
     class ResultSet;
 }
 
+namespace soulsifter {
+    
+class RapidEvolutionDatabaseSongsSongHandler;
+
 class RESong {
 public:
     friend class RapidEvolutionDatabaseSongsSongHandler;
@@ -153,5 +157,7 @@ private:
     // internal usage
     int mixoutCount;
 };
+
+}
 
 #endif /* defined(__soul_sifter__RESong__) */

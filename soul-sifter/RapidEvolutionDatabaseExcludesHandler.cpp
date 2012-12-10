@@ -14,8 +14,12 @@
 
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseExcludesHandler::RapidEvolutionDatabaseExcludesHandler(SAX2XMLReader* parser,
                                                                              DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("config")) {
+}
+    
 }

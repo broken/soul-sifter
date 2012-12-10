@@ -15,6 +15,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class Album {
 public:
     Album();
@@ -44,7 +46,7 @@ public:
     void setReleaseDateYear(const int releaseDateYear);
     const int getReleaseDateMonth() const;
     void setReleaseDateMonth(const int releaseDateMonth);
-    const int setReleaseDateDay() const;
+    const int getReleaseDateDay() const;
     void setReleaseDateDay(const int releaseDateDay);
     const int getBasicGenreId() const;
     void setBasicGenreId(const int basicGenreId);
@@ -63,5 +65,7 @@ private:
     int basicGenreId;
     const BasicGenre *basicGenre;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__Album__) */

@@ -8,15 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class MusicManager;
-@class Song;
-
 @interface TagInfoController : NSWindowController {
 @private
     int index;
     NSMutableArray *fileUrls;
     NSMutableArray *filesToTrash;
-    MusicManager *musicManager;
     
     IBOutlet NSComboBox *genreComboBox;
     IBOutlet NSArrayController *genreArrayController;

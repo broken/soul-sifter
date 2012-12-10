@@ -24,6 +24,8 @@
 
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseStylesStyleHandler::RapidEvolutionDatabaseStylesStyleHandler(SAX2XMLReader* parser,
                                                                                    DTAbstractHandler* parentHandler,
                                                                                    vector<pair<int, int> >* styles) :
@@ -83,4 +85,6 @@ void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri
             style.save();
         }
     }
+}
+
 }

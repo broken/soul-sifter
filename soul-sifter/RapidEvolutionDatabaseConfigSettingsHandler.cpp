@@ -21,6 +21,8 @@
 
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseConfigSettingsHandler::RapidEvolutionDatabaseConfigSettingsHandler(SAX2XMLReader* parser,
                                                                                          DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
@@ -74,3 +76,4 @@ void RapidEvolutionDatabaseConfigSettingsHandler::characters(const XMLCh* const 
     }
 }
 
+}

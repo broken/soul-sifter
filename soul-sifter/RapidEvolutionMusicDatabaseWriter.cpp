@@ -44,6 +44,8 @@ namespace {
     
 }
 
+namespace soulsifter {
+
 # pragma mark initialization
 
 RapidEvolutionMusicDatabaseWriter::RapidEvolutionMusicDatabaseWriter() :
@@ -315,4 +317,6 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     //f << "</music_database>" << endl;*/
     w.endElement("music_database");
     w.endDocument();
+}
+
 }

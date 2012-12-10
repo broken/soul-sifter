@@ -12,6 +12,8 @@
 #include "DTCopyHandler.h"
 #include "REXML.h"
 
+namespace soulsifter {
+
 class RapidEvolutionDatabaseConfigTablesHandler : public DTCopyHandler {
 public:
     RapidEvolutionDatabaseConfigTablesHandler(xercesc::SAX2XMLReader* parser,
@@ -28,5 +30,7 @@ private:
     const XMLCh* const qname;
     REXML xml;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseConfigTablesHandler__) */

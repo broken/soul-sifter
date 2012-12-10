@@ -21,6 +21,8 @@
 
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseHandler::RapidEvolutionDatabaseHandler(SAX2XMLReader* parser,
                                                              DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
@@ -37,3 +39,4 @@ qname(XMLString::transcode("music_database")) {
     childHandlers[7] = NULL;
 }
 
+}

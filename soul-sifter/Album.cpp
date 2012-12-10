@@ -21,6 +21,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 # pragma mark helpers
 
 namespace {
@@ -196,7 +198,7 @@ void Album::setReleaseDateYear(const int releaseDateYear) { this->releaseDateYea
 const int Album::getReleaseDateMonth() const { return releaseDateMonth; }
 void Album::setReleaseDateMonth(const int releaseDateMonth) { this->releaseDateMonth = releaseDateMonth; }
 
-const int Album::setReleaseDateDay() const { return releaseDateDay; }
+const int Album::getReleaseDateDay() const { return releaseDateDay; }
 void Album::setReleaseDateDay(const int releaseDateDay) { this->releaseDateDay = releaseDateDay; }
 
 const int Album::getBasicGenreId() const { return basicGenreId; }
@@ -210,3 +212,4 @@ void Album::setBasicGenre(const BasicGenre* basicGenre) {
     this->basicGenre = basicGenre;
 }
 
+}

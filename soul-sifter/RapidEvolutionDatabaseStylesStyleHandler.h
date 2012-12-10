@@ -16,6 +16,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class RapidEvolutionDatabaseStylesStyleHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseStylesStyleHandler(xercesc::SAX2XMLReader* parser,
@@ -47,5 +49,7 @@ private:
     const XMLCh* const name_attrib;
     const XMLCh* const parent_ids_attrib;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseStylesStyleHandler__) */

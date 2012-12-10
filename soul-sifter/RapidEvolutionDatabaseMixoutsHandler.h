@@ -11,6 +11,8 @@
 
 #include "DTAbstractHandler.h"
 
+namespace soulsifter {
+
 class RapidEvolutionDatabaseMixoutsHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseMixoutsHandler(xercesc::SAX2XMLReader* parser,
@@ -22,5 +24,7 @@ public:
 private:
     const XMLCh* const qname;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseMixoutsHandler__) */

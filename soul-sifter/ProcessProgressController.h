@@ -13,7 +13,7 @@
 @interface ProcessProgressController : NSWindowController {
 @public
     IBOutlet NSProgressIndicator *progressIndicator;
-    RapidEvolutionMusicDatabaseReader *musicDatabaseReader;
+    soulsifter::RapidEvolutionMusicDatabaseReader *musicDatabaseReader;
 }
 
 - (IBAction)showWindow:(id)sender;

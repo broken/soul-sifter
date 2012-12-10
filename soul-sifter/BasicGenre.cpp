@@ -22,6 +22,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 # pragma mark helpers
 
 namespace {
@@ -181,3 +183,5 @@ void BasicGenre::setId(const int id) { this->id = id; }
 
 const string& BasicGenre::getName() const { return name; }
 void BasicGenre::setName(const string& name) { this->name = name; }
+
+}

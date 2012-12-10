@@ -7,72 +7,120 @@
 //
 //  Core that manages possible tags for the music file. This is not multi-thread safe.
 
-#import "MusicManager.h"
+#include "MusicManager.h"
 
+#include <hash_map.h>
+#include <iostream>
+#include <regex.h>
 #include <string>
+#include <sstream>
+#include <vector>
 
-#include <stdio.h>
+#include <boost/filesystem.hpp>
 #include <id3/misc_support.h>
 #include <id3/readers.h>
 #include <id3/tag.h>
 #include <id3/utils.h>
 #include <id3/writers.h>
 
-#import <stdlib.h>
-
 #include "BasicGenre.h"
-#import "Constants.h"
-#import "NSSong.h"
+//#import "Constants.h"
+#include "Song.h"
+#include "SoulSifterSettings.h"
 
+using namespace boost;
+using namespace std;
 
-#define id3CatalogId @"catalogId"
+namespace soulsifter {
 
+#define id3CatalogId "catalogId"
 
-# pragma mark private method helpers
+# pragma mark private helpers
 
-@interface MusicManager()
+namespace {
+    
+    ID3_Frame* updateTag(ID3_Tag* tag, ID3_FrameID frameId, const string& value) {
+        ID3_Frame* frame = NULL;
+        if (tag != NULL && value.length() > 0) {
+            // remove previous tag
+            while ((frame = tag->Find(frameId))) {
+                frame = tag->RemoveFrame(frame);
+                delete frame;
+            }
+            // add new tag
+            if (tag->Find(frameId) == NULL) {
+                frame = new ID3_Frame(frameId);
+                if (frame && value.length()) {
+                    frame->GetField(ID3FN_TEXT)->Set(value.c_str());
+                    tag->AttachFrame(frame);
+                }
+            }
+        }
+        return frame;
+    }
+    
+    ID3_Frame* updateTag(ID3_Tag* tag, ID3_FrameID frameId, int value) {
+        ID3_Frame* frame = NULL;
+        if (tag != NULL && value > 0) {
+            // remove previous tag
+            while ((frame = tag->Find(frameId))) {
+                frame = tag->RemoveFrame(frame);
+                delete frame;
+            }
+            // add new tag
+            if (tag->Find(frameId) == NULL) {
+                frame = new ID3_Frame(frameId);
+                if (frame && value) {
+                    frame->GetField(ID3FN_RATING)->Set(value);
+                    tag->AttachFrame(frame);
+                }
+            }
+        }
+        return frame;
+    }
+    
+    ID3_Frame* updateTag(ID3_Tag* tag, ID3_FrameID frameId, const string& value, const string& description) {
+        ID3_Frame* frame = NULL;
+        if (tag != NULL && value.length() > 0 && description.length() > 0) {
+            // remove previous tag
+            while ((frame = tag->Find(frameId, ID3FN_DESCRIPTION, description.c_str()))) {
+                frame = tag->RemoveFrame(frame);
+                delete frame;
+            }
+            // add new tag
+            if (tag->Find(frameId, ID3FN_DESCRIPTION, description.c_str()) == NULL) {
+                frame = new ID3_Frame(frameId);
+                if (frame && value.length()) {
+                    frame->GetField(ID3FN_TEXT)->Set(value.c_str());
+                    frame->GetField(ID3FN_DESCRIPTION)->Set(description.c_str());
+                    tag->AttachFrame(frame);
+                }
+            }
+        }
+        return frame;
+    }
 
-// tags
-- (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value;
-- (ID3_Frame *)updateTag:(ID3_Tag *)tag
-                 inFrame:(ID3_FrameID)frameId
-                withText:(NSString *)value
-          andDescription:(NSString *)desc;
-
-// paths
-- (void)initializePathMembers;
-
-@end
-
-
-@implementation MusicManager
+}
 
 # pragma mark initialization
 
-+ (MusicManager *)default {
-    static dispatch_once_t pred;
-    static MusicManager *musicManager = nil;
-    dispatch_once(&pred, ^{
-        musicManager = [[MusicManager alloc] init];
-    });
-    return musicManager;
+MusicManager::MusicManager() :
+lastParsedSong(NULL),
+lastSongFixed(NULL),
+artistToGenre(1600) {
 }
 
-- (MusicManager *)init {
-    NSLog(@"musicManager.init");
-    [super init];
-    lastParsedSong = NULL;
-    lastSongFixed = NULL;
-    return self;
+MusicManager::~MusicManager() {
+    // TODO delete artistToGenre
 }
 
 # pragma mark tagging
 
-- (NSSong *)discoverSong:(NSURL *)musicFile {
-    NSLog(@"musicManager.discoverSong");
-	NSLog(@"looking at '%@'", musicFile);
-    NSSong *song = [[NSSong alloc] init];
-    ID3_Tag tag([[musicFile path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+void MusicManager::readTagsFromSong(Song* song) {
+    if (!song->getAlbum()) {
+        song->setAlbum(new Album());
+    }
+    ID3_Tag tag(song->getFilepath().c_str());
     // TODO use an std::auto_ptr here to handle object cleanup automatically(void) ID3Tag_Link(tag, filename);
     ID3_Tag::Iterator* iter = tag.CreateIterator();
     const ID3_Frame* frame = NULL;
@@ -83,44 +131,44 @@
         switch (eFrameID) {
             case ID3FID_LEADARTIST: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setArtist:[NSString stringWithUTF8String:sText]];
+                song->setArtist(sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song artist]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getArtist() << endl;
                 break;
             }
             case ID3FID_ALBUM: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setAlbum:[NSString stringWithUTF8String:sText]];
+                song->getAlbum()->setName(sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song album]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getAlbum()->getName() << endl;
                 break;
             }
             case ID3FID_TRACKNUM: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setTrackNum:[NSString stringWithUTF8String:sText]];
+                song->setTrack(sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song trackNum]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getTrack() << endl;
                 break;
             }
             case ID3FID_TITLE: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setTitle:[NSString stringWithUTF8String:sText]];
+                song->setTitle(sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song title]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getTitle() << endl;
                 break;
             }
             case ID3FID_MIXARTIST: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setRemix:[NSString stringWithUTF8String:sText]];
+                song->setRemix(sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song remix]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getRemix() << endl;
                 break;
             }
             case ID3FID_BAND: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setFeaturing:[NSString stringWithUTF8String:sText]];
+                song->setFeaturing(sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song featuring]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getFeaturing() << endl;
                 break;
             }
             // numeric string in the DDMM format
@@ -131,37 +179,46 @@
                 tmp[1] = sText[1];
                 tmp[2] = '\0';
                 if (tmp[0] != '0' || tmp[1] != '0')
-                    [song setReleaseDateDay:[NSString stringWithUTF8String:tmp]];
+                    song->getAlbum()->setReleaseDateDay(atoi(tmp));
                 tmp[0] = sText[2];
                 tmp[1] = sText[3];
-                [song setReleaseDateMonth:[NSString stringWithUTF8String:tmp]];
-                NSLog(@" - frame %s (%s): %s", frame->GetTextID(), desc, sText);
+                song->getAlbum()->setReleaseDateMonth(atoi(tmp));
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << sText << endl;
                 delete [] sText;
                 delete [] tmp;
                 break;
             }
             case ID3FID_YEAR: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setReleaseDateYear:[NSString stringWithUTF8String:sText]];
+                song->getAlbum()->setReleaseDateYear(atoi(sText));
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song releaseDateYear]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getAlbum()->getReleaseDateYear() << endl;
                 break;
             }
             case ID3FID_PUBLISHER: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                [song setLabel:[NSString stringWithUTF8String:sText]];
+                song->getAlbum()->setLabel(sText);
                 delete [] sText;
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, [song label]);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getAlbum()->getLabel() << endl;
                 break;
             }
             case ID3FID_USERTEXT: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT),
                      *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
-                NSString *description = [NSString stringWithUTF8String:sDesc];
-                if ([description isEqualTo:id3CatalogId]) {
-                    [song setCatalogId:[NSString stringWithUTF8String:sText]];
+                string desc(sDesc);
+                if (!desc.compare(id3CatalogId)) {
+                    song->getAlbum()->setCatalogId(sText);
                 }
-                NSLog(@" - frame %s (%s): %s", frame->GetTextID(), sDesc, sText);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << sText << endl;
+                break;
+            }
+            case ID3FID_POPULARIMETER: {
+                char *sEmail = ID3_GetString(frame, ID3FN_EMAIL);
+                size_t nCounter = frame->GetField(ID3FN_COUNTER)->Get(),
+                nRating = frame->GetField(ID3FN_RATING)->Get();
+                song->setRating((int)nRating);
+                cout << "frame " << frame->GetTextID() << " (" << desc << "): " << sEmail << ", counter=" << nCounter << ", rating=" << nRating << endl;
+                delete [] sEmail;
                 break;
             }
             // the rest will just log messages
@@ -195,8 +252,8 @@
             case ID3FID_ISRC:
             case ID3FID_ENCODERSETTINGS: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT),
-                     *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
-                NSLog(@" - frame %s (%s): %s", frame->GetTextID(), sDesc, sText);
+                *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
+                cout << "frame " << frame->GetTextID() << " (" << sDesc << ") : " << sText << endl;
                 delete [] sText;
                 delete [] sDesc;
                 break;
@@ -205,8 +262,8 @@
             case ID3FID_UNSYNCEDLYRICS: {
                 char *sText = ID3_GetString(frame, ID3FN_TEXT), 
                      *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION), 
-                     *sLang = ID3_GetString(frame, ID3FN_LANGUAGE);
-                NSLog(@" - frame %s (%s)[%s]: %s", frame->GetTextID(), sDesc, sLang, sText);
+                *sLang = ID3_GetString(frame, ID3FN_LANGUAGE);
+                cout << "frame " << frame->GetTextID() << " (" << sDesc << ")[" << sLang << "]: " << sText << endl;
                 delete [] sText;
                 delete [] sDesc;
                 delete [] sLang;
@@ -221,31 +278,31 @@
             case ID3FID_WWWPAYMENT:
             case ID3FID_WWWRADIOPAGE: {
                 char *sURL = ID3_GetString(frame, ID3FN_URL);
-                NSLog(@" - frame %s (%s): %s", frame->GetTextID(), desc, sURL);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << sURL << endl;
                 delete [] sURL;
                 break;
             }
             case ID3FID_WWWUSER: {
                 char *sURL = ID3_GetString(frame, ID3FN_URL),
-                     *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
-                NSLog(@" - frame %s (%s): %s", frame->GetTextID(), sDesc, sURL);
+                *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
+                cout << "frame " << frame->GetTextID() << " (" << sDesc << ") : " << sURL << endl;
                 delete [] sURL;
                 delete [] sDesc;
                 break;
             }
             case ID3FID_INVOLVEDPEOPLE: {
                 size_t nItems = frame->GetField(ID3FN_TEXT)->GetNumTextItems();
-                NSString *ppl = @"";
+                stringstream ppl;
                 for (size_t nIndex = 0; nIndex < nItems; nIndex++) {
                     char *sPeople = ID3_GetString(frame, ID3FN_TEXT, nIndex);
                     if (nIndex + 1 < nItems) {
-                        ppl = [NSString stringWithFormat:@"%@%s,", ppl, sPeople];
+                        ppl << sPeople << ",";
                     } else {
-                        ppl = [NSString stringWithFormat:@"%@%s", ppl, sPeople];
+                        ppl << sPeople;
                     }
                     delete [] sPeople;
                 }
-                NSLog(@" - frame %s (%s): %@", frame->GetTextID(), desc, ppl);
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << ppl << endl;
                 break;
             }
             case ID3FID_PICTURE: {
@@ -257,8 +314,6 @@
                 std::cout << "(" << sDesc << ")[" << sFormat << ", "
                 << nPicType << "]: " << sMimeType << ", " << nDataSize
                 << " bytes" << std::endl;
-                NSLog(@" - frame %s (%s): %s, %lu: %s, %lu bytes", frame->GetTextID(), sDesc,
-                      sFormat, nPicType, sMimeType, nDataSize);
                 delete [] sMimeType;
                 delete [] sDesc;
                 delete [] sFormat;
@@ -269,8 +324,7 @@
                      *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION), 
                      *sFileName = ID3_GetString(frame, ID3FN_FILENAME);
                 size_t nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                NSLog(@" - frame %s (%s): %s: %s, %lu bytes", frame->GetTextID(), sDesc,
-                      sFileName, sMimeType, nDataSize);
+                cout << "frame " << frame->GetTextID() << " (" << sDesc << "): " << sFileName << ": " << sMimeType << ", " << nDataSize << " bytes" << endl;
                 delete [] sMimeType;
                 delete [] sDesc;
                 delete [] sFileName;
@@ -279,31 +333,21 @@
             case ID3FID_UNIQUEFILEID: {
                 char *sOwner = ID3_GetString(frame, ID3FN_OWNER);
                 size_t nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                NSLog(@" - frame %s (%s): %s, %lu bytes", frame->GetTextID(), desc, sOwner, nDataSize);
+                cout << "frame " << frame->GetTextID() << " (" << desc << "): " << sOwner << ", " << nDataSize << " bytes" << endl;
                 delete [] sOwner;
                 break;
             }
             case ID3FID_PLAYCOUNTER: {
                 size_t nCounter = frame->GetField(ID3FN_COUNTER)->Get();
-                NSLog(@" - frame %s (%s): %lu", frame->GetTextID(), desc, nCounter);
-                break;
-            }
-            case ID3FID_POPULARIMETER: {
-                char *sEmail = ID3_GetString(frame, ID3FN_EMAIL);
-                size_t nCounter = frame->GetField(ID3FN_COUNTER)->Get(),
-                       nRating = frame->GetField(ID3FN_RATING)->Get();
-                NSLog(@" - frame %s (%s): %s, counter=%lu, rating=%lu", frame->GetTextID(), desc,
-                      sEmail, nCounter, nRating);
-                delete [] sEmail;
+                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << nCounter << endl;
                 break;
             }
             case ID3FID_CRYPTOREG:
             case ID3FID_GROUPINGREG: {
                 char *sOwner = ID3_GetString(frame, ID3FN_OWNER);
                 size_t nSymbol = frame->GetField(ID3FN_ID)->Get(),
-                       nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                NSLog(@" - frame %s (%s): %s (%lu), %lu bytes", frame->GetTextID(), desc,
-                      sOwner, nSymbol, nDataSize);
+                        nDataSize = frame->GetField(ID3FN_DATA)->Size();
+                cout << "frame " << frame->GetTextID() << " (" << desc << "): " << sOwner << " (" << nSymbol << ") , " << nDataSize << " bytes" << endl;
                 break;
             }
             case ID3FID_SYNCEDLYRICS: {
@@ -312,18 +356,17 @@
                 size_t nTimestamp = frame->GetField(ID3FN_TIMESTAMPFORMAT)->Get(),
                        nRating = frame->GetField(ID3FN_CONTENTTYPE)->Get();
                 const char* format = (2 == nTimestamp) ? "ms" : "frames";
-                NSString *type;
+                string type;
                 switch (nRating) {
-                    case ID3CT_OTHER:    type = @"Other"; break;
-                    case ID3CT_LYRICS:   type = @"Lyrics"; break;
-                    case ID3CT_TEXTTRANSCRIPTION:     type = @"Text transcription"; break;
-                    case ID3CT_MOVEMENT: type = @"Movement/part name"; break;
-                    case ID3CT_EVENTS:   type = @"Events"; break;
-                    case ID3CT_CHORD:    type = @"Chord"; break;
-                    case ID3CT_TRIVIA:   type = @"Trivia/'pop up' information"; break;
+                    case ID3CT_OTHER:    type = "Other"; break;
+                    case ID3CT_LYRICS:   type = "Lyrics"; break;
+                    case ID3CT_TEXTTRANSCRIPTION:     type = "Text transcription"; break;
+                    case ID3CT_MOVEMENT: type = "Movement/part name"; break;
+                    case ID3CT_EVENTS:   type = "Events"; break;
+                    case ID3CT_CHORD:    type = "Chord"; break;
+                    case ID3CT_TRIVIA:   type = "Trivia/'pop up' information"; break;
                 }
-                NSLog(@" - frame %s (%s)[%s]: %@: %lu %s", frame->GetTextID(), sDesc,
-                      sLang, type, nTimestamp, format);
+                cout << "frame " << frame->GetTextID() << " (" << sDesc << ")[" << sLang << "]: " << type << ": " << nTimestamp << " " << format << endl;
                 ID3_Field* fld = frame->GetField(ID3FN_DATA);
                 if (fld) {
                     // skip reading this
@@ -351,23 +394,22 @@
             case ID3FID_REVERB:
             case ID3FID_SYNCEDTEMPO:
             case ID3FID_METACRYPTO: {
-                NSLog(@" - frame %s (%s): unimplemented", frame->GetTextID(), desc);
+                cout << "frame " << frame->GetTextID() << " (" << desc << "): unimplemented" << endl;
                 break;
             }
             default: {
-                NSLog(@" - frame %s: unknown", frame->GetTextID());
+                cout << "frame " << frame->GetTextID() << ": unknown" << endl;
                 break;
             }
         }
     }
     delete iter;
     
-    // split remix from title
-    if ([song title]) {
-        NSError *error = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@" \\((.* ((remix)|(rmx)|(mix)|(refix))\\)$"
-                                                                               options:NSRegularExpressionCaseInsensitive
-                                                                                 error:&error];
+    /* TODO split remix from title
+    if (song->getTitle()) {
+        regex rgx("\\((.* ((remix)|(rmx)|(mix)|(refix))\\)$");
+        smatch groups;
+        if (regex_search(song->getTitle(), groups, rgx)) {
         NSTextCheckingResult *match = nil;
         if ((match = [regex firstMatchInString:[song title] options:0 range:NSMakeRange(0, [[song title] length])])) {
             if (![song remix] || [[song remix] length] == 0) {
@@ -393,255 +435,136 @@
                                                               range:NSMakeRange(0, [[song artist] length])
                                                        withTemplate:@""]];
         }
-    }
+    }*/
     
-    NSSong *songBeforeFixing = [song copyWithZone:NULL];
+    Song *songBeforeFixing = new Song(*song);
     
     // compare with last
     if (lastParsedSong && lastSongFixed) {
-        if (![song artist] || [[song artist] length] == 0
-            || [[song artist] isEqualToString:[lastParsedSong artist]]) {
-            [song setArtist:[lastSongFixed artist]];
+        if (song->getArtist().length() == 0 || !song->getArtist().compare(lastParsedSong->getArtist())) {
+            song->setArtist(lastSongFixed->getArtist());
         }
-        if (![song album] || [[song album] length] == 0
-            || [[song album] isEqualToString:[lastParsedSong album]]) {
-            [song setAlbum:[lastSongFixed album]];
+        if (song->getAlbum()->getName().length() == 0 || !song->getAlbum()->getName().compare(lastParsedSong->getAlbum()->getName())) {
+            song->getAlbum()->setName(lastSongFixed->getAlbum()->getName());
         }
-        if (![song trackNum] || [[song trackNum] length] == 0
-            || [[song trackNum] isEqualToString:[lastParsedSong trackNum]]) {
-            [song setTrackNum:[lastSongFixed trackNum]];
+        if (song->getTrack().length() == 0) {
+            // TODO increment track #
         }
-        if (![song title] || [[song title] length] == 0
-            || [[song title] isEqualToString:[lastParsedSong title]]) {
-            [song setTitle:[lastSongFixed title]];
+        // we shouldn't auto set track title b/c it changes so much
+        // we shouldn't auto set remix title b/c it changes so much
+        // we shouldn't auto set featuring title b/c it changes so much
+        if (song->getAlbum()->getLabel().length() == 0 || !song->getAlbum()->getLabel().compare(lastParsedSong->getAlbum()->getLabel())) {
+            song->getAlbum()->setLabel(lastSongFixed->getAlbum()->getLabel());
         }
-        if (![song remix] || [[song remix] length] == 0
-            || [[song remix] isEqualToString:[lastParsedSong remix]]) {
-            [song setRemix:[lastSongFixed remix]];
+        if (song->getAlbum()->getCatalogId().length() == 0 || !song->getAlbum()->getCatalogId().compare(lastParsedSong->getAlbum()->getCatalogId())) {
+            song->getAlbum()->setCatalogId(lastSongFixed->getAlbum()->getCatalogId());
         }
-        if (![song featuring] || [[song featuring] length] == 0
-            || [[song featuring] isEqualToString:[lastParsedSong featuring]]) {
-            [song setFeaturing:[lastSongFixed featuring]];
+        if (song->getAlbum()->getReleaseDateYear() == 0 || song->getAlbum()->getReleaseDateYear() == lastParsedSong->getAlbum()->getReleaseDateYear()) {
+            song->getAlbum()->setReleaseDateYear(lastSongFixed->getAlbum()->getReleaseDateYear());
         }
-        if (![song label] || [[song label] length] == 0
-            || [[song label] isEqualToString:[lastParsedSong label]]) {
-            [song setLabel:[lastSongFixed label]];
+        if (song->getAlbum()->getReleaseDateMonth() == 0 || song->getAlbum()->getReleaseDateMonth() == lastParsedSong->getAlbum()->getReleaseDateMonth()) {
+            song->getAlbum()->setReleaseDateMonth(lastSongFixed->getAlbum()->getReleaseDateMonth());
         }
-        if (![song catalogId] || [[song catalogId] length] == 0
-            || [[song catalogId] isEqualToString:[lastParsedSong catalogId]]) {
-            [song setCatalogId:[lastSongFixed catalogId]];
+        if (song->getAlbum()->getReleaseDateDay() == 0 || song->getAlbum()->getReleaseDateDay() == lastParsedSong->getAlbum()->getReleaseDateDay()) {
+            song->getAlbum()->setReleaseDateDay(lastSongFixed->getAlbum()->getReleaseDateDay());
         }
-        if (![song releaseDateYear] || [[song releaseDateYear] length] == 0
-            || [[song releaseDateYear] isEqualToString:[lastParsedSong releaseDateYear]]) {
-            [song setReleaseDateYear:[lastSongFixed releaseDateYear]];
-        }
-        if (![song releaseDateMonth] || [[song releaseDateMonth] length] == 0
-            || [[song releaseDateMonth] isEqualToString:[lastParsedSong releaseDateMonth]]) {
-            [song setReleaseDateMonth:[lastSongFixed releaseDateMonth]];
-        }
-        if (![song releaseDateDay] || [[song releaseDateDay] length] == 0
-            || [[song releaseDateDay] isEqualToString:[lastParsedSong releaseDateDay]]) {
-            [song setReleaseDateDay:[lastSongFixed releaseDateDay]];
-        }
-        if (![song basicGenre] || [[song basicGenre] length] == 0
-            || [[song basicGenre] isEqualToString:[lastParsedSong basicGenre]]) {
-            [song setBasicGenre:[lastSongFixed basicGenre]];
+        if (song->getAlbum()->getBasicGenreId() == 0 || song->getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
+            song->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
         }
     }
 
-    [lastParsedSong release];
+    delete lastParsedSong;
     lastParsedSong = songBeforeFixing;
-    [lastParsedSong retain];
-
-    return song;
 }
 
-- (void)writeTagsToSong:(NSSong *)song {
-    NSLog(@"musicManager.writeTagsToSong");
-    
-    [lastSongFixed release];
+void MusicManager::writeTagsToSong(Song* song) {
+    delete lastSongFixed;
     lastSongFixed = song;
-    [lastSongFixed retain];
     
-    ID3_Tag tag([[[song file] path] cStringUsingEncoding:[NSString defaultCStringEncoding]]);
-    [self updateTag:&tag frame:ID3FID_LEADARTIST text:[song artist]];
-    [self updateTag:&tag frame:ID3FID_ALBUM text:[song album]];
-    [self updateTag:&tag frame:ID3FID_TRACKNUM text:[song trackNum]];
-    [self updateTag:&tag frame:ID3FID_TITLE text:[song title]];
-    [self updateTag:&tag frame:ID3FID_MIXARTIST text:[song remix]];
-    [self updateTag:&tag frame:ID3FID_BAND text:[song featuring]];
-    [self updateTag:&tag frame:ID3FID_PUBLISHER text:[song label]];
-    [self updateTag:&tag inFrame:ID3FID_USERTEXT withText:[song catalogId] andDescription:id3CatalogId];
-    [self updateTag:&tag frame:ID3FID_YEAR text:[song releaseDateYear]];
-    NSString *month = [[song releaseDateMonth] copy];
-    NSString *day = [[song releaseDateDay] copy];
-    if ([month length]) {
-        if ([month length] == 1) {
-            month = [NSString stringWithFormat:@"0%@", month];
+    ID3_Tag tag(song->getFilepath().c_str());
+    updateTag(&tag, ID3FID_LEADARTIST, song->getArtist());
+    updateTag(&tag, ID3FID_ALBUM, song->getAlbum()->getName());
+    updateTag(&tag, ID3FID_TRACKNUM, song->getTrack());
+    updateTag(&tag, ID3FID_TITLE, song->getTitle());
+    updateTag(&tag, ID3FID_MIXARTIST, song->getRemix());
+    updateTag(&tag, ID3FID_BAND, song->getFeaturing());
+    updateTag(&tag, ID3FID_PUBLISHER, song->getAlbum()->getLabel());
+    updateTag(&tag, ID3FID_USERTEXT, song->getAlbum()->getCatalogId(), id3CatalogId);
+    if (song->getRating() > 0) {
+        updateTag(&tag, ID3FID_POPULARIMETER, song->getRating());
+    }
+    if (song->getAlbum()->getReleaseDateYear() > 0) {
+        ostringstream year;
+        year << song->getAlbum()->getReleaseDateYear();
+        updateTag(&tag, ID3FID_YEAR, year.str());
+    }
+    if (song->getAlbum()->getReleaseDateMonth() > 0) {
+        ostringstream daymonth;
+        if (song->getAlbum()->getReleaseDateDay() == 0) {
+            daymonth << "00";
+        } else if (song->getAlbum()->getReleaseDateDay() < 10) {
+            daymonth << "0" << song->getAlbum()->getReleaseDateDay();
+        } else {
+            daymonth << song->getAlbum()->getReleaseDateDay();
         }
-        if ([day length] == 0) {
-            day = @"00";
-        } else if ([day length] == 1) {
-            day = [NSString stringWithFormat:@"0%@", day];
+        if (song->getAlbum()->getReleaseDateMonth() < 10) {
+            daymonth << "0" << song->getAlbum()->getReleaseDateMonth();
+        } else {
+            daymonth << song->getAlbum()->getReleaseDateMonth();
         }
-        [self updateTag:&tag frame:ID3FID_DATE text:[NSString stringWithFormat:@"%@%@", day, month]];
+        updateTag(&tag, ID3FID_DATE, daymonth.str());
     }
     tag.Update();
 }
 
-- (ID3_Frame *)updateTag:(ID3_Tag *)tag frame:(ID3_FrameID)frameId text:(NSString *)value {
-    NSLog(@"musicManager.updateTag:frame:text");
-    const char* text = [value cStringUsingEncoding:[NSString defaultCStringEncoding]];
-    ID3_Frame* frame = NULL;
-    if (NULL != tag && NULL != text && strlen(text) > 0) {
-        // remove previous tag
-        while ((frame = tag->Find(frameId))) {
-            frame = tag->RemoveFrame(frame);
-            delete frame;
-        }
-        // add new tag
-        if (tag->Find(frameId) == NULL) {
-            frame = new ID3_Frame(frameId);
-            if (frame && [value length]) {
-                frame->GetField(ID3FN_TEXT)->Set(text);
-                tag->AttachFrame(frame);
-            }
-        }
-    }
-    return frame;
-}
-
-- (ID3_Frame *)updateTag:(ID3_Tag *)tag inFrame:(ID3_FrameID)frameId withText:(NSString *)value andDescription:(NSString *)desc {
-    NSLog(@"musicManager.updateTag:inFrame:withText:andDescription");
-    const char* text = [value cStringUsingEncoding:[NSString defaultCStringEncoding]];
-    const char* description = [desc cStringUsingEncoding:[NSString defaultCStringEncoding]];
-    ID3_Frame* frame = NULL;
-    if (NULL != tag && NULL != text && strlen(text) > 0) {
-        // remove previous tag
-        while ((frame = tag->Find(frameId, ID3FN_DESCRIPTION, description))) {
-            frame = tag->RemoveFrame(frame);
-            delete frame;
-        }
-        // add new tag
-        if (tag->Find(frameId, ID3FN_DESCRIPTION, description) == NULL) {
-            frame = new ID3_Frame(frameId);
-            if (frame && [value length]) {
-                frame->GetField(ID3FN_TEXT)->Set(text);
-                frame->GetField(ID3FN_DESCRIPTION)->Set(description);
-                tag->AttachFrame(frame);
-            }
-        }
-    }
-    return frame;
-}
-
+                
 # pragma mark paths
-
-- (void)initializePathMembers {
-    NSLog(@"musicManager.initializePathMembers");
-    // temporary variables
-	NSMutableDictionary *artists = [NSMutableDictionary dictionaryWithCapacity:1600];
-	NSMutableArray *genres = [NSMutableArray arrayWithCapacity:24];
-	
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *path;
-    if (![[MusicManager default] getCopyToPath:&path]) {
-        return;
+ 
+string MusicManager::getCopyToPath() {
+    filesystem::path dir(SoulSifterSettings::getInstance().getMusicPath());
+    if (filesystem::exists(dir) && filesystem::is_directory(dir)) {
+        return SoulSifterSettings::getInstance().getMusicPath();
     }
-	
-    // enumerate over path; releasing values with each iteration for better memory management
-	NSDirectoryEnumerator *enumerator  = [fileManager enumeratorAtPath:path];
-	NSString *file;
-	while (file = [enumerator nextObject]) {
-		NSDictionary *fileAttribs = [enumerator fileAttributes];
-		
-        // process first & second tier directories
-		if ([fileAttribs objectForKey:NSFileType] == NSFileTypeDirectory) {
-			if ([file characterAtIndex:0] == '.') {
-				continue;
-			}
-			NSArray *pathComponents = [file pathComponents];
-			if ([pathComponents count] == 1) {
-				[genres addObject:file];
-			} else if ([pathComponents count] == 2) {
-				[artists setObject:[genres lastObject] forKey:[pathComponents objectAtIndex:1]];
-				[enumerator skipDescendents];
-			} else {
-				NSString *msg = [NSString stringWithFormat:@"Should never reach this point, but did with the path %@", file];
-				NSAssert(NO, msg);
-			}
-		}
-	}
-	
-    // set discovered attributes
-    [artistToGenre release];
-	artistToGenre = artists;
-    [artistToGenre retain];
-	
-    /*/ set artist array
-	NSMutableArray *mutableArtistArray = [[[self artists2genres] allKeys] mutableCopy];
-	[artistComboBox setMenuValues:mutableArtistArray];
-	[mutableArtistArray release];*/
-	
-    // sort & set genres array
-	[genres sortUsingSelector:@selector(caseInsensitiveCompare:)];
-    [basicGenres release];
-    basicGenres = genres;
-    [basicGenres retain];
+    filesystem::path staging(SoulSifterSettings::getInstance().getStagingPath());
+    if (filesystem::exists(staging) && filesystem::is_directory(staging)) {
+        return SoulSifterSettings::getInstance().getStagingPath();
+    }
+    return "";
 }
 
-- (BOOL)getCopyToPath:(NSString **)path {
-    NSLog(@"musicManager.getCopyToPath");
+bool MusicManager::moveSong(Song* song) {
+    try {
+        // create directory
+        ostringstream dirpath;
+        dirpath << getCopyToPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getArtist() << "/" << song->getAlbum()->getName();
+        filesystem::path dir(dirpath.str());
+        if (!filesystem::exists(dir)) {
+            if (!filesystem::create_directories(dir)) {
+                cerr << "Error occurred while trying to create directory " << dirpath.str() << endl;
+                return false;
+            }
+        } else if (!filesystem::is_directory(dir)) {
+            cerr << "Cannot move file b/c destination is not a directory " << dirpath.str() << endl;
+            return false;
+        }
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL isDir;
+        // move file to dest
+        stringstream destpath;
+        boost::filesystem::path src(song->getFilepath());
+        destpath << dirpath.str() << "/" << src.filename().string();
+        boost::filesystem::path dest(destpath.str());
+        boost::filesystem::rename(src, dest);
+        
+        // update song path
+        song->setFilepath(destpath.str());
     
-    if ([fileManager fileExistsAtPath:[userDefaults stringForKey:UDMusicPath] isDirectory:&isDir] &&
-        isDir) {
-        *path = [[[userDefaults stringForKey:UDMusicPath] retain] autorelease];
-        return TRUE;
+        return true;  //TODO better testing
+    } catch (const filesystem::filesystem_error& ex) {
+        cerr << ex.what() << '\n';
     }
-    
-    if ([fileManager fileExistsAtPath:[userDefaults stringForKey:UDStagingPath] isDirectory:&isDir] &&
-        isDir) {
-        *path = [[[userDefaults stringForKey:UDStagingPath] retain] autorelease];
-        return TRUE;
-    }
-    
-    return FALSE;
+    return false;
 }
-
-- (void)moveSong:(NSSong *)song {
-    NSLog(@"musicManager.moveSong");
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSError	*error;
-    
-    NSString *path;
-    NSAssert([self getCopyToPath:&path], @"Cannot find directory to copy music to");
-	
-    // create directory
-    NSURL *destDir = [NSURL fileURLWithPathComponents:
-                      [NSArray arrayWithObjects:path, [song basicGenre], [song artist], [song album], nil]];
-    NSLog(@"destination directory: %@", destDir);
-	if (![fileManager createDirectoryAtURL:destDir withIntermediateDirectories:YES attributes:nil error:&error]) {
-		NSString *msg = [NSString stringWithFormat:@"Error occurred while trying to create directory: %@", error];
-		NSAssert(NO, msg);
-	}
-    
-    // move file to dest
-    NSURL *dest = [destDir URLByAppendingPathComponent:[[song file] lastPathComponent]];
-    NSLog(@"moving '%@' to '%@'", [song file], dest);
-    if (![fileManager moveItemAtURL:[song file] toURL:dest error:&error]) {
-        NSString *msg = [NSString stringWithFormat:@"Unable to move file. %@", error];
-        NSAssert(NO, msg);
-    }
-    
-    // update song path
-    [song setFile:dest];
-}
-
+/*
 - (void)moveImage:(NSURL *)fileUrl {
     NSLog(@"musicManager.moveImage");
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -763,22 +686,38 @@
         }
     }
 }
-
+*/
 # pragma mark db updates
 
-- (void)updateDatabaseBasicGenres {
-    for (NSString *genre in [self basicGenres]) {
-        std::string genre_string([genre UTF8String]);
-        const BasicGenre *basicGenre = BasicGenre::findByName(genre_string);
-        if (!basicGenre) {
-            BasicGenre newGenre;
-            newGenre.setName(genre_string);
-            newGenre.save();
+void MusicManager::updateDatabaseBasicGenres() {
+    // TODO the artists to genres
+    try {
+        filesystem::path path(getCopyToPath());
+        if (!filesystem::exists(path)) {
+            cerr << "Cannot update db basic genres because path does not exist: " << getCopyToPath() << endl;
+            return;
+        } else if (!filesystem::is_directory(path)) {
+            cerr << "Cannot update db basic genres because path is not a directory: " << getCopyToPath() << endl;
+            return;
         }
-        // don't delete the basic genres since they are static
+        
+        filesystem::directory_iterator end; // default ctor yields past the end
+        for (filesystem::directory_iterator it(path); it != end; ++it) {
+            if (filesystem::is_directory(it->status())) {
+                string filename = it->path().filename().string();
+                if (!BasicGenre::findByName(filename)) {
+                    BasicGenre *genre = new BasicGenre();
+                    genre->setName(filename);
+                    genre->save();
+                }
+            }
+        }
+    } catch (const filesystem::filesystem_error& ex) {
+        cerr << ex.what() << '\n';
     }
 }
-
+                
+ /*
 # pragma mark paths accessors
 
 - (NSArray *)basicGenres {
@@ -789,4 +728,5 @@
     return basicGenres;
 }
 
-@end
+@end*/
+}

@@ -17,6 +17,8 @@
 
 #include "MysqlAccess.h"
 
+namespace soulsifter {
+
 Track::Track() :
 id(0),
 re_id(0),
@@ -118,4 +120,6 @@ void Track::getTrack(Track* track) {
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
     }
+}
+
 }

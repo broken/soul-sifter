@@ -9,6 +9,8 @@
 #ifndef __soul_sifter__RapidEvolutionMusicDatabaseWriter__
 #define __soul_sifter__RapidEvolutionMusicDatabaseWriter__
 
+namespace soulsifter {
+
 class RapidEvolutionMusicDatabaseWriter {
 public:
     RapidEvolutionMusicDatabaseWriter();
@@ -18,5 +20,7 @@ public:
 private:
     bool processing;
 };
+
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionMusicDatabaseWriter__) */

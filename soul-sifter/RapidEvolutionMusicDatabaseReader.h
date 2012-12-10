@@ -11,6 +11,8 @@
 
 #include "RapidEvolutionDatabaseHandler.h"
 
+namespace soulsifter {
+
 class RapidEvolutionMusicDatabaseReader {
 public:
     RapidEvolutionMusicDatabaseReader();
@@ -31,5 +33,7 @@ private:
     
     void computeMusicDatabaseLength();
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionMusicDatabaseReader__) */

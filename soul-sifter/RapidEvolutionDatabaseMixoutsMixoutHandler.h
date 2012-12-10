@@ -17,6 +17,8 @@
 
 #include "Mix.h"
 
+namespace soulsifter {
+
 class RapidEvolutionDatabaseMixoutsMixoutHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseMixoutsMixoutHandler(xercesc::SAX2XMLReader* parser,
@@ -51,5 +53,7 @@ private:
     const XMLCh* const comments_elem;
     const XMLCh* const addon_elem;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseMixoutsMixoutHandler__) */

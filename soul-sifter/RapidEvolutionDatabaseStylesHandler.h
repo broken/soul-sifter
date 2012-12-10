@@ -15,6 +15,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+    
 class Style;
 
 class RapidEvolutionDatabaseStylesHandler : public DTAbstractHandler {
@@ -35,5 +37,7 @@ private:
     
     vector<pair<int, int> > childStyles;  // re_id -> child re_id
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseStylesHandler__) */

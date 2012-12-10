@@ -12,6 +12,8 @@
 #include "DTAbstractHandler.h"
 #include "RESetting.h"
 
+namespace soulsifter {
+
 class RapidEvolutionDatabaseConfigSettingsHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseConfigSettingsHandler(xercesc::SAX2XMLReader* parser,
@@ -35,5 +37,7 @@ private:
     const XMLCh* const qname;
     RESetting reSetting;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseConfigSettingsHandler__) */

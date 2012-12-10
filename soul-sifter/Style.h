@@ -14,6 +14,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class Style {
 public:
     Style();
@@ -58,5 +60,7 @@ private:
     static vector<Style*>* getStaticStyles();
     static Style* findByIdMutable(const int id);
 };
+    
+}
 
 #endif /* defined(__soul_sifter__Style__) */

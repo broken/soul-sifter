@@ -23,6 +23,8 @@
 #include <cppconn/warning.h>
 #include <mysql_driver.h>
 
+namespace soulsifter {
+
 # pragma mark initialization
 
 MysqlAccess::MysqlAccess() :
@@ -100,4 +102,6 @@ const int MysqlAccess::getLastInsertId() {
     rs->close();
     delete rs;
     return id;
+}
+    
 }

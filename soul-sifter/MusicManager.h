@@ -6,38 +6,53 @@
 //  Copyright (c) 2012 Dogatech. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#include <hash_map.h>
+#include <string>
 
-@class NSSong;
+using namespace std;
 
-@interface MusicManager : NSObject {
-@private
+namespace soulsifter {
+
+class BasicGenre;
+class Song;
+
+class MusicManager {
+public:
+    ~MusicManager();
+    static MusicManager& getInstance() {
+        static MusicManager instance;  // guaranteed to be destroyed
+        // instantiated on first use
+        return instance;
+    }
+    
     // tags
-    NSSong *lastParsedSong;
-    NSSong *lastSongFixed;
+    void readTagsFromSong(Song* song);
+    void writeTagsToSong(Song* song);  // takes ownership of song here
     
     // paths
-    NSArray *basicGenres;
-    NSDictionary *artistToGenre;
+    string getCopyToPath();
+    bool moveSong(Song* song);
+    void moveImage(const string filepath);
+    void populateStagingDirectory();
+    void flushStagingDirectory();
+    
+    // db updates
+    void updateDatabaseBasicGenres();
+
+private:
+    // tags
+    Song *lastParsedSong;
+    Song *lastSongFixed;
+    
+    // paths
+    hash_map<string, BasicGenre*> artistToGenre;
+    
+    // singleton
+    MusicManager();
+    MusicManager(MusicManager const&);
+    void operator=(MusicManager const&);
+    
+    void initializePathMembers();
+};
+    
 }
-
-+ (MusicManager *)default;
-
-// tags
-- (NSSong *)discoverSong:(NSURL *)musicFile;
-- (void)writeTagsToSong:(NSSong *)song;
-
-// paths
-- (BOOL)getCopyToPath:(NSString **)path;
-- (void)moveSong:(NSSong *)song;
-- (void)moveImage:(NSURL *)file;
-- (void)populateStagingDirectory;
-- (void)flushStagingDirectory;
-
-// paths accessors
-- (NSArray *)basicGenres;
-
-// db updates
-- (void)updateDatabaseBasicGenres;
-
-@end

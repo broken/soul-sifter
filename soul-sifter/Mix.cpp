@@ -22,6 +22,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 # pragma mark helpers
 
 namespace {
@@ -219,4 +221,6 @@ bool Mix::MixResultSet::next(Mix* mix) {
     } else {
         return false;
     }
+}
+
 }

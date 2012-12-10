@@ -20,6 +20,8 @@
 using namespace std;
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseMixoutsMixoutHandler::RapidEvolutionDatabaseMixoutsMixoutHandler(SAX2XMLReader* parser,
                                                                                        DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
@@ -113,4 +115,6 @@ void RapidEvolutionDatabaseMixoutsMixoutHandler::characters(const XMLCh* const c
     } else if (fieldPointer.type() == typeid(double*)) {
         *(boost::any_cast<double*>(fieldPointer)) = atof(XMLString::transcode(chars));
     }
+}
+    
 }

@@ -14,6 +14,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class RESetting {
 public:
     RESetting();
@@ -39,5 +41,7 @@ private:
     string name;
     string value;
 };
+
+}
 
 #endif /* defined(__soul_sifter__RESetting__) */

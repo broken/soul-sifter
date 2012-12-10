@@ -23,6 +23,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 # pragma mark helpers
 
 namespace {
@@ -247,4 +249,6 @@ void Style::getChildren(const vector<Style*>** stylesPtr) const {
 void Style::getParents(const vector<Style*>** stylesPtr) const {
     getStaticStyles();
     (*stylesPtr) = &parents;
+}
+
 }

@@ -19,6 +19,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 namespace {
     
     static void populateFields(const sql::ResultSet* rs, REXML* xml) {
@@ -129,3 +131,5 @@ void REXML::setName(const string& name) { this->name = name; }
 const string& REXML::getXml() const { return xml; }
 string& REXML::getXmlRef() { return xml; }
 void REXML::setXml(const string& xml) { this->xml = xml; }
+
+}

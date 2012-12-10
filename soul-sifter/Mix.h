@@ -14,9 +14,11 @@
 
 #include "Song.h"
 
-class RapidEvolutionDatabaseMixoutsMixoutHandler;
-
 using namespace std;
+
+namespace soulsifter {
+    
+class RapidEvolutionDatabaseMixoutsMixoutHandler;
 
 class Mix {
 public:
@@ -75,5 +77,7 @@ private:
     string comments;
     bool addon;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__Mix__) */

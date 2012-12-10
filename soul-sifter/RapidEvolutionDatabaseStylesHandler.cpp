@@ -19,6 +19,8 @@
 using namespace std;
 using namespace xercesc;
 
+namespace soulsifter {
+
 RapidEvolutionDatabaseStylesHandler::RapidEvolutionDatabaseStylesHandler(SAX2XMLReader* parser,
                                                                          DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
@@ -41,4 +43,6 @@ void RapidEvolutionDatabaseStylesHandler::endElement(const XMLCh* const uri,
             parent->addChild(child);
         }
     }
+}
+
 }

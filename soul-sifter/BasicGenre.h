@@ -14,6 +14,8 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class BasicGenre {
 public:
     BasicGenre();
@@ -35,5 +37,7 @@ private:
     int id;
     string name;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__BasicGenre__) */

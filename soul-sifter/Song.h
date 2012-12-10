@@ -20,9 +20,12 @@
 
 using namespace std;
 
+namespace soulsifter {
+
 class Song {
 public:
     Song();
+    explicit Song(const Song& song);
     explicit Song(RESong* song);
     ~Song();
     void clear();
@@ -60,7 +63,7 @@ public:
     void setRating(const int rating);
     const int getAlbumId() const;
     void setAlbumId(const int albumId);
-    const Album* getAlbum() const;
+    Album* getAlbum() const;
     void setAlbum(Album* album);
     
 private:
@@ -78,5 +81,7 @@ private:
     int albumId;
     Album *album;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__Song__) */

@@ -9,7 +9,7 @@
 #import "PreferencesController.h"
 
 #import "Constants.h"
-#import "MusicManager.h"
+#include "MusicManager.h"
 #import "PathButton.h"
 
 
@@ -52,7 +52,7 @@
     [self changeMusicPath:self];
     [self changeRapidEvolutionPath:self];
     [self changeStagingPath:self];
-    [[MusicManager default] populateStagingDirectory];
+    //TODO [[MusicManager default] populateStagingDirectory];
 }
 
 # pragma mark actions

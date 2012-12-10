@@ -13,6 +13,8 @@
 
 #include "REAlbumCover.h"
 
+namespace soulsifter {
+
 class RapidEvolutionDatabaseAlbumcoversHandler : public DTAbstractHandler {
 public:
     RapidEvolutionDatabaseAlbumcoversHandler(xercesc::SAX2XMLReader* parser,
@@ -39,5 +41,7 @@ private:
     const XMLCh* const id_attrib;
     const XMLCh* const thumbnail_attrib;
 };
+
+}
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseAlbumcoversHandler__) */

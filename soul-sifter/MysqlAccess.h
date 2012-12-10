@@ -20,6 +20,8 @@
 class Connection;
 class Driver;
 
+namespace soulsifter {
+
 class MysqlAccess {
 public:
     ~MysqlAccess();
@@ -49,5 +51,7 @@ private:
     sql::Connection *connection;
     std::map<std::string, sql::PreparedStatement*> preparedStatements;
 };
+    
+}
 
 #endif /* defined(__soul_sifter__MysqlAccess__) */
