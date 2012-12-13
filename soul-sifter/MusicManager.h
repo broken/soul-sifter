@@ -6,8 +6,9 @@
 //  Copyright (c) 2012 Dogatech. All rights reserved.
 //
 
-#include <hash_map.h>
 #include <string>
+
+#include <boost/unordered_map.hpp>
 
 using namespace std;
 
@@ -22,6 +23,8 @@ public:
     static MusicManager& getInstance() {
         static MusicManager instance;  // guaranteed to be destroyed
         // instantiated on first use
+        // TODO maybe not update all
+        instance.updateDatabaseBasicGenres();
         return instance;
     }
     
@@ -38,6 +41,7 @@ public:
     
     // db updates
     void updateDatabaseBasicGenres();
+    const BasicGenre* findBasicGenreForArtist(const string& artist);
 
 private:
     // tags
@@ -45,7 +49,7 @@ private:
     Song *lastSongFixed;
     
     // paths
-    hash_map<string, BasicGenre*> artistToGenre;
+    boost::unordered_map<string, const BasicGenre*> artistToGenre;
     
     // singleton
     MusicManager();

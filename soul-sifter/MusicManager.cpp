@@ -9,7 +9,6 @@
 
 #include "MusicManager.h"
 
-#include <hash_map.h>
 #include <iostream>
 #include <regex.h>
 #include <string>
@@ -705,16 +704,26 @@ void MusicManager::updateDatabaseBasicGenres() {
         for (filesystem::directory_iterator it(path); it != end; ++it) {
             if (filesystem::is_directory(it->status())) {
                 string filename = it->path().filename().string();
-                if (!BasicGenre::findByName(filename)) {
-                    BasicGenre *genre = new BasicGenre();
-                    genre->setName(filename);
-                    genre->save();
+                const BasicGenre *genre = BasicGenre::findByName(filename);
+                if (!genre) {
+                    BasicGenre *basicGenre = new BasicGenre();
+                    basicGenre->setName(filename);
+                    basicGenre->save();
+                    genre = BasicGenre::findByName(filename);
+                }
+                for (filesystem::directory_iterator jt(it->path()); jt != end; ++jt) {
+                    string artist = jt->path().filename().string();
+                    artistToGenre[artist] = genre;
                 }
             }
         }
     } catch (const filesystem::filesystem_error& ex) {
         cerr << ex.what() << '\n';
     }
+}
+   
+const BasicGenre* MusicManager::findBasicGenreForArtist(const string& artist) {
+    return artistToGenre[artist];
 }
                 
  /*
