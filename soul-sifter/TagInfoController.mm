@@ -13,6 +13,7 @@
 #include "BasicGenre.h"
 #import "Constants.h"
 #include "MusicManager.h"
+#include "RESong.h"
 #include "Song.h"
 
 
@@ -99,12 +100,18 @@
     song.getAlbum()->setReleaseDateDay([releaseDateDay intValue]);
     song.setRating([rating intValue]);
     song.getAlbum()->setBasicGenre(soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
+    song.setDateAddedToNow();
+    // TODO set styles
+    song.setRESong(new soulsifter::RESong(song));
     
     // update tag
     soulsifter::MusicManager::getInstance().writeTagsToSong(&song);
     
     // move file
     soulsifter::MusicManager::getInstance().moveSong(&song);
+    
+    // save song
+    song.save();
     
     // load next song
     [self loadNextFile];
@@ -206,6 +213,7 @@
     else [releaseDateDay setStringValue:@""];
     //if (!song->getAlbum()->getBasicGenre().empty()) [genreComboBox setStringValue:[NSString stringWithUTF8String:song->getAlubm()->getBasicGenre()];
     if (song->getRating()) [rating setIntValue:song->getRating()];
+    [genreComboBox setStringValue:[NSString stringWithUTF8String:soulsifter::MusicManager::getInstance().findBasicGenreForArtist(song->getArtist())->getName().c_str()]];
 }
 
 # pragma mark accessors

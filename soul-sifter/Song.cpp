@@ -8,11 +8,12 @@
 
 #include "Song.h"
 
+#include <iostream>
 #include <sstream>
+#include <string>
+#include <time.h>
 #include <vector>
 
-#include <boost/date_time/local_time/local_time.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
@@ -24,7 +25,6 @@
 #include "MysqlAccess.h"
 #include "RESong.h"
 
-using namespace boost;
 using namespace std;
 
 namespace soulsifter {
@@ -33,22 +33,20 @@ namespace soulsifter {
 
 namespace {
     
-    static local_time::local_date_time timeFromeString(const string& str) {
-        istringstream iss(str);
-        local_time::local_time_input_facet* facet = new local_time::local_time_input_facet("%Y-%m-%d %H:%M:%S %z");
-        iss.imbue(locale(iss.getloc(), facet));
-        local_time::local_date_time ldt(gregorian::not_a_date_time);
-        iss >> ldt;
-        cout << ldt.to_string();
-        return ldt;
+    static time_t timeFromeString(const string& str) {
+        struct tm dt;
+        memset(&dt, 0, sizeof(dt));
+        strptime(str.c_str(), "%Y-%m-%d %X", &dt);
+        return mktime(&dt);
     }
     
-    static string stringFromTime(const local_time::local_date_time& time) {
-        stringstream ss;
-        local_time::local_time_facet* facet = new local_time::local_time_facet("%Y-%m-%d %H:%M:%S %z");
-        ss.imbue(locale(ss.getloc(), facet));
-        ss << time;
-        return ss.str();
+    static string stringFromTime(const time_t time) {
+        struct tm dt = *localtime(&time);
+        char buffer[80];
+        memset(buffer, 0, 80);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %X %Z", &dt);
+        string str(buffer);
+        return str;
     }
     
     static void populateFields(const sql::ResultSet* rs, Song* song) {
@@ -85,7 +83,7 @@ styles(),
 rating(0),
 albumId(0),
 album(NULL),
-dateAdded(gregorian::not_a_date_time),
+dateAdded(0),
 comments(),
 trashed(false) {
 }
@@ -124,7 +122,7 @@ reSongId(song->getUniqueId()),
 reSong(song),
 styles(),
 rating(song->getRating()),
-dateAdded(gregorian::not_a_date_time),
+dateAdded(timeFromeString(song->getDateAdded())),
 comments(song->getComments()),
 trashed(!song->getDisabled().compare("yes")) {
     
@@ -161,6 +159,25 @@ trashed(!song->getDisabled().compare("yes")) {
     // date added
     dateAdded = timeFromeString(song->getDateAdded());
 }
+    
+void Song::operator=(const Song& song) {
+    id = song.getId();
+    artist = song.getArtist();
+    track = song.getTrack();
+    title = song.getTitle();
+    remix = song.getRemix();
+    featuring = song.getFeaturing();
+    filepath = song.getFilepath();
+    reSongId = song.getRESongId();
+    reSong = NULL;
+    //styles;  // TODO copy styles
+    rating = song.getRating();
+    albumId = song.getAlbumId();
+    album = NULL;
+    dateAdded = song.getDateAdded();
+    comments = song.getComments();
+    trashed = song.getTrashed();
+}
 
 void Song::clear() {
     id = 0;
@@ -178,7 +195,7 @@ void Song::clear() {
     albumId = 0;
     delete album;
     album = NULL;
-    //TODO dateAdded = ;
+    dateAdded = 0;
     comments.clear();
     trashed = false;
 }
@@ -258,8 +275,17 @@ bool Song::update() {
 	}
 }
 
-const Song* Song::save() {
+const bool Song::save() {
     try {
+        if (!albumId && album) {
+            album->save();
+            albumId = MysqlAccess::getInstance().getLastInsertId();
+            album->setId(albumId);
+        }
+        if (!reSongId && reSong) {
+            reSong->save();
+            reSongId = reSong->getUniqueId();
+        }
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, track, title, remix, featuring, filepath, reSongId, rating, albumId, dateAdded, comments, trashed) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, artist);
         ps->setString(2, track);
@@ -364,7 +390,11 @@ const int Song::getAlbumId() const { return albumId; }
 void Song::setAlbumId(const int albumId) { this->albumId = albumId; }
 
 Album* Song::getAlbum() const {
-    return album ? album : albumId ? Album::findById(albumId) : NULL;
+    if (album) return album;
+    if (albumId) {
+        return Album::findById(albumId);
+    }
+    return album;
 }
 void Song::setAlbum(Album* album) {
     this->albumId = album->getId();
@@ -372,8 +402,9 @@ void Song::setAlbum(Album* album) {
 }
 
 const string Song::getDateAddedString() const { return stringFromTime(dateAdded); }
-const local_time::local_date_time& Song::getDateAdded() const { return dateAdded; }
-void Song::setDateAdded(const local_time::local_date_time& dateAdded) { this->dateAdded = dateAdded; }
+const time_t Song::getDateAdded() const { return dateAdded; }
+void Song::setDateAdded(const time_t dateAdded) { this->dateAdded = dateAdded; }
+void Song::setDateAddedToNow() { dateAdded = time(0); }
     
 const string& Song::getComments() const { return comments; }
 void Song::setComments(const string& comments) { this->comments = comments; }

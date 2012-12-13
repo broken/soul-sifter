@@ -489,6 +489,15 @@ bool RESong::update() {
 
 const RESong* RESong::save() {
     try {
+        if (unique_id == 0) {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");
+            sql::ResultSet *rs = ps->executeQuery();
+            if (rs->next()) {
+                unique_id = rs->getInt(1);
+            }
+            rs->close();
+            delete rs;
+        }
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, styles_bitmask, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps->setString(1, songid_winfo);
         ps->setString(2, songid);

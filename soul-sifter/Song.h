@@ -12,13 +12,11 @@
 #include <string>
 #include <vector>
 
-#include <boost/date_time/local_time/local_date_time.hpp>
 #include <cppconn/resultset.h>
 
 #include "Album.h"
 #include "Style.h"
 
-using namespace boost;
 using namespace std;
 
 namespace soulsifter {
@@ -30,6 +28,7 @@ public:
     Song();
     explicit Song(const Song& song);
     explicit Song(RESong* song);
+    void operator=(const Song& song);
     ~Song();
     void clear();
     
@@ -38,7 +37,7 @@ public:
     static void findSongsByStyle(const Style& style, vector<Song*>** songsPtr);
     
     bool update();
-    const Song* save();
+    const bool save();
     
     const string reAlbum() const;
     
@@ -71,8 +70,9 @@ public:
     Album* getAlbum() const;
     void setAlbum(Album* album);
     const string getDateAddedString() const;
-    const local_time::local_date_time& getDateAdded() const;
-    void setDateAdded(const local_time::local_date_time& dateAdded);
+    const time_t getDateAdded() const;
+    void setDateAdded(const time_t dateAdded);
+    void setDateAddedToNow();
     const string& getComments() const;
     void setComments(const string& comments);
     const bool getTrashed() const;
@@ -92,7 +92,7 @@ private:
     int rating;
     int albumId;
     Album *album;
-    local_time::local_date_time dateAdded;
+    time_t dateAdded;
     string comments;
     bool trashed;
 };
