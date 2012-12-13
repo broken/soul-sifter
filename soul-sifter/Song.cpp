@@ -249,11 +249,11 @@ bool Song::update() {
         ps->executeUpdate();
         return true;
 	} catch (sql::SQLException &e) {
-        std::cout << "ERROR: SQLException in " << __FILE__;
-        std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
-        std::cout << "ERROR: " << e.what();
-        std::cout << " (MySQL error code: " << e.getErrorCode();
-        std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+        cerr << "ERROR: SQLException in " << __FILE__;
+        cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+        cerr << "ERROR: " << e.what();
+        cerr << " (MySQL error code: " << e.getErrorCode();
+        cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
         return false;
 	}
 }
@@ -290,11 +290,11 @@ const Song* Song::save() {
             return findById(id);
         }
 	} catch (sql::SQLException &e) {
-        std::cout << "ERROR: SQLException in " << __FILE__;
-        std::cout << " (" << __func__<< ") on line " << __LINE__ << std::endl;
-        std::cout << "ERROR: " << e.what();
-        std::cout << " (MySQL error code: " << e.getErrorCode();
-        std::cout << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+        cerr << "ERROR: SQLException in " << __FILE__;
+        cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+        cerr << "ERROR: " << e.what();
+        cerr << " (MySQL error code: " << e.getErrorCode();
+        cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
         return false;
 	}
 }
