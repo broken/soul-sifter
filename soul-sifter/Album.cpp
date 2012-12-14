@@ -123,6 +123,96 @@ Album* Album::findByCoverFilepath(const string& filepath) {
 }
 
 #pragma mark persistence
+    
+void Album::sync() {
+    try {
+        Album* album = NULL;
+        if (id) {
+            album = findById(id);
+        } else if (!name.empty()) {
+            album = findByName(name);
+        } else {
+            return;
+        }
+        // update fields
+        if (id != album->getId()) {
+            if (id) {
+                cout << "updating album's id from " << album->getId() << " to " << id << endl;
+            } else {
+                id = album->getId();
+            }
+        }
+        if (name.compare(album->getName())) {
+            if (!name.empty()) {
+                cout << "updating album name from " << album->getName() << " to " << name << endl;
+            } else {
+                name = album->getName();
+            }
+        }
+        if (coverFilepath.compare(album->getCoverFilepath())) {
+            if (!coverFilepath.empty()) {
+                cout << "updating album coverFilepath from " << album->getCoverFilepath() << " to " << coverFilepath << endl;
+            } else {
+                coverFilepath = album->getCoverFilepath();
+            }
+        }
+        if (mixed != album->getMixed()) {
+            if (mixed) {
+                cout << "updating album is mixed from " << album->getMixed() << " to " << mixed << endl;
+            } else {
+                mixed = album->getMixed();
+            }
+        }
+        if (label.compare(album->getLabel())) {
+            if (!label.empty()) {
+                cout << "updating album label from " << album->getLabel() << " to " << label << endl;
+            } else {
+                label = album->getLabel();
+            }
+        }
+        if (catalogId.compare(album->getCatalogId())) {
+            if (!catalogId.empty()) {
+                cout << "updating album catalogId from " << album->getCatalogId() << " to " << catalogId << endl;
+            } else {
+                catalogId = album->getCatalogId();
+            }
+        }
+        if (releaseDateYear != album->getReleaseDateYear()) {
+            if (releaseDateYear) {
+                cout << "updating album's releaseDateYear from " << album->getReleaseDateYear() << " to " << releaseDateYear << endl;
+            } else {
+                releaseDateYear = album->getReleaseDateYear();
+            }
+        }
+        if (releaseDateMonth != album->getReleaseDateMonth()) {
+            if (releaseDateMonth) {
+                cout << "updating album's releaseDateMonth from " << album->getReleaseDateMonth() << " to " << releaseDateMonth << endl;
+            } else {
+                releaseDateMonth = album->getReleaseDateMonth();
+            }
+        }
+        if (releaseDateDay != album->getReleaseDateDay()) {
+            if (releaseDateDay) {
+                cout << "updating album's releaseDateDay from " << album->getReleaseDateDay() << " to " << releaseDateDay << endl;
+            } else {
+                releaseDateDay = album->getReleaseDateDay();
+            }
+        }
+        if (basicGenreId != album->getBasicGenreId()) {
+            if (basicGenreId) {
+                cout << "updating album's basicGenreId from " << album->getBasicGenreId() << " to " << basicGenreId << endl;
+            } else {
+                basicGenreId = album->getBasicGenreId();
+            }
+        }
+    } catch (sql::SQLException &e) {
+        cerr << "ERROR: SQLException in " << __FILE__;
+        cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+        cerr << "ERROR: " << e.what();
+        cerr << " (MySQL error code: " << e.getErrorCode();
+        cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+	}
+}
 
 bool Album::update() {
     try {
