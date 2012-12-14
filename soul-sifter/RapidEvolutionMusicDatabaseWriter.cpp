@@ -270,7 +270,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         w.startElement("from_unique_id", NULL).writeInt(mix.getOutSong()->getRESongId()).endElement("from_unique_id");
         //f << "<to_unique_id>" << mix.getInSong()->getRESongId() << "</to_unique_id>" << endl;
         w.startElement("to_unique_id", NULL).writeInt(mix.getInSong()->getRESongId()).endElement("to_unique_id");
-        w.startElement("bpm_diff", NULL).writeDouble(mix.getBPMDiff()).endElement("bpm_diff");
+        w.startElement("bpm_diff", NULL).writeStr(mix.getBPMDiff()).endElement("bpm_diff");
         if (mix.getRank() > 0)
             //f << "<rank>" << mix.getRank() << "</rank>" << endl;
             w.startElement("rank", NULL).writeInt(mix.getRank()).endElement("rank");

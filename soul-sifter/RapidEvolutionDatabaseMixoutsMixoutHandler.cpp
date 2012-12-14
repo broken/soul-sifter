@@ -15,8 +15,6 @@
 #include "DTAbstractHandler.h"
 #include "Mix.h"
 
-#define EPSILON 0.0001
-
 using namespace std;
 using namespace xercesc;
 
@@ -83,7 +81,7 @@ void RapidEvolutionDatabaseMixoutsMixoutHandler::endElement(const XMLCh* const u
                 dbMix->setAddon(mix.getAddon());
                 cout << "updating mix " << dbMix->getId() << " addon from " << dbMix->getAddon() << " to " << mix.getAddon() << endl;
             }
-            if (dbMix->getBPMDiff() - mix.getBPMDiff() > EPSILON) {
+            if (dbMix->getBPMDiff().compare(mix.getBPMDiff())) {
                 needsUpdating = true;
                 dbMix->setBPMDiff(mix.getBPMDiff());
                 cout << "updating mix " << dbMix->getId() << " bpm diff from " << dbMix->getBPMDiff() << " to " << mix.getBPMDiff() << endl;

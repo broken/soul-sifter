@@ -57,8 +57,8 @@ public:
     void setInSongId(const int id);
     const Song* getInSong();
     void setInSong(Song* song);
-    const double getBPMDiff() const;
-    void setBPMDiff(const double bpmDiff);
+    const string& getBPMDiff() const;
+    void setBPMDiff(const string& bpmDiff);
     const int getRank() const;
     void setRank(const int rank);
     const string& getComments() const;
@@ -72,7 +72,7 @@ private:
     Song *outSong;
     int inSongId;
     Song *inSong;
-    double bpmDiff;
+    string bpmDiff;
     int rank;
     string comments;
     bool addon;

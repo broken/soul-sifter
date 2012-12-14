@@ -33,7 +33,7 @@ namespace {
         song->setOutSongId(rs->getInt("outSongId"));
         song->setInSongId(rs->getInt("inSongId"));
         song->setRank(rs->getInt("rank"));
-        song->setBPMDiff(rs->getDouble("bpmDiff"));
+        song->setBPMDiff(rs->getString("bpmDiff"));
         song->setComments(rs->getString("comments"));
         song->setAddon(rs->getBoolean("addon"));
     }
@@ -48,7 +48,7 @@ outSong(),
 inSongId(0),
 inSong(),
 rank(0),
-bpmDiff(0),
+bpmDiff(),
 comments(),
 addon(false) {
 }
@@ -68,7 +68,7 @@ void Mix::clear() {
     delete inSong;
     inSong = NULL;
     rank = 0;
-    bpmDiff = 0;
+    bpmDiff.clear();
     comments.clear();
     addon = false;
 }
@@ -118,7 +118,7 @@ bool Mix::update() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Mixes set outSongId=?, inSongId=?, bpmDiff=?, rank=?, comments=?, addon=? where id=?");
         ps->setInt(1, outSongId);
         ps->setInt(2, inSongId);
-        ps->setDouble(3, bpmDiff);
+        ps->setString(3, bpmDiff);
         ps->setInt(4, rank);
         ps->setString(5, comments);
         ps->setBoolean(6, addon);
@@ -140,7 +140,7 @@ int Mix::save() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Mixes (outSongId, inSongId, bpmDiff, rank, comments, addon) values (?, ?, ?, ?, ?, ?)");
         ps->setInt(1, outSongId);
         ps->setInt(2, inSongId);
-        ps->setDouble(3, bpmDiff);
+        ps->setString(3, bpmDiff);
         ps->setInt(4, rank);
         ps->setString(5, comments);
         ps->setBoolean(6, addon);
@@ -192,8 +192,8 @@ void Mix::setInSong(Song* song) {
     this->inSongId = song->getId();
 }
 
-const double Mix::getBPMDiff() const { return bpmDiff; }
-void Mix::setBPMDiff(const double bpmDiff) { this->bpmDiff = bpmDiff; }
+const string& Mix::getBPMDiff() const { return bpmDiff; }
+void Mix::setBPMDiff(const string& bpmDiff) { this->bpmDiff = bpmDiff; }
 
 const int Mix::getRank() const { return rank; }
 void Mix::setRank(const int rank) { this->rank = rank; }
