@@ -122,6 +122,8 @@ reSongId(song->getUniqueId()),
 reSong(song),
 styles(),
 rating(song->getRating()),
+albumId(0),
+album(NULL),
 dateAdded(timeFromeString(song->getDateAdded())),
 comments(song->getComments()),
 trashed(!song->getDisabled().compare("yes")) {
@@ -141,6 +143,7 @@ trashed(!song->getDisabled().compare("yes")) {
     album->setName(song->getAlbum());
     album->setLabel(song->getLabel());
     album->setCatalogId(song->getCatalogId());
+    albumId = album->getId();
     // release dates
     string releaseDate = song->getReleaseDate();
     if (releaseDate.length() >=4) {
