@@ -42,6 +42,9 @@
 		185A72B516755C4600D14E96 /* Album.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72B316755C4500D14E96 /* Album.cpp */; };
 		185A72BC16759BDE00D14E96 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 185A72BB16759BDC00D14E96 /* libboost_filesystem-mt.dylib */; };
 		185A72BE16759C0500D14E96 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 185A72BD16759C0400D14E96 /* libboost_system-mt.dylib */; };
+		185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC39167EE52F006FB8AF /* StylesViewController.m */; };
+		185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */; };
+		185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */; };
 		188AB0391660F78B00CE162C /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188AB0371660F78B00CE162C /* Track.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
 		188E1B141648E973004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */; };
@@ -151,6 +154,12 @@
 		185A72BD16759C0400D14E96 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		185A72C01675AB4400D14E96 /* SoulSifterSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoulSifterSettings.h; sourceTree = "<group>"; };
 		185C3FB61662EC6C004DE6B6 /* RESong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESong.h; sourceTree = "<group>"; };
+		185CFC38167EE52F006FB8AF /* StylesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StylesViewController.h; sourceTree = "<group>"; };
+		185CFC39167EE52F006FB8AF /* StylesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StylesViewController.m; sourceTree = "<group>"; };
+		185CFC3C167EE75E006FB8AF /* StylesTreeDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StylesTreeDataSource.h; sourceTree = "<group>"; };
+		185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StylesTreeDataSource.mm; sourceTree = "<group>"; };
+		185CFC40167EEC97006FB8AF /* StyleTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleTreeItem.h; sourceTree = "<group>"; };
+		185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StyleTreeItem.mm; sourceTree = "<group>"; };
 		188AB0371660F78B00CE162C /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		188AB0381660F78B00CE162C /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigHandler.cpp; sourceTree = "<group>"; };
@@ -337,6 +346,19 @@
 			name = "Generic SAX Parsers";
 			sourceTree = "<group>";
 		};
+		185CFC3F167EEC35006FB8AF /* Styles Tree */ = {
+			isa = PBXGroup;
+			children = (
+				185CFC38167EE52F006FB8AF /* StylesViewController.h */,
+				185CFC39167EE52F006FB8AF /* StylesViewController.m */,
+				185CFC3C167EE75E006FB8AF /* StylesTreeDataSource.h */,
+				185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */,
+				185CFC40167EEC97006FB8AF /* StyleTreeItem.h */,
+				185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */,
+			);
+			name = "Styles Tree";
+			sourceTree = "<group>";
+		};
 		188E1B25164E1968004754F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -440,6 +462,7 @@
 				18A73F7216635D900074E137 /* ProcessProgressController.h */,
 				18A73F7316635D900074E137 /* ProcessProgressController.mm */,
 				189C84F8153E647400F05E62 /* TagInfo.xib */,
+				185CFC3F167EEC35006FB8AF /* Styles Tree */,
 				18169649154CD8E000593FEC /* TagInfoController.h */,
 				1816964A154CD8E000593FEC /* TagInfoController.mm */,
 				18C5F9D9166189A800912FD3 /* ArchiveUtil.h */,
@@ -642,6 +665,9 @@
 				185A72A2166CA89D00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp in Sources */,
 				185A72B2166FECE300D14E96 /* DTXMLWriter.cpp in Sources */,
 				185A72B516755C4600D14E96 /* Album.cpp in Sources */,
+				185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */,
+				185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */,
+				185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

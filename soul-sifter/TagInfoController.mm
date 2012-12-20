@@ -15,6 +15,7 @@
 #include "MusicManager.h"
 #include "RESong.h"
 #include "Song.h"
+#import "StyleTreeItem.h"
 
 
 # pragma mark private method helpers
@@ -101,7 +102,10 @@
     song.setRating([rating intValue]);
     song.getAlbum()->setBasicGenre(soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
     song.setDateAddedToNow();
-    // TODO set styles
+    NSIndexSet *styleIndexes = [styles selectedRowIndexes];
+    for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
+        song.addToStyle([(StyleTreeItem *)[styles itemAtRow:idx] style]);
+    }
     song.setRESong(new soulsifter::RESong(song));
     
     // update tag
@@ -236,5 +240,6 @@
 @synthesize releaseDateMonth;
 @synthesize releaseDateDay;
 @synthesize rating;
+@synthesize styles;
 
 @end
