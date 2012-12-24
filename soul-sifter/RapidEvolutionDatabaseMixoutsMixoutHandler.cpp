@@ -66,14 +66,15 @@ void RapidEvolutionDatabaseMixoutsMixoutHandler::endElement(const XMLCh* const u
     fieldPointer = NULL;
     if (!XMLString::compareString(qname, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
+        
+        mix.setAddon(!addonStr.compare("yes"));
         Song* outSong = Song::findByRESongId(mix.outSongId);
         mix.setOutSong(outSong);
         Song* inSong = Song::findByRESongId(mix.inSongId);
         mix.setInSong(inSong);
+        
+        // TODO currently this is limited to 1 mix per song pair. would be great to allow multiple.
         Mix* dbMix = Mix::findBySongIds(outSong->getId(), inSong->getId());
-        if (!addonStr.compare("yes")) {
-            mix.setAddon(true);
-        }
         if (dbMix) {
             bool needsUpdating = false;
             if (dbMix->getAddon() != mix.getAddon()) {
@@ -81,7 +82,8 @@ void RapidEvolutionDatabaseMixoutsMixoutHandler::endElement(const XMLCh* const u
                 dbMix->setAddon(mix.getAddon());
                 cout << "updating mix " << dbMix->getId() << " addon from " << dbMix->getAddon() << " to " << mix.getAddon() << endl;
             }
-            if (dbMix->getBPMDiff().compare(mix.getBPMDiff())) {
+            if (dbMix->getBPMDiff().compare(0, mix.getBPMDiff().size(), mix.getBPMDiff()) &&
+                (mix.getBPMDiff().compare(0, dbMix->getBPMDiff().size()-1, dbMix->getBPMDiff()) || dbMix->getBPMDiff().size() < 4)) {
                 needsUpdating = true;
                 dbMix->setBPMDiff(mix.getBPMDiff());
                 cout << "updating mix " << dbMix->getId() << " bpm diff from " << dbMix->getBPMDiff() << " to " << mix.getBPMDiff() << endl;
