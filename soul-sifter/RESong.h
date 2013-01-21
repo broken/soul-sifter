@@ -50,6 +50,8 @@ public:
     static RESongIterator* findAll();
     static const int maxREId();
     
+    bool sync();
+    bool needsSave();
     bool update();
     const RESong* save();
     
@@ -157,6 +159,7 @@ private:
     string replay_gain;
     string styles_bitmask;
     
+    // TODO move mixoutCount on to iterator to prevent improper usage
     // internal usage
     int mixoutCount;
 };

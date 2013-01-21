@@ -252,6 +252,12 @@ void Song::findSongsByStyle(const Style& style, vector<Song*>** songsPtr) {
 
 bool Song::update() {
     try {
+        if (album && album->sync()) {
+            album->update();
+        }
+        if (reSong && reSong->sync()) {
+            reSong->update();
+        }
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Song set artist=?, track=?, title=?, remix=?, featuring=?, filepath=?, reSongId=?, rating=?, albumId=?, dateAdded=?, comments=?, trashed=? where id=?");
         ps->setString(1, artist);
         ps->setString(2, track);
@@ -285,7 +291,7 @@ const bool Song::save() {
             albumId = MysqlAccess::getInstance().getLastInsertId();
             album->setId(albumId);
         }
-        if (!reSongId && reSong) {
+        if (reSong && reSong->needsSave()) {
             reSong->save();
             reSongId = reSong->getUniqueId();
         }

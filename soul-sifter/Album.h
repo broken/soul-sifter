@@ -27,7 +27,7 @@ public:
     static Album* findByName(const string& name);
     static Album* findByCoverFilepath(const string& filepath);
     
-    void sync();
+    bool sync();
     bool update();
     int save();
     

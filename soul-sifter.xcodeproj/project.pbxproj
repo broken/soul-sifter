@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		18028C391647747C00938259 /* DVDRipper.icns in Resources */ = {isa = PBXBuildFile; fileRef = 18028C381647747C00938259 /* DVDRipper.icns */; };
-		18028C3A16477A0D00938259 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18028C341647673500938259 /* libxerces-c-3.1.dylib */; };
 		18028C401647870A00938259 /* RapidEvolutionMusicDatabaseReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C3F1647870A00938259 /* RapidEvolutionMusicDatabaseReader.cpp */; };
 		18028C471647A55800938259 /* RapidEvolutionDatabaseHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C451647A55800938259 /* RapidEvolutionDatabaseHandler.cpp */; };
 		18028C4A1647B66F00938259 /* RapidEvolutionDatabaseSongsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C481647B66E00938259 /* RapidEvolutionDatabaseSongsHandler.cpp */; };
@@ -40,8 +39,6 @@
 		185A72A2166CA89D00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72A0166CA89A00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp */; };
 		185A72B2166FECE300D14E96 /* DTXMLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72B0166FECE300D14E96 /* DTXMLWriter.cpp */; };
 		185A72B516755C4600D14E96 /* Album.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A72B316755C4500D14E96 /* Album.cpp */; };
-		185A72BC16759BDE00D14E96 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 185A72BB16759BDC00D14E96 /* libboost_filesystem-mt.dylib */; };
-		185A72BE16759C0500D14E96 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 185A72BD16759C0400D14E96 /* libboost_system-mt.dylib */; };
 		185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC39167EE52F006FB8AF /* StylesViewController.m */; };
 		185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */; };
 		185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */; };
@@ -72,9 +69,12 @@
 		18A73F771663F3600074E137 /* DTStartTagCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F751663F35F0074E137 /* DTStartTagCounter.cpp */; };
 		18A73F7A1665EEFC0074E137 /* Song.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F781665EEFC0074E137 /* Song.cpp */; };
 		18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */; };
+		18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */; };
+		18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */; };
+		18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */; };
+		18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */; };
 		18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9DA166189A800912FD3 /* ArchiveUtil.m */; };
 		18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9E21661978400912FD3 /* NSString+MD5.mm */; };
-		18D7D3281675D5D80043146B /* libboost_date_time-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18D7D3271675D5D80043146B /* libboost_date_time-mt.dylib */; };
 		18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FB7CAB15572F0000BEF750 /* PathButton.m */; };
 /* End PBXBuildFile section */
 
@@ -209,6 +209,10 @@
 		18A73F791665EEFC0074E137 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
 		18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicGenre.cpp; sourceTree = "<group>"; };
 		18A73F7C1665EFFA0074E137 /* BasicGenre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicGenre.h; sourceTree = "<group>"; };
+		18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/Cellar/xerces-c/3.1.1/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
+		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
+		18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
+		18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		18C5F9D9166189A800912FD3 /* ArchiveUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveUtil.h; sourceTree = "<group>"; };
 		18C5F9DA166189A800912FD3 /* ArchiveUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveUtil.m; sourceTree = "<group>"; };
 		18C5F9E11661978400912FD3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -223,12 +227,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18D7D3281675D5D80043146B /* libboost_date_time-mt.dylib in Frameworks */,
-				185A72BE16759C0500D14E96 /* libboost_system-mt.dylib in Frameworks */,
-				185A72BC16759BDE00D14E96 /* libboost_filesystem-mt.dylib in Frameworks */,
+				18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */,
+				18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */,
+				18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */,
+				18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */,
 				188E1B241648FADB004754F4 /* libmysqlclient.18.dylib in Frameworks */,
 				188E1B221648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */,
-				18028C3A16477A0D00938259 /* libxerces-c-3.1.dylib in Frameworks */,
 				18169656154D34A400593FEC /* libid3-3.8.3.0.0.dylib in Frameworks */,
 				189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */,
 			);
@@ -398,6 +402,10 @@
 		189D22BB153D4F190043634A = {
 			isa = PBXGroup;
 			children = (
+				18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */,
+				18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */,
+				18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */,
+				18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */,
 				18D7D3271675D5D80043146B /* libboost_date_time-mt.dylib */,
 				185A72BD16759C0400D14E96 /* libboost_system-mt.dylib */,
 				185A72BB16759BDC00D14E96 /* libboost_filesystem-mt.dylib */,
@@ -782,6 +790,8 @@
 					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
 					/usr/local/Cellar/mysql/5.5.27/lib,
 					/usr/local/Cellar/boost/1.51.0/lib,
+					"\"/usr/local/Cellar/xerces-c/3.1.1/lib\"",
+					/usr/local/Cellar/boost/1.52.0/lib,
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -802,6 +812,8 @@
 					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
 					/usr/local/Cellar/mysql/5.5.27/lib,
 					/usr/local/Cellar/boost/1.51.0/lib,
+					"\"/usr/local/Cellar/xerces-c/3.1.1/lib\"",
+					/usr/local/Cellar/boost/1.52.0/lib,
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
