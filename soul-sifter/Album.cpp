@@ -273,22 +273,6 @@ namespace soulsifter {
         }
     }
     
-    const string Album::reReleaseDate() const {
-        ostringstream oss;
-        if (releaseDateYear) {
-            oss << releaseDateYear;
-            if (releaseDateMonth) {
-                if (releaseDateMonth < 10) oss << "0";
-                oss << releaseDateMonth;
-                if (releaseDateDay) {
-                    if (releaseDateDay < 10) oss << "0";
-                    oss << releaseDateDay;
-                }
-            }
-        }
-        return oss.str();
-    }
-    
 #pragma mark accessors
     
     const int Album::getId() const { return id; }
