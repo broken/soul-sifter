@@ -20,17 +20,6 @@
 
 namespace soulsifter {
     
-    // copied from BasicGenre.cpp
-    // would rather not have to perform copy; but whatever
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, BasicGenre* genre) {
-            genre->setId(rs->getInt("id"));
-            genre->setName(rs->getString("name"));
-        }
-        
-    }
-    
     const BasicGenre* BasicGenre::findByFilepath(const string& filepath) {
         unsigned long pos = filepath.find("/mp3/");
         if (pos != string::npos) {

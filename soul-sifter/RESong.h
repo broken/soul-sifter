@@ -162,6 +162,8 @@ namespace soulsifter {
         // TODO move mixoutCount on to iterator to prevent improper usage
         // internal usage
         int mixoutCount;
+        
+        static void populateFields(const sql::ResultSet* rs, RESong* song);
     };
     
 }

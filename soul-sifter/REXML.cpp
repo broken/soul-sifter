@@ -21,15 +21,6 @@ using namespace std;
 
 namespace soulsifter {
     
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, REXML* xml) {
-            xml->setId(rs->getInt("id"));
-            xml->setName(rs->getString("name"));
-            xml->setXml(rs->getString("xml"));
-        }
-    }
-    
 #pragma mark initialization
     
     REXML::REXML() :
@@ -48,6 +39,12 @@ namespace soulsifter {
     }
     
 #pragma mark static methods
+    
+    void REXML::populateFields(const sql::ResultSet* rs, REXML* xml) {
+        xml->setId(rs->getInt("id"));
+        xml->setName(rs->getString("name"));
+        xml->setXml(rs->getString("xml"));
+    }
     
     REXML* REXML::findById(const int id) {
         // lookup in db

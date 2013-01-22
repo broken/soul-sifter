@@ -54,6 +54,8 @@ namespace soulsifter {
         int id;
         string reId;
         string thumbnail;
+        
+        static void populateFields(const sql::ResultSet* rs, REAlbumCover* ac);
     };
     
 }

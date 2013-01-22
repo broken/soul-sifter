@@ -24,16 +24,6 @@ using namespace std;
 
 namespace soulsifter {
     
-# pragma mark helpers
-    
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, BasicGenre* genre) {
-            genre->setId(rs->getInt("id"));
-            genre->setName(rs->getString("name"));
-        }
-    }
-    
 #pragma mark initialization
     
     BasicGenre::BasicGenre() :
@@ -45,6 +35,11 @@ namespace soulsifter {
     }
     
 #pragma mark static methods
+    
+    void BasicGenre::populateFields(const sql::ResultSet* rs, BasicGenre* genre) {
+        genre->setId(rs->getInt("id"));
+        genre->setName(rs->getString("name"));
+    }
     
     const BasicGenre* BasicGenre::findById(const int id) {
         static vector<const BasicGenre*> basicGenres;

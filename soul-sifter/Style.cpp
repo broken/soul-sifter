@@ -35,12 +35,6 @@ namespace soulsifter {
             }
         };
         
-        static void populateFields(const sql::ResultSet* rs, Style* style) {
-            style->setId(rs->getInt("id"));
-            style->setName(rs->getString("name"));
-            style->setREId(rs->getInt("re_id"));
-            style->setREName(rs->getString("re_name"));
-        }
     }
     
 # pragma mark initialization
@@ -77,6 +71,13 @@ namespace soulsifter {
     }
     
 # pragma mark static methods
+    
+    void Style::populateFields(const sql::ResultSet* rs, Style* style) {
+        style->setId(rs->getInt("id"));
+        style->setName(rs->getString("name"));
+        style->setREId(rs->getInt("re_id"));
+        style->setREName(rs->getString("re_name"));
+    }
     
     Style* Style::findByIdMutable(const int id) {
         vector<Style*>* styles = getStaticStyles();

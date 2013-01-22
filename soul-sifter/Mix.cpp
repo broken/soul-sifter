@@ -24,21 +24,6 @@ using namespace std;
 
 namespace soulsifter {
     
-# pragma mark helpers
-    
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, Mix* song) {
-            song->setId(rs->getInt("id"));
-            song->setOutSongId(rs->getInt("outSongId"));
-            song->setInSongId(rs->getInt("inSongId"));
-            song->setRank(rs->getInt("rank"));
-            song->setBPMDiff(rs->getString("bpmDiff"));
-            song->setComments(rs->getString("comments"));
-            song->setAddon(rs->getBoolean("addon"));
-        }
-    }
-    
 # pragma mark initialization
     
     Mix::Mix() :
@@ -74,6 +59,16 @@ namespace soulsifter {
     }
     
 # pragma mark static
+    
+    void Mix::populateFields(const sql::ResultSet* rs, Mix* song) {
+        song->setId(rs->getInt("id"));
+        song->setOutSongId(rs->getInt("outSongId"));
+        song->setInSongId(rs->getInt("inSongId"));
+        song->setRank(rs->getInt("rank"));
+        song->setBPMDiff(rs->getString("bpmDiff"));
+        song->setComments(rs->getString("comments"));
+        song->setAddon(rs->getBoolean("addon"));
+    }
     
     const Mix* Mix::findById(const int id) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes where id = ?");

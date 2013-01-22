@@ -17,6 +17,10 @@
 #include "Album.h"
 #include "Style.h"
 
+namespace sql {
+    class ResultSet;
+}
+
 using namespace std;
 
 namespace soulsifter {
@@ -95,6 +99,8 @@ namespace soulsifter {
         time_t dateAdded;
         string comments;
         bool trashed;
+        
+        static void populateFields(const sql::ResultSet* rs, Song* song);
     };
     
 }

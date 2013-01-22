@@ -12,6 +12,10 @@
 #include <string>
 #include <vector>
 
+namespace sql {
+    class ResultSet;
+}
+
 using namespace std;
 
 namespace soulsifter {
@@ -59,6 +63,8 @@ namespace soulsifter {
         
         static vector<Style*>* getStaticStyles();
         static Style* findByIdMutable(const int id);
+        
+        static void populateFields(const sql::ResultSet* rs, Style* style);
     };
     
 }

@@ -11,6 +11,10 @@
 
 #include <string>
 
+namespace sql {
+    class ResultSet;
+}
+
 using namespace std;
 
 namespace soulsifter {
@@ -39,6 +43,8 @@ namespace soulsifter {
         int id;
         string name;
         string xml;
+        
+        static void populateFields(const sql::ResultSet* rs, REXML* xml);
     };
     
 }

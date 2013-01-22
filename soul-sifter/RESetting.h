@@ -12,6 +12,10 @@
 #include <string>
 #include <vector>
 
+namespace sql {
+    class ResultSet;
+}
+
 using namespace std;
 
 namespace soulsifter {
@@ -40,6 +44,8 @@ namespace soulsifter {
         int id;
         string name;
         string value;
+        
+        static void populateFields(const sql::ResultSet* rs, RESetting* setting);
     };
     
 }

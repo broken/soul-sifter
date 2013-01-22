@@ -13,6 +13,10 @@
 
 #include "BasicGenre.h"
 
+namespace sql {
+    class ResultSet;
+}
+
 using namespace std;
 
 namespace soulsifter {
@@ -67,6 +71,8 @@ namespace soulsifter {
         int releaseDateDay;
         int basicGenreId;
         const BasicGenre *basicGenre;
+        
+        static void populateFields(const sql::ResultSet* rs, Album* album);
     };
     
 }

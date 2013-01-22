@@ -23,15 +23,6 @@ using namespace std;
 
 namespace soulsifter {
     
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, RESetting* setting) {
-            setting->setId(rs->getInt("id"));
-            setting->setName(rs->getString("name"));
-            setting->setValue(rs->getString("value"));
-        }
-    }
-    
 # pragma mark initialization
     
     RESetting::RESetting() :
@@ -50,6 +41,12 @@ namespace soulsifter {
     }
     
 # pragma mark static methods
+    
+    void RESetting::populateFields(const sql::ResultSet* rs, RESetting* setting) {
+        setting->setId(rs->getInt("id"));
+        setting->setName(rs->getString("name"));
+        setting->setValue(rs->getString("value"));
+    }
     
     RESetting* RESetting::findById(const int id) {
         // lookup in db

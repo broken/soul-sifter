@@ -14,6 +14,10 @@
 
 #include "Song.h"
 
+namespace sql {
+    class ResultSet;
+}
+
 using namespace std;
 
 namespace soulsifter {
@@ -76,6 +80,8 @@ namespace soulsifter {
         int rank;
         string comments;
         bool addon;
+        
+        static void populateFields(const sql::ResultSet* rs, Mix* song);
     };
     
 }

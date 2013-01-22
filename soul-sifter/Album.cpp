@@ -24,24 +24,6 @@ using namespace std;
 
 namespace soulsifter {
     
-# pragma mark helpers
-    
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, Album* album) {
-            album->setId(rs->getInt("id"));
-            album->setName(rs->getString("name"));
-            album->setCoverFilepath(rs->getString("coverFilepath"));
-            album->setMixed(rs->getBoolean("mixed"));
-            album->setLabel(rs->getString("label"));
-            album->setCatalogId(rs->getString("catalogId"));
-            album->setReleaseDateYear(rs->getInt("releaseDateYear"));
-            album->setReleaseDateMonth(rs->getInt("releaseDateMonth"));
-            album->setReleaseDateDay(rs->getInt("releaseDateDay"));
-            album->setBasicGenreId(rs->getInt("basicGenreId"));
-        }
-    }
-    
 #pragma mark initialization
     
     Album::Album() :
@@ -76,6 +58,19 @@ namespace soulsifter {
     }
     
 #pragma mark static methods
+    
+    void Album::populateFields(const sql::ResultSet* rs, Album* album) {
+        album->setId(rs->getInt("id"));
+        album->setName(rs->getString("name"));
+        album->setCoverFilepath(rs->getString("coverFilepath"));
+        album->setMixed(rs->getBoolean("mixed"));
+        album->setLabel(rs->getString("label"));
+        album->setCatalogId(rs->getString("catalogId"));
+        album->setReleaseDateYear(rs->getInt("releaseDateYear"));
+        album->setReleaseDateMonth(rs->getInt("releaseDateMonth"));
+        album->setReleaseDateDay(rs->getInt("releaseDateDay"));
+        album->setBasicGenreId(rs->getInt("basicGenreId"));
+    }
     
     Album* Album::findById(const int id) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where id = ?");

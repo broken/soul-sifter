@@ -21,15 +21,6 @@ using namespace std;
 
 namespace soulsifter {
     
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, REAlbumCover* ac) {
-            ac->setId(rs->getInt("id"));
-            ac->setREId(rs->getString("re_id"));
-            ac->setThumbnail(rs->getString("thumbnail"));
-        }
-    }
-    
 #pragma mark initialization
     
     REAlbumCover::REAlbumCover() :
@@ -42,6 +33,12 @@ namespace soulsifter {
     }
     
 #pragma mark static methods
+    
+    void REAlbumCover::populateFields(const sql::ResultSet* rs, REAlbumCover* ac) {
+        ac->setId(rs->getInt("id"));
+        ac->setREId(rs->getString("re_id"));
+        ac->setThumbnail(rs->getString("thumbnail"));
+    }
     
     REAlbumCover* REAlbumCover::findById(const int id) {
         // lookup in db

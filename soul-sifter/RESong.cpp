@@ -26,47 +26,6 @@ using namespace std;
 
 namespace soulsifter {
     
-# pragma mark helpers
-    
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, RESong* song) {
-            song->setUniqueId(rs->getInt("unique_id"));
-            song->setSongIdWInfo(rs->getString("songid_winfo"));
-            song->setSongId(rs->getString("songid"));
-            song->setShortId(rs->getString("shortid"));
-            song->setShortIdWInfo(rs->getString("shortid_winfo"));
-            song->setArtist(rs->getString("artist"));
-            song->setAlbum(rs->getString("album"));
-            song->setTrack(rs->getString("track"));
-            song->setTitle(rs->getString("title"));
-            song->setTime(rs->getString("time"));
-            song->setTimeSignature(rs->getString("time_signature"));
-            song->setFilename(rs->getString("filename"));
-            song->setDigitalOnly(rs->getString("digital_only"));
-            song->setCompilation(rs->getString("compilation"));
-            song->setKeyStart(rs->getString("key_start"));
-            song->setKeyAccuracy(rs->getInt("key_accuracy"));
-            song->setBPMStart(rs->getString("bpm_start"));
-            song->setBPMAccuracy(rs->getInt("bpm_accuracy"));
-            song->setRating(rs->getInt("rating"));
-            song->setDateAdded(rs->getString("date_added"));
-            song->setCatalogId(rs->getString("catalog_id"));
-            song->setLabel(rs->getString("label"));
-            song->setRemix(rs->getString("remix"));
-            song->setNumPlays(rs->getInt("num_plays"));
-            song->setComments(rs->getString("comments"));
-            song->setReleaseDate(rs->getString("release_date"));
-            song->setFeaturing(rs->getString("featuring"));
-            song->setKeyEnd(rs->getString("key_end"));
-            song->setDisabled(rs->getString("disabled"));
-            song->setBPMEnd(rs->getString("bpm_end"));
-            song->setBeatIntensity(rs->getInt("beat_intensity"));
-            song->setReplayGain(rs->getString("replay_gain"));
-            song->setStylesBitmask(rs->getString("styles_bitmask"));
-        }
-    }
-    
 # pragma mark initialization
     
     RESong::RESong() :
@@ -181,6 +140,42 @@ namespace soulsifter {
     }
     
 # pragma mark static
+    
+    void RESong::populateFields(const sql::ResultSet* rs, RESong* song) {
+        song->setUniqueId(rs->getInt("unique_id"));
+        song->setSongIdWInfo(rs->getString("songid_winfo"));
+        song->setSongId(rs->getString("songid"));
+        song->setShortId(rs->getString("shortid"));
+        song->setShortIdWInfo(rs->getString("shortid_winfo"));
+        song->setArtist(rs->getString("artist"));
+        song->setAlbum(rs->getString("album"));
+        song->setTrack(rs->getString("track"));
+        song->setTitle(rs->getString("title"));
+        song->setTime(rs->getString("time"));
+        song->setTimeSignature(rs->getString("time_signature"));
+        song->setFilename(rs->getString("filename"));
+        song->setDigitalOnly(rs->getString("digital_only"));
+        song->setCompilation(rs->getString("compilation"));
+        song->setKeyStart(rs->getString("key_start"));
+        song->setKeyAccuracy(rs->getInt("key_accuracy"));
+        song->setBPMStart(rs->getString("bpm_start"));
+        song->setBPMAccuracy(rs->getInt("bpm_accuracy"));
+        song->setRating(rs->getInt("rating"));
+        song->setDateAdded(rs->getString("date_added"));
+        song->setCatalogId(rs->getString("catalog_id"));
+        song->setLabel(rs->getString("label"));
+        song->setRemix(rs->getString("remix"));
+        song->setNumPlays(rs->getInt("num_plays"));
+        song->setComments(rs->getString("comments"));
+        song->setReleaseDate(rs->getString("release_date"));
+        song->setFeaturing(rs->getString("featuring"));
+        song->setKeyEnd(rs->getString("key_end"));
+        song->setDisabled(rs->getString("disabled"));
+        song->setBPMEnd(rs->getString("bpm_end"));
+        song->setBeatIntensity(rs->getInt("beat_intensity"));
+        song->setReplayGain(rs->getString("replay_gain"));
+        song->setStylesBitmask(rs->getString("styles_bitmask"));
+    }
     
     const int RESong::maxREId() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");

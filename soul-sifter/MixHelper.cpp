@@ -15,18 +15,6 @@
 #include "MysqlAccess.h"
 
 namespace soulsifter {
-    namespace {
-        
-        static void populateFields(const sql::ResultSet* rs, Mix* song) {
-            song->setId(rs->getInt("id"));
-            song->setOutSongId(rs->getInt("outSongId"));
-            song->setInSongId(rs->getInt("inSongId"));
-            song->setRank(rs->getInt("rank"));
-            song->setBPMDiff(rs->getString("bpmDiff"));
-            song->setComments(rs->getString("comments"));
-            song->setAddon(rs->getBoolean("addon"));
-        }
-    }
     
     Mix* Mix::findBySongIds(const int outSongId, const int inSongId) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes where outSongId = ? and inSongId = ?");

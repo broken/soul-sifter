@@ -49,22 +49,6 @@ namespace soulsifter {
             return str;
         }
         
-        static void populateFields(const sql::ResultSet* rs, Song* song) {
-            song->setId(rs->getInt("id"));
-            song->setArtist(rs->getString("artist"));
-            song->setTrack(rs->getString("track"));
-            song->setTitle(rs->getString("title"));
-            song->setRemix(rs->getString("remix"));
-            song->setFeaturing(rs->getString("featuring"));
-            song->setFilepath(rs->getString("filepath"));
-            song->setRESongId(rs->getInt("reSongId"));
-            // TODO set styles
-            song->setRating(rs->getInt("rating"));
-            song->setAlbumId(rs->getInt("albumId"));
-            song->setDateAdded(timeFromeString(rs->getString("dateAdded")));
-            song->setComments(rs->getString("comments"));
-            song->setTrashed(rs->getBoolean("trashed"));
-        }
     }
     
 # pragma mark initialization
@@ -204,6 +188,23 @@ namespace soulsifter {
     }
     
 # pragma mark static methods
+    
+    void Song::populateFields(const sql::ResultSet* rs, Song* song) {
+        song->setId(rs->getInt("id"));
+        song->setArtist(rs->getString("artist"));
+        song->setTrack(rs->getString("track"));
+        song->setTitle(rs->getString("title"));
+        song->setRemix(rs->getString("remix"));
+        song->setFeaturing(rs->getString("featuring"));
+        song->setFilepath(rs->getString("filepath"));
+        song->setRESongId(rs->getInt("reSongId"));
+        // TODO set styles
+        song->setRating(rs->getInt("rating"));
+        song->setAlbumId(rs->getInt("albumId"));
+        song->setDateAdded(timeFromeString(rs->getString("dateAdded")));
+        song->setComments(rs->getString("comments"));
+        song->setTrashed(rs->getBoolean("trashed"));
+    }
     
     Song* Song::findById(const int id) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Songs where id = ?");
