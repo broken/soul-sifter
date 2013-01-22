@@ -37,4 +37,24 @@ namespace soulsifter {
         MixResultSet *mrs = new MixResultSet(rs);
         return mrs;
     }
+    
+# pragma mark MixResultSet
+    
+    Mix::MixResultSet::MixResultSet(sql::ResultSet* resultset) :
+    rs(resultset) {
+    }
+    
+    Mix::MixResultSet::~MixResultSet() {
+        delete rs;
+    }
+    
+    bool Mix::MixResultSet::next(Mix* mix) {
+        if (rs->next()) {
+            populateFields(rs, mix);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
