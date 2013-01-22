@@ -104,22 +104,6 @@ namespace soulsifter {
         return genre;
     }
     
-    const BasicGenre* BasicGenre::findByFilepath(const string& filepath) {
-        unsigned long pos = filepath.find("/mp3/");
-        if (pos != string::npos) {
-            pos += 5;
-            unsigned long pos2 = filepath.find("/", pos);
-            return findByName(filepath.substr(pos, pos2-pos));
-        }
-        pos = filepath.find("/staging/");
-        if (pos != string::npos) {
-            pos += 9;
-            unsigned long pos2 = filepath.find("/", pos);
-            return findByName(filepath.substr(pos, pos2-pos));
-        }
-        return NULL;
-    }
-    
 #pragma mark persistence
     
     bool BasicGenre::update() {
@@ -155,25 +139,6 @@ namespace soulsifter {
             cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
             return NULL;
         }
-    }
-    
-    void BasicGenre::findAll(const vector<const BasicGenre*>** genresPtr) {
-        static vector<const BasicGenre*> basicGenres;
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres");
-        sql::ResultSet *rs = ps->executeQuery();
-        while (rs->next()) {
-            for (vector<const BasicGenre*>::iterator it = basicGenres.begin(); it != basicGenres.end(); ++it) {
-                if ((*it)->id == rs->getInt("id")) {
-                    continue;
-                }
-            }
-            BasicGenre *genre = new BasicGenre();
-            populateFields(rs, genre);
-            basicGenres.push_back(genre);
-        }
-        rs->close();
-        delete rs;
-        (*genresPtr) = &basicGenres;
     }
     
 #pragma mark accessors
