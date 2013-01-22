@@ -152,7 +152,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     while (songs->next(&song)) {
         attrib* songAttribs[] = {
             new attrib("num_excludes","0"),
-            new attrib("num_mixouts",int2str(song.getMixoutCount())),
+            new attrib("num_mixouts",int2str(songs->getMixoutCountForCurrentSong())),
             NULL
         };
         w.startElement("song", songAttribs).endl();

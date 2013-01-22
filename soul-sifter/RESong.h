@@ -33,8 +33,10 @@ namespace soulsifter {
             ~RESongIterator();
             
             bool next(RESong* song);
+            const int getMixoutCountForCurrentSong() const;
         private:
             sql::ResultSet* rs;
+            int mixoutCount;
             
             RESongIterator();
         };
@@ -54,8 +56,6 @@ namespace soulsifter {
         bool needsSave();
         bool update();
         const RESong* save();
-        
-        const int getMixoutCount() const;
         
         const int getUniqueId() const;
         void setUniqueId(const int unique_id);
@@ -158,10 +158,6 @@ namespace soulsifter {
         int beat_intensity;
         string replay_gain;
         string styles_bitmask;
-        
-        // TODO move mixoutCount on to iterator to prevent improper usage
-        // internal usage
-        int mixoutCount;
         
         static void populateFields(const sql::ResultSet* rs, RESong* song);
     };
