@@ -73,6 +73,7 @@
 		18AA5FE116AE7BD7008E8DD3 /* BasicGenreHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FDF16AE7BD7008E8DD3 /* BasicGenreHelper.cpp */; };
 		18AA5FE416AE8839008E8DD3 /* MixHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FE216AE8839008E8DD3 /* MixHelper.cpp */; };
 		18AA5FE716AEA1F5008E8DD3 /* RESongHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FE516AEA1F4008E8DD3 /* RESongHelper.cpp */; };
+		18AA5FEA16AEAAD4008E8DD3 /* SongHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FE816AEAAD3008E8DD3 /* SongHelper.cpp */; };
 		18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */; };
 		18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */; };
 		18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */; };
@@ -217,6 +218,7 @@
 		18AA5FDF16AE7BD7008E8DD3 /* BasicGenreHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicGenreHelper.cpp; sourceTree = "<group>"; };
 		18AA5FE216AE8839008E8DD3 /* MixHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MixHelper.cpp; sourceTree = "<group>"; };
 		18AA5FE516AEA1F4008E8DD3 /* RESongHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESongHelper.cpp; sourceTree = "<group>"; };
+		18AA5FE816AEAAD3008E8DD3 /* SongHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SongHelper.cpp; sourceTree = "<group>"; };
 		18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/Cellar/xerces-c/3.1.1/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
 		18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 				18AA5FE516AEA1F4008E8DD3 /* RESongHelper.cpp */,
 				1834E3B216689EBC00E4A761 /* RESong.cpp */,
 				185C3FB61662EC6C004DE6B6 /* RESong.h */,
+				18AA5FE816AEAAD3008E8DD3 /* SongHelper.cpp */,
 				18A73F781665EEFC0074E137 /* Song.cpp */,
 				18A73F791665EEFC0074E137 /* Song.h */,
 				188E1B26164E198C004754F4 /* Style.cpp */,
@@ -692,6 +695,7 @@
 				18AA5FE116AE7BD7008E8DD3 /* BasicGenreHelper.cpp in Sources */,
 				18AA5FE416AE8839008E8DD3 /* MixHelper.cpp in Sources */,
 				18AA5FE716AEA1F5008E8DD3 /* RESongHelper.cpp in Sources */,
+				18AA5FEA16AEAAD4008E8DD3 /* SongHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

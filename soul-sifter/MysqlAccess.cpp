@@ -24,6 +24,24 @@
 #include <mysql_driver.h>
 
 namespace soulsifter {
+    
+# pragma mark public helpers
+    
+    time_t timeFromeString(const std::string& str) {
+        struct tm dt;
+        memset(&dt, 0, sizeof(dt));
+        strptime(str.c_str(), "%Y-%m-%d %X", &dt);
+        return mktime(&dt);
+    }
+    
+    std::string stringFromTime(const time_t time) {
+        struct tm dt = *localtime(&time);
+        char buffer[80];
+        memset(buffer, 0, 80);
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %X %Z", &dt);
+        std::string str(buffer);
+        return str;
+    }
 
 # pragma mark initialization
 
