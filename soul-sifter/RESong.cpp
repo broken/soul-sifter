@@ -25,868 +25,868 @@
 using namespace std;
 
 namespace soulsifter {
-
+    
 # pragma mark helpers
-
-namespace {
     
-    static void populateFields(const sql::ResultSet* rs, RESong* song) {
-        song->setUniqueId(rs->getInt("unique_id"));
-        song->setSongIdWInfo(rs->getString("songid_winfo"));
-        song->setSongId(rs->getString("songid"));
-        song->setShortId(rs->getString("shortid"));
-        song->setShortIdWInfo(rs->getString("shortid_winfo"));
-        song->setArtist(rs->getString("artist"));
-        song->setAlbum(rs->getString("album"));
-        song->setTrack(rs->getString("track"));
-        song->setTitle(rs->getString("title"));
-        song->setTime(rs->getString("time"));
-        song->setTimeSignature(rs->getString("time_signature"));
-        song->setFilename(rs->getString("filename"));
-        song->setDigitalOnly(rs->getString("digital_only"));
-        song->setCompilation(rs->getString("compilation"));
-        song->setKeyStart(rs->getString("key_start"));
-        song->setKeyAccuracy(rs->getInt("key_accuracy"));
-        song->setBPMStart(rs->getString("bpm_start"));
-        song->setBPMAccuracy(rs->getInt("bpm_accuracy"));
-        song->setRating(rs->getInt("rating"));
-        song->setDateAdded(rs->getString("date_added"));
-        song->setCatalogId(rs->getString("catalog_id"));
-        song->setLabel(rs->getString("label"));
-        song->setRemix(rs->getString("remix"));
-        song->setNumPlays(rs->getInt("num_plays"));
-        song->setComments(rs->getString("comments"));
-        song->setReleaseDate(rs->getString("release_date"));
-        song->setFeaturing(rs->getString("featuring"));
-        song->setKeyEnd(rs->getString("key_end"));
-        song->setDisabled(rs->getString("disabled"));
-        song->setBPMEnd(rs->getString("bpm_end"));
-        song->setBeatIntensity(rs->getInt("beat_intensity"));
-        song->setReplayGain(rs->getString("replay_gain"));
-        song->setStylesBitmask(rs->getString("styles_bitmask"));
+    namespace {
+        
+        static void populateFields(const sql::ResultSet* rs, RESong* song) {
+            song->setUniqueId(rs->getInt("unique_id"));
+            song->setSongIdWInfo(rs->getString("songid_winfo"));
+            song->setSongId(rs->getString("songid"));
+            song->setShortId(rs->getString("shortid"));
+            song->setShortIdWInfo(rs->getString("shortid_winfo"));
+            song->setArtist(rs->getString("artist"));
+            song->setAlbum(rs->getString("album"));
+            song->setTrack(rs->getString("track"));
+            song->setTitle(rs->getString("title"));
+            song->setTime(rs->getString("time"));
+            song->setTimeSignature(rs->getString("time_signature"));
+            song->setFilename(rs->getString("filename"));
+            song->setDigitalOnly(rs->getString("digital_only"));
+            song->setCompilation(rs->getString("compilation"));
+            song->setKeyStart(rs->getString("key_start"));
+            song->setKeyAccuracy(rs->getInt("key_accuracy"));
+            song->setBPMStart(rs->getString("bpm_start"));
+            song->setBPMAccuracy(rs->getInt("bpm_accuracy"));
+            song->setRating(rs->getInt("rating"));
+            song->setDateAdded(rs->getString("date_added"));
+            song->setCatalogId(rs->getString("catalog_id"));
+            song->setLabel(rs->getString("label"));
+            song->setRemix(rs->getString("remix"));
+            song->setNumPlays(rs->getInt("num_plays"));
+            song->setComments(rs->getString("comments"));
+            song->setReleaseDate(rs->getString("release_date"));
+            song->setFeaturing(rs->getString("featuring"));
+            song->setKeyEnd(rs->getString("key_end"));
+            song->setDisabled(rs->getString("disabled"));
+            song->setBPMEnd(rs->getString("bpm_end"));
+            song->setBeatIntensity(rs->getInt("beat_intensity"));
+            song->setReplayGain(rs->getString("replay_gain"));
+            song->setStylesBitmask(rs->getString("styles_bitmask"));
+        }
     }
-}
-
+    
 # pragma mark initialization
-
-RESong::RESong() :
-unique_id(0),
-songid_winfo(),
-songid(),
-shortid(),
-shortid_winfo(),
-artist(),
-album(),
-track(),
-title(),
-time(),
-time_signature(),
-filename(),
-digital_only(),
-compilation(),
-key_start(),
-key_accuracy(0),
-bpm_start(),
-bpm_accuracy(0),
-rating(0),
-date_added(),
-catalog_id(),
-label(),
-remix(),
-num_plays(0),
-comments(),
-release_date(),
-featuring(),
-key_end(),
-disabled(),
-bpm_end(),
-beat_intensity(0),
-replay_gain(),
-styles_bitmask() {
-}
-
-RESong::~RESong() {
-}
     
-RESong::RESong(const Song& song) :
-unique_id(0),
-songid_winfo(),
-songid(),
-shortid(),
-shortid_winfo(),
-artist(song.getArtist()),
-album(song.reAlbum()),
-track(song.getTrack()),
-title(song.getTitle()),
-time(),
-time_signature(),
-filename(song.getFilepath()),
-digital_only(),
-compilation(),
-key_start(),
-key_accuracy(0),
-bpm_start(),
-bpm_accuracy(0),
-rating(song.getRating()),
-date_added(song.getDateAddedString()),
-catalog_id(song.getAlbum()->getCatalogId()),
-label(song.getAlbum()->getLabel()),
-remix(song.getRemix()),
-num_plays(0),
-comments(song.getComments()),
-release_date(song.getAlbum()->reReleaseDate()),
-featuring(song.getFeaturing()),
-key_end(),
-disabled(song.getTrashed() ? "yes" : "no"),
-bpm_end(),
-beat_intensity(0),
-replay_gain(),
-styles_bitmask() {
-}
-
-void RESong::clear() {
-    unique_id = 0;
-    songid_winfo.clear();
-    songid.clear();
-    shortid.clear();
-    shortid_winfo.clear();
-    artist.clear();
-    album.clear();
-    track.clear();
-    title.clear();
-    time.clear();
-    time_signature.clear();
-    filename.clear();
-    digital_only.clear();
-    compilation.clear();
-    key_start.clear();
-    key_accuracy = 0;
-    bpm_start.clear();
-    bpm_accuracy = 0;
-    rating = 0;
-    date_added.clear();
-    catalog_id.clear();
-    label.clear();
-    remix.clear();
-    num_plays = 0;
-    comments.clear();
-    release_date.clear();
-    featuring.clear();
-    key_end.clear();
-    disabled.clear();
-    bpm_end.clear();
-    beat_intensity = 0;
-    replay_gain.clear();
-    styles_bitmask.clear();
-}
-
+    RESong::RESong() :
+    unique_id(0),
+    songid_winfo(),
+    songid(),
+    shortid(),
+    shortid_winfo(),
+    artist(),
+    album(),
+    track(),
+    title(),
+    time(),
+    time_signature(),
+    filename(),
+    digital_only(),
+    compilation(),
+    key_start(),
+    key_accuracy(0),
+    bpm_start(),
+    bpm_accuracy(0),
+    rating(0),
+    date_added(),
+    catalog_id(),
+    label(),
+    remix(),
+    num_plays(0),
+    comments(),
+    release_date(),
+    featuring(),
+    key_end(),
+    disabled(),
+    bpm_end(),
+    beat_intensity(0),
+    replay_gain(),
+    styles_bitmask() {
+    }
+    
+    RESong::~RESong() {
+    }
+    
+    RESong::RESong(const Song& song) :
+    unique_id(0),
+    songid_winfo(),
+    songid(),
+    shortid(),
+    shortid_winfo(),
+    artist(song.getArtist()),
+    album(song.reAlbum()),
+    track(song.getTrack()),
+    title(song.getTitle()),
+    time(),
+    time_signature(),
+    filename(song.getFilepath()),
+    digital_only(),
+    compilation(),
+    key_start(),
+    key_accuracy(0),
+    bpm_start(),
+    bpm_accuracy(0),
+    rating(song.getRating()),
+    date_added(song.getDateAddedString()),
+    catalog_id(song.getAlbum()->getCatalogId()),
+    label(song.getAlbum()->getLabel()),
+    remix(song.getRemix()),
+    num_plays(0),
+    comments(song.getComments()),
+    release_date(song.getAlbum()->reReleaseDate()),
+    featuring(song.getFeaturing()),
+    key_end(),
+    disabled(song.getTrashed() ? "yes" : "no"),
+    bpm_end(),
+    beat_intensity(0),
+    replay_gain(),
+    styles_bitmask() {
+    }
+    
+    void RESong::clear() {
+        unique_id = 0;
+        songid_winfo.clear();
+        songid.clear();
+        shortid.clear();
+        shortid_winfo.clear();
+        artist.clear();
+        album.clear();
+        track.clear();
+        title.clear();
+        time.clear();
+        time_signature.clear();
+        filename.clear();
+        digital_only.clear();
+        compilation.clear();
+        key_start.clear();
+        key_accuracy = 0;
+        bpm_start.clear();
+        bpm_accuracy = 0;
+        rating = 0;
+        date_added.clear();
+        catalog_id.clear();
+        label.clear();
+        remix.clear();
+        num_plays = 0;
+        comments.clear();
+        release_date.clear();
+        featuring.clear();
+        key_end.clear();
+        disabled.clear();
+        bpm_end.clear();
+        beat_intensity = 0;
+        replay_gain.clear();
+        styles_bitmask.clear();
+    }
+    
 # pragma mark static
-
-const int RESong::maxREId() {
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");
-    sql::ResultSet *rs = ps->executeQuery();
-    int max = 0;
-    if (rs->next())
-        max = rs->getInt(1);
-    rs->close();
-    delete rs;
-    return max;
-}
-
-RESong* RESong::findByUniqueId(const int uniqueId) {
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
-    ps->setInt(1, uniqueId);
-    sql::ResultSet *rs = ps->executeQuery();
-    RESong *song = NULL;
-    if (rs->next()) {
-        song = new RESong();
-        populateFields(rs, song);
-    }
-    rs->close();
-    delete rs;
-    return song;
-}
-
-RESong* RESong::findBySongId(const string& songId) {
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where songId = ?");
-    ps->setString(1, songId);
-    sql::ResultSet *rs = ps->executeQuery();
-    RESong *song = NULL;
-    if (rs->next()) {
-        song = new RESong();
-        populateFields(rs, song);
-    }
-    rs->close();
-    delete rs;
-    return song;
-}
-
-RESong::RESongIterator* RESong::findAll() {
-    sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select re.*, count(m.outSongId) as cnt from RESongs re join Songs s on re.unique_id = s.reSongId left join Mixes m on s.id = m.outSongId group by re.unique_id order by re.songId");
-    sql::ResultSet *rs = ps->executeQuery();
-    RESongIterator *it = new RESongIterator(rs);
-    return it;
-}
-
-bool RESong::lookup(RESong *song) {
-    try {
-        // use various means to try and retrieve the song
-        sql::ResultSet *result;
-        if (song->unique_id > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
-            ps->setInt(1, song->unique_id);
-            result = ps->executeQuery();
-        } else if (song->songid.length() > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where songid = ?");
-            ps->setString(1, song->songid);
-            result = ps->executeQuery();
-        } else if (song->shortid.length() > 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where shortid = ?");
-            ps->setString(1, song->shortid);
-            result = ps->executeQuery();
-        } else {
-            cout << "Nothing to search for re song by" << endl;
-            return false;
-        }
-        
-        // did we get a unique result?
-        if (!result->next()) {
-            cout << "No RE song found for " << song->shortid << endl;
-            return false;
-        } else if (!result->isLast()) {
-            cout << "Ambigious result returned for " << song->shortid << endl;
-            return false;
-        }
-        
-        // update fields
-        if (song->unique_id != result->getInt("unique_id")) {
-            if (song->unique_id > 0)
-                cout << "updating unique_id of RE song from " << song->unique_id << " to " << result->getInt("unique_id") << endl;
-            song->unique_id = result->getInt("unique_id");
-        }
-        if (song->songid_winfo.compare(result->getString("songid_winfo"))) {
-            if (song->songid_winfo.length() > 0)
-                cout << "updating songid_winfo of RE song from " << song->songid_winfo << " to " << result->getString("songid_winfo") << endl;
-            song->songid_winfo = result->getString("songid_winfo");
-        }
-        if (song->songid.compare(result->getString("songid"))) {
-            if (song->songid.length() > 0)
-                cout << "updating songid of RE song from " << song->songid << " to " << result->getString("songid") << endl;
-            song->songid = result->getString("songid");
-        }
-        if (song->shortid.compare(result->getString("shortid"))) {
-            if (song->shortid.length() > 0)
-                cout << "updating shortid of RE song from " << song->shortid << " to " << result->getString("shortid") << endl;
-            song->shortid = result->getString("shortid");
-        }
-        if (song->shortid_winfo.compare(result->getString("shortid_winfo"))) {
-            if (song->shortid_winfo.length() > 0)
-                cout << "updating shortid_winfo of RE song from " << song->shortid_winfo << " to " << result->getString("shortid_winfo") << endl;
-            song->shortid_winfo = result->getString("shortid_winfo");
-        }
-        if (song->artist.compare(result->getString("artist"))) {
-            if (song->artist.length() > 0)
-                cout << "updating artist of RE song from " << song->artist << " to " << result->getString("artist") << endl;
-            song->artist = result->getString("artist");
-        }
-        if (song->album.compare(result->getString("album"))) {
-            if (song->album.length() > 0)
-                cout << "updating album of RE song from " << song->album << " to " << result->getString("album") << endl;
-            song->album = result->getString("album");
-        }
-        if (song->track.compare(result->getString("track"))) {
-            if (song->track.length() > 0)
-                cout << "updating track of RE song from " << song->track << " to " << result->getString("track") << endl;
-            song->track = result->getString("track");
-        }
-        if (song->title.compare(result->getString("title"))) {
-            if (song->title.length() > 0)
-                cout << "updating title of RE song from " << song->title << " to " << result->getString("title") << endl;
-            song->title = result->getString("title");
-        }
-        if (song->time.compare(result->getString("time"))) {
-            if (song->time.length() > 0)
-                cout << "updating time of RE song from " << song->time << " to " << result->getString("time") << endl;
-            song->time = result->getString("time");
-        }
-        if (song->time_signature.compare(result->getString("time_signature"))) {
-            if (song->time_signature.length() > 0)
-                cout << "updating time_signature of RE song from " << song->time_signature << " to " << result->getString("time_signature") << endl;
-            song->time_signature = result->getString("time_signature");
-        }
-        if (song->filename.compare(result->getString("filename"))) {
-            if (song->filename.length() > 0)
-                cout << "updating filename of RE song from " << song->filename << " to " << result->getString("filename") << endl;
-            song->filename = result->getString("filename");
-        }
-        if (song->digital_only.compare(result->getString("digital_only"))) {
-            if (song->digital_only.length() > 0)
-                cout << "updating digital_only of RE song from " << song->digital_only << " to " << result->getString("digital_only") << endl;
-            song->digital_only = result->getString("digital_only");
-        }
-        if (song->compilation.compare(result->getString("compilation"))) {
-            if (song->compilation.length() > 0)
-                cout << "updating compilation of RE song from " << song->compilation << " to " << result->getString("compilation") << endl;
-            song->compilation = result->getString("compilation");
-        }
-        if (song->key_start.compare(result->getString("key_start"))) {
-            if (song->key_start.length() > 0)
-                cout << "updating key_start of RE song from " << song->key_start << " to " << result->getString("key_start") << endl;
-            song->key_start = result->getString("key_start");
-        }
-        if (song->key_accuracy != result->getInt("key_accuracy")) {
-            if (song->key_accuracy > 0)
-                cout << "updating key_accuracy of RE song from " << song->key_accuracy << " to " << result->getInt("key_accuracy") << endl;
-            song->key_accuracy = result->getInt("key_accuracy");
-        }
-        if (song->bpm_start.compare(result->getString("bpm_start"))) {
-            if (song->bpm_start.length() > 0)
-                cout << "updating bpm_start of RE song from " << song->bpm_start << " to " << result->getString("bpm_start") << endl;
-            song->bpm_start = result->getString("bpm_start");
-        }
-        if (song->bpm_accuracy != result->getInt("bpm_accuracy")) {
-            if (song->bpm_accuracy > 0)
-                cout << "updating bpm_accuracy of RE song from " << song->bpm_accuracy << " to " << result->getInt("bpm_accuracy") << endl;
-            song->bpm_accuracy = result->getInt("bpm_accuracy");
-        }
-        if (song->rating != result->getInt("rating")) {
-            if (song->rating > 0)
-                cout << "updating rating of RE song from " << song->rating << " to " << result->getInt("rating") << endl;
-            song->rating = result->getInt("rating");
-        }
-        if (song->date_added.compare(result->getString("date_added"))) {
-            if (song->date_added.length() > 0)
-                cout << "updating date_added of RE song from " << song->date_added << " to " << result->getString("date_added") << endl;
-            song->date_added = result->getString("date_added");
-        }
-        if (song->catalog_id.compare(result->getString("catalog_id"))) {
-            if (song->catalog_id.length() > 0)
-                cout << "updating catalog_id of RE song from " << song->catalog_id << " to " << result->getString("catalog_id") << endl;
-            song->catalog_id = result->getString("catalog_id");
-        }
-        if (song->label.compare(result->getString("label"))) {
-            if (song->label.length() > 0)
-                cout << "updating label of RE song from " << song->label << " to " << result->getString("label") << endl;
-            song->label = result->getString("label");
-        }
-        if (song->remix.compare(result->getString("remix"))) {
-            if (song->remix.length() > 0)
-                cout << "updating remix of RE song from " << song->remix << " to " << result->getString("remix") << endl;
-            song->remix = result->getString("remix");
-        }
-        if (song->num_plays != result->getInt("num_plays")) {
-            if (song->num_plays > 0)
-                cout << "updating num_plays of RE song from " << song->num_plays << " to " << result->getInt("num_plays") << endl;
-            song->num_plays = result->getInt("num_plays");
-        }
-        if (song->comments.compare(result->getString("comments"))) {
-            if (song->comments.length() > 0)
-                cout << "updating comments of RE song from " << song->comments << " to " << result->getString("comments") << endl;
-            song->comments = result->getString("comments");
-        }
-        if (song->release_date.compare(result->getString("release_date"))) {
-            if (song->release_date.length() > 0)
-                cout << "updating release_date of RE song from " << song->release_date << " to " << result->getString("release_date") << endl;
-            song->release_date = result->getString("release_date");
-        }
-        if (song->featuring.compare(result->getString("featuring"))) {
-            if (song->featuring.length() > 0)
-                cout << "updating featuring of RE song from " << song->featuring << " to " << result->getString("featuring") << endl;
-            song->featuring = result->getString("featuring");
-        }
-        if (song->key_end.compare(result->getString("key_end"))) {
-            if (song->key_end.length() > 0)
-                cout << "updating key_end of RE song from " << song->key_end << " to " << result->getString("key_end") << endl;
-            song->key_end = result->getString("key_end");
-        }
-        if (song->disabled.compare(result->getString("disabled"))) {
-            if (song->disabled.length() > 0)
-                cout << "updating disabled of RE song from " << song->disabled << " to " << result->getString("disabled") << endl;
-            song->disabled = result->getString("disabled");
-        }
-        if (song->bpm_end.compare(result->getString("bpm_end"))) {
-            if (song->bpm_end.length() > 0)
-                cout << "updating bpm_end of RE song from " << song->bpm_end << " to " << result->getString("bpm_end") << endl;
-            song->bpm_end = result->getString("bpm_end");
-        }
-        if (song->beat_intensity != result->getInt("beat_intensity")) {
-            if (song->beat_intensity > 0)
-                cout << "updating beat_intensity of RE song from " << song->beat_intensity << " to " << result->getInt("beat_intensity") << endl;
-            song->beat_intensity = result->getInt("beat_intensity");
-        }
-        if (song->replay_gain.compare(result->getString("replay_gain"))) {
-            if (song->replay_gain.length() > 0)
-                cout << "updating replay_gain of RE song from " << song->replay_gain << " to " << result->getString("replay_gain") << endl;
-            song->replay_gain = result->getString("replay_gain");
-        }
-        if (song->styles_bitmask.compare(result->getString("styles_bitmask"))) {
-            if (song->styles_bitmask.length() > 0)
-                cout << "updating styles_bitmask of RE song from " << song->styles_bitmask << " to " << result->getString("styles_bitmask") << endl;
-            song->styles_bitmask = result->getString("styles_bitmask");
-        }
-        
-        // clean up
-        delete result;
-        
-        return true;
-    } catch (sql::SQLException &e) {
-        cerr << "ERROR: SQLException in " << __FILE__;
-        cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
-        cerr << "ERROR: " << e.what();
-        cerr << " (MySQL error code: " << e.getErrorCode();
-        cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
-        return false;
-    }
-}
-
-// TODO sync empty fields
-bool RESong::sync() {
-    try {
-        // use various means to try and retrieve the song
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
-        ps->setInt(1, unique_id);
-        sql::ResultSet *result = ps->executeQuery();
-        
-        // did we get a result?
-        if (!result->next()) {
-            cout << "No RE song found for " << unique_id << endl;
-            delete result;
-            return true;
-        }
-        
-        // does a field need updating
-        bool needsUpdate = false;
-        if (unique_id != result->getInt("unique_id")) {
-            needsUpdate = true;
-            if (unique_id > 0)
-                cout << "updating unique_id of RE song to " << unique_id << " from " << result->getInt("unique_id") << endl;
-        }
-        if (songid_winfo.compare(result->getString("songid_winfo"))) {
-            needsUpdate = true;
-            if (result->getString("songid_winfo").length() > 0)
-                cout << "updating songid_winfo of RE song to " << songid_winfo << " from " << result->getString("songid_winfo") << endl;
-        }
-        if (songid.compare(result->getString("songid"))) {
-            needsUpdate = true;
-            if (result->getString("songid").length() > 0)
-                cout << "updating songid of RE song to " << songid << " from " << result->getString("songid") << endl;
-        }
-        if (shortid.compare(result->getString("shortid"))) {
-            needsUpdate = true;
-            if (result->getString("shortid").length() > 0)
-                cout << "updating shortid of RE song to " << shortid << " from " << result->getString("shortid") << endl;
-        }
-        if (shortid_winfo.compare(result->getString("shortid_winfo"))) {
-            needsUpdate = true;
-            if (result->getString("shortid_winfo").length() > 0)
-                cout << "updating shortid_winfo of RE song to " << shortid_winfo << " from " << result->getString("shortid_winfo") << endl;
-        }
-        if (artist.compare(result->getString("artist"))) {
-            needsUpdate = true;
-            if (result->getString("artist").length() > 0)
-                cout << "updating artist of RE song to " << artist << " from " << result->getString("artist") << endl;
-        }
-        if (album.compare(result->getString("album"))) {
-            needsUpdate = true;
-            if (result->getString("album").length() > 0)
-                cout << "updating album of RE song to " << album << " from " << result->getString("album") << endl;
-        }
-        if (track.compare(result->getString("track"))) {
-            needsUpdate = true;
-            if (result->getString("track").length() > 0)
-                cout << "updating track of RE song to " << track << " from " << result->getString("track") << endl;
-        }
-        if (title.compare(result->getString("title"))) {
-            needsUpdate = true;
-            if (result->getString("title").length() > 0)
-                cout << "updating title of RE song to " << title << " from " << result->getString("title") << endl;
-        }
-        if (time.compare(result->getString("time"))) {
-            needsUpdate = true;
-            if (result->getString("time").length() > 0)
-                cout << "updating time of RE song to " << time << " from " << result->getString("time") << endl;
-        }
-        if (time_signature.compare(result->getString("time_signature"))) {
-            needsUpdate = true;
-            if (result->getString("time_signature").length() > 0)
-                cout << "updating time_signature of RE song to " << time_signature << " from " << result->getString("time_signature") << endl;
-        }
-        if (filename.compare(result->getString("filename"))) {
-            needsUpdate = true;
-            if (result->getString("filename").length() > 0)
-                cout << "updating filename of RE song to " << filename << " from " << result->getString("filename") << endl;
-        }
-        if (digital_only.compare(result->getString("digital_only"))) {
-            needsUpdate = true;
-            if (result->getString("digital_only").length() > 0)
-                cout << "updating digital_only of RE song to " << digital_only << " from " << result->getString("digital_only") << endl;
-        }
-        if (compilation.compare(result->getString("compilation"))) {
-            needsUpdate = true;
-            if (result->getString("compilation").length() > 0)
-                cout << "updating compilation of RE song to " << compilation << " from " << result->getString("compilation") << endl;
-        }
-        if (key_start.compare(result->getString("key_start"))) {
-            needsUpdate = true;
-            if (result->getString("key_start").length() > 0)
-                cout << "updating key_start of RE song to " << key_start << " from " << result->getString("key_start") << endl;
-        }
-        if (key_accuracy != result->getInt("key_accuracy")) {
-            needsUpdate = true;
-            if (result->getInt("key_accuracy") > 0)
-                cout << "updating key_accuracy of RE song to " << key_accuracy << " from " << result->getInt("key_accuracy") << endl;
-        }
-        if (bpm_start.compare(result->getString("bpm_start"))) {
-            needsUpdate = true;
-            if (result->getString("bpm_start").length() > 0)
-                cout << "updating bpm_start of RE song to " << bpm_start << " from " << result->getString("bpm_start") << endl;
-        }
-        if (bpm_accuracy != result->getInt("bpm_accuracy")) {
-            needsUpdate = true;
-            if (result->getInt("bpm_accuracy") > 0)
-                cout << "updating bpm_accuracy of RE song to " << bpm_accuracy << " from " << result->getInt("bpm_accuracy") << endl;
-        }
-        if (rating != result->getInt("rating")) {
-            needsUpdate = true;
-            if (result->getInt("rating") > 0)
-                cout << "updating rating of RE song to " << rating << " from " << result->getInt("rating") << endl;
-        }
-        if (date_added.compare(result->getString("date_added"))) {
-            needsUpdate = true;
-            if (result->getString("date_added").length() > 0)
-                cout << "updating date_added of RE song to " << date_added << " from " << result->getString("date_added") << endl;
-        }
-        if (catalog_id.compare(result->getString("catalog_id"))) {
-            needsUpdate = true;
-            if (result->getString("catalog_id").length() > 0)
-                cout << "updating catalog_id of RE song to " << catalog_id << " from " << result->getString("catalog_id") << endl;
-        }
-        if (label.compare(result->getString("label"))) {
-            needsUpdate = true;
-            if (result->getString("label").length() > 0)
-                cout << "updating label of RE song to " << label << " from " << result->getString("label") << endl;
-        }
-        if (remix.compare(result->getString("remix"))) {
-            needsUpdate = true;
-            if (result->getString("remix").length() > 0)
-                cout << "updating remix of RE song to " << remix << " from " << result->getString("remix") << endl;
-        }
-        if (num_plays != result->getInt("num_plays")) {
-            needsUpdate = true;
-            if (result->getInt("num_plays") > 0)
-                cout << "updating num_plays of RE song to " << num_plays << " from " << result->getInt("num_plays") << endl;
-        }
-        if (comments.compare(result->getString("comments"))) {
-            needsUpdate = true;
-            if (result->getString("comments").length() > 0)
-                cout << "updating comments of RE song to " << comments << " from " << result->getString("comments") << endl;
-        }
-        if (release_date.compare(result->getString("release_date"))) {
-            needsUpdate = true;
-            if (result->getString("release_date").length() > 0)
-                cout << "updating release_date of RE song to " << release_date << " from " << result->getString("release_date") << endl;
-        }
-        if (featuring.compare(result->getString("featuring"))) {
-            needsUpdate = true;
-            if (result->getString("featuring").length() > 0)
-                cout << "updating featuring of RE song to " << featuring << " from " << result->getString("featuring") << endl;
-        }
-        if (key_end.compare(result->getString("key_end"))) {
-            needsUpdate = true;
-            if (result->getString("key_end").length() > 0)
-                cout << "updating key_end of RE song to " << key_end << " from " << result->getString("key_end") << endl;
-        }
-        if (disabled.compare(result->getString("disabled"))) {
-            needsUpdate = true;
-            if (result->getString("disabled").length() > 0)
-                cout << "updating disabled of RE song to " << disabled << " from " << result->getString("disabled") << endl;
-        }
-        if (bpm_end.compare(result->getString("bpm_end"))) {
-            needsUpdate = true;
-            if (result->getString("bpm_end").length() > 0)
-                cout << "updating bpm_end of RE song to " << bpm_end << " from " << result->getString("bpm_end") << endl;
-        }
-        if (beat_intensity != result->getInt("beat_intensity")) {
-            needsUpdate = true;
-            if (result->getInt("beat_intensity") > 0)
-                cout << "updating beat_intensity of RE song to " << beat_intensity << " from " << result->getInt("beat_intensity") << endl;
-        }
-        if (replay_gain.compare(result->getString("replay_gain"))) {
-            needsUpdate = true;
-            if (result->getString("replay_gain").length() > 0)
-                cout << "updating replay_gain of RE song to " << replay_gain << " from " << result->getString("replay_gain") << endl;
-        }
-        if (styles_bitmask.compare(result->getString("styles_bitmask"))) {
-            needsUpdate = true;
-            if (result->getString("styles_bitmask").length() > 0)
-                cout << "updating styles_bitmask of RE song to " << styles_bitmask << " from " << result->getString("styles_bitmask") << endl;
-        }
-        
-        // clean up
-        delete result;
-        
-        return needsUpdate;
-    } catch (sql::SQLException &e) {
-        cerr << "ERROR: SQLException in " << __FILE__;
-        cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
-        cerr << "ERROR: " << e.what();
-        cerr << " (MySQL error code: " << e.getErrorCode();
-        cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
-        return false;
-    }
-}
     
-bool RESong::needsSave() {
-    try {
-        // use various means to try and retrieve the song
+    const int RESong::maxREId() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");
+        sql::ResultSet *rs = ps->executeQuery();
+        int max = 0;
+        if (rs->next())
+            max = rs->getInt(1);
+        rs->close();
+        delete rs;
+        return max;
+    }
+    
+    RESong* RESong::findByUniqueId(const int uniqueId) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
-        ps->setInt(1, unique_id);
-        sql::ResultSet *result = ps->executeQuery();
-        
-        // did we get a result?
-        bool needsSave = !result->next();
-        delete result;
-        return needsSave;
-    } catch (sql::SQLException &e) {
-        cerr << "ERROR: SQLException in " << __FILE__;
-        cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
-        cerr << "ERROR: " << e.what();
-        cerr << " (MySQL error code: " << e.getErrorCode();
-        cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
-        return false;
+        ps->setInt(1, uniqueId);
+        sql::ResultSet *rs = ps->executeQuery();
+        RESong *song = NULL;
+        if (rs->next()) {
+            song = new RESong();
+            populateFields(rs, song);
+        }
+        rs->close();
+        delete rs;
+        return song;
     }
-}
-
-bool RESong::update() {
-    try {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update RESongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, styles_bitmask=? where unique_id=?");
-        ps->setString(1, songid_winfo);
-        ps->setString(2, songid);
-        ps->setString(3, shortid);
-        ps->setString(4, shortid_winfo);
-        ps->setString(5, artist);
-        ps->setString(6, album);
-        ps->setString(7, track);
-        ps->setString(8, title);
-        ps->setString(9, time);
-        ps->setString(10, time_signature);
-        ps->setString(11, filename);
-        ps->setString(12, digital_only);
-        ps->setString(13, compilation);
-        ps->setString(14, key_start);
-        ps->setInt(15, key_accuracy);
-        ps->setString(16, bpm_start);
-        ps->setInt(17, bpm_accuracy);
-        ps->setInt(18, rating);
-        ps->setString(19, date_added);
-        ps->setString(20, catalog_id);
-        ps->setString(21, label);
-        ps->setString(22, remix);
-        ps->setInt(23, num_plays);
-        ps->setString(24, comments);
-        ps->setString(25, release_date);
-        ps->setString(26, featuring);
-        ps->setString(27, key_end);
-        ps->setString(28, disabled);
-        ps->setString(29, bpm_end);
-        ps->setInt(30, beat_intensity);
-        ps->setString(31, replay_gain);
-        ps->setString(32, styles_bitmask);
-        ps->setInt(33, unique_id);
-        ps->executeUpdate();
-        return true;
-	} catch (sql::SQLException &e) {
-        cerr << "ERROR: SQLException in " << __FILE__;
-        cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
-        cerr << "ERROR: " << e.what();
-        cerr << " (MySQL error code: " << e.getErrorCode();
-        cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
-        return false;
-	}
-}
-
-const RESong* RESong::save() {
-    try {
-        if (unique_id == 0) {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");
-            sql::ResultSet *rs = ps->executeQuery();
-            if (rs->next()) {
-                unique_id = rs->getInt(1);
+    
+    RESong* RESong::findBySongId(const string& songId) {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where songId = ?");
+        ps->setString(1, songId);
+        sql::ResultSet *rs = ps->executeQuery();
+        RESong *song = NULL;
+        if (rs->next()) {
+            song = new RESong();
+            populateFields(rs, song);
+        }
+        rs->close();
+        delete rs;
+        return song;
+    }
+    
+    RESong::RESongIterator* RESong::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select re.*, count(m.outSongId) as cnt from RESongs re join Songs s on re.unique_id = s.reSongId left join Mixes m on s.id = m.outSongId group by re.unique_id order by re.songId");
+        sql::ResultSet *rs = ps->executeQuery();
+        RESongIterator *it = new RESongIterator(rs);
+        return it;
+    }
+    
+    bool RESong::lookup(RESong *song) {
+        try {
+            // use various means to try and retrieve the song
+            sql::ResultSet *result;
+            if (song->unique_id > 0) {
+                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
+                ps->setInt(1, song->unique_id);
+                result = ps->executeQuery();
+            } else if (song->songid.length() > 0) {
+                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where songid = ?");
+                ps->setString(1, song->songid);
+                result = ps->executeQuery();
+            } else if (song->shortid.length() > 0) {
+                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where shortid = ?");
+                ps->setString(1, song->shortid);
+                result = ps->executeQuery();
+            } else {
+                cout << "Nothing to search for re song by" << endl;
+                return false;
             }
-            rs->close();
-            delete rs;
+            
+            // did we get a unique result?
+            if (!result->next()) {
+                cout << "No RE song found for " << song->shortid << endl;
+                return false;
+            } else if (!result->isLast()) {
+                cout << "Ambigious result returned for " << song->shortid << endl;
+                return false;
+            }
+            
+            // update fields
+            if (song->unique_id != result->getInt("unique_id")) {
+                if (song->unique_id > 0)
+                    cout << "updating unique_id of RE song from " << song->unique_id << " to " << result->getInt("unique_id") << endl;
+                song->unique_id = result->getInt("unique_id");
+            }
+            if (song->songid_winfo.compare(result->getString("songid_winfo"))) {
+                if (song->songid_winfo.length() > 0)
+                    cout << "updating songid_winfo of RE song from " << song->songid_winfo << " to " << result->getString("songid_winfo") << endl;
+                song->songid_winfo = result->getString("songid_winfo");
+            }
+            if (song->songid.compare(result->getString("songid"))) {
+                if (song->songid.length() > 0)
+                    cout << "updating songid of RE song from " << song->songid << " to " << result->getString("songid") << endl;
+                song->songid = result->getString("songid");
+            }
+            if (song->shortid.compare(result->getString("shortid"))) {
+                if (song->shortid.length() > 0)
+                    cout << "updating shortid of RE song from " << song->shortid << " to " << result->getString("shortid") << endl;
+                song->shortid = result->getString("shortid");
+            }
+            if (song->shortid_winfo.compare(result->getString("shortid_winfo"))) {
+                if (song->shortid_winfo.length() > 0)
+                    cout << "updating shortid_winfo of RE song from " << song->shortid_winfo << " to " << result->getString("shortid_winfo") << endl;
+                song->shortid_winfo = result->getString("shortid_winfo");
+            }
+            if (song->artist.compare(result->getString("artist"))) {
+                if (song->artist.length() > 0)
+                    cout << "updating artist of RE song from " << song->artist << " to " << result->getString("artist") << endl;
+                song->artist = result->getString("artist");
+            }
+            if (song->album.compare(result->getString("album"))) {
+                if (song->album.length() > 0)
+                    cout << "updating album of RE song from " << song->album << " to " << result->getString("album") << endl;
+                song->album = result->getString("album");
+            }
+            if (song->track.compare(result->getString("track"))) {
+                if (song->track.length() > 0)
+                    cout << "updating track of RE song from " << song->track << " to " << result->getString("track") << endl;
+                song->track = result->getString("track");
+            }
+            if (song->title.compare(result->getString("title"))) {
+                if (song->title.length() > 0)
+                    cout << "updating title of RE song from " << song->title << " to " << result->getString("title") << endl;
+                song->title = result->getString("title");
+            }
+            if (song->time.compare(result->getString("time"))) {
+                if (song->time.length() > 0)
+                    cout << "updating time of RE song from " << song->time << " to " << result->getString("time") << endl;
+                song->time = result->getString("time");
+            }
+            if (song->time_signature.compare(result->getString("time_signature"))) {
+                if (song->time_signature.length() > 0)
+                    cout << "updating time_signature of RE song from " << song->time_signature << " to " << result->getString("time_signature") << endl;
+                song->time_signature = result->getString("time_signature");
+            }
+            if (song->filename.compare(result->getString("filename"))) {
+                if (song->filename.length() > 0)
+                    cout << "updating filename of RE song from " << song->filename << " to " << result->getString("filename") << endl;
+                song->filename = result->getString("filename");
+            }
+            if (song->digital_only.compare(result->getString("digital_only"))) {
+                if (song->digital_only.length() > 0)
+                    cout << "updating digital_only of RE song from " << song->digital_only << " to " << result->getString("digital_only") << endl;
+                song->digital_only = result->getString("digital_only");
+            }
+            if (song->compilation.compare(result->getString("compilation"))) {
+                if (song->compilation.length() > 0)
+                    cout << "updating compilation of RE song from " << song->compilation << " to " << result->getString("compilation") << endl;
+                song->compilation = result->getString("compilation");
+            }
+            if (song->key_start.compare(result->getString("key_start"))) {
+                if (song->key_start.length() > 0)
+                    cout << "updating key_start of RE song from " << song->key_start << " to " << result->getString("key_start") << endl;
+                song->key_start = result->getString("key_start");
+            }
+            if (song->key_accuracy != result->getInt("key_accuracy")) {
+                if (song->key_accuracy > 0)
+                    cout << "updating key_accuracy of RE song from " << song->key_accuracy << " to " << result->getInt("key_accuracy") << endl;
+                song->key_accuracy = result->getInt("key_accuracy");
+            }
+            if (song->bpm_start.compare(result->getString("bpm_start"))) {
+                if (song->bpm_start.length() > 0)
+                    cout << "updating bpm_start of RE song from " << song->bpm_start << " to " << result->getString("bpm_start") << endl;
+                song->bpm_start = result->getString("bpm_start");
+            }
+            if (song->bpm_accuracy != result->getInt("bpm_accuracy")) {
+                if (song->bpm_accuracy > 0)
+                    cout << "updating bpm_accuracy of RE song from " << song->bpm_accuracy << " to " << result->getInt("bpm_accuracy") << endl;
+                song->bpm_accuracy = result->getInt("bpm_accuracy");
+            }
+            if (song->rating != result->getInt("rating")) {
+                if (song->rating > 0)
+                    cout << "updating rating of RE song from " << song->rating << " to " << result->getInt("rating") << endl;
+                song->rating = result->getInt("rating");
+            }
+            if (song->date_added.compare(result->getString("date_added"))) {
+                if (song->date_added.length() > 0)
+                    cout << "updating date_added of RE song from " << song->date_added << " to " << result->getString("date_added") << endl;
+                song->date_added = result->getString("date_added");
+            }
+            if (song->catalog_id.compare(result->getString("catalog_id"))) {
+                if (song->catalog_id.length() > 0)
+                    cout << "updating catalog_id of RE song from " << song->catalog_id << " to " << result->getString("catalog_id") << endl;
+                song->catalog_id = result->getString("catalog_id");
+            }
+            if (song->label.compare(result->getString("label"))) {
+                if (song->label.length() > 0)
+                    cout << "updating label of RE song from " << song->label << " to " << result->getString("label") << endl;
+                song->label = result->getString("label");
+            }
+            if (song->remix.compare(result->getString("remix"))) {
+                if (song->remix.length() > 0)
+                    cout << "updating remix of RE song from " << song->remix << " to " << result->getString("remix") << endl;
+                song->remix = result->getString("remix");
+            }
+            if (song->num_plays != result->getInt("num_plays")) {
+                if (song->num_plays > 0)
+                    cout << "updating num_plays of RE song from " << song->num_plays << " to " << result->getInt("num_plays") << endl;
+                song->num_plays = result->getInt("num_plays");
+            }
+            if (song->comments.compare(result->getString("comments"))) {
+                if (song->comments.length() > 0)
+                    cout << "updating comments of RE song from " << song->comments << " to " << result->getString("comments") << endl;
+                song->comments = result->getString("comments");
+            }
+            if (song->release_date.compare(result->getString("release_date"))) {
+                if (song->release_date.length() > 0)
+                    cout << "updating release_date of RE song from " << song->release_date << " to " << result->getString("release_date") << endl;
+                song->release_date = result->getString("release_date");
+            }
+            if (song->featuring.compare(result->getString("featuring"))) {
+                if (song->featuring.length() > 0)
+                    cout << "updating featuring of RE song from " << song->featuring << " to " << result->getString("featuring") << endl;
+                song->featuring = result->getString("featuring");
+            }
+            if (song->key_end.compare(result->getString("key_end"))) {
+                if (song->key_end.length() > 0)
+                    cout << "updating key_end of RE song from " << song->key_end << " to " << result->getString("key_end") << endl;
+                song->key_end = result->getString("key_end");
+            }
+            if (song->disabled.compare(result->getString("disabled"))) {
+                if (song->disabled.length() > 0)
+                    cout << "updating disabled of RE song from " << song->disabled << " to " << result->getString("disabled") << endl;
+                song->disabled = result->getString("disabled");
+            }
+            if (song->bpm_end.compare(result->getString("bpm_end"))) {
+                if (song->bpm_end.length() > 0)
+                    cout << "updating bpm_end of RE song from " << song->bpm_end << " to " << result->getString("bpm_end") << endl;
+                song->bpm_end = result->getString("bpm_end");
+            }
+            if (song->beat_intensity != result->getInt("beat_intensity")) {
+                if (song->beat_intensity > 0)
+                    cout << "updating beat_intensity of RE song from " << song->beat_intensity << " to " << result->getInt("beat_intensity") << endl;
+                song->beat_intensity = result->getInt("beat_intensity");
+            }
+            if (song->replay_gain.compare(result->getString("replay_gain"))) {
+                if (song->replay_gain.length() > 0)
+                    cout << "updating replay_gain of RE song from " << song->replay_gain << " to " << result->getString("replay_gain") << endl;
+                song->replay_gain = result->getString("replay_gain");
+            }
+            if (song->styles_bitmask.compare(result->getString("styles_bitmask"))) {
+                if (song->styles_bitmask.length() > 0)
+                    cout << "updating styles_bitmask of RE song from " << song->styles_bitmask << " to " << result->getString("styles_bitmask") << endl;
+                song->styles_bitmask = result->getString("styles_bitmask");
+            }
+            
+            // clean up
+            delete result;
+            
+            return true;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+            return false;
         }
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, styles_bitmask, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        ps->setString(1, songid_winfo);
-        ps->setString(2, songid);
-        ps->setString(3, shortid);
-        ps->setString(4, shortid_winfo);
-        ps->setString(5, artist);
-        ps->setString(6, album);
-        ps->setString(7, track);
-        ps->setString(8, title);
-        ps->setString(9, time);
-        ps->setString(10, time_signature);
-        ps->setString(11, filename);
-        ps->setString(12, digital_only);
-        ps->setString(13, compilation);
-        ps->setString(14, key_start);
-        ps->setInt(15, key_accuracy);
-        ps->setString(16, bpm_start);
-        ps->setInt(17, bpm_accuracy);
-        ps->setInt(18, rating);
-        ps->setString(19, date_added);
-        ps->setString(20, catalog_id);
-        ps->setString(21, label);
-        ps->setString(22, remix);
-        ps->setInt(23, num_plays);
-        ps->setString(24, comments);
-        ps->setString(25, release_date);
-        ps->setString(26, featuring);
-        ps->setString(27, key_end);
-        ps->setString(28, disabled);
-        ps->setString(29, bpm_end);
-        ps->setInt(30, beat_intensity);
-        ps->setString(31, replay_gain);
-        ps->setString(32, styles_bitmask);
-        ps->setInt(33, unique_id);
-        if (ps->executeUpdate() == 0) {
-            return NULL;
-        } else {
-            return this;
-        }
-	} catch (sql::SQLException &e) {
-        cerr << "ERROR: SQLException in " << __FILE__;
-        cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
-        cerr << "ERROR: " << e.what();
-        cerr << " (MySQL error code: " << e.getErrorCode();
-        cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-        return false;
-	}
-}
-
-# pragma mark accessors
-
-
-const int RESong::getMixoutCount() const { return mixoutCount; }
-
-const int RESong::getUniqueId() const { return unique_id; }
-void RESong::setUniqueId(const int unique_id) { this->unique_id = unique_id; }
-
-const string& RESong::getSongIdWInfo() const { return songid_winfo; }
-void RESong::setSongIdWInfo(const string& songid_winfo) { this->songid_winfo = songid_winfo; }
-
-const string& RESong::getSongId() const { return songid; }
-void RESong::setSongId(const string& songid) { this->songid = songid; }
-
-const string& RESong::getShortId() const { return shortid; }
-void RESong::setShortId(const string& shortid) { this->shortid = shortid; }
-
-const string& RESong::getShortIdWInfo() const { return shortid_winfo; }
-void RESong::setShortIdWInfo(const string& shortid_winfo) { this->shortid_winfo = shortid_winfo; }
-
-const string& RESong::getArtist() const { return artist; }
-void RESong::setArtist(const string& artist) { this->artist = artist; }
-
-const string& RESong::getAlbum() const { return album; }
-void RESong::setAlbum(const string& album) { this->album = album; }
-
-const string& RESong::getTrack() const { return track; }
-void RESong::setTrack(const string& track) { this->track = track; }
-
-const string& RESong::getTitle() const { return title; }
-void RESong::setTitle(const string& title) { this->title = title; }
-
-const string& RESong::getTime() const { return time; }
-void RESong::setTime(const string& time) { this->time = time; }
-
-const string& RESong::getTimeSignature() const { return time_signature; }
-void RESong::setTimeSignature(const string& time_signature) { this->time_signature = time_signature; }
-
-const string& RESong::getFilename() const { return filename; }
-void RESong::setFilename(const string& filename) { this->filename = filename; }
-
-const string& RESong::getDigitalOnly() const { return digital_only; }
-void RESong::setDigitalOnly(const string& digital_only) { this->digital_only = digital_only; }
-
-const string& RESong::getCompilation() const { return compilation; }
-void RESong::setCompilation(const string& compilation) { this->compilation = compilation; }
-
-const string& RESong::getKeyStart() const { return key_start; }
-void RESong::setKeyStart(const string& key_start) { this->key_start = key_start; }
-
-const int RESong::getKeyAccuracy() const { return key_accuracy; }
-void RESong::setKeyAccuracy(const int key_accuracy) { this->key_accuracy = key_accuracy; }
-
-const string& RESong::getBPMStart() const { return bpm_start; }
-void RESong::setBPMStart(const string& bpm_start) { this->bpm_start = bpm_start; }
-
-const int RESong::getBPMAccuracy() const { return bpm_accuracy; }
-void RESong::setBPMAccuracy(const int bpm_accuracy) { this->bpm_accuracy = bpm_accuracy; }
-
-const int RESong::getRating() const { return rating; }
-void RESong::setRating(const int rating) { this->rating = rating; }
-
-const string& RESong::getDateAdded() const { return date_added; }
-void RESong::setDateAdded(const string& date_added) { this->date_added = date_added; }
-
-const string& RESong::getCatalogId() const { return catalog_id; }
-void RESong::setCatalogId(const string& catalogId) { this->catalog_id = catalogId; }
-
-const string& RESong::getLabel() const { return label; }
-void RESong::setLabel(const string& label) { this->label = label; }
-
-const string& RESong::getRemix() const { return remix; }
-void RESong::setRemix(const string& remix) { this->remix = remix; }
-
-const int RESong::getNumPlays() const { return num_plays; }
-void RESong::setNumPlays(const int num_plays) { this->num_plays = num_plays; }
-
-const string& RESong::getComments() const { return comments; }
-void RESong::setComments(const string& comments) { this->comments = comments; }
-
-const string& RESong::getReleaseDate() const { return release_date; }
-void RESong::setReleaseDate(const string& release_date) { this->release_date = release_date; }
-
-const string& RESong::getFeaturing() const { return featuring; }
-void RESong::setFeaturing(const string& featuring) { this->featuring = featuring; }
-
-const string& RESong::getKeyEnd() const { return key_end; }
-void RESong::setKeyEnd(const string& key_end) { this->key_end = key_end; }
-
-const string& RESong::getDisabled() const { return disabled; }
-void RESong::setDisabled(const string& disabled) { this->disabled = disabled; }
-
-const string& RESong::getBPMEnd() const { return bpm_end; }
-void RESong::setBPMEnd(const string& bpm_end) { this->bpm_end = bpm_end; }
-
-const int RESong::getBeatIntensity() const { return beat_intensity; }
-void RESong::setBeatIntensity(const int beat_intensity) { this->beat_intensity = beat_intensity; }
-
-const string& RESong::getReplayGain() const { return replay_gain; }
-void RESong::setReplayGain(const string& replay_gain) { this->replay_gain = replay_gain; }
-
-const string& RESong::getStylesBitmask() const { return styles_bitmask; }
-void RESong::setStylesBitmask(const string& styles_bitmask) { this->styles_bitmask = styles_bitmask; }
-
-# pragma mark RESongIterator
-
-RESong::RESongIterator::RESongIterator(sql::ResultSet* resultset) :
-rs(resultset) {
-}
-
-RESong::RESongIterator::~RESongIterator() {
-    delete rs;
-}
-
-bool RESong::RESongIterator::next(RESong* song) {
-    if (rs->next()) {
-        populateFields(rs, song);
-        song->mixoutCount = rs->getInt("cnt");
-        return true;
-    } else {
-        return false;
     }
-}
+    
+    // TODO sync empty fields
+    bool RESong::sync() {
+        try {
+            // use various means to try and retrieve the song
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
+            ps->setInt(1, unique_id);
+            sql::ResultSet *result = ps->executeQuery();
+            
+            // did we get a result?
+            if (!result->next()) {
+                cout << "No RE song found for " << unique_id << endl;
+                delete result;
+                return true;
+            }
+            
+            // does a field need updating
+            bool needsUpdate = false;
+            if (unique_id != result->getInt("unique_id")) {
+                needsUpdate = true;
+                if (unique_id > 0)
+                    cout << "updating unique_id of RE song to " << unique_id << " from " << result->getInt("unique_id") << endl;
+            }
+            if (songid_winfo.compare(result->getString("songid_winfo"))) {
+                needsUpdate = true;
+                if (result->getString("songid_winfo").length() > 0)
+                    cout << "updating songid_winfo of RE song to " << songid_winfo << " from " << result->getString("songid_winfo") << endl;
+            }
+            if (songid.compare(result->getString("songid"))) {
+                needsUpdate = true;
+                if (result->getString("songid").length() > 0)
+                    cout << "updating songid of RE song to " << songid << " from " << result->getString("songid") << endl;
+            }
+            if (shortid.compare(result->getString("shortid"))) {
+                needsUpdate = true;
+                if (result->getString("shortid").length() > 0)
+                    cout << "updating shortid of RE song to " << shortid << " from " << result->getString("shortid") << endl;
+            }
+            if (shortid_winfo.compare(result->getString("shortid_winfo"))) {
+                needsUpdate = true;
+                if (result->getString("shortid_winfo").length() > 0)
+                    cout << "updating shortid_winfo of RE song to " << shortid_winfo << " from " << result->getString("shortid_winfo") << endl;
+            }
+            if (artist.compare(result->getString("artist"))) {
+                needsUpdate = true;
+                if (result->getString("artist").length() > 0)
+                    cout << "updating artist of RE song to " << artist << " from " << result->getString("artist") << endl;
+            }
+            if (album.compare(result->getString("album"))) {
+                needsUpdate = true;
+                if (result->getString("album").length() > 0)
+                    cout << "updating album of RE song to " << album << " from " << result->getString("album") << endl;
+            }
+            if (track.compare(result->getString("track"))) {
+                needsUpdate = true;
+                if (result->getString("track").length() > 0)
+                    cout << "updating track of RE song to " << track << " from " << result->getString("track") << endl;
+            }
+            if (title.compare(result->getString("title"))) {
+                needsUpdate = true;
+                if (result->getString("title").length() > 0)
+                    cout << "updating title of RE song to " << title << " from " << result->getString("title") << endl;
+            }
+            if (time.compare(result->getString("time"))) {
+                needsUpdate = true;
+                if (result->getString("time").length() > 0)
+                    cout << "updating time of RE song to " << time << " from " << result->getString("time") << endl;
+            }
+            if (time_signature.compare(result->getString("time_signature"))) {
+                needsUpdate = true;
+                if (result->getString("time_signature").length() > 0)
+                    cout << "updating time_signature of RE song to " << time_signature << " from " << result->getString("time_signature") << endl;
+            }
+            if (filename.compare(result->getString("filename"))) {
+                needsUpdate = true;
+                if (result->getString("filename").length() > 0)
+                    cout << "updating filename of RE song to " << filename << " from " << result->getString("filename") << endl;
+            }
+            if (digital_only.compare(result->getString("digital_only"))) {
+                needsUpdate = true;
+                if (result->getString("digital_only").length() > 0)
+                    cout << "updating digital_only of RE song to " << digital_only << " from " << result->getString("digital_only") << endl;
+            }
+            if (compilation.compare(result->getString("compilation"))) {
+                needsUpdate = true;
+                if (result->getString("compilation").length() > 0)
+                    cout << "updating compilation of RE song to " << compilation << " from " << result->getString("compilation") << endl;
+            }
+            if (key_start.compare(result->getString("key_start"))) {
+                needsUpdate = true;
+                if (result->getString("key_start").length() > 0)
+                    cout << "updating key_start of RE song to " << key_start << " from " << result->getString("key_start") << endl;
+            }
+            if (key_accuracy != result->getInt("key_accuracy")) {
+                needsUpdate = true;
+                if (result->getInt("key_accuracy") > 0)
+                    cout << "updating key_accuracy of RE song to " << key_accuracy << " from " << result->getInt("key_accuracy") << endl;
+            }
+            if (bpm_start.compare(result->getString("bpm_start"))) {
+                needsUpdate = true;
+                if (result->getString("bpm_start").length() > 0)
+                    cout << "updating bpm_start of RE song to " << bpm_start << " from " << result->getString("bpm_start") << endl;
+            }
+            if (bpm_accuracy != result->getInt("bpm_accuracy")) {
+                needsUpdate = true;
+                if (result->getInt("bpm_accuracy") > 0)
+                    cout << "updating bpm_accuracy of RE song to " << bpm_accuracy << " from " << result->getInt("bpm_accuracy") << endl;
+            }
+            if (rating != result->getInt("rating")) {
+                needsUpdate = true;
+                if (result->getInt("rating") > 0)
+                    cout << "updating rating of RE song to " << rating << " from " << result->getInt("rating") << endl;
+            }
+            if (date_added.compare(result->getString("date_added"))) {
+                needsUpdate = true;
+                if (result->getString("date_added").length() > 0)
+                    cout << "updating date_added of RE song to " << date_added << " from " << result->getString("date_added") << endl;
+            }
+            if (catalog_id.compare(result->getString("catalog_id"))) {
+                needsUpdate = true;
+                if (result->getString("catalog_id").length() > 0)
+                    cout << "updating catalog_id of RE song to " << catalog_id << " from " << result->getString("catalog_id") << endl;
+            }
+            if (label.compare(result->getString("label"))) {
+                needsUpdate = true;
+                if (result->getString("label").length() > 0)
+                    cout << "updating label of RE song to " << label << " from " << result->getString("label") << endl;
+            }
+            if (remix.compare(result->getString("remix"))) {
+                needsUpdate = true;
+                if (result->getString("remix").length() > 0)
+                    cout << "updating remix of RE song to " << remix << " from " << result->getString("remix") << endl;
+            }
+            if (num_plays != result->getInt("num_plays")) {
+                needsUpdate = true;
+                if (result->getInt("num_plays") > 0)
+                    cout << "updating num_plays of RE song to " << num_plays << " from " << result->getInt("num_plays") << endl;
+            }
+            if (comments.compare(result->getString("comments"))) {
+                needsUpdate = true;
+                if (result->getString("comments").length() > 0)
+                    cout << "updating comments of RE song to " << comments << " from " << result->getString("comments") << endl;
+            }
+            if (release_date.compare(result->getString("release_date"))) {
+                needsUpdate = true;
+                if (result->getString("release_date").length() > 0)
+                    cout << "updating release_date of RE song to " << release_date << " from " << result->getString("release_date") << endl;
+            }
+            if (featuring.compare(result->getString("featuring"))) {
+                needsUpdate = true;
+                if (result->getString("featuring").length() > 0)
+                    cout << "updating featuring of RE song to " << featuring << " from " << result->getString("featuring") << endl;
+            }
+            if (key_end.compare(result->getString("key_end"))) {
+                needsUpdate = true;
+                if (result->getString("key_end").length() > 0)
+                    cout << "updating key_end of RE song to " << key_end << " from " << result->getString("key_end") << endl;
+            }
+            if (disabled.compare(result->getString("disabled"))) {
+                needsUpdate = true;
+                if (result->getString("disabled").length() > 0)
+                    cout << "updating disabled of RE song to " << disabled << " from " << result->getString("disabled") << endl;
+            }
+            if (bpm_end.compare(result->getString("bpm_end"))) {
+                needsUpdate = true;
+                if (result->getString("bpm_end").length() > 0)
+                    cout << "updating bpm_end of RE song to " << bpm_end << " from " << result->getString("bpm_end") << endl;
+            }
+            if (beat_intensity != result->getInt("beat_intensity")) {
+                needsUpdate = true;
+                if (result->getInt("beat_intensity") > 0)
+                    cout << "updating beat_intensity of RE song to " << beat_intensity << " from " << result->getInt("beat_intensity") << endl;
+            }
+            if (replay_gain.compare(result->getString("replay_gain"))) {
+                needsUpdate = true;
+                if (result->getString("replay_gain").length() > 0)
+                    cout << "updating replay_gain of RE song to " << replay_gain << " from " << result->getString("replay_gain") << endl;
+            }
+            if (styles_bitmask.compare(result->getString("styles_bitmask"))) {
+                needsUpdate = true;
+                if (result->getString("styles_bitmask").length() > 0)
+                    cout << "updating styles_bitmask of RE song to " << styles_bitmask << " from " << result->getString("styles_bitmask") << endl;
+            }
+            
+            // clean up
+            delete result;
+            
+            return needsUpdate;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+            return false;
+        }
+    }
+    
+    bool RESong::needsSave() {
+        try {
+            // use various means to try and retrieve the song
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs where unique_id = ?");
+            ps->setInt(1, unique_id);
+            sql::ResultSet *result = ps->executeQuery();
+            
+            // did we get a result?
+            bool needsSave = !result->next();
+            delete result;
+            return needsSave;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+            return false;
+        }
+    }
+    
+    bool RESong::update() {
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update RESongs set songid_winfo=?, songid=?, shortid=?, shortid_winfo=?, artist=?, album=?, track=?, title=?, time=?, time_signature=?, filename=?, digital_only=?, compilation=?, key_start=?, key_accuracy=?, bpm_start=?, bpm_accuracy=?, rating=?, date_added=?, catalog_id=?, label=?, remix=?, num_plays=?, comments=?, release_date=?, featuring=?, key_end=?, disabled=?, bpm_end=?, beat_intensity=?, replay_gain=?, styles_bitmask=? where unique_id=?");
+            ps->setString(1, songid_winfo);
+            ps->setString(2, songid);
+            ps->setString(3, shortid);
+            ps->setString(4, shortid_winfo);
+            ps->setString(5, artist);
+            ps->setString(6, album);
+            ps->setString(7, track);
+            ps->setString(8, title);
+            ps->setString(9, time);
+            ps->setString(10, time_signature);
+            ps->setString(11, filename);
+            ps->setString(12, digital_only);
+            ps->setString(13, compilation);
+            ps->setString(14, key_start);
+            ps->setInt(15, key_accuracy);
+            ps->setString(16, bpm_start);
+            ps->setInt(17, bpm_accuracy);
+            ps->setInt(18, rating);
+            ps->setString(19, date_added);
+            ps->setString(20, catalog_id);
+            ps->setString(21, label);
+            ps->setString(22, remix);
+            ps->setInt(23, num_plays);
+            ps->setString(24, comments);
+            ps->setString(25, release_date);
+            ps->setString(26, featuring);
+            ps->setString(27, key_end);
+            ps->setString(28, disabled);
+            ps->setString(29, bpm_end);
+            ps->setInt(30, beat_intensity);
+            ps->setString(31, replay_gain);
+            ps->setString(32, styles_bitmask);
+            ps->setInt(33, unique_id);
+            ps->executeUpdate();
+            return true;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << std::endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << std::endl;
+            return false;
+        }
+    }
+    
+    const RESong* RESong::save() {
+        try {
+            if (unique_id == 0) {
+                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");
+                sql::ResultSet *rs = ps->executeQuery();
+                if (rs->next()) {
+                    unique_id = rs->getInt(1);
+                }
+                rs->close();
+                delete rs;
+            }
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (songid_winfo, songid, shortid, shortid_winfo, artist, album, track, title, time, time_signature, filename, digital_only, compilation, key_start, key_accuracy, bpm_start, bpm_accuracy, rating, date_added, catalog_id, label, remix, num_plays, comments, release_date, featuring, key_end, disabled, bpm_end, beat_intensity, replay_gain, styles_bitmask, unique_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps->setString(1, songid_winfo);
+            ps->setString(2, songid);
+            ps->setString(3, shortid);
+            ps->setString(4, shortid_winfo);
+            ps->setString(5, artist);
+            ps->setString(6, album);
+            ps->setString(7, track);
+            ps->setString(8, title);
+            ps->setString(9, time);
+            ps->setString(10, time_signature);
+            ps->setString(11, filename);
+            ps->setString(12, digital_only);
+            ps->setString(13, compilation);
+            ps->setString(14, key_start);
+            ps->setInt(15, key_accuracy);
+            ps->setString(16, bpm_start);
+            ps->setInt(17, bpm_accuracy);
+            ps->setInt(18, rating);
+            ps->setString(19, date_added);
+            ps->setString(20, catalog_id);
+            ps->setString(21, label);
+            ps->setString(22, remix);
+            ps->setInt(23, num_plays);
+            ps->setString(24, comments);
+            ps->setString(25, release_date);
+            ps->setString(26, featuring);
+            ps->setString(27, key_end);
+            ps->setString(28, disabled);
+            ps->setString(29, bpm_end);
+            ps->setInt(30, beat_intensity);
+            ps->setString(31, replay_gain);
+            ps->setString(32, styles_bitmask);
+            ps->setInt(33, unique_id);
+            if (ps->executeUpdate() == 0) {
+                return NULL;
+            } else {
+                return this;
+            }
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            return false;
+        }
+    }
+    
+# pragma mark accessors
+    
+    
+    const int RESong::getMixoutCount() const { return mixoutCount; }
+    
+    const int RESong::getUniqueId() const { return unique_id; }
+    void RESong::setUniqueId(const int unique_id) { this->unique_id = unique_id; }
+    
+    const string& RESong::getSongIdWInfo() const { return songid_winfo; }
+    void RESong::setSongIdWInfo(const string& songid_winfo) { this->songid_winfo = songid_winfo; }
+    
+    const string& RESong::getSongId() const { return songid; }
+    void RESong::setSongId(const string& songid) { this->songid = songid; }
+    
+    const string& RESong::getShortId() const { return shortid; }
+    void RESong::setShortId(const string& shortid) { this->shortid = shortid; }
+    
+    const string& RESong::getShortIdWInfo() const { return shortid_winfo; }
+    void RESong::setShortIdWInfo(const string& shortid_winfo) { this->shortid_winfo = shortid_winfo; }
+    
+    const string& RESong::getArtist() const { return artist; }
+    void RESong::setArtist(const string& artist) { this->artist = artist; }
+    
+    const string& RESong::getAlbum() const { return album; }
+    void RESong::setAlbum(const string& album) { this->album = album; }
+    
+    const string& RESong::getTrack() const { return track; }
+    void RESong::setTrack(const string& track) { this->track = track; }
+    
+    const string& RESong::getTitle() const { return title; }
+    void RESong::setTitle(const string& title) { this->title = title; }
+    
+    const string& RESong::getTime() const { return time; }
+    void RESong::setTime(const string& time) { this->time = time; }
+    
+    const string& RESong::getTimeSignature() const { return time_signature; }
+    void RESong::setTimeSignature(const string& time_signature) { this->time_signature = time_signature; }
+    
+    const string& RESong::getFilename() const { return filename; }
+    void RESong::setFilename(const string& filename) { this->filename = filename; }
+    
+    const string& RESong::getDigitalOnly() const { return digital_only; }
+    void RESong::setDigitalOnly(const string& digital_only) { this->digital_only = digital_only; }
+    
+    const string& RESong::getCompilation() const { return compilation; }
+    void RESong::setCompilation(const string& compilation) { this->compilation = compilation; }
+    
+    const string& RESong::getKeyStart() const { return key_start; }
+    void RESong::setKeyStart(const string& key_start) { this->key_start = key_start; }
+    
+    const int RESong::getKeyAccuracy() const { return key_accuracy; }
+    void RESong::setKeyAccuracy(const int key_accuracy) { this->key_accuracy = key_accuracy; }
+    
+    const string& RESong::getBPMStart() const { return bpm_start; }
+    void RESong::setBPMStart(const string& bpm_start) { this->bpm_start = bpm_start; }
+    
+    const int RESong::getBPMAccuracy() const { return bpm_accuracy; }
+    void RESong::setBPMAccuracy(const int bpm_accuracy) { this->bpm_accuracy = bpm_accuracy; }
+    
+    const int RESong::getRating() const { return rating; }
+    void RESong::setRating(const int rating) { this->rating = rating; }
+    
+    const string& RESong::getDateAdded() const { return date_added; }
+    void RESong::setDateAdded(const string& date_added) { this->date_added = date_added; }
+    
+    const string& RESong::getCatalogId() const { return catalog_id; }
+    void RESong::setCatalogId(const string& catalogId) { this->catalog_id = catalogId; }
+    
+    const string& RESong::getLabel() const { return label; }
+    void RESong::setLabel(const string& label) { this->label = label; }
+    
+    const string& RESong::getRemix() const { return remix; }
+    void RESong::setRemix(const string& remix) { this->remix = remix; }
+    
+    const int RESong::getNumPlays() const { return num_plays; }
+    void RESong::setNumPlays(const int num_plays) { this->num_plays = num_plays; }
+    
+    const string& RESong::getComments() const { return comments; }
+    void RESong::setComments(const string& comments) { this->comments = comments; }
+    
+    const string& RESong::getReleaseDate() const { return release_date; }
+    void RESong::setReleaseDate(const string& release_date) { this->release_date = release_date; }
+    
+    const string& RESong::getFeaturing() const { return featuring; }
+    void RESong::setFeaturing(const string& featuring) { this->featuring = featuring; }
+    
+    const string& RESong::getKeyEnd() const { return key_end; }
+    void RESong::setKeyEnd(const string& key_end) { this->key_end = key_end; }
+    
+    const string& RESong::getDisabled() const { return disabled; }
+    void RESong::setDisabled(const string& disabled) { this->disabled = disabled; }
+    
+    const string& RESong::getBPMEnd() const { return bpm_end; }
+    void RESong::setBPMEnd(const string& bpm_end) { this->bpm_end = bpm_end; }
+    
+    const int RESong::getBeatIntensity() const { return beat_intensity; }
+    void RESong::setBeatIntensity(const int beat_intensity) { this->beat_intensity = beat_intensity; }
+    
+    const string& RESong::getReplayGain() const { return replay_gain; }
+    void RESong::setReplayGain(const string& replay_gain) { this->replay_gain = replay_gain; }
+    
+    const string& RESong::getStylesBitmask() const { return styles_bitmask; }
+    void RESong::setStylesBitmask(const string& styles_bitmask) { this->styles_bitmask = styles_bitmask; }
+    
+# pragma mark RESongIterator
+    
+    RESong::RESongIterator::RESongIterator(sql::ResultSet* resultset) :
+    rs(resultset) {
+    }
+    
+    RESong::RESongIterator::~RESongIterator() {
+        delete rs;
+    }
+    
+    bool RESong::RESongIterator::next(RESong* song) {
+        if (rs->next()) {
+            populateFields(rs, song);
+            song->mixoutCount = rs->getInt("cnt");
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }

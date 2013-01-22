@@ -14,32 +14,32 @@
 using namespace std;
 
 namespace soulsifter {
-
-class REXML {
-public:
-    REXML();
-    ~REXML();
-    void clear();
     
-    static REXML* findById(const int id);
-    static REXML* findByName(const string& name);
-    
-    bool update();
-    int save();
-    
-    const int getId() const;
-    void setId(const int id);
-    const string& getName() const;
-    void setName(const string& name);
-    const string& getXml() const;
-    string& getXmlRef();
-    void setXml(const string& value);
-    
-private:
-    int id;
-    string name;
-    string xml;
-};
+    class REXML {
+    public:
+        REXML();
+        ~REXML();
+        void clear();
+        
+        static REXML* findById(const int id);
+        static REXML* findByName(const string& name);
+        
+        bool update();
+        int save();
+        
+        const int getId() const;
+        void setId(const int id);
+        const string& getName() const;
+        void setName(const string& name);
+        const string& getXml() const;
+        string& getXmlRef();
+        void setXml(const string& value);
+        
+    private:
+        int id;
+        string name;
+        string xml;
+    };
     
 }
 

@@ -15,28 +15,28 @@
 using namespace std;
 
 namespace soulsifter {
-
-class BasicGenre {
-public:
-    BasicGenre();
-    ~BasicGenre();
     
-    static const BasicGenre* findById(const int id);
-    static const BasicGenre* findByName(const string& name);
-    static const BasicGenre* findByFilepath(const string& filepath);
-    static void findAll(const vector<const BasicGenre*>** genresPtr);
-    
-    bool update();
-    int save();
-    
-    const int getId() const;
-    void setId(const int id);
-    const string& getName() const;
-    void setName(const string& name);
-private:
-    int id;
-    string name;
-};
+    class BasicGenre {
+    public:
+        BasicGenre();
+        ~BasicGenre();
+        
+        static const BasicGenre* findById(const int id);
+        static const BasicGenre* findByName(const string& name);
+        static const BasicGenre* findByFilepath(const string& filepath);
+        static void findAll(const vector<const BasicGenre*>** genresPtr);
+        
+        bool update();
+        int save();
+        
+        const int getId() const;
+        void setId(const int id);
+        const string& getName() const;
+        void setName(const string& name);
+    private:
+        int id;
+        string name;
+    };
     
 }
 

@@ -15,31 +15,31 @@
 using namespace std;
 
 namespace soulsifter {
-
-class Track {
-    int id;
-    int re_id;
-    string artist;
-    string album;
-    string trackNum;
-    string title;
-    string remix;
-    string featuring;
-    string label;
-    string catalogId;
-    string releaseDateYear;
-    string releaseDateMonth;
-    string releaseDateDay;
     
-    string basicGenre;
-    string* genres;
-    string filePath;
-    
-    Track();
-    ~Track();
-    
-    static void getTrack(Track* track);
-};
+    class Track {
+        int id;
+        int re_id;
+        string artist;
+        string album;
+        string trackNum;
+        string title;
+        string remix;
+        string featuring;
+        string label;
+        string catalogId;
+        string releaseDateYear;
+        string releaseDateMonth;
+        string releaseDateDay;
+        
+        string basicGenre;
+        string* genres;
+        string filePath;
+        
+        Track();
+        ~Track();
+        
+        static void getTrack(Track* track);
+    };
     
 }
 
