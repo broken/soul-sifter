@@ -1,8 +1,13 @@
 #!/usr/bin/ruby
 
+# TODO vectors are shallow copies; need to make them deep
+# TODO remove ESPLURAL and 2nd arg from single function
+# TODO getter for vector
+# TODO rename reXml
+# TODO preset all pointers
+
 module Attrib
-  CONST = 2**0
-  FIND = 2**1
+  FIND = 2**1  # f
   PTR = 2**2
   ESPLURAL = 2**3
   SAVEID = 2**4
@@ -19,7 +24,7 @@ def cap (x)
 end
 
 def vectorGeneric (v)
-  return v.match(/^vector<([^*]*)\*?\>$/).captures[0]
+  return v.match(/^vector<(const )?([^*]*)\*?\>$/).captures[1]
 end
 
 def isVector(t)
@@ -41,6 +46,8 @@ def plural(x, a)
     return "#{x}es"
   elsif (x.downcase == "child")
     return "children"
+  elsif (x.downcase == "rexml")
+    return "reXml"
   else
     return "#{x}s"
   end
@@ -75,10 +82,10 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
       str << "        const #{f[0]} get#{cap(f[1])}() const;\n"
       str << "        void set#{cap(f[1])}(#{f[0]} #{f[1]});\n"
     elsif (f[2] & Attrib::PTR > 0)
-      str << "        #{f[0]}* get#{cap(f[1])}();\n"
-      str << "        void set#{cap(f[1])}(#{f[0]}* #{f[1]});\n"
+      str << "        #{f[0]}* get#{cap(f[1])}() const;\n"
+      str << "        void set#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
     elsif (isVector(f[0]))
-      str << "        const #{f[0]}& get#{cap(f[1])}();\n"
+      str << "        const #{f[0]}& get#{cap(f[1])}() const;\n"
       str << "        void set#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
     else
       str << "        const #{f[0]}& get#{cap(f[1])}() const;\n"
@@ -91,7 +98,7 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   end
   str << "\n    private:\n"
   fields.each do |f|
-    str << "        #{f[0]} #{f[1]};\n"
+    str << "        #{f[0]}#{'*' if (f[2] & Attrib::PTR > 0)} #{f[1]};\n"
   end
   str << "\n        static void populateFields(const sql::ResultSet* rs, #{capName}* #{name});\n    };\n\n}\n\n#endif /* defined(__soul_sifter__#{capName}__) */\n"
   return str
@@ -118,7 +125,11 @@ def writeCode (name, fields, attribs)
   str << " {\n    }\n\n"
   str << "    #{capName}::#{capName}(const #{capName}& #{name}) :\n"
   fields.each do |f|
-    unless (isVector(f[0]))
+    if (f[2] & Attrib::PTR > 0)
+      str << "    #{f[1]}(NULL),\n"
+    elsif (isVector(f[0]))
+      str << "    #{f[1]}(),\n"
+    else
       str << "    #{f[1]}(#{name}.get#{cap(f[1])}()),\n"
     end
   end
@@ -132,27 +143,36 @@ def writeCode (name, fields, attribs)
   str << "    }\n\n"
   str << "    void #{capName}::operator=(const #{capName}& #{name}) {\n"
   fields.each do |f|
-    str << "        #{f[1]} = #{name}.get#{cap(f[1])}();\n"
+    if (f[2] & Attrib::PTR > 0)
+      str << "        #{f[1]} = NULL;\n"
+    else
+      str << "        #{f[1]} = #{name}.get#{cap(f[1])}();\n"
+    end
   end
   str << "    }\n\n"
   str << "    #{capName}::~#{capName}() {\n"
   fields.each do |f|
-    next unless (f[2] & Attrib::PTR > 0)
-    str << "        delete #{f[1]};\n"
-    str << "        #{f[1]} = NULL;\n"
+    if (f[2] & Attrib::PTR > 0)
+      str << "        delete #{f[1]};\n"
+      str << "        #{f[1]} = NULL;\n"
+    elsif (isVector(f[0]))
+      str << "        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            delete *it;\n        }\n        #{f[1]}.clear();\n"
+    end
   end
   str << "    }\n\n"
   str << "    void #{capName}::clear() {\n"
   fields.each do |f|
     if (f[0] == :int || f[0] == :time_t)
       str << "        #{f[1]} = 0;\n"
-    elsif (f[0] == :string || isVector(f[0]))
+    elsif (f[0] == :string)
       str << "        #{f[1]}.clear();\n"
     elsif (f[0] == :bool)
       str << "        #{f[1]} = false;\n"
     elsif (f[2] & Attrib::PTR > 0)
       str << "        delete #{f[1]};\n"
       str << "        #{f[1]} = NULL;\n"
+    elsif (isVector(f[0]))
+      str << "        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            delete *it;\n        }\n        #{f[1]}.clear();\n"
     else
       str << "        // TODO #{f[1]}\n"
     end
@@ -176,9 +196,9 @@ def writeCode (name, fields, attribs)
   fields.each do |f|
     if (f[2] & Attrib::FIND > 0)
       if ([:int, :bool, :time_t].include?(f[0]))
-        str << "    #{capName}* #{capName}::findBy#{cap(f[1])}(#{f[0]} #{f[1]});\n"
+        str << "    #{capName}* #{capName}::findBy#{cap(f[1])}(#{f[0]} #{f[1]}) {\n"
       else
-        str << "    #{capName}* #{capName}::findBy#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
+        str << "    #{capName}* #{capName}::findBy#{cap(f[1])}(const #{f[0]}& #{f[1]}) {\n"
       end
       str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name,attribs))} where #{f[1]} = ?\");\n"
       str << "        ps->set#{cap(f[0].to_s)}(1, #{f[1]});\n        sql::ResultSet *rs = ps->executeQuery();\n        #{capName} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{capName}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n        return #{name};\n    }\n\n"
@@ -188,12 +208,12 @@ def writeCode (name, fields, attribs)
   str << "    bool #{capName}::sync() {\n        #{capName}* #{name} = findById(id);\n        if (!#{name}) {\n            return true;\n        }\n\n        // check fields\n        bool needsUpdate = false;\n"
   fields.each do |f|
     if ([:int, :bool, :time_t].include?(f[0]))
-      str << "        if (#{f[1]} != #{name}->get#{cap(f[1])}()) {\n            needsUpdate = true;\n            if (#{f[1]}) {\n"
-      str << "                cout << \"updating #{name}'s #{f[1]} from \" << #{name}->get#{cap(f[1])}() << \" to \" << #{f[1]} << endl;\n            } else {\n"
+      str << "        if (#{f[1]} != #{name}->get#{cap(f[1])}()) {\n            if (#{f[1]}) {\n"
+      str << "                cout << \"updating #{name}'s #{f[1]} from \" << #{name}->get#{cap(f[1])}() << \" to \" << #{f[1]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[1]} = #{name}->get#{cap(f[1])}();\n            }\n        }\n"
     elsif (f[0] == :string)
-      str << "        if (#{f[1]}.compare(#{name}->get#{cap(f[1])}())) {\n            needsUpdate = true;\n            if (!#{f[1]}.empty()) {\n"
-      str << "                cout << \"updating #{name} #{f[1]} from \" << #{name}->get#{cap(f[1])}() << \" to \" << #{f[1]} << endl;\n            } else {\n"
+      str << "        if (#{f[1]}.compare(#{name}->get#{cap(f[1])}())) {\n            if (!#{f[1]}.empty()) {\n"
+      str << "                cout << \"updating #{name} #{f[1]} from \" << #{name}->get#{cap(f[1])}() << \" to \" << #{f[1]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[1]} = #{name}->get#{cap(f[1])}();\n            }\n        }\n"
     else
       next
@@ -232,7 +252,7 @@ def writeCode (name, fields, attribs)
   end
   fields.each do |f|
     next unless (f[2] & Attrib::PTR > 0)
-    str << "            if (#{f[1]} && !#{f[1]}Id || #{f[1]} && !#{cap(f[1])}::findById(#{f[1]}->getId())) {\n"
+    str << "            if (#{f[1]} && (!#{f[1]}->getId() || !#{cap(f[0])}::findById(#{f[1]}->getId()))) {\n"
     str << "                if (#{f[1]}->save()) {\n"
     str << "                    if (#{f[1]}->getId()) {\n"
     str << "                        #{f[1]}Id = #{f[1]}->getId();\n"
@@ -277,8 +297,8 @@ def writeCode (name, fields, attribs)
     str << "                sql::PreparedStatement *ps;\n"
     fields.each do |f|
       if (isVector(f[0]))
-        str << "                ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{capName}#{cap(f[1])} (#{name}Id, #{f[1][0..-2]}Id) values (?,?)\");\n                for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n"
-        str << "                    ps->setInt(1, id);\n                    ps->setInt(2, (*it)->getId());\n                    if (!ps->executeUpdate()) {\n                        cerr << \"Did not save #{f[1][0..2]} for #{name}\" << endl;\n                    }\n                }\n"
+        str << "                ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{capName}#{cap(f[1])} (#{name}Id, #{single(f[1],f[2])}Id) values (?, ?)\");\n                for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n"
+        str << "                    ps->setInt(1, id);\n                    ps->setInt(2, (*it)->getId());\n                    if (!ps->executeUpdate()) {\n                        cerr << \"Did not save #{single(f[1],f[2])} for #{name}\" << endl;\n                    }\n                }\n"
       end
     end
     str << "                return 1;\n            }\n"
@@ -290,11 +310,11 @@ def writeCode (name, fields, attribs)
       str << "    const string& #{capName}::get#{cap(f[1])}() const { return #{f[1]}; }\n"
       str << "    void #{capName}::set#{cap(f[1])}(const string& #{f[1]}) { this->#{f[1]} = #{f[1]}; }\n"
     elsif (f[2] & Attrib::PTR > 0)
-      str << "    #{f[0]} #{capName}::get#{cap(f[1])}() {\n        if (!#{f[1]} && #{f[1]}Id)\n        #{f[1]} = #{f[0][0..-2]}::findById(#{f[1]}Id);\n        return #{f[1]};\n    }\n"
-      str << "    void #{capName}::set#{cap(f[1])}(#{"const " if (f[2] & Attrib::CONST > 0)}#{f[0]} #{f[1]}) {\n        this->#{f[1]}Id = #{f[1]}->getId();\n        this->#{f[1]} = #{f[1]};\n    }\n"
+      str << "    #{f[0]}* #{capName}::get#{cap(f[1])}() const {\n        if (!#{f[1]} && #{f[1]}Id)\n            return #{f[0][0..-1]}::findById(#{f[1]}Id);\n        return #{f[1]};\n    }\n"
+      str << "    void #{capName}::set#{cap(f[1])}(const #{f[0]}& #{f[1]}) {\n        this->#{f[1]}Id = #{f[1]}.getId();\n        delete this->#{f[1]};\n        this->#{f[1]} = new #{f[0]}(#{f[1]});\n    }\n"
     elsif (isVector(f[0]))
-      str << "    const string& #{capName}::get#{cap(f[1])}() const { return #{f[1]}; }\n"
-      str << "    void #{capName}::set#{cap(f[1])}(const string& #{f[1]}) { this->#{f[1]} = #{f[1]}; }\n"
+      str << "    const #{f[0]}& #{capName}::get#{cap(f[1])}() const { return #{f[1]}; }\n"
+      str << "    void #{capName}::set#{cap(f[1])}(const #{f[0]}& #{f[1]}) { this->#{f[1]} = #{f[1]}; }\n"
     else
       str << "    const #{f[0]} #{capName}::get#{cap(f[1])}() const { return #{f[1]}; }\n"
       if (f[0] == :int && f[1] =~ /Id$/ && f[2] & Attrib::ID > 0)
@@ -304,8 +324,8 @@ def writeCode (name, fields, attribs)
       end
     end
     if (isVector(f[0]))
-      str << "    void #{capName}::add#{cap(single(f[1],f[2]))}(const #{vectorGeneric(f[0])}& #{single(f[1],f[2])}) { #{f[1]}.push_back(#{single(f[1],f[2])}); }\n"
-      str << "    void #{capName}::remove#{cap(single(f[1],f[2]))}(int #{cap(single(f[1],f[2]))}Id) {\n        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            if (#{single(f[1],f[2])}Id == (*it)->getId()) {\n                #{f[1]}.erase(it);\n            }\n        }\n    }\n"
+      str << "    void #{capName}::add#{cap(single(f[1],f[2]))}(const #{vectorGeneric(f[0])}& #{single(f[1],f[2])}) { #{f[1]}.push_back(new #{cap(vectorGeneric(f[0]))}(#{single(f[1],f[2])})); }\n"
+      str << "    void #{capName}::remove#{cap(single(f[1],f[2]))}(int #{single(f[1],f[2])}Id) {\n        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            if (#{single(f[1],f[2])}Id == (*it)->getId()) {\n                #{f[1]}.erase(it);\n            }\n        }\n    }\n"
     end
     str << "\n"
   end
@@ -323,10 +343,10 @@ albumFields = [
   [:int, "releaseDateYear", 0],
   [:int, "releaseDateMonth", 0],
   [:int, "releaseDateDay", 0],
-  [:int, "basicGenreId", 0],
-  ["BasicGenre", "basicGenre", Attrib::CONST | Attrib::PTR],
+  [:int, "basicGenreId", Attrib::ID],
+  ["BasicGenre", "basicGenre", Attrib::PTR],
 ]
-albumCustomMethods = "    const string reReleaseDate() const;\n\n"
+albumCustomMethods = "        const string reReleaseDate() const;\n\n"
 basicGenreFields = [
   [:int, "id", Attrib::FIND],
   [:string, "name", Attrib::FIND],
@@ -336,9 +356,9 @@ basicGenreCustomMethods = "        static const BasicGenre* findByFilepath(const
 mixFields = [
   [:int, "id", Attrib::FIND],
   [:int, "outSongId", Attrib::ID],
-  ["Song*", "outSong", Attrib::PTR],
+  ["Song", "outSong", Attrib::PTR],
   [:int, "inSongId", Attrib::ID],
-  ["Song*", "inSong", Attrib::PTR],
+  ["Song", "inSong", Attrib::PTR],
   [:string, "bpmDiff", 0],
   [:int, "rank", 0],
   [:string, "comments", 0],
@@ -367,7 +387,7 @@ reSongFields = [
   [:int, "bpmAccuracy", 0],
   [:int, "rating", 0],
   [:string, "dateAdded", 0],
-  [:string, "catalogid", 0],  # custom 4
+  [:string, "catalogId", 0],  # custom 4
   [:string, "label", 0],  # custom 3
   [:string, "remix", 0],
   [:int, "numPlays", 0],
@@ -382,8 +402,8 @@ reSongFields = [
   [:string, "stylesBitmask", 0],
 ]
 reSongAttribs = Attrib::SAVEID
-reSongCustomMethods = "        friend class RapidEvolutionDatabaseSongsSongHandler;\n\n        class RESongIterator {\n        public:\n            explicit RESongIterator(sql::ResultSet* resultset);\n            ~RESongIterator();\n\n            bool next(RESong* song);\n            const int getMixoutCountForCurrentSong() const;\n\n        private:\n            sql::ResultSet* rs;\n            int mixoutCount;\n\n            RESongIterator();\n        };\n\n        RESong(const Song& song);\n\n        static RESongIterator* findAll();\n        static const int maxREId();\n\n"
-reSongCustomHeaders = "#include \"Song.h\"\n"
+reSongCustomMethods = "        friend class RapidEvolutionDatabaseSongsSongHandler;\n\n        class RESongIterator {\n        public:\n            explicit RESongIterator(sql::ResultSet* resultset);\n            ~RESongIterator();\n\n            bool next(RESong* song);\n            const int getMixoutCountForCurrentSong() const;\n\n        private:\n            sql::ResultSet* rs;\n            int mixoutCount;\n\n            RESongIterator();\n        };\n\n        static RESongIterator* findAll();\n        static const int maxREId();\n\n"
+reSongCustomHeaders = ""
 songFields = [
   [:int, "id", Attrib::FIND],
   [:string, "artist", 0],
@@ -397,13 +417,13 @@ songFields = [
   [:string, "comments", 0],
   [:bool, "trashed", 0],
   [:int, "reSongId", Attrib::FIND | Attrib::ID],
-  ["RESong*", "reSong", Attrib::PTR],
+  ["RESong", "reSong", Attrib::PTR],
   [:int, "albumId", Attrib::ID],
-  ["Album*", "album", Attrib::PTR],
+  ["Album", "album", Attrib::PTR],
   ["vector<const Style*>", "styles", 0],
 ]
 songAttribs = Attrib::SAVEVEC
-songCustomMethods = "        explicit Song(RESong* song);\n\n        static void findSongsByStyle(const Style& style, vector<Song*>** songsPtr);\n\n        const string reAlbum() const;\n        const string getDateAddedString() const;\n        void setDateAddedToNow();\n\n"
+songCustomMethods = "        explicit Song(RESong* song);\n\n        static void findSongsByStyle(const Style& style, vector<Song*>** songsPtr);\n        static RESong* createRESongFromSong(const Song& song);\n\n        const string reAlbum() const;\n        const string getDateAddedString() const;\n        void setDateAddedToNow();\n\n"
 songCustomHeaders = "#include \"Style.h\"\n"
 styleFields = [
   [:int, "id", Attrib::FIND],
@@ -438,7 +458,7 @@ reAlbumCoverFields = [
   [:string, "thumbnail", 0],
 ]
 reAlbumCoverAttribs = 0
-reAlbumCoverCustomMethods = "        class REAlbumCoverIterator {\n        public:\n        explicit REAlbumCoverIterator(sql::ResultSet* resultset);\n        ~REAlbumCoverIterator();\n\n            bool next(REAlbumCover* albumcover);\n\n        private:\n            sql::ResultSet* rs;\n\n            REAlbumCoverIterator();\n        };\n\n        static REAlbumCoverIterator* findAll();\n\n"
+reAlbumCoverCustomMethods = "        class REAlbumCoverIterator {\n        public:\n            explicit REAlbumCoverIterator(sql::ResultSet* resultset);\n            ~REAlbumCoverIterator();\n\n            bool next(REAlbumCover* albumcover);\n\n        private:\n            sql::ResultSet* rs;\n\n            REAlbumCoverIterator();\n        };\n\n        static REAlbumCoverIterator* findAll();\n\n"
 reAlbumCoverCustomHeaders = ""
 
 output = File.open("soul-sifter/Album.h", "w")
