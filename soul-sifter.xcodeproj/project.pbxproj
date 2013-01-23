@@ -42,7 +42,6 @@
 		185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC39167EE52F006FB8AF /* StylesViewController.m */; };
 		185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */; };
 		185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */; };
-		188AB0391660F78B00CE162C /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188AB0371660F78B00CE162C /* Track.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
 		188E1B141648E973004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */; };
 		188E1B171648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B151648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp */; };
@@ -166,8 +165,6 @@
 		185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StylesTreeDataSource.mm; sourceTree = "<group>"; };
 		185CFC40167EEC97006FB8AF /* StyleTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleTreeItem.h; sourceTree = "<group>"; };
 		185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StyleTreeItem.mm; sourceTree = "<group>"; };
-		188AB0371660F78B00CE162C /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
-		188AB0381660F78B00CE162C /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigHandler.cpp; sourceTree = "<group>"; };
 		188E1B101648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseConfigHandler.h; sourceTree = "<group>"; };
 		188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseExcludesHandler.cpp; sourceTree = "<group>"; };
@@ -396,8 +393,6 @@
 				18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */,
 				188E1B26164E198C004754F4 /* Style.cpp */,
 				188E1B27164E198C004754F4 /* Style.h */,
-				188AB0371660F78B00CE162C /* Track.cpp */,
-				188AB0381660F78B00CE162C /* Track.h */,
 				185A727F166AE69B00D14E96 /* RESetting.cpp */,
 				185A7280166AE69B00D14E96 /* RESetting.h */,
 				185A728B166B048600D14E96 /* REXML.cpp */,
@@ -670,7 +665,6 @@
 				188E1B201648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp in Sources */,
 				188E1B28164E198C004754F4 /* Style.cpp in Sources */,
 				188E1B2C1650B250004754F4 /* MysqlAccess.cpp in Sources */,
-				188AB0391660F78B00CE162C /* Track.cpp in Sources */,
 				18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */,
 				18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */,
 				18A73F7416635D900074E137 /* ProcessProgressController.mm in Sources */,
