@@ -23,7 +23,7 @@ class Driver;
 namespace soulsifter {
     
     // public helper methods for working with times & a db
-    time_t timeFromeString(const std::string& str);
+    time_t timeFromString(const std::string& str);
     std::string stringFromTime(const time_t time);
 
 class MysqlAccess {

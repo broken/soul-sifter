@@ -117,7 +117,8 @@ MusicManager::~MusicManager() {
 
 void MusicManager::readTagsFromSong(Song* song) {
     if (!song->getAlbum()) {
-        song->setAlbum(new Album());
+        Album album;
+        song->setAlbum(album);
     }
     ID3_Tag tag(song->getFilepath().c_str());
     // TODO use an std::auto_ptr here to handle object cleanup automatically(void) ID3Tag_Link(tag, filename);

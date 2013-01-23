@@ -32,7 +32,7 @@ void RapidEvolutionDatabaseConfigColumnsHandler::init() {
 }
 
 void RapidEvolutionDatabaseConfigColumnsHandler::commit() {
-    REXML* dbXml = REXML::findByName("columns");
+    REXml* dbXml = REXml::findByName("columns");
     if (dbXml) {
         if (dbXml->getXml().compare(xml.getXml())) {
             dbXml->setXml(xml.getXml());

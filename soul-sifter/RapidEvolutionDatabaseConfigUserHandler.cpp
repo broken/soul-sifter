@@ -32,7 +32,7 @@ void RapidEvolutionDatabaseConfigUserHandler::init() {
 }
 
 void RapidEvolutionDatabaseConfigUserHandler::commit() {
-    REXML* dbXml = REXML::findByName("user");
+    REXml* dbXml = REXml::findByName("user");
     if (dbXml) {
         if (dbXml->getXml().compare(xml.getXml())) {
             dbXml->setXml(xml.getXml());

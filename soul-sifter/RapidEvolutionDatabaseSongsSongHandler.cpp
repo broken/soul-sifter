@@ -72,15 +72,15 @@ void RapidEvolutionDatabaseSongsSongHandler::startElement(const   XMLCh* const  
         song.clear();
         fieldPointer = NULL;
     } else if (!XMLString::compareString(qname, unique_id_elem)) {
-        fieldPointer = &song.unique_id;
+        fieldPointer = &song.id;
     } else if (!XMLString::compareString(qname, songid_winfo_elem)) {
-        fieldPointer = &song.songid_winfo;
+        fieldPointer = &song.songidWinfo;
     } else if (!XMLString::compareString(qname, songid_elem)) {
         fieldPointer = &song.songid;
     } else if (!XMLString::compareString(qname, shortid_elem)) {
         fieldPointer = &song.shortid;
     } else if (!XMLString::compareString(qname, shortid_winfo_elem)) {
-        fieldPointer = &song.shortid_winfo;
+        fieldPointer = &song.shortidWinfo;
     } else if (!XMLString::compareString(qname, artist_elem)) {
         fieldPointer = &song.artist;
     } else if (!XMLString::compareString(qname, album_elem)) {
@@ -92,51 +92,51 @@ void RapidEvolutionDatabaseSongsSongHandler::startElement(const   XMLCh* const  
     } else if (!XMLString::compareString(qname, time_elem)) {
         fieldPointer = &song.time;
     } else if (!XMLString::compareString(qname, time_signature_elem)) {
-        fieldPointer = &song.time_signature;
+        fieldPointer = &song.timeSignature;
     } else if (!XMLString::compareString(qname, filename_elem)) {
         fieldPointer = &song.filename;
     } else if (!XMLString::compareString(qname, digital_only_elem)) {
-        fieldPointer = &song.digital_only;
+        fieldPointer = &song.digitalOnly;
     } else if (!XMLString::compareString(qname, compilation_elem)) {
         fieldPointer = &song.compilation;
     } else if (!XMLString::compareString(qname, key_start_elem)) {
-        fieldPointer = &song.key_start;
+        fieldPointer = &song.keyStart;
     } else if (!XMLString::compareString(qname, key_accuracy_elem)) {
-        fieldPointer = &song.key_accuracy;
+        fieldPointer = &song.keyAccuracy;
     } else if (!XMLString::compareString(qname, bpm_start_elem)) {
-        fieldPointer = &song.bpm_start;
+        fieldPointer = &song.bpmStart;
     } else if (!XMLString::compareString(qname, bpm_accuracy_elem)) {
-        fieldPointer = &song.bpm_accuracy;
+        fieldPointer = &song.bpmAccuracy;
     } else if (!XMLString::compareString(qname, rating_elem)) {
         fieldPointer = &song.rating;
     } else if (!XMLString::compareString(qname, date_added_elem)) {
-        fieldPointer = &song.date_added;
+        fieldPointer = &song.dateAdded;
     } else if (!XMLString::compareString(qname, catalog_id_elem)) {
-        fieldPointer = &song.catalog_id;
+        fieldPointer = &song.catalogId;
     } else if (!XMLString::compareString(qname, label_elem)) {
         fieldPointer = &song.label;
     } else if (!XMLString::compareString(qname, remix_elem)) {
         fieldPointer = &song.remix;
     } else if (!XMLString::compareString(qname, num_plays_elem)) {
-        fieldPointer = &song.num_plays;
+        fieldPointer = &song.numPlays;
     } else if (!XMLString::compareString(qname, comments_elem)) {
         fieldPointer = &song.comments;
     } else if (!XMLString::compareString(qname, release_date_elem)) {
-        fieldPointer = &song.release_date;
+        fieldPointer = &song.releaseDate;
     } else if (!XMLString::compareString(qname, featuring_elem)) {
         fieldPointer = &song.featuring;
     } else if (!XMLString::compareString(qname, key_end_elem)) {
-        fieldPointer = &song.key_end;
+        fieldPointer = &song.keyEnd;
     } else if (!XMLString::compareString(qname, disabled_elem)) {
         fieldPointer = &song.disabled;
     } else if (!XMLString::compareString(qname, bpm_end_elem)) {
-        fieldPointer = &song.bpm_end;
+        fieldPointer = &song.bpmEnd;
     } else if (!XMLString::compareString(qname, beat_intensity_elem)) {
-        fieldPointer = &song.beat_intensity;
+        fieldPointer = &song.beatIntensity;
     } else if (!XMLString::compareString(qname, replay_gain_elem)) {
-        fieldPointer = &song.replay_gain;
+        fieldPointer = &song.replayGain;
     } else if (!XMLString::compareString(qname, styles_bitmask_elem)) {
-        fieldPointer = &song.styles_bitmask;
+        fieldPointer = &song.stylesBitmask;
     } else {
         cout << "ERROR:: no album processor for " << XMLString::transcode(qname) << endl;
     }
@@ -148,179 +148,179 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
     fieldPointer = NULL;
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
-        RESong *dbSong = RESong::findByUniqueId(song.getUniqueId());
+        RESong *dbSong = RESong::findById(song.getId());
         if (dbSong) {
             bool needsUpdating = false;
             if (dbSong->getAlbum().compare(song.getAlbum())) {
                 needsUpdating = true;
                 dbSong->setAlbum(song.getAlbum());
-                cout << "updating re song " << dbSong->getUniqueId() << " album from " << dbSong->getAlbum() << " to " << song.getAlbum() << endl;
+                cout << "updating re song " << dbSong->getId() << " album from " << dbSong->getAlbum() << " to " << song.getAlbum() << endl;
             }
             if (dbSong->getArtist().compare(song.getArtist())) {
                 needsUpdating = true;
                 dbSong->setArtist(song.getArtist());
-                cout << "updating re song " << dbSong->getUniqueId() << " artist from " << dbSong->getArtist() << " to " << song.getArtist() << endl;
+                cout << "updating re song " << dbSong->getId() << " artist from " << dbSong->getArtist() << " to " << song.getArtist() << endl;
             }
             if (dbSong->getBeatIntensity() != song.getBeatIntensity()) {
                 needsUpdating = true;
                 dbSong->setBeatIntensity(song.getBeatIntensity());
-                cout << "updating re song " << dbSong->getUniqueId() << " beat intensity from " << dbSong->getBeatIntensity() << " to " << song.getBeatIntensity() << endl;
+                cout << "updating re song " << dbSong->getId() << " beat intensity from " << dbSong->getBeatIntensity() << " to " << song.getBeatIntensity() << endl;
             }
-            if (dbSong->getBPMAccuracy() != song.getBPMAccuracy()) {
+            if (dbSong->getBpmAccuracy() != song.getBpmAccuracy()) {
                 needsUpdating = true;
-                dbSong->setBPMAccuracy(song.getBPMAccuracy());
-                cout << "updating re song " << dbSong->getUniqueId() << " bpm accuracy from " << dbSong->getBPMAccuracy() << " to " << song.getBPMAccuracy() << endl;
+                dbSong->setBpmAccuracy(song.getBpmAccuracy());
+                cout << "updating re song " << dbSong->getId() << " bpm accuracy from " << dbSong->getBpmAccuracy() << " to " << song.getBpmAccuracy() << endl;
             }
-            if (dbSong->getBPMEnd().compare(0, song.getBPMEnd().size(), song.getBPMEnd()) &&
-                (song.getBPMEnd().compare(0, dbSong->getBPMEnd().size()-1, dbSong->getBPMEnd()) || dbSong->getBPMEnd().size() < 4)) {
+            if (dbSong->getBpmEnd().compare(0, song.getBpmEnd().size(), song.getBpmEnd()) &&
+                (song.getBpmEnd().compare(0, dbSong->getBpmEnd().size()-1, dbSong->getBpmEnd()) || dbSong->getBpmEnd().size() < 4)) {
                 needsUpdating = true;
-                dbSong->setBPMEnd(song.getBPMEnd());
-                cout << "updating re song " << dbSong->getUniqueId() << " bpm end from " << dbSong->getBPMEnd() << " to " << song.getBPMEnd() << endl;
+                dbSong->setBpmEnd(song.getBpmEnd());
+                cout << "updating re song " << dbSong->getId() << " bpm end from " << dbSong->getBpmEnd() << " to " << song.getBpmEnd() << endl;
             }
-            if (dbSong->getBPMStart().compare(0, song.getBPMStart().size(), song.getBPMStart()) &&
-                (song.getBPMStart().compare(0, dbSong->getBPMStart().size()-1, dbSong->getBPMStart()) || dbSong->getBPMStart().size() < 4)) {
+            if (dbSong->getBpmStart().compare(0, song.getBpmStart().size(), song.getBpmStart()) &&
+                (song.getBpmStart().compare(0, dbSong->getBpmStart().size()-1, dbSong->getBpmStart()) || dbSong->getBpmStart().size() < 4)) {
                 needsUpdating = true;
-                dbSong->setBPMStart(song.getBPMStart());
-                cout << "updating re song " << dbSong->getUniqueId() << " bpm start from " << dbSong->getBPMStart() << " to " << song.getBPMStart() << endl;
+                dbSong->setBpmStart(song.getBpmStart());
+                cout << "updating re song " << dbSong->getId() << " bpm start from " << dbSong->getBpmStart() << " to " << song.getBpmStart() << endl;
             }
             if (dbSong->getCatalogId().compare(song.getCatalogId())) {
                 needsUpdating = true;
                 dbSong->setCatalogId(song.getCatalogId());
-                cout << "updating re song " << dbSong->getUniqueId() << " catalog id from " << dbSong->getCatalogId() << " to " << song.getCatalogId() << endl;
+                cout << "updating re song " << dbSong->getId() << " catalog id from " << dbSong->getCatalogId() << " to " << song.getCatalogId() << endl;
             }
             if (dbSong->getComments().compare(song.getComments())) {
                 needsUpdating = true;
                 dbSong->setComments(song.getComments());
-                cout << "updating re song " << dbSong->getUniqueId() << " comments from " << dbSong->getComments() << " to " << song.getComments() << endl;
+                cout << "updating re song " << dbSong->getId() << " comments from " << dbSong->getComments() << " to " << song.getComments() << endl;
             }
             if (dbSong->getCompilation().compare(song.getCompilation())) {
                 needsUpdating = true;
                 dbSong->setCompilation(song.getCompilation());
-                cout << "updating re song " << dbSong->getUniqueId() << " compilation from " << dbSong->getCompilation() << " to " << song.getCompilation() << endl;
+                cout << "updating re song " << dbSong->getId() << " compilation from " << dbSong->getCompilation() << " to " << song.getCompilation() << endl;
             }
             if (dbSong->getDateAdded().compare(song.getDateAdded())) {
                 needsUpdating = true;
                 dbSong->setDateAdded(song.getDateAdded());
-                cout << "updating re song " << dbSong->getUniqueId() << " date added from " << dbSong->getDateAdded() << " to " << song.getDateAdded() << endl;
+                cout << "updating re song " << dbSong->getId() << " date added from " << dbSong->getDateAdded() << " to " << song.getDateAdded() << endl;
             }
             if (dbSong->getDigitalOnly().compare(song.getDigitalOnly())) {
                 needsUpdating = true;
                 dbSong->setDigitalOnly(song.getDigitalOnly());
-                cout << "updating re song " << dbSong->getUniqueId() << " digital only from " << dbSong->getDigitalOnly() << " to " << song.getDigitalOnly() << endl;
+                cout << "updating re song " << dbSong->getId() << " digital only from " << dbSong->getDigitalOnly() << " to " << song.getDigitalOnly() << endl;
             }
             if (dbSong->getDisabled().compare(song.getDisabled())) {
                 needsUpdating = true;
                 dbSong->setDisabled(song.getDisabled());
-                cout << "updating re song " << dbSong->getUniqueId() << " disabled from " << dbSong->getDisabled() << " to " << song.getDisabled() << endl;
+                cout << "updating re song " << dbSong->getId() << " disabled from " << dbSong->getDisabled() << " to " << song.getDisabled() << endl;
             }
             if (dbSong->getFeaturing().compare(song.getFeaturing())) {
                 needsUpdating = true;
                 dbSong->setFeaturing(song.getFeaturing());
-                cout << "updating re song " << dbSong->getUniqueId() << " featuring from " << dbSong->getFeaturing() << " to " << song.getFeaturing() << endl;
+                cout << "updating re song " << dbSong->getId() << " featuring from " << dbSong->getFeaturing() << " to " << song.getFeaturing() << endl;
             }
             if (dbSong->getFilename().compare(song.getFilename())) {
                 needsUpdating = true;
                 dbSong->setFilename(song.getFilename());
-                cout << "updating re song " << dbSong->getUniqueId() << " filename from " << dbSong->getFilename() << " to " << song.getFilename() << endl;
+                cout << "updating re song " << dbSong->getId() << " filename from " << dbSong->getFilename() << " to " << song.getFilename() << endl;
             }
             if (dbSong->getKeyAccuracy() != song.getKeyAccuracy()) {
                 needsUpdating = true;
                 dbSong->setKeyAccuracy(song.getKeyAccuracy());
-                cout << "updating re song " << dbSong->getUniqueId() << " key accuracy from " << dbSong->getKeyAccuracy() << " to " << song.getKeyAccuracy() << endl;
+                cout << "updating re song " << dbSong->getId() << " key accuracy from " << dbSong->getKeyAccuracy() << " to " << song.getKeyAccuracy() << endl;
             }
             if (dbSong->getKeyEnd().compare(song.getKeyEnd())) {
                 needsUpdating = true;
                 dbSong->setKeyEnd(song.getKeyEnd());
-                cout << "updating re song " << dbSong->getUniqueId() << " key end from " << dbSong->getKeyEnd() << " to " << song.getKeyEnd() << endl;
+                cout << "updating re song " << dbSong->getId() << " key end from " << dbSong->getKeyEnd() << " to " << song.getKeyEnd() << endl;
             }
             if (dbSong->getKeyStart().compare(song.getKeyStart())) {
                 needsUpdating = true;
                 dbSong->setKeyStart(song.getKeyStart());
-                cout << "updating re song " << dbSong->getUniqueId() << " key start from " << dbSong->getKeyStart() << " to " << song.getKeyStart() << endl;
+                cout << "updating re song " << dbSong->getId() << " key start from " << dbSong->getKeyStart() << " to " << song.getKeyStart() << endl;
             }
             if (dbSong->getLabel().compare(song.getLabel())) {
                 needsUpdating = true;
                 dbSong->setLabel(song.getLabel());
-                cout << "updating re song " << dbSong->getUniqueId() << " label from " << dbSong->getLabel() << " to " << song.getLabel() << endl;
+                cout << "updating re song " << dbSong->getId() << " label from " << dbSong->getLabel() << " to " << song.getLabel() << endl;
             }
             if (dbSong->getNumPlays() != song.getNumPlays()) {
                 needsUpdating = true;
                 dbSong->setNumPlays(song.getNumPlays());
-                cout << "updating re song " << dbSong->getUniqueId() << " num plays from " << dbSong->getNumPlays() << " to " << song.getNumPlays() << endl;
+                cout << "updating re song " << dbSong->getId() << " num plays from " << dbSong->getNumPlays() << " to " << song.getNumPlays() << endl;
             }
             if (dbSong->getRating() != song.getRating()) {
                 needsUpdating = true;
                 dbSong->setRating(song.getRating());
-                cout << "updating re song " << dbSong->getUniqueId() << " rating from " << dbSong->getRating() << " to " << song.getRating() << endl;
+                cout << "updating re song " << dbSong->getId() << " rating from " << dbSong->getRating() << " to " << song.getRating() << endl;
             }
             if (dbSong->getReleaseDate().compare(song.getReleaseDate())) {
                 needsUpdating = true;
                 dbSong->setReleaseDate(song.getReleaseDate());
-                cout << "updating re song " << dbSong->getUniqueId() << " release date from " << dbSong->getReleaseDate() << " to " << song.getReleaseDate() << endl;
+                cout << "updating re song " << dbSong->getId() << " release date from " << dbSong->getReleaseDate() << " to " << song.getReleaseDate() << endl;
             }
             if (dbSong->getRemix().compare(song.getRemix())) {
                 needsUpdating = true;
                 dbSong->setRemix(song.getRemix());
-                cout << "updating re song " << dbSong->getUniqueId() << " remix from " << dbSong->getRemix() << " to " << song.getRemix() << endl;
+                cout << "updating re song " << dbSong->getId() << " remix from " << dbSong->getRemix() << " to " << song.getRemix() << endl;
             }
             if (dbSong->getReplayGain().compare(song.getReplayGain())) {
                 needsUpdating = true;
                 dbSong->setReplayGain(song.getReplayGain());
-                cout << "updating re song " << dbSong->getUniqueId() << " replay gain from " << dbSong->getReplayGain() << " to " << song.getReplayGain() << endl;
+                cout << "updating re song " << dbSong->getId() << " replay gain from " << dbSong->getReplayGain() << " to " << song.getReplayGain() << endl;
             }
-            if (dbSong->getShortId().compare(song.getShortId())) {
+            if (dbSong->getShortid().compare(song.getShortid())) {
                 needsUpdating = true;
-                dbSong->setShortId(song.getShortId());
-                cout << "updating re song " << dbSong->getUniqueId() << " short id from " << dbSong->getShortId() << " to " << song.getShortId() << endl;
+                dbSong->setShortid(song.getShortid());
+                cout << "updating re song " << dbSong->getId() << " short id from " << dbSong->getShortid() << " to " << song.getShortid() << endl;
             }
-            if (dbSong->getShortIdWInfo().compare(song.getShortIdWInfo())) {
+            if (dbSong->getShortidWinfo().compare(song.getShortidWinfo())) {
                 needsUpdating = true;
-                dbSong->setShortIdWInfo(song.getShortIdWInfo());
-                cout << "updating re song " << dbSong->getUniqueId() << " short id w/ info from " << dbSong->getShortIdWInfo() << " to " << song.getShortIdWInfo() << endl;
+                dbSong->setShortidWinfo(song.getShortidWinfo());
+                cout << "updating re song " << dbSong->getId() << " short id w/ info from " << dbSong->getShortidWinfo() << " to " << song.getShortidWinfo() << endl;
             }
-            if (dbSong->getSongId().compare(song.getSongId())) {
+            if (dbSong->getSongid().compare(song.getSongid())) {
                 needsUpdating = true;
-                dbSong->setSongId(song.getSongId());
-                cout << "updating re song " << dbSong->getUniqueId() << " song id from " << dbSong->getSongId() << " to " << song.getSongId() << endl;
+                dbSong->setSongid(song.getSongid());
+                cout << "updating re song " << dbSong->getId() << " song id from " << dbSong->getSongid() << " to " << song.getSongid() << endl;
             }
-            if (dbSong->getSongIdWInfo().compare(song.getSongIdWInfo())) {
+            if (dbSong->getSongidWinfo().compare(song.getSongidWinfo())) {
                 needsUpdating = true;
-                dbSong->setSongIdWInfo(song.getSongIdWInfo());
-                cout << "updating re song " << dbSong->getUniqueId() << " song id w/ info from " << dbSong->getSongIdWInfo() << " to " << song.getSongIdWInfo() << endl;
+                dbSong->setSongidWinfo(song.getSongidWinfo());
+                cout << "updating re song " << dbSong->getId() << " song id w/ info from " << dbSong->getSongidWinfo() << " to " << song.getSongidWinfo() << endl;
             }
             if (dbSong->getStylesBitmask().compare(song.getStylesBitmask())) {
                 needsUpdating = true;
                 dbSong->setStylesBitmask(song.getStylesBitmask());
-                cout << "updating re song " << dbSong->getUniqueId() << " styles bitmask from " << dbSong->getStylesBitmask() << " to " << song.getStylesBitmask() << endl;
+                cout << "updating re song " << dbSong->getId() << " styles bitmask from " << dbSong->getStylesBitmask() << " to " << song.getStylesBitmask() << endl;
             }
             if (dbSong->getTime().compare(song.getTime())) {
                 needsUpdating = true;
                 dbSong->setTime(song.getTime());
-                cout << "updating re song " << dbSong->getUniqueId() << " time from " << dbSong->getTime() << " to " << song.getTime() << endl;
+                cout << "updating re song " << dbSong->getId() << " time from " << dbSong->getTime() << " to " << song.getTime() << endl;
             }
             if (dbSong->getTimeSignature().compare(song.getTimeSignature())) {
                 needsUpdating = true;
                 dbSong->setTimeSignature(song.getTimeSignature());
-                cout << "updating re song " << dbSong->getUniqueId() << " time signature from " << dbSong->getTimeSignature() << " to " << song.getTimeSignature() << endl;
+                cout << "updating re song " << dbSong->getId() << " time signature from " << dbSong->getTimeSignature() << " to " << song.getTimeSignature() << endl;
             }
             if (dbSong->getTitle().compare(song.getTitle())) {
                 needsUpdating = true;
                 dbSong->setTitle(song.getTitle());
-                cout << "updating re song " << dbSong->getUniqueId() << " title from " << dbSong->getTitle() << " to " << song.getTitle() << endl;
+                cout << "updating re song " << dbSong->getId() << " title from " << dbSong->getTitle() << " to " << song.getTitle() << endl;
             }
             if (dbSong->getTrack().compare(song.getTrack())) {
                 needsUpdating = true;
                 dbSong->setTrack(song.getTrack());
-                cout << "updating re song " << dbSong->getUniqueId() << " track from " << dbSong->getTrack() << " to " << song.getTrack() << endl;
+                cout << "updating re song " << dbSong->getId() << " track from " << dbSong->getTrack() << " to " << song.getTrack() << endl;
             }
             if (needsUpdating)
                 dbSong->update();
             
-            Song *mySong = Song::findByRESongId(dbSong->getUniqueId());
+            Song *mySong = Song::findByRESongId(dbSong->getId());
             if (mySong) {
                 bool songNeedsUpdating = false;
                 bool albumNeedsUpdating = false;
-                Album *album = mySong->getAlbum();
+                Album *album = Album::findById(mySong->getAlbumId());
                 // TODO update album basic genre? would depend on filepath
                 if (album->getCatalogId().compare(song.getCatalogId())) {
                     albumNeedsUpdating = true;
@@ -414,10 +414,10 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
                 if (songNeedsUpdating)
                     mySong->update();
                 if ((songNeedsUpdating || albumNeedsUpdating) != needsUpdating) {
-                    cerr << "Why not more needing updates? Song " << mySong->getId() << " (" << songNeedsUpdating << "), Album " << album->getId() << " (" << albumNeedsUpdating << "), RE Song " << dbSong->getUniqueId() << " (" << needsUpdating << ")" << endl;
+                    cerr << "Why not more needing updates? Song " << mySong->getId() << " (" << songNeedsUpdating << "), Album " << album->getId() << " (" << albumNeedsUpdating << "), RE Song " << dbSong->getId() << " (" << needsUpdating << ")" << endl;
                 }
             } else {
-                cerr << "How do I have a RE Song " << dbSong->getUniqueId() << " yet no normal song?!" << endl;
+                cerr << "How do I have a RE Song " << dbSong->getId() << " yet no normal song?!" << endl;
                 Song newSong(&song);
                 newSong.save();
                 delete newSong.getAlbum();

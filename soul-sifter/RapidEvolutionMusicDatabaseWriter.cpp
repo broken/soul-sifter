@@ -20,7 +20,7 @@
 #include "REAlbumCover.h"
 #include "RESetting.h"
 #include "RESong.h"
-#include "REXML.h"
+#include "REXml.h"
 #include "Style.h"
 
 using namespace std;
@@ -82,9 +82,9 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     w.endElement("settings");
     
     // XML in these contains the newline at the end
-    w.writeChars(REXML::findByName("columns")->getXml(), false);
-    w.writeChars(REXML::findByName("tables")->getXml(), false);
-    w.writeChars(REXML::findByName("user")->getXml(), false);
+    w.writeChars(REXml::findByName("columns")->getXml(), false);
+    w.writeChars(REXml::findByName("tables")->getXml(), false);
+    w.writeChars(REXml::findByName("user")->getXml(), false);
     
     w.endElement("config");
     
@@ -99,7 +99,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     for (vector<Style*>::const_iterator it = styles->begin(); it != styles->end(); ++it) {
         // get child ids
         ostringstream osschild;
-        (*it)->getChildren(&children);
+        children = &(*it)->getChildren();
         bool first = true;
         for (vector<Style*>::const_iterator jt = children->begin(); jt != children->end(); ++jt) {
             if (!first) osschild << ",";
@@ -108,7 +108,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         }
         // get parent ids
         ostringstream ossparent;
-        (*it)->getParents(&parents);
+        parents = &(*it)->getParents();
         first = true;
         for (vector<Style*>::const_iterator jt = parents->begin(); jt != parents->end(); ++jt) {
             if (!first) ossparent << ",";
@@ -158,15 +158,15 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         w.startElement("song", songAttribs).endl();
         deleteAttribs(songAttribs);
         //f << "<unique_id>" << song.getUniqueId() << "</unique_id>" << endl;
-        w.startElement("unique_id", NULL).writeInt(song.getUniqueId()).endElement("unique_id");
+        w.startElement("unique_id", NULL).writeInt(song.getId()).endElement("unique_id");
         //f << "<songid_winfo>" << song.getSongIdWInfo() << "</songid_winfo>" << endl;
-        w.startElement("songid_winfo", NULL).writeChars(song.getSongIdWInfo())->endElement("songid_winfo");
+        w.startElement("songid_winfo", NULL).writeChars(song.getSongidWinfo())->endElement("songid_winfo");
         //f << "<songid>" << song.getSongId() << "</songid>" << endl;
-        w.startElement("songid", NULL).writeChars(song.getSongId())->endElement("songid");
+        w.startElement("songid", NULL).writeChars(song.getSongid())->endElement("songid");
         //f << "<shortid>" << song.getShortId() << "</shortid>" << endl;
-        w.startElement("shortid", NULL).writeChars(song.getShortId())->endElement("shortid");
+        w.startElement("shortid", NULL).writeChars(song.getShortid())->endElement("shortid");
         //f << "<shortid_winfo>" << song.getShortIdWInfo() << "</shortid_winfo>" << endl;
-        w.startElement("shortid_winfo", NULL).writeChars(song.getShortIdWInfo())->endElement("shortid_winfo");
+        w.startElement("shortid_winfo", NULL).writeChars(song.getShortidWinfo())->endElement("shortid_winfo");
         if (song.getArtist().length() > 0)
             //f << "<artist>" << song.getArtist() << "</artist>" << endl;
             w.startElement("artist", NULL).writeChars(song.getArtist())->endElement("artist");
@@ -224,15 +224,15 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         if (song.getKeyAccuracy() > 0)
             //f << "<key_accuracy>" << song.getKeyAccuracy() << "</key_accuracy>" << endl;
             w.startElement("key_accuracy", NULL).writeInt(song.getKeyAccuracy()).endElement("key_accuracy");
-        if (song.getBPMStart().length() > 0)
+        if (song.getBpmStart().length() > 0)
             //f << "<bpm_start>" << song.getBPMStart() << "</bpm_start>" << endl;
-            w.startElement("bpm_start", NULL).writeStr(song.getBPMStart()).endElement("bpm_start");
-        if (song.getBPMEnd().length() > 0)
+            w.startElement("bpm_start", NULL).writeStr(song.getBpmStart()).endElement("bpm_start");
+        if (song.getBpmEnd().length() > 0)
             //f << "<bpm_end>" << song.getBPMEnd() << "</bpm_end>" << endl;
-            w.startElement("bpm_end", NULL).writeStr(song.getBPMEnd()).endElement("bpm_end");
-        if (song.getBPMAccuracy() > 0)
+            w.startElement("bpm_end", NULL).writeStr(song.getBpmEnd()).endElement("bpm_end");
+        if (song.getBpmAccuracy() > 0)
             //f << "<bpm_accuracy>" << song.getBPMAccuracy() << "</bpm_accuracy>" << endl;
-            w.startElement("bpm_accuracy", NULL).writeInt(song.getBPMAccuracy()).endElement("bpm_accuracy");
+            w.startElement("bpm_accuracy", NULL).writeInt(song.getBpmAccuracy()).endElement("bpm_accuracy");
         if (song.getBeatIntensity() > 0)
             //f << "<beat_intensity>" << song.getBeatIntensity() << "</beat_intensity>" << endl;
             w.startElement("beat_intensity", NULL).writeInt(song.getBeatIntensity()).endElement("beat_intensity");
@@ -270,7 +270,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         w.startElement("from_unique_id", NULL).writeInt(mix.getOutSong()->getRESongId()).endElement("from_unique_id");
         //f << "<to_unique_id>" << mix.getInSong()->getRESongId() << "</to_unique_id>" << endl;
         w.startElement("to_unique_id", NULL).writeInt(mix.getInSong()->getRESongId()).endElement("to_unique_id");
-        w.startElement("bpm_diff", NULL).writeStr(mix.getBPMDiff()).endElement("bpm_diff");
+        w.startElement("bpm_diff", NULL).writeStr(mix.getBpmDiff()).endElement("bpm_diff");
         if (mix.getRank() > 0)
             //f << "<rank>" << mix.getRank() << "</rank>" << endl;
             w.startElement("rank", NULL).writeInt(mix.getRank()).endElement("rank");

@@ -12,6 +12,6 @@ namespace soulsifter {
     
 #pragma mark accessors
     
-    string& REXML::getXmlRef() { return xml; }
+    string& REXml::getXmlRef() { return xml; }
 
 }

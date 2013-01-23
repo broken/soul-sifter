@@ -16,42 +16,6 @@
 
 namespace soulsifter {
     
-    RESong::RESong(const Song& song) :
-    unique_id(0),
-    songid_winfo(),
-    songid(),
-    shortid(),
-    shortid_winfo(),
-    artist(song.getArtist()),
-    album(song.reAlbum()),
-    track(song.getTrack()),
-    title(song.getTitle()),
-    time(),
-    time_signature(),
-    filename(song.getFilepath()),
-    digital_only(),
-    compilation(),
-    key_start(),
-    key_accuracy(0),
-    bpm_start(),
-    bpm_accuracy(0),
-    rating(song.getRating()),
-    date_added(song.getDateAddedString()),
-    catalog_id(song.getAlbum()->getCatalogId()),
-    label(song.getAlbum()->getLabel()),
-    remix(song.getRemix()),
-    num_plays(0),
-    comments(song.getComments()),
-    release_date(song.getAlbum()->reReleaseDate()),
-    featuring(song.getFeaturing()),
-    key_end(),
-    disabled(song.getTrashed() ? "yes" : "no"),
-    bpm_end(),
-    beat_intensity(0),
-    replay_gain(),
-    styles_bitmask() {
-    }
-    
     RESong::RESongIterator* RESong::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select re.*, count(m.outSongId) as cnt from RESongs re join Songs s on re.unique_id = s.reSongId left join Mixes m on s.id = m.outSongId group by re.unique_id order by re.songId");
         sql::ResultSet *rs = ps->executeQuery();

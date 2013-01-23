@@ -86,27 +86,28 @@
     }
     
     soulsifter::Song song;
-    song.setAlbum(new soulsifter::Album());
+    soulsifter::Album songAlbum;
     song.setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
     song.setArtist([[artist stringValue] UTF8String]);
-    song.getAlbum()->setName([[album stringValue] UTF8String]);
+    songAlbum.setName([[album stringValue] UTF8String]);
     song.setTrack([[trackNum stringValue] UTF8String]);
     song.setTitle([[title stringValue] UTF8String]);
     song.setRemix([[remix stringValue] UTF8String]);
     song.setFeaturing([[featuring stringValue] UTF8String]);
-    song.getAlbum()->setLabel([[label stringValue] UTF8String]);
-    song.getAlbum()->setCatalogId([[catalogId stringValue] UTF8String]);
-    song.getAlbum()->setReleaseDateYear([releaseDateYear intValue]);
-    song.getAlbum()->setReleaseDateMonth([releaseDateMonth intValue]);
-    song.getAlbum()->setReleaseDateDay([releaseDateDay intValue]);
+    songAlbum.setLabel([[label stringValue] UTF8String]);
+    songAlbum.setCatalogId([[catalogId stringValue] UTF8String]);
+    songAlbum.setReleaseDateYear([releaseDateYear intValue]);
+    songAlbum.setReleaseDateMonth([releaseDateMonth intValue]);
+    songAlbum.setReleaseDateDay([releaseDateDay intValue]);
     song.setRating([rating intValue]);
-    song.getAlbum()->setBasicGenre(soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
+    songAlbum.setBasicGenre(*soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
     song.setDateAddedToNow();
+    song.setAlbum(songAlbum);
     NSIndexSet *styleIndexes = [styles selectedRowIndexes];
     for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
-        song.addToStyle([(StyleTreeItem *)[styles itemAtRow:idx] style]);
+        song.addStyle(*[(StyleTreeItem *)[styles itemAtRow:idx] style]);
     }
-    song.setRESong(new soulsifter::RESong(song));
+    song.setRESong(*soulsifter::Song::createRESongFromSong(song));
     
     // update tag
     soulsifter::MusicManager::getInstance().writeTagsToSong(&song);

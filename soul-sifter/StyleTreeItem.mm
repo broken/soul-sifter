@@ -22,9 +22,8 @@
     name = [NSString stringWithUTF8String:style->getName().c_str()];
     [name retain];
     children = [[NSMutableArray alloc] init];
-    const vector<soulsifter::Style*>* kids;
-    style->getChildren(&kids);
-    for (vector<soulsifter::Style*>::const_iterator it = kids->begin(); it != kids->end(); ++it) {
+    const vector<soulsifter::Style*> kids = style->getChildren();
+    for (vector<soulsifter::Style*>::const_iterator it = kids.begin(); it != kids.end(); ++it) {
         [children addObject:[[StyleTreeItem alloc] initWithStyle:*it andParent:self]];
     }
     return self;

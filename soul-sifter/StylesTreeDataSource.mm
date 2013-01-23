@@ -25,9 +25,8 @@
     const vector<soulsifter::Style*>* styles;
     soulsifter::Style::findAllSorted(&styles);
     for (vector<soulsifter::Style*>::const_iterator it = styles->begin(); it != styles->end(); ++it) {
-        const vector<soulsifter::Style*>* parents;
-        (*it)->getParents(&parents);
-        if (parents->empty()) {
+        const vector<soulsifter::Style*> parents = (*it)->getParents();
+        if (parents.empty()) {
             StyleTreeItem *styleItem = [[StyleTreeItem alloc] initWithStyle:*it];
             [styleItems addObject:styleItem];
         }

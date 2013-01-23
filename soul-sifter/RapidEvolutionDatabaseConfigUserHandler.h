@@ -28,7 +28,7 @@ public:
     
 private:
     const XMLCh* const qname;
-    REXML xml;
+    REXml xml;
 };
     
 }

@@ -41,38 +41,13 @@ namespace soulsifter {
 # pragma mark static methods
     
     void Style::findAll(const vector<Style*>** stylesPtr) {
-        vector<Style*>* styles = getStaticStyles();
-        (*stylesPtr) = styles;
+        // TODO
     }
     
     void Style::findAllSorted(const vector<Style*>** stylesPtr) {
-        vector<Style*>* styles = getStaticStyles();
+        // TODO
+        vector<Style*>* styles;
         sort(styles->begin(), styles->end(), lessThanKey());
         (*stylesPtr) = styles;
-    }
-    
-# pragma mark persistence
-    
-    int Style::addChild(Style* child) {
-        try {
-            for (vector<Style*>::const_iterator it = children.begin(); it != children.end(); ++it) {
-                if ((*it)->getId() == child->getId()) {
-                    return 0;
-                }
-            }
-            children.push_back(child);
-            child->parents.push_back(this);
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into StyleChildren (parentId, childId) values (?, ?)");
-            ps->setInt(1, id);
-            ps->setInt(2, child->getId());
-            return ps->executeUpdate();
-        } catch (sql::SQLException &e) {
-            cerr << "ERROR: SQLException in " << __FILE__;
-            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
-            cerr << "ERROR: " << e.what();
-            cerr << " (MySQL error code: " << e.getErrorCode();
-            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return NULL;
-        }
     }
 }

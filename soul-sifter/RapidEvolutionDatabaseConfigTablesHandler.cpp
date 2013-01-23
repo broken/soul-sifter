@@ -32,7 +32,7 @@ void RapidEvolutionDatabaseConfigTablesHandler::init() {
 }
 
 void RapidEvolutionDatabaseConfigTablesHandler::commit() {
-    REXML* dbXml = REXML::findByName("tables");
+    REXml* dbXml = REXml::findByName("tables");
     if (dbXml) {
         if (dbXml->getXml().compare(xml.getXml())) {
             dbXml->setXml(xml.getXml());

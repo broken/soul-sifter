@@ -28,13 +28,13 @@ namespace soulsifter {
     remix(song->getRemix()),
     featuring(song->getFeaturing()),
     filepath(song->getFilename()),
-    reSongId(song->getUniqueId()),
+    reSongId(song->getId()),
     reSong(song),
     styles(),
     rating(song->getRating()),
     albumId(0),
     album(NULL),
-    dateAdded(timeFromeString(song->getDateAdded())),
+    dateAdded(timeFromString(song->getDateAdded())),
     comments(song->getComments()),
     trashed(!song->getDisabled().compare("yes")) {
         
@@ -68,9 +68,9 @@ namespace soulsifter {
         // basic genre
         const BasicGenre *genre = BasicGenre::findByFilepath(song->getFilename());
         if (genre)
-            album->setBasicGenre(genre);
+            album->setBasicGenre(*genre);
         // date added
-        dateAdded = timeFromeString(song->getDateAdded());
+        dateAdded = timeFromString(song->getDateAdded());
     }
     
     void Song::findSongsByStyle(const Style& style, vector<Song*>** songsPtr) {
@@ -103,4 +103,24 @@ namespace soulsifter {
     
     const string Song::getDateAddedString() const { return stringFromTime(dateAdded); }
     void Song::setDateAddedToNow() { dateAdded = time(0); }
+    
+    RESong* Song::createRESongFromSong(const Song& song) {
+        RESong* re = new RESong();
+        re->setId(0);
+        re->setArtist(song.getArtist());
+        re->setAlbum(song.reAlbum());
+        re->setTrack(song.getTrack());
+        re->setTitle(song.getTitle());
+        re->setFilename(song.getFilepath());
+        re->setRating(song.getRating());
+        re->setDateAdded(song.getDateAddedString());
+        re->setCatalogId(song.getAlbum()->getCatalogId());
+        re->setLabel(song.getAlbum()->getLabel());
+        re->setRemix(song.getRemix());
+        re->setComments(song.getComments());
+        re->setReleaseDate(song.getAlbum()->reReleaseDate());
+        re->setFeaturing(song.getFeaturing());
+        re->setDisabled(song.getTrashed() ? "yes" : "no");
+        return re;
+    }
 }

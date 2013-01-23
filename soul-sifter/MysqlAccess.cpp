@@ -27,7 +27,7 @@ namespace soulsifter {
     
 # pragma mark public helpers
     
-    time_t timeFromeString(const std::string& str) {
+    time_t timeFromString(const std::string& str) {
         struct tm dt;
         memset(&dt, 0, sizeof(dt));
         strptime(str.c_str(), "%Y-%m-%d %X", &dt);

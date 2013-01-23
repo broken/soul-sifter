@@ -40,7 +40,7 @@ void RapidEvolutionDatabaseStylesHandler::endElement(const XMLCh* const uri,
         for (vector<pair<int, int> >::iterator it = childStyles.begin(); it != childStyles.end(); ++it) {
             Style* parent = Style::findByREId(it->first);
             Style* child = Style::findByREId(it->second);
-            parent->addChild(child);
+            parent->addChild(*child);
         }
     }
 }
