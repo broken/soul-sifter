@@ -6,7 +6,7 @@
 //
 //
 
-#include "REXML.h"
+#include "REXml.h"
 
 namespace soulsifter {
     

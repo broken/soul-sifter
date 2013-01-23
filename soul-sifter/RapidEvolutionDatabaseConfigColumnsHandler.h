@@ -10,7 +10,7 @@
 #define __soul_sifter__RapidEvolutionDatabaseConfigColumnsHandler__
 
 #include "DTCopyHandler.h"
-#include "REXML.h"
+#include "REXml.h"
 
 namespace soulsifter {
 

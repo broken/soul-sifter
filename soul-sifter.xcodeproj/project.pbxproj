@@ -30,7 +30,7 @@
 		185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */; };
 		185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7285166AF8D200D14E96 /* DTCopyHandler.cpp */; };
 		185A728A166B005800D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7288166B005600D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp */; };
-		185A728D166B048600D14E96 /* REXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A728B166B048600D14E96 /* REXML.cpp */; };
+		185A728D166B048600D14E96 /* REXml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A728B166B048600D14E96 /* REXml.cpp */; };
 		185A7290166B103200D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A728E166B103000D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp */; };
 		185A7293166B104B00D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7291166B104900D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp */; };
 		185A7296166B154300D14E96 /* REAlbumCover.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7294166B154200D14E96 /* REAlbumCover.cpp */; };
@@ -75,7 +75,7 @@
 		18AA5FEA16AEAAD4008E8DD3 /* SongHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FE816AEAAD3008E8DD3 /* SongHelper.cpp */; };
 		18AA5FED16AF3F04008E8DD3 /* StyleHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */; };
 		18AA5FF016AFC669008E8DD3 /* RESettingHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */; };
-		18AA5FF316AFCA23008E8DD3 /* REXMLHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF116AFCA22008E8DD3 /* REXMLHelper.cpp */; };
+		18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */; };
 		18AA5FF616AFCB6E008E8DD3 /* REAlbumCoverHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */; };
 		18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */; };
 		18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */; };
@@ -140,8 +140,8 @@
 		185A7286166AF8D200D14E96 /* DTCopyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCopyHandler.h; sourceTree = "<group>"; };
 		185A7288166B005600D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigColumnsHandler.cpp; sourceTree = "<group>"; };
 		185A7289166B005700D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseConfigColumnsHandler.h; sourceTree = "<group>"; };
-		185A728B166B048600D14E96 /* REXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXML.cpp; sourceTree = "<group>"; };
-		185A728C166B048600D14E96 /* REXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REXML.h; sourceTree = "<group>"; };
+		185A728B166B048600D14E96 /* REXml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXml.cpp; sourceTree = "<group>"; };
+		185A728C166B048600D14E96 /* REXml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REXml.h; sourceTree = "<group>"; };
 		185A728E166B103000D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigTablesHandler.cpp; sourceTree = "<group>"; };
 		185A728F166B103100D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseConfigTablesHandler.h; sourceTree = "<group>"; };
 		185A7291166B104900D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigUserHandler.cpp; sourceTree = "<group>"; };
@@ -222,7 +222,7 @@
 		18AA5FE816AEAAD3008E8DD3 /* SongHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SongHelper.cpp; sourceTree = "<group>"; };
 		18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StyleHelper.cpp; sourceTree = "<group>"; };
 		18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESettingHelper.cpp; sourceTree = "<group>"; };
-		18AA5FF116AFCA22008E8DD3 /* REXMLHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXMLHelper.cpp; sourceTree = "<group>"; };
+		18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXmlHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REAlbumCoverHelper.cpp; sourceTree = "<group>"; };
 		18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/Cellar/xerces-c/3.1.1/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
@@ -402,9 +402,9 @@
 				18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */,
 				185A727F166AE69B00D14E96 /* RESetting.cpp */,
 				185A7280166AE69B00D14E96 /* RESetting.h */,
-				18AA5FF116AFCA22008E8DD3 /* REXMLHelper.cpp */,
-				185A728B166B048600D14E96 /* REXML.cpp */,
-				185A728C166B048600D14E96 /* REXML.h */,
+				18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */,
+				185A728B166B048600D14E96 /* REXml.cpp */,
+				185A728C166B048600D14E96 /* REXml.h */,
 				18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */,
 				185A7294166B154200D14E96 /* REAlbumCover.cpp */,
 				185A7295166B154300D14E96 /* REAlbumCover.h */,
@@ -685,7 +685,7 @@
 				185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */,
 				185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */,
 				185A728A166B005800D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp in Sources */,
-				185A728D166B048600D14E96 /* REXML.cpp in Sources */,
+				185A728D166B048600D14E96 /* REXml.cpp in Sources */,
 				185A7290166B103200D14E96 /* RapidEvolutionDatabaseConfigTablesHandler.cpp in Sources */,
 				185A7293166B104B00D14E96 /* RapidEvolutionDatabaseConfigUserHandler.cpp in Sources */,
 				185A7296166B154300D14E96 /* REAlbumCover.cpp in Sources */,
@@ -704,7 +704,7 @@
 				18AA5FEA16AEAAD4008E8DD3 /* SongHelper.cpp in Sources */,
 				18AA5FED16AF3F04008E8DD3 /* StyleHelper.cpp in Sources */,
 				18AA5FF016AFC669008E8DD3 /* RESettingHelper.cpp in Sources */,
-				18AA5FF316AFCA23008E8DD3 /* REXMLHelper.cpp in Sources */,
+				18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */,
 				18AA5FF616AFCB6E008E8DD3 /* REAlbumCoverHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,7 +12,7 @@
 
 #include <xercesc/util/XMLString.hpp>
 
-#include "REXML.h"
+#include "REXml.h"
 
 using namespace std;
 using namespace xercesc;
