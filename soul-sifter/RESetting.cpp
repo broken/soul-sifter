@@ -80,18 +80,6 @@ namespace soulsifter {
         return setting;
     }
     
-    void RESetting::findAll(vector<const RESetting*>* settings) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings");
-        sql::ResultSet *rs = ps->executeQuery();
-        while (rs->next()) {
-            RESetting *setting = new RESetting();
-            populateFields(rs, setting);
-            settings->push_back(setting);
-        }
-        rs->close();
-        delete rs;
-    }
-    
 # pragma mark persistence
     
     bool RESetting::update() {
@@ -144,7 +132,6 @@ namespace soulsifter {
     void RESetting::setName(const string& name) { this->name = name; }
     
     const string& RESetting::getValue() const { return value; }
-    string& RESetting::getValueRef() { return value; }
     void RESetting::setValue(const string& value) { this->value = value; }
     
 }
