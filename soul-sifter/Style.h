@@ -39,8 +39,8 @@ namespace soulsifter {
         bool operator<(const Style& style) const;
         bool operator>(const Style& style) const;
 
-        static void findAll(const vector<Style*>** stylesPtr);
-        static void findAllSorted(const vector<Style*>** stylesPtr);
+        static void findAll(vector<Style*>** stylesPtr);
+        static void findAllSorted(vector<Style*>** stylesPtr);
 
         const int getId() const;
         void setId(int id);

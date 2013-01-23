@@ -88,7 +88,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     
     w.endElement("config");
     
-    const vector<Style*>* styles;
+    vector<Style*>* styles;
     const vector<Style*>* children;
     const vector<Style*>* parents;
     Style::findAll(&styles);

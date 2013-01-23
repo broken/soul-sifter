@@ -434,7 +434,7 @@ styleFields = [
   ["vector<Style*>", "parents", 0],
 ]
 styleAttribs = 0
-styleCustomMethods = "        bool operator<(const Style& style) const;\n        bool operator>(const Style& style) const;\n\n        static void findAll(const vector<Style*>** stylesPtr);\n        static void findAllSorted(const vector<Style*>** stylesPtr);\n\n"
+styleCustomMethods = "        bool operator<(const Style& style) const;\n        bool operator>(const Style& style) const;\n\n        static void findAll(vector<Style*>** stylesPtr);\n        static void findAllSorted(vector<Style*>** stylesPtr);\n\n"
 styleCustomHeaders = ""
 reSettingFields = [
   [:int, "id", Attrib::FIND],

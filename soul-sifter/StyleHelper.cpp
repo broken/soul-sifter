@@ -40,14 +40,30 @@ namespace soulsifter {
     
 # pragma mark static methods
     
-    void Style::findAll(const vector<Style*>** stylesPtr) {
-        // TODO
+    void Style::findAll(vector<Style*>** stylesPtr) {
+        static vector<Style*> styles;
+        if (styles.size() == 0) {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles");
+            sql::ResultSet *rs = ps->executeQuery();
+            while (rs->next()) {
+                for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+                    if ((*it)->id == rs->getInt("id")) {
+                        continue;
+                    }
+                }
+                Style *style = new Style();
+                populateFields(rs, style);
+                styles.push_back(style);
+            }
+            rs->close();
+            delete rs;
+        }
+        (*stylesPtr) = &styles;
     }
     
-    void Style::findAllSorted(const vector<Style*>** stylesPtr) {
-        // TODO
-        vector<Style*>* styles;
+    void Style::findAllSorted(vector<Style*>** stylesPtr) {
+        findAll(stylesPtr);
+        vector<Style*>* styles = *stylesPtr;
         sort(styles->begin(), styles->end(), lessThanKey());
-        (*stylesPtr) = styles;
     }
 }

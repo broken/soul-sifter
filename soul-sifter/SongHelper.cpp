@@ -39,7 +39,7 @@ namespace soulsifter {
     trashed(!song->getDisabled().compare("yes")) {
         
         // styles
-        const vector<Style*>* allStyles;
+        vector<Style*>* allStyles;
         Style::findAllSorted(&allStyles);
         unsigned long pos = song->getStylesBitmask().find('1', 0);
         while (pos != string::npos) {
