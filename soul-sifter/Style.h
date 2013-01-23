@@ -48,8 +48,8 @@ namespace soulsifter {
         void setName(const string& name);
         const int getREId() const;
         void setREId(int reId);
-        const string& getREName() const;
-        void setREName(const string& reName);
+        const string& getRECsvName() const;
+        void setRECsvName(const string& reCsvName);
         const vector<Style*>& getChildren() const;
         void setChildren(const vector<Style*>& children);
         void addChild(const Style& child);
@@ -63,7 +63,7 @@ namespace soulsifter {
         int id;
         string name;
         int reId;
-        string reName;
+        string reCsvName;
         vector<Style*> children;
         vector<Style*> parents;
 
