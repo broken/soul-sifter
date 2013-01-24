@@ -29,7 +29,7 @@ namespace soulsifter {
     id(0),
     name(),
     reId(0),
-    reCsvName(),
+    reLabel(),
     children(),
     parents() {
     }
@@ -38,7 +38,7 @@ namespace soulsifter {
     id(style.getId()),
     name(style.getName()),
     reId(style.getREId()),
-    reCsvName(style.getRECsvName()),
+    reLabel(style.getRELabel()),
     children(),
     parents() {
         children = style.getChildren();
@@ -49,7 +49,7 @@ namespace soulsifter {
         id = style.getId();
         name = style.getName();
         reId = style.getREId();
-        reCsvName = style.getRECsvName();
+        reLabel = style.getRELabel();
         children = style.getChildren();
         parents = style.getParents();
     }
@@ -69,7 +69,7 @@ namespace soulsifter {
         id = 0;
         name.clear();
         reId = 0;
-        reCsvName.clear();
+        reLabel.clear();
         for (vector<Style*>::iterator it = children.begin(); it != children.end(); ++it) {
             delete *it;
         }
@@ -86,7 +86,7 @@ namespace soulsifter {
         style->setId(rs->getInt("id"));
         style->setName(rs->getString("name"));
         style->setREId(rs->getInt("reId"));
-        style->setRECsvName(rs->getString("reCsvName"));
+        style->setRELabel(rs->getString("reLabel"));
         // TODO set children
         // TODO set parents
     }
@@ -155,12 +155,12 @@ namespace soulsifter {
                 reId = style->getREId();
             }
         }
-        if (reCsvName.compare(style->getRECsvName())) {
-            if (!reCsvName.empty()) {
-                cout << "updating style reCsvName from " << style->getRECsvName() << " to " << reCsvName << endl;
+        if (reLabel.compare(style->getRELabel())) {
+            if (!reLabel.empty()) {
+                cout << "updating style reLabel from " << style->getRELabel() << " to " << reLabel << endl;
                 needsUpdate = true;
             } else {
-                reCsvName = style->getRECsvName();
+                reLabel = style->getRELabel();
             }
         }
         return needsUpdate;
@@ -168,10 +168,10 @@ namespace soulsifter {
 
     int Style::update() {
         try {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Styles set name=?, reId=?, reCsvName=? where id=?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Styles set name=?, reId=?, reLabel=? where id=?");
             ps->setString(1, name);
             ps->setInt(2, reId);
-            ps->setString(3, reCsvName);
+            ps->setString(3, reLabel);
             ps->setInt(4, id);
             return ps->executeUpdate();
         } catch (sql::SQLException &e) {
@@ -186,10 +186,10 @@ namespace soulsifter {
 
     int Style::save() {
         try {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Styles (name, reId, reCsvName) values (?, ?, ?)");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Styles (name, reId, reLabel) values (?, ?, ?)");
             ps->setString(1, name);
             ps->setInt(2, reId);
-            ps->setString(3, reCsvName);
+            ps->setString(3, reLabel);
             return ps->executeUpdate();
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
@@ -213,8 +213,8 @@ namespace soulsifter {
     const int Style::getREId() const { return reId; }
     void Style::setREId(const int reId) { this->reId = reId; }
 
-    const string& Style::getRECsvName() const { return reCsvName; }
-    void Style::setRECsvName(const string& reCsvName) { this->reCsvName = reCsvName; }
+    const string& Style::getRELabel() const { return reLabel; }
+    void Style::setRELabel(const string& reLabel) { this->reLabel = reLabel; }
 
     const vector<Style*>& Style::getChildren() const { return children; }
     void Style::setChildren(const vector<Style*>& children) { this->children = children; }

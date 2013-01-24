@@ -51,7 +51,7 @@ void RapidEvolutionDatabaseStylesStyleHandler::startElement(const   XMLCh* const
         const XMLCh* id_xml = attrs.getValue(id_attrib);
         const XMLCh* child_ids_xml = attrs.getValue(child_ids_attrib);
         style.clear();
-        style.setRECsvName(XMLString::transcode(name_xml));
+        style.setRELabel(XMLString::transcode(name_xml));
         style.setREId(XMLString::parseInt(id_xml));
         string ids = XMLString::transcode(child_ids_xml);
         if (!ids.empty()) {
@@ -73,14 +73,14 @@ void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri
         Style* dbStyle = Style::findByREId(style.getREId());
         if (dbStyle) {
             // TODO revisit update style
-            if (dbStyle->getRECsvName().compare(style.getRECsvName())) {
-                cout << "updating style " << style.getId() << " re name from " << dbStyle->getRECsvName() << " to " << style.getRECsvName() << endl;
-                dbStyle->setRECsvName(style.getRECsvName());
+            if (dbStyle->getRELabel().compare(style.getRELabel())) {
+                cout << "updating style " << style.getId() << " re name from " << dbStyle->getRELabel() << " to " << style.getRELabel() << endl;
+                dbStyle->setRELabel(style.getRELabel());
                 dbStyle->update();
             }
         } else {
             if (style.getName().length() == 0) {
-                style.setName(style.getRECsvName());
+                style.setName(style.getRELabel());
             }
             style.save();
         }

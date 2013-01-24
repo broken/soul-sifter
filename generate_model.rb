@@ -429,7 +429,7 @@ styleFields = [
   [:int, "id", Attrib::FIND],
   [:string, "name", 0],
   [:int, "reId", Attrib::FIND],
-  [:string, "reCsvName", 0],
+  [:string, "reLabel", 0],
   ["vector<Style*>", "children", 0],
   ["vector<Style*>", "parents", 0],
 ]

@@ -122,7 +122,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             new attrib("child_ids",osschild.str()),
             new attrib("description", ""),
             new attrib("id", int2str((*it)->getREId())),
-            new attrib("name",(*it)->getRECsvName()),
+            new attrib("name",(*it)->getRELabel()),
             new attrib("parent_ids",ossparent.str()),
             NULL
         };
