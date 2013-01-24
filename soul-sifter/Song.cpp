@@ -88,10 +88,7 @@ namespace soulsifter {
         reSong = NULL;
         delete album;
         album = NULL;
-        for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
-            delete *it;
-        }
-        styles.clear();
+        while (!styles.empty()) delete styles.back(), styles.pop_back();
     }
 
     void Song::clear() {

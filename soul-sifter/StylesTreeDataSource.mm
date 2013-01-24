@@ -31,6 +31,7 @@
             [styleItems addObject:styleItem];
         }
     }
+    while (!styles->empty()) delete styles->back(), styles->pop_back();
     
 	return self;
 }

@@ -428,8 +428,6 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
             // saving a Song saves the RESong as well if it has no ID (ie. this case)
             Song mySong(&song);
             mySong.save();
-            // TODO shouldn't have to delete albums for the songs to work.
-            delete mySong.getAlbum();
         }
     }
 }

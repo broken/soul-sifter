@@ -55,14 +55,8 @@ namespace soulsifter {
     }
 
     Style::~Style() {
-        for (vector<Style*>::iterator it = children.begin(); it != children.end(); ++it) {
-            delete *it;
-        }
-        children.clear();
-        for (vector<Style*>::iterator it = parents.begin(); it != parents.end(); ++it) {
-            delete *it;
-        }
-        parents.clear();
+        while (!children.empty()) delete children.back(), children.pop_back();
+        while (!parents.empty()) delete parents.back(), parents.pop_back();
     }
 
     void Style::clear() {

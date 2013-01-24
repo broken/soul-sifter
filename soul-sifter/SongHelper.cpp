@@ -29,7 +29,7 @@ namespace soulsifter {
     featuring(song->getFeaturing()),
     filepath(song->getFilename()),
     reSongId(song->getId()),
-    reSong(song),
+    reSong(new RESong(*song)),
     styles(),
     rating(song->getRating()),
     albumId(0),
@@ -43,9 +43,10 @@ namespace soulsifter {
         Style::findAllSorted(&allStyles);
         unsigned long pos = song->getStylesBitmask().find('1', 0);
         while (pos != string::npos) {
-            styles.push_back(allStyles->at(pos));
+            addStyle(*allStyles->at(pos));
             pos = song->getStylesBitmask().find('1', ++pos);
         }
+        while (!allStyles->empty()) delete allStyles->back(), allStyles->pop_back();
         
         // album
         album = Album::findByName(song->getAlbum());

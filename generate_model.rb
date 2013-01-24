@@ -5,14 +5,15 @@
 # TODO getter for vector
 # TODO rename reXml
 # TODO preset all pointers
+# TODO add syncing of objects
 
 module Attrib
-  FIND = 2**1  # f
-  PTR = 2**2
-  ESPLURAL = 2**3
-  SAVEID = 2**4
-  SAVEVEC = 2**5
-  ID = 2**6
+  ID = 2**0  # field: an id field for another pointer field object
+  FIND = 2**1  # field: add a find method for the field
+  PTR = 2**2  # field: field is a pointer to the object
+  ESPLURAL = 2**3  # class: plural form ends in es, not just s
+  SAVEID = 2**4  # class: saving the object must explicitly set id
+  SAVEVEC = 2**5  # field:
 end
 
 def cap (x)
@@ -156,7 +157,7 @@ def writeCode (name, fields, attribs)
       str << "        delete #{f[1]};\n"
       str << "        #{f[1]} = NULL;\n"
     elsif (isVector(f[0]))
-      str << "        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            delete *it;\n        }\n        #{f[1]}.clear();\n"
+      str << "        while (!#{f[1]}.empty()) delete #{f[1]}.back(), #{f[1]}.pop_back();\n"
     end
   end
   str << "    }\n\n"
