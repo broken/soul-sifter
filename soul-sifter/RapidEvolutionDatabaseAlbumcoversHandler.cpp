@@ -63,6 +63,7 @@ void RapidEvolutionDatabaseAlbumcoversHandler::endElement(const XMLCh* const uri
             albumcover->save();
         }
         delete albumcover;
+        albumcover = NULL;
     }
 }
     

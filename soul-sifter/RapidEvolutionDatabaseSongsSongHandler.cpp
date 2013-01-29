@@ -420,7 +420,6 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
                 cerr << "How do I have a RE Song " << dbSong->getId() << " yet no normal song?!" << endl;
                 Song newSong(&song);
                 newSong.save();
-                delete newSong.getAlbum();
             }
             delete dbSong;
             delete mySong;
