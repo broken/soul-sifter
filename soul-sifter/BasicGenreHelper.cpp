@@ -33,6 +33,13 @@ namespace soulsifter {
             unsigned long pos2 = filepath.find("/", pos);
             return findByName(filepath.substr(pos, pos2-pos));
         }
+        // TODO remove mixes once they're moved
+        pos = filepath.find("/mixes/");
+        if (pos != string::npos) {
+            pos += 7;
+            unsigned long pos2 = filepath.find("/", pos);
+            return findByName(filepath.substr(pos, pos2-pos));
+        }
         return NULL;
     }
     
