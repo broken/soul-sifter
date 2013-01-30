@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 
 # TODO vectors are shallow copies; need to make them deep
-# TODO remove ESPLURAL and 2nd arg from single function
 # TODO getter for vector
 # TODO rename reXml
 # TODO preset all pointers
@@ -11,9 +10,8 @@ module Attrib
   ID = 2**0  # field: an id field for another pointer field object
   FIND = 2**1  # field: add a find method for the field
   PTR = 2**2  # field: field is a pointer to the object
-  ESPLURAL = 2**3  # class: plural form ends in es, not just s
-  SAVEID = 2**4  # class: saving the object must explicitly set id
-  SAVEVEC = 2**5  # field:
+  SAVEID = 2**3  # class: saving the object must explicitly set id
+  SAVEVEC = 2**4  # field:
 end
 
 def cap (x)
@@ -32,9 +30,9 @@ def isVector(t)
   return t =~ /^vector</
 end
 
-def single(n, a)
-  if (a & Attrib::ESPLURAL > 0)
-    return n[0..-3]
+def single(n)
+  if (n.downcase == "mixes")
+    return "mix"
   elsif (n.downcase == "children")
     return "child"
   else
@@ -42,9 +40,9 @@ def single(n, a)
   end
 end
 
-def plural(x, a)
-  if (a & Attrib::ESPLURAL > 0)
-    return "#{x}es"
+def plural(x)
+  if (x.downcase == "mix")
+    return "mixes"
   elsif (x.downcase == "child")
     return "children"
   elsif (x.downcase == "rexml")
@@ -93,8 +91,8 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
       str << "        void set#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
     end
     if (isVector(f[0]))
-      str << "        void add#{cap(single(f[1],f[2]))}(const #{vectorGeneric(f[0])}& #{single(f[1],f[2])});\n"
-      str << "        void remove#{cap(single(f[1],f[2]))}(int #{single(f[1],f[2])}Id);\n"
+      str << "        void add#{cap(single(f[1]))}(const #{vectorGeneric(f[0])}& #{single(f[1])});\n"
+      str << "        void remove#{cap(single(f[1]))}(int #{single(f[1])}Id);\n"
     end
   end
   str << "\n    private:\n"
@@ -201,7 +199,7 @@ def writeCode (name, fields, attribs)
       else
         str << "    #{capName}* #{capName}::findBy#{cap(f[1])}(const #{f[0]}& #{f[1]}) {\n"
       end
-      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name,attribs))} where #{f[1]} = ?\");\n"
+      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where #{f[1]} = ?\");\n"
       str << "        ps->set#{cap(f[0].to_s)}(1, #{f[1]});\n        sql::ResultSet *rs = ps->executeQuery();\n        #{capName} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{capName}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n        return #{name};\n    }\n\n"
     end
   end
@@ -226,7 +224,7 @@ def writeCode (name, fields, attribs)
     next unless (f[2] & Attrib::PTR > 0)
     str << "            if (#{f[1]} && #{f[1]}->sync()) {\n                #{f[1]}->update();\n            }\n"
   end
-  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"update #{cap(plural(name,attribs))} set "
+  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"update #{cap(plural(name))} set "
   fields.each do |f|
     next if (f[1] == "id" || f[2] & Attrib::PTR > 0 || isVector(f[0]))
     str << "#{f[1]}=?, "
@@ -262,7 +260,7 @@ def writeCode (name, fields, attribs)
     str << "                } else {\n"
     str << "                    cerr << \"Unable to save #{f[1]}\" << endl;\n                }\n            }\n"
   end
-  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{cap(plural(name,attribs))} ("
+  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{cap(plural(name))} ("
   i = 0
   fields.each do |f|
     next if ((f[1] == "id" && attribs & Attrib::SAVEID == 0) || f[2] & Attrib::PTR > 0 || isVector(f[0]))
@@ -298,8 +296,8 @@ def writeCode (name, fields, attribs)
     str << "                sql::PreparedStatement *ps;\n"
     fields.each do |f|
       if (isVector(f[0]))
-        str << "                ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{capName}#{cap(f[1])} (#{name}Id, #{single(f[1],f[2])}Id) values (?, ?)\");\n                for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n"
-        str << "                    ps->setInt(1, id);\n                    ps->setInt(2, (*it)->getId());\n                    if (!ps->executeUpdate()) {\n                        cerr << \"Did not save #{single(f[1],f[2])} for #{name}\" << endl;\n                    }\n                }\n"
+        str << "                ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{capName}#{cap(f[1])} (#{name}Id, #{single(f[1])}Id) values (?, ?)\");\n                for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n"
+        str << "                    ps->setInt(1, id);\n                    ps->setInt(2, (*it)->getId());\n                    if (!ps->executeUpdate()) {\n                        cerr << \"Did not save #{single(f[1])} for #{name}\" << endl;\n                    }\n                }\n"
       end
     end
     str << "                return 1;\n            }\n"
@@ -325,8 +323,8 @@ def writeCode (name, fields, attribs)
       end
     end
     if (isVector(f[0]))
-      str << "    void #{capName}::add#{cap(single(f[1],f[2]))}(const #{vectorGeneric(f[0])}& #{single(f[1],f[2])}) { #{f[1]}.push_back(new #{cap(vectorGeneric(f[0]))}(#{single(f[1],f[2])})); }\n"
-      str << "    void #{capName}::remove#{cap(single(f[1],f[2]))}(int #{single(f[1],f[2])}Id) {\n        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            if (#{single(f[1],f[2])}Id == (*it)->getId()) {\n                #{f[1]}.erase(it);\n            }\n        }\n    }\n"
+      str << "    void #{capName}::add#{cap(single(f[1]))}(const #{vectorGeneric(f[0])}& #{single(f[1])}) { #{f[1]}.push_back(new #{cap(vectorGeneric(f[0]))}(#{single(f[1])})); }\n"
+      str << "    void #{capName}::remove#{cap(single(f[1]))}(int #{single(f[1])}Id) {\n        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            if (#{single(f[1])}Id == (*it)->getId()) {\n                #{f[1]}.erase(it);\n            }\n        }\n    }\n"
     end
     str << "\n"
   end
@@ -365,7 +363,7 @@ mixFields = [
   [:string, "comments", 0],
   [:bool, "addon", 0],
 ]
-mixAttribs = Attrib::ESPLURAL
+mixAttribs = 0
 mixCustomMethods = "        friend class RapidEvolutionDatabaseMixoutsMixoutHandler;\n\n        class MixResultSet {\n        public:\n            explicit MixResultSet(sql::ResultSet* resultset);\n            ~MixResultSet();\n\n            bool next(Mix* mix);\n\n        private:\n            sql::ResultSet* rs;\n\n            MixResultSet();\n        };\n\n        static Mix* findBySongIds(const int outSongId, const int inSongId);\n        static MixResultSet* findAll();\n\n"
 reSongFields = [
   [:int, "id", Attrib::FIND],
