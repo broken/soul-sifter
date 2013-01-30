@@ -218,7 +218,9 @@
     else [releaseDateDay setStringValue:@""];
     //if (!song->getAlbum()->getBasicGenre().empty()) [genreComboBox setStringValue:[NSString stringWithUTF8String:song->getAlubm()->getBasicGenre()];
     if (song->getRating()) [rating setIntValue:song->getRating()];
-    [genreComboBox setStringValue:[NSString stringWithUTF8String:soulsifter::MusicManager::getInstance().findBasicGenreForArtist(song->getArtist())->getName().c_str()]];
+    const soulsifter::BasicGenre* basicGenre = soulsifter::MusicManager::getInstance().findBasicGenreForArtist(song->getArtist());
+    if (basicGenre) [genreComboBox setStringValue:[NSString stringWithUTF8String:basicGenre->getName().c_str()]];
+    delete basicGenre;
 }
 
 # pragma mark accessors
