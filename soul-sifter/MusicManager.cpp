@@ -407,7 +407,7 @@ void MusicManager::readTagsFromSong(Song* song) {
     
     /* TODO split remix from title
     if (song->getTitle()) {
-        regex rgx("\\((.* ((remix)|(rmx)|(mix)|(refix))\\)$");
+        regex rgx("\\((.* ((remix)|(rmx)|(mix)|(refix)|(edit))\\)$");
         smatch groups;
         if (regex_search(song->getTitle(), groups, rgx)) {
         NSTextCheckingResult *match = nil;
