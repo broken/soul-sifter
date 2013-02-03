@@ -150,6 +150,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     RESong::RESongIterator* songs = RESong::findAll();
     RESong song;
     while (songs->next(&song)) {
+        song.setStylesBitmaskFromDb();
         attrib* songAttribs[] = {
             new attrib("num_excludes","0"),
             new attrib("num_mixouts",int2str(songs->getMixoutCountForCurrentSong())),

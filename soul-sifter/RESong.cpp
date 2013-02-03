@@ -207,7 +207,6 @@ namespace soulsifter {
         reSong->setBpmEnd(rs->getString("bpmEnd"));
         reSong->setBeatIntensity(rs->getInt("beatIntensity"));
         reSong->setReplayGain(rs->getString("replayGain"));
-        reSong->setStylesBitmask(rs->getString("stylesBitmask"));
     }
 
     RESong* RESong::findById(int id) {
@@ -506,20 +505,12 @@ namespace soulsifter {
                 replayGain = reSong->getReplayGain();
             }
         }
-        if (stylesBitmask.compare(reSong->getStylesBitmask())) {
-            if (!stylesBitmask.empty()) {
-                cout << "updating reSong stylesBitmask from " << reSong->getStylesBitmask() << " to " << stylesBitmask << endl;
-                needsUpdate = true;
-            } else {
-                stylesBitmask = reSong->getStylesBitmask();
-            }
-        }
         return needsUpdate;
     }
 
     int RESong::update() {
         try {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update RESongs set songidWinfo=?, songid=?, shortid=?, shortidWinfo=?, artist=?, album=?, track=?, title=?, time=?, timeSignature=?, filename=?, digitalOnly=?, compilation=?, keyStart=?, keyAccuracy=?, bpmStart=?, bpmAccuracy=?, rating=?, dateAdded=?, catalogId=?, label=?, remix=?, numPlays=?, comments=?, releaseDate=?, featuring=?, keyEnd=?, disabled=?, bpmEnd=?, beatIntensity=?, replayGain=?, stylesBitmask=? where id=?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update RESongs set songidWinfo=?, songid=?, shortid=?, shortidWinfo=?, artist=?, album=?, track=?, title=?, time=?, timeSignature=?, filename=?, digitalOnly=?, compilation=?, keyStart=?, keyAccuracy=?, bpmStart=?, bpmAccuracy=?, rating=?, dateAdded=?, catalogId=?, label=?, remix=?, numPlays=?, comments=?, releaseDate=?, featuring=?, keyEnd=?, disabled=?, bpmEnd=?, beatIntensity=?, replayGain=? where id=?");
             ps->setString(1, songidWinfo);
             ps->setString(2, songid);
             ps->setString(3, shortid);
@@ -551,8 +542,7 @@ namespace soulsifter {
             ps->setString(29, bpmEnd);
             ps->setInt(30, beatIntensity);
             ps->setString(31, replayGain);
-            ps->setString(32, stylesBitmask);
-            ps->setInt(33, id);
+            ps->setInt(32, id);
             return ps->executeUpdate();
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
@@ -570,7 +560,7 @@ namespace soulsifter {
                 cerr << "Must set ID of reSong before saving!" << endl;
                 return 0;
             }
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (id, songidWinfo, songid, shortid, shortidWinfo, artist, album, track, title, time, timeSignature, filename, digitalOnly, compilation, keyStart, keyAccuracy, bpmStart, bpmAccuracy, rating, dateAdded, catalogId, label, remix, numPlays, comments, releaseDate, featuring, keyEnd, disabled, bpmEnd, beatIntensity, replayGain, stylesBitmask) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (id, songidWinfo, songid, shortid, shortidWinfo, artist, album, track, title, time, timeSignature, filename, digitalOnly, compilation, keyStart, keyAccuracy, bpmStart, bpmAccuracy, rating, dateAdded, catalogId, label, remix, numPlays, comments, releaseDate, featuring, keyEnd, disabled, bpmEnd, beatIntensity, replayGain) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps->setInt(1, id);
             ps->setString(2, songidWinfo);
             ps->setString(3, songid);
@@ -603,7 +593,6 @@ namespace soulsifter {
             ps->setString(30, bpmEnd);
             ps->setInt(31, beatIntensity);
             ps->setString(32, replayGain);
-            ps->setString(33, stylesBitmask);
             return ps->executeUpdate();
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;

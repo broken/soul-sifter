@@ -12,6 +12,7 @@ module Attrib
   PTR = 2**2  # field: field is a pointer to the object
   SAVEID = 2**3  # class: saving the object must explicitly set id
   SAVEVEC = 2**4  # field:
+  TRANSIENT = 2**5  # field: not persistent
 end
 
 def cap (x)
@@ -97,7 +98,9 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   end
   str << "\n    private:\n"
   fields.each do |f|
-    str << "        #{f[0]}#{'*' if (f[2] & Attrib::PTR > 0)} #{f[1]};\n"
+    str << "        #{f[0]}#{'*' if (f[2] & Attrib::PTR > 0)} #{f[1]};"
+    str << "  // transient" if (f[2] & Attrib::TRANSIENT > 0)
+    str << "\n"
   end
   str << "\n        static void populateFields(const sql::ResultSet* rs, #{capName}* #{name});\n    };\n\n}\n\n#endif /* defined(__soul_sifter__#{capName}__) */\n"
   return str
@@ -180,7 +183,7 @@ def writeCode (name, fields, attribs)
   str << "# pragma mark static methods\n\n"
   str << "    void #{capName}::populateFields(const sql::ResultSet* rs, #{capName}* #{name}) {\n"
   fields.each do |f|
-    next if (f[2] & Attrib::PTR > 0)
+    next if (f[2] & Attrib::PTR > 0 || f[2] & Attrib::TRANSIENT > 0)
     if (f[0] == :bool)
       str << "        #{name}->set#{cap(f[1])}(rs->getBoolean(\"#{f[1]}\"));\n"
     elsif (isVector(f[0]))
@@ -206,7 +209,9 @@ def writeCode (name, fields, attribs)
   str << "# pragma mark persistence\n\n"
   str << "    bool #{capName}::sync() {\n        #{capName}* #{name} = findById(id);\n        if (!#{name}) {\n            return true;\n        }\n\n        // check fields\n        bool needsUpdate = false;\n"
   fields.each do |f|
-    if ([:int, :bool, :time_t].include?(f[0]))
+    if (f[2] & Attrib::TRANSIENT > 0)
+      next
+    elsif ([:int, :bool, :time_t].include?(f[0]))
       str << "        if (#{f[1]} != #{name}->get#{cap(f[1])}()) {\n            if (#{f[1]}) {\n"
       str << "                cout << \"updating #{name}'s #{f[1]} from \" << #{name}->get#{cap(f[1])}() << \" to \" << #{f[1]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[1]} = #{name}->get#{cap(f[1])}();\n            }\n        }\n"
@@ -226,14 +231,14 @@ def writeCode (name, fields, attribs)
   end
   str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"update #{cap(plural(name))} set "
   fields.each do |f|
-    next if (f[1] == "id" || f[2] & Attrib::PTR > 0 || isVector(f[0]))
+    next if (f[1] == "id" || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
     str << "#{f[1]}=?, "
   end
   str = str[0..-3]  
   str << " where id=?\");\n"
   i = 0
   fields.each do |f|
-    next if (f[1] == "id" || f[2] & Attrib::PTR > 0 || isVector(f[0]))
+    next if (f[1] == "id" || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
     i += 1
     if (f[0] == :bool)
       str << "            ps->setBoolean(#{i}, #{f[1]});\n"
@@ -263,7 +268,7 @@ def writeCode (name, fields, attribs)
   str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{cap(plural(name))} ("
   i = 0
   fields.each do |f|
-    next if ((f[1] == "id" && attribs & Attrib::SAVEID == 0) || f[2] & Attrib::PTR > 0 || isVector(f[0]))
+    next if ((f[1] == "id" && attribs & Attrib::SAVEID == 0) || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
     i += 1
     str << "#{f[1]}, "
   end
@@ -275,7 +280,7 @@ def writeCode (name, fields, attribs)
   str << "?)\");\n"
   i = 0
   fields.each do |f|
-    next if ((f[1] == "id" && attribs & Attrib::SAVEID == 0) || f[2] & Attrib::PTR > 0 || isVector(f[0]))
+    next if ((f[1] == "id" && attribs & Attrib::SAVEID == 0) || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
     i += 1
     if (f[0] == :bool)
       str << "            ps->set#{cap(f[0].to_s)}ean(#{i}, #{f[1]});\n"
@@ -398,11 +403,11 @@ reSongFields = [
   [:string, "bpmEnd", 0],
   [:int, "beatIntensity", 0],
   [:string, "replayGain", 0],
-  [:string, "stylesBitmask", 0],
+  [:string, "stylesBitmask", Attrib::TRANSIENT],
 ]
 reSongAttribs = Attrib::SAVEID
-reSongCustomMethods = "        friend class RapidEvolutionDatabaseSongsSongHandler;\n\n        class RESongIterator {\n        public:\n            explicit RESongIterator(sql::ResultSet* resultset);\n            ~RESongIterator();\n\n            bool next(RESong* song);\n            const int getMixoutCountForCurrentSong() const;\n\n        private:\n            sql::ResultSet* rs;\n            int mixoutCount;\n\n            RESongIterator();\n        };\n\n        static RESongIterator* findAll();\n        static const int maxREId();\n\n"
-reSongCustomHeaders = ""
+reSongCustomMethods = "        friend class RapidEvolutionDatabaseSongsSongHandler;\n\n        class RESongIterator {\n        public:\n            explicit RESongIterator(sql::ResultSet* resultset);\n            ~RESongIterator();\n\n            bool next(RESong* song);\n            const int getMixoutCountForCurrentSong() const;\n\n        private:\n            sql::ResultSet* rs;\n            int mixoutCount;\n\n            RESongIterator();\n        };\n\n        static RESongIterator* findAll();\n        static const int maxREId();\n        void getStylesFromBitmask(vector<Style*>** styles);\n        void setStylesBitmaskFromDb();\n        void setStylesBitmask(const vector<Style*>& styles);\n\n"
+reSongCustomHeaders = "#include \"Style.h\"\n"
 songFields = [
   [:int, "id", Attrib::FIND],
   [:string, "artist", 0],
@@ -419,7 +424,7 @@ songFields = [
   ["RESong", "reSong", Attrib::PTR],
   [:int, "albumId", Attrib::ID],
   ["Album", "album", Attrib::PTR],
-  ["vector<const Style*>", "styles", 0],
+  ["vector<Style*>", "styles", 0],
 ]
 songAttribs = Attrib::SAVEVEC
 songCustomMethods = "        explicit Song(RESong* song);\n\n        static void findSongsByStyle(const Style& style, vector<Song*>** songsPtr);\n        static RESong* createRESongFromSong(const Song& song);\n\n        const string reAlbum() const;\n        const string getDateAddedString() const;\n        void setDateAddedToNow();\n\n"

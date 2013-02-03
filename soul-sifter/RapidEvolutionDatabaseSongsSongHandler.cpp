@@ -150,6 +150,7 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
         parser->setContentHandler(parentHandler);
         RESong *dbSong = RESong::findById(song.getId());
         if (dbSong) {
+            Song *mySong = Song::findByRESongId(dbSong->getId());
             bool needsUpdating = false;
             if (dbSong->getAlbum().compare(song.getAlbum())) {
                 needsUpdating = true;
@@ -288,6 +289,7 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
                 dbSong->setSongidWinfo(song.getSongidWinfo());
                 cout << "updating re song " << dbSong->getId() << " song id w/ info from " << dbSong->getSongidWinfo() << " to " << song.getSongidWinfo() << endl;
             }
+            dbSong->setStylesBitmask(mySong->getStyles());
             if (dbSong->getStylesBitmask().compare(song.getStylesBitmask())) {
                 needsUpdating = true;
                 dbSong->setStylesBitmask(song.getStylesBitmask());
@@ -316,7 +318,6 @@ void RapidEvolutionDatabaseSongsSongHandler::endElement(const XMLCh* const uri,
             if (needsUpdating)
                 dbSong->update();
             
-            Song *mySong = Song::findByRESongId(dbSong->getId());
             if (mySong) {
                 bool songNeedsUpdating = false;
                 bool albumNeedsUpdating = false;

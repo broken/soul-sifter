@@ -78,8 +78,8 @@ namespace soulsifter {
         void setAlbumId(int albumId);
         Album* getAlbum() const;
         void setAlbum(const Album& album);
-        const vector<const Style*>& getStyles() const;
-        void setStyles(const vector<const Style*>& styles);
+        const vector<Style*>& getStyles() const;
+        void setStyles(const vector<Style*>& styles);
         void addStyle(const Style& style);
         void removeStyle(int styleId);
 
@@ -99,7 +99,7 @@ namespace soulsifter {
         RESong* reSong;
         int albumId;
         Album* album;
-        vector<const Style*> styles;
+        vector<Style*> styles;
 
         static void populateFields(const sql::ResultSet* rs, Song* song);
     };

@@ -109,7 +109,7 @@ namespace soulsifter {
         albumId = 0;
         delete album;
         album = NULL;
-        for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+        for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
             delete *it;
         }
         styles.clear();
@@ -365,7 +365,7 @@ namespace soulsifter {
                 }
                 sql::PreparedStatement *ps;
                 ps = MysqlAccess::getInstance().getPreparedStatement("insert into SongStyles (songId, styleId) values (?, ?)");
-                for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+                for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
                     ps->setInt(1, id);
                     ps->setInt(2, (*it)->getId());
                     if (!ps->executeUpdate()) {
@@ -456,11 +456,11 @@ namespace soulsifter {
         this->album = new Album(album);
     }
 
-    const vector<const Style*>& Song::getStyles() const { return styles; }
-    void Song::setStyles(const vector<const Style*>& styles) { this->styles = styles; }
+    const vector<Style*>& Song::getStyles() const { return styles; }
+    void Song::setStyles(const vector<Style*>& styles) { this->styles = styles; }
     void Song::addStyle(const Style& style) { styles.push_back(new Style(style)); }
     void Song::removeStyle(int styleId) {
-        for (vector<const Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+        for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
             if (styleId == (*it)->getId()) {
                 styles.erase(it);
             }

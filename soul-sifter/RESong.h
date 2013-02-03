@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "Style.h"
 
 namespace sql {
     class ResultSet;
@@ -55,6 +56,9 @@ namespace soulsifter {
 
         static RESongIterator* findAll();
         static const int maxREId();
+        void getStylesFromBitmask(vector<Style*>** styles);
+        void setStylesBitmaskFromDb();
+        void setStylesBitmask(const vector<Style*>& styles);
 
         const int getId() const;
         void setId(int id);
@@ -156,7 +160,7 @@ namespace soulsifter {
         string bpmEnd;
         int beatIntensity;
         string replayGain;
-        string stylesBitmask;
+        string stylesBitmask;  // transient
 
         static void populateFields(const sql::ResultSet* rs, RESong* reSong);
     };
