@@ -27,7 +27,8 @@ RapidEvolutionDatabaseConfigSettingsHandler::RapidEvolutionDatabaseConfigSetting
                                                                                          DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
 qname(XMLString::transcode("settings")),
-reSetting() {
+reSetting(),
+searchHistoryLabel("search_history_") {
 }
 
 void RapidEvolutionDatabaseConfigSettingsHandler::startElement(const   XMLCh* const    uri,
@@ -48,16 +49,19 @@ void RapidEvolutionDatabaseConfigSettingsHandler::endElement(const XMLCh* const 
     } else {
         if (reSetting.getName().length() > 0) {
             if (!XMLString::compareString(qName, XMLString::transcode(reSetting.getName().c_str()))) {
-                RESetting* dbSetting = RESetting::findByName(reSetting.getName());
-                if (dbSetting) {
-                    if (dbSetting->getValue().compare(reSetting.getValue())) {
-                        cout << "updating setting " << reSetting.getName() << " from " << dbSetting->getValue() << " to " << reSetting.getValue() << endl;
-                        dbSetting->setValue(reSetting.getValue());
-                        dbSetting->update();
+                // don't save the search history since it changes so often
+                if (reSetting.getName().compare(0, searchHistoryLabel.length(), searchHistoryLabel)) {
+                    RESetting* dbSetting = RESetting::findByName(reSetting.getName());
+                    if (dbSetting) {
+                        if (dbSetting->getValue().compare(reSetting.getValue())) {
+                            cout << "updating setting " << reSetting.getName() << " from " << dbSetting->getValue() << " to " << reSetting.getValue() << endl;
+                            dbSetting->setValue(reSetting.getValue());
+                            dbSetting->update();
+                        }
+                        delete dbSetting;
+                    } else {
+                        reSetting.save();
                     }
-                    delete dbSetting;
-                } else {
-                    reSetting.save();
                 }
             } else {
                 cout << "ERROR: closing tag of no setting " << reSetting.getName() << " vs " << XMLString::transcode(qName) << endl;

@@ -36,6 +36,7 @@ public:
 private:
     const XMLCh* const qname;
     RESetting reSetting;
+    const string searchHistoryLabel;
 };
     
 }
