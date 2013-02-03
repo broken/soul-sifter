@@ -89,6 +89,7 @@ namespace soulsifter {
         setStylesBitmask(ss.str());
     }
     
+    // TODO need to fix - is broken
     void RESong::setStylesBitmask(const vector<Style*>& styles) {
         vector<Style*>* allStyles;
         Style::findAllSorted(&allStyles);
