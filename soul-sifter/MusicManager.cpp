@@ -475,7 +475,7 @@ void MusicManager::readTagsFromSong(Song* song) {
     }
 
     delete lastParsedSong;
-    lastParsedSong = songBeforeFixing;
+    lastParsedSong = new Song(*songBeforeFixing);
 }
 
 void MusicManager::writeTagsToSong(Song* song) {
