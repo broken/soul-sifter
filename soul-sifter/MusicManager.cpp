@@ -106,7 +106,8 @@ namespace {
 MusicManager::MusicManager() :
 lastParsedSong(NULL),
 lastSongFixed(NULL),
-artistToGenre(1600) {
+artistToGenre(1600),
+lastDestinationPath() {
 }
 
 MusicManager::~MusicManager() {
@@ -551,7 +552,8 @@ bool MusicManager::moveSong(Song* song) {
         // move file to dest
         stringstream destpath;
         boost::filesystem::path src(song->getFilepath());
-        destpath << dirpath.str() << "/" << src.filename().string();
+        lastDestinationPath = dirpath.str();
+        destpath << lastDestinationPath << "/" << src.filename().string();
         boost::filesystem::path dest(destpath.str());
         boost::filesystem::rename(src, dest);
         
@@ -564,27 +566,24 @@ bool MusicManager::moveSong(Song* song) {
     }
     return false;
 }
-/*
-- (void)moveImage:(NSURL *)fileUrl {
-    NSLog(@"musicManager.moveImage");
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSError	*error;
-    NSString *path;
-    NSAssert([self getCopyToPath:&path], @"Cannot find directory to copy music to");
-    
-    NSURL *dest = [[NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:path,
-                                                    [lastSongFixed basicGenre],
-                                                    [lastSongFixed artist],
-                                                    [lastSongFixed album],
-                                                    nil]]
-                   URLByAppendingPathComponent:[fileUrl lastPathComponent]];
-    NSLog(@"moving '%@' to '%@'", fileUrl, dest);
-    if (![fileManager moveItemAtURL:fileUrl toURL:dest error:&error]) {
-        NSString *msg = [NSString stringWithFormat:@"Unable to move file. %@", error];
-        NSAssert(NO, msg);
-    }
-}
 
+    bool MusicManager::moveImage(const string& img) {
+        try {
+            // move file to dest
+            stringstream destpath;
+            boost::filesystem::path src(img);
+            destpath << lastDestinationPath << "/" << src.filename().string();
+            boost::filesystem::path dest(destpath.str());
+            boost::filesystem::rename(src, dest);
+            
+            return true;
+        } catch (const filesystem::filesystem_error& ex) {
+            cerr << ex.what() << '\n';
+        }
+        return false;
+    }
+    
+/*
 // TODO remove old directories from staging
 - (void)populateStagingDirectory {
     NSLog(@"musicManager.populateStagingDirectory");

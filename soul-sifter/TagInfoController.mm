@@ -69,6 +69,7 @@
     
     // TODO alert if directories don't exist
     index = -1;
+    hasMovedFile = false;
     [self loadNextFile];
 }
 
@@ -105,7 +106,9 @@
     song.setAlbum(songAlbum);
     NSIndexSet *styleIndexes = [styles selectedRowIndexes];
     for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
-        song.addStyle(*[(StyleTreeItem *)[styles itemAtRow:idx] style]);
+        StyleTreeItem *item = [styles itemAtRow:idx];
+        soulsifter::Style *style = [item style];
+        song.addStyle(*style);
     }
     song.setRESong(*soulsifter::Song::createRESongFromSong(song));
     
@@ -114,6 +117,7 @@
     
     // move file
     soulsifter::MusicManager::getInstance().moveSong(&song);
+    hasMovedFile = true;
     
     // save song
     song.save();
@@ -167,12 +171,20 @@
         return;
     }
     
-    // straight move images to last directory
-    // TODO we should make this smarter
+    // process image
+    // TODO bug if multiple images were selected w/o songs
     if ([[[fileUrl pathExtension] lowercaseString] isEqualToString:@"jpg"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"jpeg"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"gif"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"png"]) {
+        // only move image if it's only one in the group or previous files were moved
+        if (hasMovedFile || [fileUrls count] == 1) {
+            // straight move image to last directory
+            soulsifter::MusicManager::getInstance().moveImage([[[fileUrls objectAtIndex:index] path] UTF8String]);
+        } else {
+            // place at end of list to process later
+            [fileUrls addObject:fileUrl];
+        }
         //TODO [musicManager moveImage:fileUrl];
         [self loadNextFile];
         return;
@@ -221,6 +233,7 @@
     const soulsifter::BasicGenre* basicGenre = soulsifter::MusicManager::getInstance().findBasicGenreForArtist(song->getArtist());
     if (basicGenre) [genreComboBox setStringValue:[NSString stringWithUTF8String:basicGenre->getName().c_str()]];
     delete basicGenre;
+    delete song;
 }
 
 # pragma mark accessors

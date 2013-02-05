@@ -35,7 +35,7 @@ public:
     // paths
     string getCopyToPath();
     bool moveSong(Song* song);
-    void moveImage(const string filepath);
+    bool moveImage(const string& filepath);
     void populateStagingDirectory();
     void flushStagingDirectory();
     
@@ -50,6 +50,7 @@ private:
     
     // paths
     boost::unordered_map<string, const BasicGenre*> artistToGenre;
+    string lastDestinationPath;
     
     // singleton
     MusicManager();

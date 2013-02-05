@@ -11,6 +11,7 @@
 @interface TagInfoController : NSWindowController {
 @private
     int index;
+    bool hasMovedFile;
     NSMutableArray *fileUrls;
     NSMutableArray *filesToTrash;
     
