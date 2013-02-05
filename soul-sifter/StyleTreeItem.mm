@@ -37,6 +37,13 @@
     return self;
 }
 
+- (void)dealloc {
+    delete style;
+    style = NULL;
+    
+    [super dealloc];
+}
+
 # pragma mark accessors
 
 @synthesize parent;

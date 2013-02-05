@@ -31,7 +31,7 @@
             [styleItems addObject:styleItem];
         }
     }
-    while (!styles->empty()) delete styles->back(), styles->pop_back();
+    // do not clear styles since they are being used in the style items
     
 	return self;
 }

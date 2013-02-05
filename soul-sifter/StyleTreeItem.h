@@ -20,6 +20,8 @@
 @property (readonly) NSMutableArray *children;
 @property (readonly) soulsifter::Style *style;
 
+- (void)dealloc;
+
 - (id)initWithStyle:(soulsifter::Style *)style;
 - (id)initWithStyle:(soulsifter::Style *)style andParent:(StyleTreeItem *)parent;
 
