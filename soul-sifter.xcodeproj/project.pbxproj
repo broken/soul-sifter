@@ -76,7 +76,7 @@
 		18AA5FF016AFC669008E8DD3 /* RESettingHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */; };
 		18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */; };
 		18AA5FF616AFCB6E008E8DD3 /* REAlbumCoverHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */; };
-		18AA5FF916C06273008E8DD3 /* libid3-3.8.3.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18AA5FF716C02F2E008E8DD3 /* libid3-3.8.3.0.0.dylib */; };
+		18AA5FFF16C0EC68008E8DD3 /* libtag.1.12.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */; };
 		18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */; };
 		18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */; };
 		18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */; };
@@ -225,6 +225,8 @@
 		18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXmlHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REAlbumCoverHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF716C02F2E008E8DD3 /* libid3-3.8.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libid3-3.8.3.0.0.dylib"; path = "../../../../../../../usr/local/lib/libid3-3.8.3.0.0.dylib"; sourceTree = "<group>"; };
+		18AA5FFC16C0E8AC008E8DD3 /* libtag.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtag.a; path = ../../../../../../../usr/local/lib/libtag.a; sourceTree = "<group>"; };
+		18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtag.1.12.0.dylib; path = ../../../../../../../usr/local/Cellar/taglib/1.8/lib/libtag.1.12.0.dylib; sourceTree = "<group>"; };
 		18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/Cellar/xerces-c/3.1.1/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
 		18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
@@ -243,7 +245,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18AA5FF916C06273008E8DD3 /* libid3-3.8.3.0.0.dylib in Frameworks */,
+				18AA5FFF16C0EC68008E8DD3 /* libtag.1.12.0.dylib in Frameworks */,
 				18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */,
 				18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */,
 				18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */,
@@ -425,6 +427,8 @@
 		189D22BB153D4F190043634A = {
 			isa = PBXGroup;
 			children = (
+				18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */,
+				18AA5FFC16C0E8AC008E8DD3 /* libtag.a */,
 				18AA5FF716C02F2E008E8DD3 /* libid3-3.8.3.0.0.dylib */,
 				18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */,
 				18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */,
@@ -824,6 +828,7 @@
 					/usr/local/Cellar/boost/1.51.0/lib,
 					"\"/usr/local/Cellar/xerces-c/3.1.1/lib\"",
 					/usr/local/Cellar/boost/1.52.0/lib,
+					/usr/local/Cellar/taglib/1.8/lib,
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -846,6 +851,7 @@
 					/usr/local/Cellar/boost/1.51.0/lib,
 					"\"/usr/local/Cellar/xerces-c/3.1.1/lib\"",
 					/usr/local/Cellar/boost/1.52.0/lib,
+					/usr/local/Cellar/taglib/1.8/lib,
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;

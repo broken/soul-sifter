@@ -11,16 +11,25 @@
 
 #include <iostream>
 #include <regex.h>
+#include <stdlib.h>
 #include <string>
 #include <sstream>
 #include <vector>
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
-#include <id3/misc_support.h>
-#include <id3/readers.h>
-#include <id3/tag.h>
-#include <id3/utils.h>
-#include <id3/writers.h>
+#include <taglib/apetag.h>
+#include <taglib/fileref.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/id3v1tag.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/mpegfile.h>
+#include <taglib/popularimeterframe.h>
+#include <taglib/tbytevector.h>
+#include <taglib/textidentificationframe.h>
+#include <taglib/tpropertymap.h>
+#include <taglib/tstring.h>
+#include <taglib/tstringlist.h>
 
 #include "BasicGenre.h"
 //#import "Constants.h"
@@ -32,73 +41,22 @@ using namespace std;
 
 namespace soulsifter {
 
-#define id3CatalogId "catalogId"
-
 # pragma mark private helpers
 
 namespace {
     
-    ID3_Frame* updateTag(ID3_Tag* tag, ID3_FrameID frameId, const string& value) {
-        ID3_Frame* frame = NULL;
-        if (tag != NULL && value.length() > 0) {
-            // remove previous tag
-            while ((frame = tag->Find(frameId))) {
-                frame = tag->RemoveFrame(frame);
-                delete frame;
-            }
-            // add new tag
-            if (tag->Find(frameId) == NULL) {
-                frame = new ID3_Frame(frameId);
-                if (frame && value.length()) {
-                    frame->GetField(ID3FN_TEXT)->Set(value.c_str());
-                    tag->AttachFrame(frame);
-                }
-            }
-        }
-        return frame;
-    }
-    
-    ID3_Frame* updateTag(ID3_Tag* tag, ID3_FrameID frameId, int value) {
-        ID3_Frame* frame = NULL;
-        if (tag != NULL && value > 0) {
-            // remove previous tag
-            while ((frame = tag->Find(frameId))) {
-                frame = tag->RemoveFrame(frame);
-                delete frame;
-            }
-            // add new tag
-            if (tag->Find(frameId) == NULL) {
-                frame = new ID3_Frame(frameId);
-                if (frame && value) {
-                    frame->GetField(ID3FN_RATING)->Set(value);
-                    tag->AttachFrame(frame);
-                }
-            }
-        }
-        return frame;
-    }
-    
-    ID3_Frame* updateTag(ID3_Tag* tag, ID3_FrameID frameId, const string& value, const string& description) {
-        ID3_Frame* frame = NULL;
-        if (tag != NULL && value.length() > 0 && description.length() > 0) {
-            // remove previous tag
-            while ((frame = tag->Find(frameId, ID3FN_DESCRIPTION, description.c_str()))) {
-                frame = tag->RemoveFrame(frame);
-                delete frame;
-            }
-            // add new tag
-            if (tag->Find(frameId, ID3FN_DESCRIPTION, description.c_str()) == NULL) {
-                frame = new ID3_Frame(frameId);
-                if (frame && value.length()) {
-                    frame->GetField(ID3FN_TEXT)->Set(value.c_str());
-                    frame->GetField(ID3FN_DESCRIPTION)->Set(description.c_str());
-                    tag->AttachFrame(frame);
-                }
-            }
-        }
-        return frame;
+    const string getId3v2Text(TagLib::ID3v2::Tag* id3v2, const char* name) {
+        TagLib::ID3v2::FrameList frameList = id3v2->frameListMap()[name];
+        return frameList.isEmpty() ? "" : frameList.front()->toString().to8Bit();
     }
 
+    void setId3v2Text(TagLib::ID3v2::Tag* id3v2, const char* name, const char* value) {
+        id3v2->removeFrames(name);
+        TagLib::ID3v2::TextIdentificationFrame *frame = new TagLib::ID3v2::TextIdentificationFrame(name, TagLib::String::Latin1);
+        frame->setText(TagLib::String(value, TagLib::String::UTF8));
+        id3v2->addFrame(frame);
+    }
+    
 }
 
 # pragma mark initialization
@@ -121,290 +79,79 @@ void MusicManager::readTagsFromSong(Song* song) {
         Album album;
         song->setAlbum(album);
     }
-    ID3_Tag tag(song->getFilepath().c_str());
-    // TODO use an std::auto_ptr here to handle object cleanup automatically(void) ID3Tag_Link(tag, filename);
-    ID3_Tag::Iterator* iter = tag.CreateIterator();
-    const ID3_Frame* frame = NULL;
-    while (NULL != (frame = iter->GetNext())) {
-        const char* desc = frame->GetDescription();
-        if (!desc) desc = "";
-        ID3_FrameID eFrameID = frame->GetID();
-        switch (eFrameID) {
-            case ID3FID_LEADARTIST: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->setArtist(sText);
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getArtist() << endl;
-                break;
-            }
-            case ID3FID_ALBUM: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->getAlbum()->setName(sText);
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getAlbum()->getName() << endl;
-                break;
-            }
-            case ID3FID_TRACKNUM: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->setTrack(sText);
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getTrack() << endl;
-                break;
-            }
-            case ID3FID_TITLE: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->setTitle(sText);
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getTitle() << endl;
-                break;
-            }
-            case ID3FID_MIXARTIST: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->setRemix(sText);
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getRemix() << endl;
-                break;
-            }
-            case ID3FID_BAND: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->setFeaturing(sText);
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getFeaturing() << endl;
-                break;
-            }
-            // numeric string in the DDMM format
-            case ID3FID_DATE: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                char *tmp = new char[3];
-                tmp[0] = sText[0];
-                tmp[1] = sText[1];
-                tmp[2] = '\0';
-                if (tmp[0] != '0' || tmp[1] != '0')
-                    song->getAlbum()->setReleaseDateDay(atoi(tmp));
-                tmp[0] = sText[2];
-                tmp[1] = sText[3];
-                song->getAlbum()->setReleaseDateMonth(atoi(tmp));
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << sText << endl;
-                delete [] sText;
-                delete [] tmp;
-                break;
-            }
-            case ID3FID_YEAR: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->getAlbum()->setReleaseDateYear(atoi(sText));
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getAlbum()->getReleaseDateYear() << endl;
-                break;
-            }
-            case ID3FID_PUBLISHER: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT);
-                song->getAlbum()->setLabel(sText);
-                delete [] sText;
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << song->getAlbum()->getLabel() << endl;
-                break;
-            }
-            case ID3FID_USERTEXT: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT),
-                     *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
-                string desc(sDesc);
-                if (!desc.compare(id3CatalogId)) {
-                    song->getAlbum()->setCatalogId(sText);
-                }
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << sText << endl;
-                break;
-            }
-            case ID3FID_POPULARIMETER: {
-                char *sEmail = ID3_GetString(frame, ID3FN_EMAIL);
-                size_t nCounter = frame->GetField(ID3FN_COUNTER)->Get(),
-                nRating = frame->GetField(ID3FN_RATING)->Get();
-                song->setRating((int)nRating);
-                cout << "frame " << frame->GetTextID() << " (" << desc << "): " << sEmail << ", counter=" << nCounter << ", rating=" << nRating << endl;
-                delete [] sEmail;
-                break;
-            }
-            // the rest will just log messages
-            case ID3FID_BPM:
-            case ID3FID_COMPOSER:
-            case ID3FID_CONTENTTYPE:
-            case ID3FID_COPYRIGHT:
-            case ID3FID_PLAYLISTDELAY:
-            case ID3FID_ENCODEDBY:
-            case ID3FID_LYRICIST:
-            case ID3FID_FILETYPE:
-            case ID3FID_TIME:
-            case ID3FID_CONTENTGROUP:
-            case ID3FID_SUBTITLE:
-            case ID3FID_INITIALKEY:
-            case ID3FID_LANGUAGE:
-            case ID3FID_SONGLEN:
-            case ID3FID_MEDIATYPE:
-            case ID3FID_ORIGALBUM:
-            case ID3FID_ORIGFILENAME:
-            case ID3FID_ORIGLYRICIST:
-            case ID3FID_ORIGARTIST:
-            case ID3FID_ORIGYEAR:
-            case ID3FID_FILEOWNER:
-            case ID3FID_CONDUCTOR:
-            case ID3FID_PARTINSET:
-            case ID3FID_RECORDINGDATES:
-            case ID3FID_NETRADIOSTATION:
-            case ID3FID_NETRADIOOWNER:
-            case ID3FID_SIZE:
-            case ID3FID_ISRC:
-            case ID3FID_ENCODERSETTINGS: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT),
-                *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
-                cout << "frame " << frame->GetTextID() << " (" << sDesc << ") : " << sText << endl;
-                delete [] sText;
-                delete [] sDesc;
-                break;
-            }
-            case ID3FID_COMMENT:
-            case ID3FID_UNSYNCEDLYRICS: {
-                char *sText = ID3_GetString(frame, ID3FN_TEXT), 
-                     *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION), 
-                *sLang = ID3_GetString(frame, ID3FN_LANGUAGE);
-                cout << "frame " << frame->GetTextID() << " (" << sDesc << ")[" << sLang << "]: " << sText << endl;
-                delete [] sText;
-                delete [] sDesc;
-                delete [] sLang;
-                break;
-            }
-            case ID3FID_WWWAUDIOFILE:
-            case ID3FID_WWWARTIST:
-            case ID3FID_WWWAUDIOSOURCE:
-            case ID3FID_WWWCOMMERCIALINFO:
-            case ID3FID_WWWCOPYRIGHT:
-            case ID3FID_WWWPUBLISHER:
-            case ID3FID_WWWPAYMENT:
-            case ID3FID_WWWRADIOPAGE: {
-                char *sURL = ID3_GetString(frame, ID3FN_URL);
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << sURL << endl;
-                delete [] sURL;
-                break;
-            }
-            case ID3FID_WWWUSER: {
-                char *sURL = ID3_GetString(frame, ID3FN_URL),
-                *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION);
-                cout << "frame " << frame->GetTextID() << " (" << sDesc << ") : " << sURL << endl;
-                delete [] sURL;
-                delete [] sDesc;
-                break;
-            }
-            case ID3FID_INVOLVEDPEOPLE: {
-                size_t nItems = frame->GetField(ID3FN_TEXT)->GetNumTextItems();
-                stringstream ppl;
-                for (size_t nIndex = 0; nIndex < nItems; nIndex++) {
-                    char *sPeople = ID3_GetString(frame, ID3FN_TEXT, nIndex);
-                    if (nIndex + 1 < nItems) {
-                        ppl << sPeople << ",";
-                    } else {
-                        ppl << sPeople;
-                    }
-                    delete [] sPeople;
-                }
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << ppl << endl;
-                break;
-            }
-            case ID3FID_PICTURE: {
-                char *sMimeType = ID3_GetString(frame, ID3FN_MIMETYPE),
-                     *sDesc     = ID3_GetString(frame, ID3FN_DESCRIPTION),
-                     *sFormat   = ID3_GetString(frame, ID3FN_IMAGEFORMAT);
-                size_t nPicType   = frame->GetField(ID3FN_PICTURETYPE)->Get(),
-                       nDataSize  = frame->GetField(ID3FN_DATA)->Size();
-                std::cout << "(" << sDesc << ")[" << sFormat << ", "
-                << nPicType << "]: " << sMimeType << ", " << nDataSize
-                << " bytes" << std::endl;
-                delete [] sMimeType;
-                delete [] sDesc;
-                delete [] sFormat;
-                break;
-            }
-            case ID3FID_GENERALOBJECT: {
-                char *sMimeType = ID3_GetString(frame, ID3FN_MIMETYPE), 
-                     *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION), 
-                     *sFileName = ID3_GetString(frame, ID3FN_FILENAME);
-                size_t nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                cout << "frame " << frame->GetTextID() << " (" << sDesc << "): " << sFileName << ": " << sMimeType << ", " << nDataSize << " bytes" << endl;
-                delete [] sMimeType;
-                delete [] sDesc;
-                delete [] sFileName;
-                break;
-            }
-            case ID3FID_UNIQUEFILEID: {
-                char *sOwner = ID3_GetString(frame, ID3FN_OWNER);
-                size_t nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                cout << "frame " << frame->GetTextID() << " (" << desc << "): " << sOwner << ", " << nDataSize << " bytes" << endl;
-                delete [] sOwner;
-                break;
-            }
-            case ID3FID_PLAYCOUNTER: {
-                size_t nCounter = frame->GetField(ID3FN_COUNTER)->Get();
-                cout << "frame " << frame->GetTextID() << " (" << desc << ") : " << nCounter << endl;
-                break;
-            }
-            case ID3FID_CRYPTOREG:
-            case ID3FID_GROUPINGREG: {
-                char *sOwner = ID3_GetString(frame, ID3FN_OWNER);
-                size_t nSymbol = frame->GetField(ID3FN_ID)->Get(),
-                        nDataSize = frame->GetField(ID3FN_DATA)->Size();
-                cout << "frame " << frame->GetTextID() << " (" << desc << "): " << sOwner << " (" << nSymbol << ") , " << nDataSize << " bytes" << endl;
-                break;
-            }
-            case ID3FID_SYNCEDLYRICS: {
-                char *sDesc = ID3_GetString(frame, ID3FN_DESCRIPTION), 
-                     *sLang = ID3_GetString(frame, ID3FN_LANGUAGE);
-                size_t nTimestamp = frame->GetField(ID3FN_TIMESTAMPFORMAT)->Get(),
-                       nRating = frame->GetField(ID3FN_CONTENTTYPE)->Get();
-                const char* format = (2 == nTimestamp) ? "ms" : "frames";
-                string type;
-                switch (nRating) {
-                    case ID3CT_OTHER:    type = "Other"; break;
-                    case ID3CT_LYRICS:   type = "Lyrics"; break;
-                    case ID3CT_TEXTTRANSCRIPTION:     type = "Text transcription"; break;
-                    case ID3CT_MOVEMENT: type = "Movement/part name"; break;
-                    case ID3CT_EVENTS:   type = "Events"; break;
-                    case ID3CT_CHORD:    type = "Chord"; break;
-                    case ID3CT_TRIVIA:   type = "Trivia/'pop up' information"; break;
-                }
-                cout << "frame " << frame->GetTextID() << " (" << sDesc << ")[" << sLang << "]: " << type << ": " << nTimestamp << " " << format << endl;
-                ID3_Field* fld = frame->GetField(ID3FN_DATA);
-                if (fld) {
-                    // skip reading this
-                    /*ID3_MemoryReader mr(fld->GetRawBinary(), fld->BinSize());
-                    while (!mr.atEnd()) {
-                        std::cout << io::readString(mr).c_str();
-                        std::cout << " [" << io::readBENumber(mr, sizeof(uint32)) << " " 
-                                  << format << "] ";
-                    }*/
-                }
-                delete [] sDesc;
-                delete [] sLang;
-                break;
-            }
-            case ID3FID_AUDIOCRYPTO:
-            case ID3FID_EQUALIZATION:
-            case ID3FID_EVENTTIMING:
-            case ID3FID_CDID:
-            case ID3FID_MPEGLOOKUP:
-            case ID3FID_OWNERSHIP:
-            case ID3FID_PRIVATE:
-            case ID3FID_POSITIONSYNC:
-            case ID3FID_BUFFERSIZE:
-            case ID3FID_VOLUMEADJ:
-            case ID3FID_REVERB:
-            case ID3FID_SYNCEDTEMPO:
-            case ID3FID_METACRYPTO: {
-                cout << "frame " << frame->GetTextID() << " (" << desc << "): unimplemented" << endl;
-                break;
-            }
-            default: {
-                cout << "frame " << frame->GetTextID() << ": unknown" << endl;
-                break;
+    
+    if (boost::algorithm::ends_with(song->getFilepath(), ".mp3")) {
+        TagLib::MPEG::File f(song->getFilepath().c_str());
+        TagLib::ID3v1::Tag* id3v1 = f.ID3v1Tag();
+        if (id3v1) {
+            stringstream ss;
+            if (id3v1->title() != TagLib::String::null) song->setTitle(id3v1->title().to8Bit());
+            if (id3v1->artist() != TagLib::String::null) song->setArtist(id3v1->artist().to8Bit());
+            if (id3v1->album() != TagLib::String::null) song->getAlbum()->setName(id3v1->album().to8Bit());
+            if (id3v1->comment() != TagLib::String::null) song->setComments(id3v1->comment().to8Bit());
+            //TODO if (id3v1->genre() != TagLib::String::null) song->setGenre(id3v1->genre().to8Bit());
+            if (id3v1->year() != 0) song->getAlbum()->setReleaseDateYear(id3v1->year());
+            if (id3v1->track() != 0) {
+                ss.clear();
+                ss << id3v1->track();
+                song->setTrack(ss.str());
             }
         }
+        TagLib::APE::Tag* ape = f.APETag();
+        if (ape) {
+            stringstream ss;
+            /*if (ape->title() != TagLib::String::null) song->setTitle(ape->title().to8Bit());
+            if (ape->artist() != TagLib::String::null) song->setArtist(ape->artist().to8Bit());
+            if (ape->album() != TagLib::String::null) song->getAlbum()->setName(ape->album().to8Bit());
+            if (ape->comment() != TagLib::String::null) song->setComments(ape->comment().to8Bit());
+            //TODO if (ape->genre() != TagLib::String::null) song->setGenre(ape->genre().to8Bit());
+            if (ape->year() != 0) song->getAlbum()->setReleaseDateYear(ape->year());
+            if (ape->track() != 0) {
+                ss.clear();
+                ss << ape->track();
+                song->setTrack(ss.str());
+            }*/
+        }
+        TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag();
+        if (id3v2) {
+            stringstream ss;
+            if (id3v2->title() != TagLib::String::null) song->setTitle(id3v2->title().to8Bit());
+            if (id3v2->artist() != TagLib::String::null) song->setArtist(id3v2->artist().to8Bit());
+            if (id3v2->album() != TagLib::String::null) song->getAlbum()->setName(id3v2->album().to8Bit());
+            if (id3v2->comment() != TagLib::String::null) song->setComments(id3v2->comment().to8Bit());
+            //TODO if (id3v2->genre() != TagLib::String::null) song->setGenre(id3v2->genre().to8Bit());
+            if (id3v2->year() != 0) song->getAlbum()->setReleaseDateYear(id3v2->year());
+            if (id3v2->track() != 0) {
+                ss.clear();
+                ss << id3v2->track();
+                song->setTrack(ss.str());
+            }
+            song->setRemix(getId3v2Text(id3v2, "TPE4"));
+            song->setTrack(getId3v2Text(id3v2, "TRCK"));
+            song->setFeaturing(getId3v2Text(id3v2, "TPE2"));
+            song->getAlbum()->setLabel(getId3v2Text(id3v2, "TPUB"));
+            song->getAlbum()->setCatalogId(getId3v2Text(id3v2, "TCID"));
+            
+            TagLib::ID3v2::FrameList frameList = id3v2->frameListMap()["POPM"];
+            if (!frameList.isEmpty()) {
+                TagLib::ID3v2::PopularimeterFrame *popm = dynamic_cast<TagLib::ID3v2::PopularimeterFrame*>(frameList.front());
+                song->setRating(popm->rating());
+            }
+            
+            // string in the DDMM format
+            const string date = getId3v2Text(id3v2, "TDAT");
+            char *tmp = new char[3];
+            tmp[0] = date[0];
+            tmp[1] = date[1];
+            tmp[2] = '\0';
+            if (tmp[0] != '0' || tmp[1] != '0')
+                song->getAlbum()->setReleaseDateDay(atoi(tmp));
+            tmp[0] = date[2];
+            tmp[1] = date[3];
+            song->getAlbum()->setReleaseDateMonth(atoi(tmp));
+            delete [] tmp;
+        }
     }
-    delete iter;
     
     /* TODO split remix from title
     if (song->getTitle()) {
@@ -440,12 +187,12 @@ void MusicManager::readTagsFromSong(Song* song) {
     
     Song *songBeforeFixing = new Song(*song);
     
-    // compare with last
+    /*/ compare with last
     if (lastParsedSong && lastSongFixed) {
         if (song->getArtist().length() == 0 || !song->getArtist().compare(lastParsedSong->getArtist())) {
             song->setArtist(lastSongFixed->getArtist());
         }
-        if (song->getAlbum()->getName().length() == 0 || !song->getAlbum()->getName().compare(lastParsedSong->getAlbum()->getName())) {
+        if (song->getAlbum()->getName().length() == 0 || !lastParsedSong->getAlbum() || !song->getAlbum()->getName().compare(lastParsedSong->getAlbum()->getName())) {
             song->getAlbum()->setName(lastSongFixed->getAlbum()->getName());
         }
         if (song->getTrack().length() == 0) {
@@ -454,68 +201,82 @@ void MusicManager::readTagsFromSong(Song* song) {
         // we shouldn't auto set track title b/c it changes so much
         // we shouldn't auto set remix title b/c it changes so much
         // we shouldn't auto set featuring title b/c it changes so much
-        if (song->getAlbum()->getLabel().length() == 0 || !song->getAlbum()->getLabel().compare(lastParsedSong->getAlbum()->getLabel())) {
+        if (song->getAlbum()->getLabel().length() == 0 || !lastParsedSong->getAlbum() || !song->getAlbum()->getLabel().compare(lastParsedSong->getAlbum()->getLabel())) {
             song->getAlbum()->setLabel(lastSongFixed->getAlbum()->getLabel());
         }
-        if (song->getAlbum()->getCatalogId().length() == 0 || !song->getAlbum()->getCatalogId().compare(lastParsedSong->getAlbum()->getCatalogId())) {
+        if (song->getAlbum()->getCatalogId().length() == 0 || !lastParsedSong->getAlbum() || !song->getAlbum()->getCatalogId().compare(lastParsedSong->getAlbum()->getCatalogId())) {
             song->getAlbum()->setCatalogId(lastSongFixed->getAlbum()->getCatalogId());
         }
-        if (song->getAlbum()->getReleaseDateYear() == 0 || song->getAlbum()->getReleaseDateYear() == lastParsedSong->getAlbum()->getReleaseDateYear()) {
+        if (song->getAlbum()->getReleaseDateYear() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getReleaseDateYear() == lastParsedSong->getAlbum()->getReleaseDateYear()) {
             song->getAlbum()->setReleaseDateYear(lastSongFixed->getAlbum()->getReleaseDateYear());
         }
-        if (song->getAlbum()->getReleaseDateMonth() == 0 || song->getAlbum()->getReleaseDateMonth() == lastParsedSong->getAlbum()->getReleaseDateMonth()) {
+        if (song->getAlbum()->getReleaseDateMonth() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getReleaseDateMonth() == lastParsedSong->getAlbum()->getReleaseDateMonth()) {
             song->getAlbum()->setReleaseDateMonth(lastSongFixed->getAlbum()->getReleaseDateMonth());
         }
-        if (song->getAlbum()->getReleaseDateDay() == 0 || song->getAlbum()->getReleaseDateDay() == lastParsedSong->getAlbum()->getReleaseDateDay()) {
+        if (song->getAlbum()->getReleaseDateDay() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getReleaseDateDay() == lastParsedSong->getAlbum()->getReleaseDateDay()) {
             song->getAlbum()->setReleaseDateDay(lastSongFixed->getAlbum()->getReleaseDateDay());
         }
-        if (song->getAlbum()->getBasicGenreId() == 0 || song->getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
+        if (song->getAlbum()->getBasicGenreId() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
             song->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
         }
-    }
+    }*/
 
     delete lastParsedSong;
-    lastParsedSong = new Song(*songBeforeFixing);
+    lastParsedSong = songBeforeFixing;
 }
 
 void MusicManager::writeTagsToSong(Song* song) {
     delete lastSongFixed;
-    lastSongFixed = song;
+    lastSongFixed = new Song(*song);
     
-    ID3_Tag tag(song->getFilepath().c_str());
-    updateTag(&tag, ID3FID_LEADARTIST, song->getArtist());
-    updateTag(&tag, ID3FID_ALBUM, song->getAlbum()->getName());
-    updateTag(&tag, ID3FID_TRACKNUM, song->getTrack());
-    updateTag(&tag, ID3FID_TITLE, song->getTitle());
-    updateTag(&tag, ID3FID_MIXARTIST, song->getRemix());
-    updateTag(&tag, ID3FID_BAND, song->getFeaturing());
-    updateTag(&tag, ID3FID_PUBLISHER, song->getAlbum()->getLabel());
-    updateTag(&tag, ID3FID_USERTEXT, song->getAlbum()->getCatalogId(), id3CatalogId);
-    if (song->getRating() > 0) {
-        updateTag(&tag, ID3FID_POPULARIMETER, song->getRating());
-    }
-    if (song->getAlbum()->getReleaseDateYear() > 0) {
-        ostringstream year;
-        year << song->getAlbum()->getReleaseDateYear();
-        updateTag(&tag, ID3FID_YEAR, year.str());
-    }
-    if (song->getAlbum()->getReleaseDateMonth() > 0) {
-        ostringstream daymonth;
-        if (song->getAlbum()->getReleaseDateDay() == 0) {
-            daymonth << "00";
-        } else if (song->getAlbum()->getReleaseDateDay() < 10) {
-            daymonth << "0" << song->getAlbum()->getReleaseDateDay();
-        } else {
-            daymonth << song->getAlbum()->getReleaseDateDay();
+    if (boost::algorithm::ends_with(song->getFilepath(), ".mp3")) {
+        TagLib::MPEG::File f(song->getFilepath().c_str());
+        TagLib::ID3v1::Tag* v1 = f.ID3v1Tag();
+        TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag(true);
+        if (v1) {
+            if (id3v2->title() == TagLib::String::null) id3v2->setTitle(v1->title());
+            if (id3v2->artist() == TagLib::String::null) id3v2->setArtist(v1->artist());
+            if (id3v2->album() == TagLib::String::null) id3v2->setAlbum(v1->album());
+            if (id3v2->comment() == TagLib::String::null) id3v2->setComment(v1->comment());
+            if (id3v2->genre() == TagLib::String::null) id3v2->setGenre(v1->genre());
+            if (id3v2->year() == 0) id3v2->setYear(v1->year());
         }
-        if (song->getAlbum()->getReleaseDateMonth() < 10) {
-            daymonth << "0" << song->getAlbum()->getReleaseDateMonth();
-        } else {
-            daymonth << song->getAlbum()->getReleaseDateMonth();
+        f.strip(TagLib::MPEG::File::ID3v1);
+        id3v2->setArtist(song->getArtist());
+        id3v2->setAlbum(song->getAlbum()->getName());
+        id3v2->setTitle(song->getTitle());
+        id3v2->setYear(song->getAlbum()->getReleaseDateYear());
+        // TODO set genre
+        setId3v2Text(id3v2, "TPE4", song->getRemix().c_str());
+        setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());
+        setId3v2Text(id3v2, "TPE2", song->getFeaturing().c_str());
+        setId3v2Text(id3v2, "TPUB", song->getAlbum()->getLabel().c_str());
+        setId3v2Text(id3v2, "TCID", song->getAlbum()->getCatalogId().c_str());
+        {
+            id3v2->removeFrames("POPM");
+            TagLib::ID3v2::PopularimeterFrame *frame = new TagLib::ID3v2::PopularimeterFrame();
+            frame->setRating(song->getRating());
+            id3v2->addFrame(frame);
         }
-        updateTag(&tag, ID3FID_DATE, daymonth.str());
+        if (song->getAlbum()->getReleaseDateMonth() > 0) {
+            ostringstream daymonth;
+            if (song->getAlbum()->getReleaseDateDay() == 0) {
+                daymonth << "00";
+            } else if (song->getAlbum()->getReleaseDateDay() < 10) {
+                daymonth << "0" << song->getAlbum()->getReleaseDateDay();
+            } else {
+                daymonth << song->getAlbum()->getReleaseDateDay();
+            }
+            if (song->getAlbum()->getReleaseDateMonth() < 10) {
+                daymonth << "0" << song->getAlbum()->getReleaseDateMonth();
+            } else {
+                daymonth << song->getAlbum()->getReleaseDateMonth();
+            }
+            setId3v2Text(id3v2, "TDAT", daymonth.str().c_str());
+        }
+        bool result = f.save();
+        cout << "saved: " << result << endl;
     }
-    tag.Update();
 }
 
                 
