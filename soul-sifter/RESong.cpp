@@ -557,8 +557,12 @@ namespace soulsifter {
     int RESong::save() {
         try {
             if (id == 0) {
-                cerr << "Must set ID of reSong before saving!" << endl;
-                return 0;
+                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(id) from RESongs");
+                sql::ResultSet *rs = ps->executeQuery();
+                rs->next();
+                id = rs->getInt(1) + 1;
+                rs->close();
+                delete rs;
             }
             sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESongs (id, songidWinfo, songid, shortid, shortidWinfo, artist, album, track, title, time, timeSignature, filename, digitalOnly, compilation, keyStart, keyAccuracy, bpmStart, bpmAccuracy, rating, dateAdded, catalogId, label, remix, numPlays, comments, releaseDate, featuring, keyEnd, disabled, bpmEnd, beatIntensity, replayGain) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps->setInt(1, id);

@@ -252,7 +252,7 @@ def writeCode (name, fields, attribs)
   str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
   str << "    int #{capName}::save() {\n        try {\n"
   if (attribs & Attrib::SAVEID > 0)
-    str << "            if (id == 0) {\n                cerr << \"Must set ID of #{name} before saving!\" << endl;\n                return 0;\n            }\n"
+    str << "            if (id == 0) {\n                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select max(id) from #{cap(plural(name))}\");\n                sql::ResultSet *rs = ps->executeQuery();\n                rs->next();\n                id = rs->getInt(1) + 1;\n                rs->close();\n                delete rs;\n            }\n"
   end
   fields.each do |f|
     next unless (f[2] & Attrib::PTR > 0)
