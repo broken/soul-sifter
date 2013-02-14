@@ -61,7 +61,6 @@
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
-    NSLog(@"objectValueForTableColumn:byItem");
     NSString *str = [(StyleTreeItem *)item name];
     return str;
 }
