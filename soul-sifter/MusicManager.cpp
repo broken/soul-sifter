@@ -128,7 +128,7 @@ void MusicManager::readTagsFromSong(Song* song) {
             }
             song->setRemix(getId3v2Text(id3v2, "TPE4"));
             song->setTrack(getId3v2Text(id3v2, "TRCK"));
-            song->setFeaturing(getId3v2Text(id3v2, "TPE2"));
+            song->getAlbum()->setArtist(getId3v2Text(id3v2, "TPE2"));
             song->getAlbum()->setLabel(getId3v2Text(id3v2, "TPUB"));
             song->getAlbum()->setCatalogId(getId3v2Text(id3v2, "TCID"));
             
@@ -249,7 +249,7 @@ void MusicManager::writeTagsToSong(Song* song) {
         // TODO set genre
         setId3v2Text(id3v2, "TPE4", song->getRemix().c_str());
         setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());
-        setId3v2Text(id3v2, "TPE2", song->getFeaturing().c_str());
+        setId3v2Text(id3v2, "TPE2", song->getAlbum()->getArtist().c_str());
         setId3v2Text(id3v2, "TPUB", song->getAlbum()->getLabel().c_str());
         setId3v2Text(id3v2, "TCID", song->getAlbum()->getCatalogId().c_str());
         {
