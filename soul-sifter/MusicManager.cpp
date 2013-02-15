@@ -246,7 +246,7 @@ void MusicManager::writeTagsToSong(Song* song) {
         id3v2->setAlbum(song->getAlbum()->getName());
         id3v2->setTitle(song->getTitle());
         id3v2->setYear(song->getAlbum()->getReleaseDateYear());
-        // TODO set genre
+        setId3v2Text(id3v2, "TCON", song->getStyles().back()->getName().c_str());
         setId3v2Text(id3v2, "TPE4", song->getRemix().c_str());
         setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());
         setId3v2Text(id3v2, "TPE2", song->getAlbum()->getArtist().c_str());
