@@ -168,6 +168,7 @@ namespace soulsifter {
 
     bool Song::sync() {
         Song* song = findById(id);
+        if (!song) song = findByRESongId(reSongId);
         if (!song) {
             return true;
         }

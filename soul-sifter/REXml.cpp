@@ -94,6 +94,7 @@ namespace soulsifter {
 
     bool REXml::sync() {
         REXml* reXml = findById(id);
+        if (!reXml) reXml = findByName(name);
         if (!reXml) {
             return true;
         }

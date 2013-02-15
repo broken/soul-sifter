@@ -94,6 +94,7 @@ namespace soulsifter {
 
     bool RESetting::sync() {
         RESetting* reSetting = findById(id);
+        if (!reSetting) reSetting = findByName(name);
         if (!reSetting) {
             return true;
         }

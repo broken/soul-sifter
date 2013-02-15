@@ -94,6 +94,7 @@ namespace soulsifter {
 
     bool REAlbumCover::sync() {
         REAlbumCover* reAlbumCover = findById(id);
+        if (!reAlbumCover) reAlbumCover = findByREId(reId);
         if (!reAlbumCover) {
             return true;
         }

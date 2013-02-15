@@ -89,6 +89,7 @@ namespace soulsifter {
 
     bool BasicGenre::sync() {
         BasicGenre* basicGenre = findById(id);
+        if (!basicGenre) basicGenre = findByName(name);
         if (!basicGenre) {
             return true;
         }
