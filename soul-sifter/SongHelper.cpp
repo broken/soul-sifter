@@ -49,7 +49,7 @@ namespace soulsifter {
         while (!allStyles->empty()) delete allStyles->back(), allStyles->pop_back();
         
         // album
-        album = Album::findByName(song->getAlbum());
+        album = Album::findByNameAndArtist(song->getAlbum(), song->getArtist());
         if (!album) album = new Album();
         album->setName(song->getAlbum());
         album->setLabel(song->getLabel());
