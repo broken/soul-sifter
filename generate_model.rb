@@ -256,7 +256,7 @@ def writeCode (name, fields, attribs)
     str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where "
     secondaryKeys.each_with_index do |f,idx|
       if (idx > 0)
-        str << "and "
+        str << " and "
       end
       str << "#{f[1]} = ?"
     end
@@ -418,7 +418,8 @@ end
 
 albumFields = [
   [:int, "id", Attrib::FIND],
-  [:string, "name", Attrib::FIND],
+  [:string, "name", Attrib::KEY2],
+  [:string, "artist", Attrib::KEY2],
   [:string, "coverFilepath", Attrib::FIND],
   [:bool, "mixed", 0],
   [:string, "label", 0],

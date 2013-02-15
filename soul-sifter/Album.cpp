@@ -28,6 +28,7 @@ namespace soulsifter {
     Album::Album() :
     id(0),
     name(),
+    artist(),
     coverFilepath(),
     mixed(false),
     label(),
@@ -42,6 +43,7 @@ namespace soulsifter {
     Album::Album(const Album& album) :
     id(album.getId()),
     name(album.getName()),
+    artist(album.getArtist()),
     coverFilepath(album.getCoverFilepath()),
     mixed(album.getMixed()),
     label(album.getLabel()),
@@ -56,6 +58,7 @@ namespace soulsifter {
     void Album::operator=(const Album& album) {
         id = album.getId();
         name = album.getName();
+        artist = album.getArtist();
         coverFilepath = album.getCoverFilepath();
         mixed = album.getMixed();
         label = album.getLabel();
@@ -75,6 +78,7 @@ namespace soulsifter {
     void Album::clear() {
         id = 0;
         name.clear();
+        artist.clear();
         coverFilepath.clear();
         mixed = false;
         label.clear();
@@ -92,6 +96,7 @@ namespace soulsifter {
     void Album::populateFields(const sql::ResultSet* rs, Album* album) {
         album->setId(rs->getInt("id"));
         album->setName(rs->getString("name"));
+        album->setArtist(rs->getString("artist"));
         album->setCoverFilepath(rs->getString("coverFilepath"));
         album->setMixed(rs->getBoolean("mixed"));
         album->setLabel(rs->getString("label"));
@@ -105,21 +110,6 @@ namespace soulsifter {
     Album* Album::findById(int id) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where id = ?");
         ps->setInt(1, id);
-        sql::ResultSet *rs = ps->executeQuery();
-        Album *album = NULL;
-        if (rs->next()) {
-            album = new Album();
-            populateFields(rs, album);
-        }
-        rs->close();
-        delete rs;
-
-        return album;
-    }
-
-    Album* Album::findByName(const string& name) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where name = ?");
-        ps->setString(1, name);
         sql::ResultSet *rs = ps->executeQuery();
         Album *album = NULL;
         if (rs->next()) {
@@ -147,10 +137,27 @@ namespace soulsifter {
         return album;
     }
 
+    Album* Album::findByNameAndArtist(const string& name, const string& artist) {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where name = ? and artist = ?");
+        ps->setString(1, name);
+        ps->setString(1, artist);
+        sql::ResultSet *rs = ps->executeQuery();
+        Album *album = NULL;
+        if (rs->next()) {
+            album = new Album();
+            populateFields(rs, album);
+        }
+        rs->close();
+        delete rs;
+
+        return album;
+    }
+
 # pragma mark persistence
 
     bool Album::sync() {
         Album* album = findById(id);
+        if (!album) album = findByNameAndArtist(name, artist);
         if (!album) {
             return true;
         }
@@ -171,6 +178,14 @@ namespace soulsifter {
                 needsUpdate = true;
             } else {
                 name = album->getName();
+            }
+        }
+        if (artist.compare(album->getArtist())) {
+            if (!artist.empty()) {
+                cout << "updating album artist from " << album->getArtist() << " to " << artist << endl;
+                needsUpdate = true;
+            } else {
+                artist = album->getArtist();
             }
         }
         if (coverFilepath.compare(album->getCoverFilepath())) {
@@ -245,17 +260,18 @@ namespace soulsifter {
             if (basicGenre && basicGenre->sync()) {
                 basicGenre->update();
             }
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Albums set name=?, coverFilepath=?, mixed=?, label=?, catalogId=?, releaseDateYear=?, releaseDateMonth=?, releaseDateDay=?, basicGenreId=? where id=?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Albums set name=?, artist=?, coverFilepath=?, mixed=?, label=?, catalogId=?, releaseDateYear=?, releaseDateMonth=?, releaseDateDay=?, basicGenreId=? where id=?");
             ps->setString(1, name);
-            ps->setString(2, coverFilepath);
-            ps->setBoolean(3, mixed);
-            ps->setString(4, label);
-            ps->setString(5, catalogId);
-            ps->setInt(6, releaseDateYear);
-            ps->setInt(7, releaseDateMonth);
-            ps->setInt(8, releaseDateDay);
-            ps->setInt(9, basicGenreId);
-            ps->setInt(10, id);
+            ps->setString(2, artist);
+            ps->setString(3, coverFilepath);
+            ps->setBoolean(4, mixed);
+            ps->setString(5, label);
+            ps->setString(6, catalogId);
+            ps->setInt(7, releaseDateYear);
+            ps->setInt(8, releaseDateMonth);
+            ps->setInt(9, releaseDateDay);
+            ps->setInt(10, basicGenreId);
+            ps->setInt(11, id);
             return ps->executeUpdate();
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
@@ -281,16 +297,17 @@ namespace soulsifter {
                     cerr << "Unable to save basicGenre" << endl;
                 }
             }
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Albums (name, coverFilepath, mixed, label, catalogId, releaseDateYear, releaseDateMonth, releaseDateDay, basicGenreId) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Albums (name, artist, coverFilepath, mixed, label, catalogId, releaseDateYear, releaseDateMonth, releaseDateDay, basicGenreId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps->setString(1, name);
-            ps->setString(2, coverFilepath);
-            ps->setBoolean(3, mixed);
-            ps->setString(4, label);
-            ps->setString(5, catalogId);
-            ps->setInt(6, releaseDateYear);
-            ps->setInt(7, releaseDateMonth);
-            ps->setInt(8, releaseDateDay);
-            ps->setInt(9, basicGenreId);
+            ps->setString(2, artist);
+            ps->setString(3, coverFilepath);
+            ps->setBoolean(4, mixed);
+            ps->setString(5, label);
+            ps->setString(6, catalogId);
+            ps->setInt(7, releaseDateYear);
+            ps->setInt(8, releaseDateMonth);
+            ps->setInt(9, releaseDateDay);
+            ps->setInt(10, basicGenreId);
             return ps->executeUpdate();
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
@@ -310,6 +327,9 @@ namespace soulsifter {
 
     const string& Album::getName() const { return name; }
     void Album::setName(const string& name) { this->name = name; }
+
+    const string& Album::getArtist() const { return artist; }
+    void Album::setArtist(const string& artist) { this->artist = artist; }
 
     const string& Album::getCoverFilepath() const { return coverFilepath; }
     void Album::setCoverFilepath(const string& coverFilepath) { this->coverFilepath = coverFilepath; }

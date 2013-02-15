@@ -31,8 +31,8 @@ namespace soulsifter {
         void clear();
 
         static Album* findById(int id);
-        static Album* findByName(const string& name);
         static Album* findByCoverFilepath(const string& coverFilepath);
+        static Album* findByNameAndArtist(const string& name, const string& artist);
 
         bool sync();
         int update();
@@ -44,6 +44,8 @@ namespace soulsifter {
         void setId(int id);
         const string& getName() const;
         void setName(const string& name);
+        const string& getArtist() const;
+        void setArtist(const string& artist);
         const string& getCoverFilepath() const;
         void setCoverFilepath(const string& coverFilepath);
         const bool getMixed() const;
@@ -66,6 +68,7 @@ namespace soulsifter {
     private:
         int id;
         string name;
+        string artist;
         string coverFilepath;
         bool mixed;
         string label;
