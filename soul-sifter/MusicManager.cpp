@@ -244,7 +244,11 @@ void MusicManager::writeTagsToSong(Song* song) {
         f.strip(TagLib::MPEG::File::ID3v1);
         id3v2->setArtist(song->getArtist());
         id3v2->setAlbum(song->getAlbum()->getName());
-        id3v2->setTitle(song->getTitle());
+        {
+            stringstream ss;
+            ss << song->getTitle() << " (" << song->getRemix() << ")";
+            id3v2->setTitle(ss.str());
+        }
         id3v2->setYear(song->getAlbum()->getReleaseDateYear());
         setId3v2Text(id3v2, "TCON", song->getStyles().back()->getName().c_str());
         setId3v2Text(id3v2, "TPE4", song->getRemix().c_str());
