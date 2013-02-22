@@ -41,8 +41,8 @@ namespace soulsifter {
     reLabel(style.getRELabel()),
     children(),
     parents() {
-        children = style.getChildren();
-        parents = style.getParents();
+        childrenIds = style.childrenIds;
+        parentsIds = style.parentsIds;
     }
 
     void Style::operator=(const Style& style) {
@@ -50,8 +50,8 @@ namespace soulsifter {
         name = style.getName();
         reId = style.getREId();
         reLabel = style.getRELabel();
-        children = style.getChildren();
-        parents = style.getParents();
+        childrenIds = style.childrenIds;
+        parentsIds = style.parentsIds;
     }
 
     Style::~Style() {
@@ -81,9 +81,31 @@ namespace soulsifter {
         style->setName(rs->getString("name"));
         style->setREId(rs->getInt("reId"));
         style->setRELabel(rs->getString("reLabel"));
-        // TODO set children
-        // TODO set parents
+        populateChildrenIds(style);
+        populateParentsIds(style);
     }
+
+    void Style::populateChildrenIds(Style* style) {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select childId from StyleChildren where parentId = ?");
+        ps->setInt(1, style->getId());
+        sql::ResultSet *rs = ps->executeQuery();
+        while (rs->next()) {
+            style->childrenIds.push_back(rs->getInt(1));
+        }
+        rs->close();
+        delete rs;
+}
+
+    void Style::populateParentsIds(Style* style) {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select parentId from StyleChildren where childId = ?");
+        ps->setInt(1, style->getId());
+        sql::ResultSet *rs = ps->executeQuery();
+        while (rs->next()) {
+            style->parentsIds.push_back(rs->getInt(1));
+        }
+        rs->close();
+        delete rs;
+}
 
     Style* Style::findById(int id) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles where id = ?");
@@ -210,7 +232,14 @@ namespace soulsifter {
     const string& Style::getRELabel() const { return reLabel; }
     void Style::setRELabel(const string& reLabel) { this->reLabel = reLabel; }
 
-    const vector<Style*>& Style::getChildren() const { return children; }
+    const vector<Style*>& Style::getChildren() {
+        if (children.empty() && !childrenIds.empty()) {
+            for (vector<int>::const_iterator it = childrenIds.begin(); it != childrenIds.end(); ++it) {
+                children.push_back(Style::findById(*it));
+            }
+        }
+        return children;
+    }
     void Style::setChildren(const vector<Style*>& children) { this->children = children; }
     void Style::addChild(const Style& child) { children.push_back(new Style(child)); }
     void Style::removeChild(int childId) {
@@ -221,7 +250,14 @@ namespace soulsifter {
         }
     }
 
-    const vector<Style*>& Style::getParents() const { return parents; }
+    const vector<Style*>& Style::getParents() {
+        if (parents.empty() && !parentsIds.empty()) {
+            for (vector<int>::const_iterator it = parentsIds.begin(); it != parentsIds.end(); ++it) {
+                parents.push_back(Style::findById(*it));
+            }
+        }
+        return parents;
+    }
     void Style::setParents(const vector<Style*>& parents) { this->parents = parents; }
     void Style::addParent(const Style& parent) { parents.push_back(new Style(parent)); }
     void Style::removeParent(int parentId) {

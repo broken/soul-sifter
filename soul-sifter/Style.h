@@ -50,11 +50,11 @@ namespace soulsifter {
         void setREId(int reId);
         const string& getRELabel() const;
         void setRELabel(const string& reLabel);
-        const vector<Style*>& getChildren() const;
+        const vector<Style*>& getChildren();
         void setChildren(const vector<Style*>& children);
         void addChild(const Style& child);
         void removeChild(int childId);
-        const vector<Style*>& getParents() const;
+        const vector<Style*>& getParents();
         void setParents(const vector<Style*>& parents);
         void addParent(const Style& parent);
         void removeParent(int parentId);
@@ -65,9 +65,13 @@ namespace soulsifter {
         int reId;
         string reLabel;
         vector<Style*> children;
+        vector<int> childrenIds;
         vector<Style*> parents;
+        vector<int> parentsIds;
 
         static void populateFields(const sql::ResultSet* rs, Style* style);
+        static void populateChildrenIds(Style* style);
+        static void populateParentsIds(Style* style);
     };
 
 }

@@ -16,6 +16,13 @@ module Attrib
   KEY2 = 2**6  # field: secondary key, can be multiple fields which make it up
 end
 
+######################### helpful functions & globals
+
+# field items
+$type = 0
+$name = 1
+$attrib = 2
+
 def cap (x)
   if (x[0,2] == "re" && x[2,1] == x[2,1].upcase)
     return x.slice(0,2).upcase + x.slice(2..-1)
@@ -24,7 +31,7 @@ def cap (x)
   end
 end
 
-def vectorGeneric (v)
+def vectorGeneric(v)
   return v.match(/^vector<(const )?([^*]*)\*?\>$/).captures[1]
 end
 
@@ -54,6 +61,166 @@ def plural(x)
   end
 end
 
+def vectorIds(f)
+  "#{f[$name]}Ids"
+end
+
+######################### h & cc outputs
+
+def hFieldDeclaration(f)
+  str = "        #{f[$type]}#{'*' if (f[$attrib] & Attrib::PTR > 0)} #{f[$name]};"
+  str << "  // transient" if (f[$attrib] & Attrib::TRANSIENT > 0)
+  if (isVector(f[$type]))
+    str << "\n        vector<int> #{vectorIds(f)};"
+  end
+  str << "\n"
+end
+
+def cCopyConstructor(name, fields)
+  str = "    #{cap(name)}::#{cap(name)}(const #{cap(name)}& #{name}) :\n"
+  fields.each do |f|
+    if (f[$attrib] & Attrib::PTR > 0)
+      str << "    #{f[$name]}(NULL),\n"
+    elsif (isVector(f[$type]))
+      str << "    #{f[$name]}(),\n"
+    else
+      str << "    #{f[$name]}(#{name}.get#{cap(f[$name])}()),\n"
+    end
+  end
+  str = str[0..-3]
+  str << " {\n"
+  fields.each do |f|
+    if (isVector(f[$type]))
+      str << "        #{vectorIds(f)} = #{name}.#{vectorIds(f)};\n"
+    end
+  end
+  str << "    }\n\n"
+end
+
+def cAssignmentConstructor(name, fields)
+  str = "    void #{cap(name)}::operator=(const #{cap(name)}& #{name}) {\n"
+  fields.each do |f|
+    if (f[$attrib] & Attrib::PTR > 0)
+      str << "        #{f[$name]} = NULL;\n"
+    elsif (isVector(f[$type]))
+      str << "        #{vectorIds(f)} = #{name}.#{vectorIds(f)};\n"
+    else
+      str << "        #{f[$name]} = #{name}.get#{cap(f[$name])}();\n"
+    end
+  end
+  str << "    }\n\n"
+end
+
+def hFindFunction(name, f)
+  if ([:int, :bool, :time_t].include?(f[$type]))
+    return "        static #{cap(name)}* findBy#{cap(f[$name])}(#{f[$type]} #{f[$name]});\n"
+  else
+    return "        static #{cap(name)}* findBy#{cap(f[$name])}(const #{f[$type]}& #{f[$name]});\n"
+  end
+end
+
+def cFindFunction(name, f, fields)
+  str = ""
+  if ([:int, :bool, :time_t].include?(f[$type]))
+    str << "    #{cap(name)}* #{cap(name)}::findBy#{cap(f[$name])}(#{f[$type]} #{f[$name]}) {\n"
+  else
+    str << "    #{cap(name)}* #{cap(name)}::findBy#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n"
+  end
+  str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where #{f[$name]} = ?\");\n"
+  str << "        ps->set#{cap(f[$type].to_s)}(1, #{f[$name]});\n        sql::ResultSet *rs = ps->executeQuery();\n        #{cap(name)} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{cap(name)}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n"
+  str << "        return #{name};\n    }\n\n"
+end
+
+def hPopulateFieldFunctions(name, fields)
+  str = "        static void populateFields(const sql::ResultSet* rs, #{cap(name)}* #{name});\n"
+  fields.select{|f| isVector(f[$type])}.each do |f|
+    str << "        static void populate#{cap(vectorIds(f))}(#{cap(name)}* #{name});\n"
+  end
+  return str
+end
+
+def cPopulateFieldFunctions(name, fields)
+  # populate basic fields
+  str = "    void #{cap(name)}::populateFields(const sql::ResultSet* rs, #{cap(name)}* #{name}) {\n"
+  fields.each do |f|
+    next if (f[$attrib] & Attrib::PTR > 0 || f[$attrib] & Attrib::TRANSIENT > 0 || isVector(f[$type]))
+    if (f[$type] == :bool)
+      str << "        #{name}->set#{cap(f[$name])}(rs->getBoolean(\"#{f[$name]}\"));\n"
+    elsif (f[$type] == :time_t)
+      str << "        #{name}->set#{cap(f[$name])}(timeFromString(rs->getString(\"#{f[$name]}\")));\n"
+    else
+      str << "        #{name}->set#{cap(f[$name])}(rs->get#{cap(f[$type].to_s)}(\"#{f[$name]}\"));\n"
+    end
+  end
+  fields.select{|f| isVector(f[$type])}.each do |f|
+    str << "        populate#{cap(vectorIds(f))}(#{name});\n"
+  end
+  str << "    }\n\n"
+  # populate vector fields
+  fields.select{|f| isVector(f[$type])}.each do |f|
+    str << "    void #{cap(name)}::populate#{cap(vectorIds(f))}(#{cap(name)}* #{name}) {\n"
+    if (f[$name].eql?("parents"))
+      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select parentId from #{cap(name)}Children where childId = ?\");\n"
+    elsif (f[$name].eql?("children"))
+      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select childId from #{cap(name)}Children where parentId = ?\");\n"
+    else
+      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select #{single(f[$name])}Id from #{cap(name)}#{cap(plural(vectorGeneric(f[$type])))} where #{name}Id = ?\");\n"
+    end
+    str << "        ps->setInt(1, #{name}->getId());\n        sql::ResultSet *rs = ps->executeQuery();\n        while (rs->next()) {\n            #{name}->#{vectorIds(f)}.push_back(rs->getInt(1));\n        }\n        rs->close();\n        delete rs;\n}\n\n"
+  end
+  return str
+end
+
+def hAccessor(f)
+  str = ""
+  if ([:int, :bool, :time_t].include?(f[$type]))
+    str << "        const #{f[$type]} get#{cap(f[$name])}() const;\n"
+    str << "        void set#{cap(f[$name])}(#{f[$type]} #{f[$name]});\n"
+  elsif (f[$attrib] & Attrib::PTR > 0)
+    str << "        #{f[$type]}* get#{cap(f[$name])}() const;\n"
+    str << "        void set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]});\n"
+  elsif (isVector(f[$type]))
+    str << "        const #{f[$type]}& get#{cap(f[$name])}();\n"
+    str << "        void set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]});\n"
+  else
+    str << "        const #{f[$type]}& get#{cap(f[$name])}() const;\n"
+    str << "        void set#{cap(f[$name])}(const #{f[$type]}& #{f[1]});\n"
+  end
+  if (isVector(f[$type]))
+    str << "        void add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])});\n"
+    str << "        void remove#{cap(single(f[$name]))}(int #{single(f[$name])}Id);\n"
+  end
+  return str
+end
+
+def cAccessor(name, f)
+  str = ""
+  if (f[$type] == :string)
+    str << "    const string& #{cap(name)}::get#{cap(f[$name])}() const { return #{f[$name]}; }\n"
+    str << "    void #{cap(name)}::set#{cap(f[$name])}(const string& #{f[$name]}) { this->#{f[$name]} = #{f[$name]}; }\n"
+  elsif (f[$attrib] & Attrib::PTR > 0)
+    str << "    #{f[$type]}* #{cap(name)}::get#{cap(f[$name])}() const {\n        if (!#{f[$name]} && #{f[$name]}Id)\n            return #{f[$type][0..-1]}::findById(#{f[$name]}Id);\n        return #{f[$name]};\n    }\n"
+    str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        this->#{f[$name]}Id = #{f[$name]}.getId();\n        delete this->#{f[$name]};\n        this->#{f[$name]} = new #{f[$type]}(#{f[$name]});\n    }\n"
+  elsif (isVector(f[$type]))
+    str << "    const #{f[$type]}& #{cap(name)}::get#{cap(f[$name])}() {\n        if (#{f[$name]}.empty() && !#{vectorIds(f)}.empty()) {\n            for (vector<int>::const_iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n                #{f[$name]}.push_back(#{vectorGeneric(f[$type])}::findById(*it));\n            }\n        }\n        return #{f[$name]};\n    }\n"
+    str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) { this->#{f[$name]} = #{f[$name]}; }\n"
+  else
+    str << "    const #{f[$type]} #{cap(name)}::get#{cap(f[$name])}() const { return #{f[$name]}; }\n"
+    if (f[$type] == :int && f[$name] =~ /Id$/ && f[$attrib] & Attrib::ID > 0)
+      str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]} #{f[$name]}) {\n        this->#{f[$name]} = #{f[$name]};\n        delete #{f[$name][0..-3]};\n        #{f[$name][0..-3]} = NULL;\n    }\n"
+    else
+      str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]} #{f[$name]}) { this->#{f[$name]} = #{f[$name]}; }\n"
+    end
+  end
+  if (isVector(f[$type]))
+    str << "    void #{cap(name)}::add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])}) { #{f[$name]}.push_back(new #{cap(vectorGeneric(f[$type]))}(#{single(f[$name])})); }\n"
+    str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}(int #{single(f[$name])}Id) {\n        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            if (#{single(f[$name])}Id == (*it)->getId()) {\n                #{f[$name]}.erase(it);\n            }\n        }\n    }\n"
+  end
+  str << "\n"
+end
+
+######################### header file
+
 def writeHeader (name, fields, attribs, customMethods, customHeaders)
   capName = cap(name)
   secondaryKeys = fields.select{|f| f[2] & Attrib::KEY2 > 0 }
@@ -68,14 +235,9 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   str << "\nnamespace sql {\n    class ResultSet;\n}\n\nusing namespace std;\n\nnamespace soulsifter {\n\n"
   str << "    class #{capName} {\n    public:\n"
   str << "        #{capName}();\n        explicit #{capName}(const #{capName}& #{name});\n        void operator=(const #{capName}& #{name});\n        ~#{capName}();\n        void clear();\n\n"
-  # find methods
   fields.each do |f|
-    if (f[2] & Attrib::FIND > 0)
-      if ([:int, :bool, :time_t].include?(f[0]))
-        str << "        static #{capName}* findBy#{cap(f[1])}(#{f[0]} #{f[1]});\n"
-      else
-        str << "        static #{capName}* findBy#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
-      end
+    if (f[$attrib] & Attrib::FIND > 0)
+      str << hFindFunction(name, f)
     end
   end
   if (!secondaryKeys.empty?)
@@ -100,36 +262,21 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
     str << ");\n"
   end
   str << "\n        bool sync();\n        int update();\n        int save();\n\n"
-  # custom methods
   str << customMethods
   fields.each do |f|
-    if ([:int, :bool, :time_t].include?(f[0]))
-      str << "        const #{f[0]} get#{cap(f[1])}() const;\n"
-      str << "        void set#{cap(f[1])}(#{f[0]} #{f[1]});\n"
-    elsif (f[2] & Attrib::PTR > 0)
-      str << "        #{f[0]}* get#{cap(f[1])}() const;\n"
-      str << "        void set#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
-    elsif (isVector(f[0]))
-      str << "        const #{f[0]}& get#{cap(f[1])}() const;\n"
-      str << "        void set#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
-    else
-      str << "        const #{f[0]}& get#{cap(f[1])}() const;\n"
-      str << "        void set#{cap(f[1])}(const #{f[0]}& #{f[1]});\n"
-    end
-    if (isVector(f[0]))
-      str << "        void add#{cap(single(f[1]))}(const #{vectorGeneric(f[0])}& #{single(f[1])});\n"
-      str << "        void remove#{cap(single(f[1]))}(int #{single(f[1])}Id);\n"
-    end
+    str << hAccessor(f)
   end
   str << "\n    private:\n"
   fields.each do |f|
-    str << "        #{f[0]}#{'*' if (f[2] & Attrib::PTR > 0)} #{f[1]};"
-    str << "  // transient" if (f[2] & Attrib::TRANSIENT > 0)
-    str << "\n"
+    str << hFieldDeclaration(f)
   end
-  str << "\n        static void populateFields(const sql::ResultSet* rs, #{capName}* #{name});\n    };\n\n}\n\n#endif /* defined(__soul_sifter__#{capName}__) */\n"
+  str << "\n"
+  str << hPopulateFieldFunctions(name, fields)
+  str << "    };\n\n}\n\n#endif /* defined(__soul_sifter__#{capName}__) */\n"
   return str
 end
+
+######################### c++ file
 
 def writeCode (name, fields, attribs)
   capName = cap(name)
@@ -151,33 +298,8 @@ def writeCode (name, fields, attribs)
   end
   str = str[0..-3]
   str << " {\n    }\n\n"
-  str << "    #{capName}::#{capName}(const #{capName}& #{name}) :\n"
-  fields.each do |f|
-    if (f[2] & Attrib::PTR > 0)
-      str << "    #{f[1]}(NULL),\n"
-    elsif (isVector(f[0]))
-      str << "    #{f[1]}(),\n"
-    else
-      str << "    #{f[1]}(#{name}.get#{cap(f[1])}()),\n"
-    end
-  end
-  str = str[0..-3]
-  str << " {\n"
-  fields.each do |f|
-    if (isVector(f[0]))
-      str << "        #{f[1]} = #{name}.get#{cap(f[1])}();\n"
-    end
-  end
-  str << "    }\n\n"
-  str << "    void #{capName}::operator=(const #{capName}& #{name}) {\n"
-  fields.each do |f|
-    if (f[2] & Attrib::PTR > 0)
-      str << "        #{f[1]} = NULL;\n"
-    else
-      str << "        #{f[1]} = #{name}.get#{cap(f[1])}();\n"
-    end
-  end
-  str << "    }\n\n"
+  str << cCopyConstructor(name, fields)
+  str << cAssignmentConstructor(name, fields)
   str << "    #{capName}::~#{capName}() {\n"
   fields.each do |f|
     if (f[2] & Attrib::PTR > 0)
@@ -207,30 +329,10 @@ def writeCode (name, fields, attribs)
   end
   str << "    }\n\n"
   str << "# pragma mark static methods\n\n"
-  str << "    void #{capName}::populateFields(const sql::ResultSet* rs, #{capName}* #{name}) {\n"
-  fields.each do |f|
-    next if (f[2] & Attrib::PTR > 0 || f[2] & Attrib::TRANSIENT > 0)
-    if (f[0] == :bool)
-      str << "        #{name}->set#{cap(f[1])}(rs->getBoolean(\"#{f[1]}\"));\n"
-    elsif (isVector(f[0]))
-      str << "        // TODO set #{f[1]}\n"
-    elsif (f[0] == :time_t)
-      str << "        #{name}->set#{cap(f[1])}(timeFromString(rs->getString(\"#{f[1]}\")));\n"
-    else
-      str << "        #{name}->set#{cap(f[1])}(rs->get#{cap(f[0].to_s)}(\"#{f[1]}\"));\n"
-    end
-  end
-  str << "    }\n\n"
-  # find methods
+  str << cPopulateFieldFunctions(name, fields)
   fields.each do |f|
     if (f[2] & Attrib::FIND > 0)
-      if ([:int, :bool, :time_t].include?(f[0]))
-        str << "    #{capName}* #{capName}::findBy#{cap(f[1])}(#{f[0]} #{f[1]}) {\n"
-      else
-        str << "    #{capName}* #{capName}::findBy#{cap(f[1])}(const #{f[0]}& #{f[1]}) {\n"
-      end
-      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where #{f[1]} = ?\");\n"
-      str << "        ps->set#{cap(f[0].to_s)}(1, #{f[1]});\n        sql::ResultSet *rs = ps->executeQuery();\n        #{capName} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{capName}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n        return #{name};\n    }\n\n"
+      str << cFindFunction(name, f, fields)
     end
   end
   if (!secondaryKeys.empty?)
@@ -389,32 +491,12 @@ def writeCode (name, fields, attribs)
   str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
   str << "\n# pragma mark accessors\n\n"
   fields.each do |f|
-    if (f[0] == :string)
-      str << "    const string& #{capName}::get#{cap(f[1])}() const { return #{f[1]}; }\n"
-      str << "    void #{capName}::set#{cap(f[1])}(const string& #{f[1]}) { this->#{f[1]} = #{f[1]}; }\n"
-    elsif (f[2] & Attrib::PTR > 0)
-      str << "    #{f[0]}* #{capName}::get#{cap(f[1])}() const {\n        if (!#{f[1]} && #{f[1]}Id)\n            return #{f[0][0..-1]}::findById(#{f[1]}Id);\n        return #{f[1]};\n    }\n"
-      str << "    void #{capName}::set#{cap(f[1])}(const #{f[0]}& #{f[1]}) {\n        this->#{f[1]}Id = #{f[1]}.getId();\n        delete this->#{f[1]};\n        this->#{f[1]} = new #{f[0]}(#{f[1]});\n    }\n"
-    elsif (isVector(f[0]))
-      str << "    const #{f[0]}& #{capName}::get#{cap(f[1])}() const { return #{f[1]}; }\n"
-      str << "    void #{capName}::set#{cap(f[1])}(const #{f[0]}& #{f[1]}) { this->#{f[1]} = #{f[1]}; }\n"
-    else
-      str << "    const #{f[0]} #{capName}::get#{cap(f[1])}() const { return #{f[1]}; }\n"
-      if (f[0] == :int && f[1] =~ /Id$/ && f[2] & Attrib::ID > 0)
-        str << "    void #{capName}::set#{cap(f[1])}(const #{f[0]} #{f[1]}) {\n        this->#{f[1]} = #{f[1]};\n        delete #{f[1][0..-3]};\n        #{f[1][0..-3]} = NULL;\n    }\n"
-      else
-        str << "    void #{capName}::set#{cap(f[1])}(const #{f[0]} #{f[1]}) { this->#{f[1]} = #{f[1]}; }\n"
-      end
-    end
-    if (isVector(f[0]))
-      str << "    void #{capName}::add#{cap(single(f[1]))}(const #{vectorGeneric(f[0])}& #{single(f[1])}) { #{f[1]}.push_back(new #{cap(vectorGeneric(f[0]))}(#{single(f[1])})); }\n"
-      str << "    void #{capName}::remove#{cap(single(f[1]))}(int #{single(f[1])}Id) {\n        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            if (#{single(f[1])}Id == (*it)->getId()) {\n                #{f[1]}.erase(it);\n            }\n        }\n    }\n"
-    end
-    str << "\n"
+    str << cAccessor(name, f)
   end
   str << "}\n"
-  return str
 end
+
+######################### table definitions
 
 albumFields = [
   [:int, "id", Attrib::FIND],
@@ -544,6 +626,8 @@ reAlbumCoverFields = [
 reAlbumCoverAttribs = 0
 reAlbumCoverCustomMethods = "        class REAlbumCoverIterator {\n        public:\n            explicit REAlbumCoverIterator(sql::ResultSet* resultset);\n            ~REAlbumCoverIterator();\n\n            bool next(REAlbumCover* albumcover);\n\n        private:\n            sql::ResultSet* rs;\n\n            REAlbumCoverIterator();\n        };\n\n        static REAlbumCoverIterator* findAll();\n\n"
 reAlbumCoverCustomHeaders = ""
+
+######################### write files
 
 output = File.open("soul-sifter/Album.h", "w")
 output << writeHeader("album", albumFields, 0, albumCustomMethods, "")
