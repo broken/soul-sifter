@@ -240,7 +240,18 @@ namespace soulsifter {
             ps->setInt(4, rank);
             ps->setString(5, comments);
             ps->setBoolean(6, addon);
-            return ps->executeUpdate();
+            int saved = ps->executeUpdate();
+            if (!saved) {
+                cerr << "Not able to save mix" << endl;
+                return saved;
+            } else {
+                const int id = MysqlAccess::getInstance().getLastInsertId();
+                if (id == 0) {
+                    cerr << "Inserted mix, but unable to retreive inserted ID." << endl;
+                    return saved;
+                }
+                return saved;
+            }
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;

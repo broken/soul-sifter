@@ -11,9 +11,8 @@ module Attrib
   FIND = 2**1  # field: add a find method for the field
   PTR = 2**2  # field: field is a pointer to the object
   SAVEID = 2**3  # class: saving the object must explicitly set id
-  SAVEVEC = 2**4  # field:
-  TRANSIENT = 2**5  # field: not persistent
-  KEY2 = 2**6  # field: secondary key, can be multiple fields which make it up
+  TRANSIENT = 2**4  # field: not persistent
+  KEY2 = 2**5  # field: secondary key, can be multiple fields which make it up
 end
 
 ######################### helpful functions & globals
@@ -361,6 +360,64 @@ def hSaveFunction()
   return "        int save();\n"
 end
 
+def cSaveFunction(name, fields, attribs)
+  str = "    int #{cap(name)}::save() {\n        try {\n"
+  if (attribs & Attrib::SAVEID > 0)
+    str << "            if (id == 0) {\n                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select max(id) from #{cap(plural(name))}\");\n                sql::ResultSet *rs = ps->executeQuery();\n                rs->next();\n                id = rs->getInt(1) + 1;\n                rs->close();\n                delete rs;\n            }\n"
+  end
+  fields.each do |f|
+    next unless (f[$attrib] & Attrib::PTR > 0)
+    str << "            if (#{f[$name]} && (!#{f[$name]}->getId() || !#{cap(f[$type])}::findById(#{f[$name]}->getId()))) {\n"
+    str << "                if (#{f[$name]}->save()) {\n"
+    str << "                    if (#{f[$name]}->getId()) {\n"
+    str << "                        #{f[$name]}Id = #{f[1]}->getId();\n"
+    str << "                    } else {\n"
+    str << "                        #{f[$name]}Id = MysqlAccess::getInstance().getLastInsertId();\n                        #{f[$name]}->setId(#{f[1]}Id);\n                    }\n"
+    str << "                } else {\n"
+    str << "                    cerr << \"Unable to save #{f[$name]}\" << endl;\n                }\n            }\n"
+  end
+  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{cap(plural(name))} ("
+  i = 0
+  fields.each do |f|
+    next if ((f[$name] == "id" && attribs & Attrib::SAVEID == 0) || f[$attrib] & Attrib::PTR > 0 || isVector(f[$type]) || f[$attrib] & Attrib::TRANSIENT > 0)
+    i += 1
+    str << "#{f[$name]}, "
+  end
+  str = str[0..-3]
+  str << ") values ("
+  (1..i-1).each do
+    str << "?, "
+  end
+  str << "?)\");\n"
+  i = 0
+  fields.each do |f|
+    next if ((f[$name] == "id" && attribs & Attrib::SAVEID == 0) || f[$attrib] & Attrib::PTR > 0 || isVector(f[$type]) || f[$attrib] & Attrib::TRANSIENT > 0)
+    i += 1
+    if (f[$type] == :bool)
+      str << "            ps->set#{cap(f[$type].to_s)}ean(#{i}, #{f[$name]});\n"
+    elsif (f[$type] == :time_t)
+      str << "            ps->setString(#{i}, stringFromTime(#{f[$name]}));\n"
+    else
+      str << "            ps->set#{cap(f[$type].to_s)}(#{i}, #{f[$name]});\n"
+    end
+  end
+  str << "            int saved = ps->executeUpdate();\n            if (!saved) {\n"
+  str << "                cerr << \"Not able to save #{name}\" << endl;\n                return saved;\n"
+  str << "            } else {\n"
+  if (attribs & Attrib::SAVEID == 0)
+    str << "                const int id = MysqlAccess::getInstance().getLastInsertId();\n                if (id == 0) {\n"
+    str << "                    cerr << \"Inserted #{name}, but unable to retreive inserted ID.\" << endl;\n                    return saved;\n                }\n"
+  end
+  fields.each do |f|
+    if (isVector(f[$type]))
+      str << "                ps = MysqlAccess::getInstance().getPreparedStatement(\"insert ignore into #{cap(name)}#{cap(f[$name])} (#{name}Id, #{single(f[$name])}Id) values (?, ?)\");\n                for (vector<int>::iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n"
+      str << "                    ps->setInt(1, id);\n                    ps->setInt(2, *it);\n                    if (!ps->executeUpdate()) {\n                        cerr << \"Did not save #{single(f[$name])} for #{name} \" << id << endl;\n                    }\n                }\n"
+    end
+  end
+  str << "                return saved;\n            }\n"
+  str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
+end
+
 def hPopulateFieldFunctions(name, fields)
   str = "        static void populateFields(const sql::ResultSet* rs, #{cap(name)}* #{name});\n"
   fields.select{|f| isVector(f[$type])}.each do |f|
@@ -514,64 +571,7 @@ def writeCode (name, fields, attribs)
   str << "# pragma mark persistence\n\n"
   str << cSyncFunction(name, fields, secondaryKeys)
   str << cUpdateFunction(name, fields)
-  str << "    int #{capName}::save() {\n        try {\n"
-  if (attribs & Attrib::SAVEID > 0)
-    str << "            if (id == 0) {\n                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select max(id) from #{cap(plural(name))}\");\n                sql::ResultSet *rs = ps->executeQuery();\n                rs->next();\n                id = rs->getInt(1) + 1;\n                rs->close();\n                delete rs;\n            }\n"
-  end
-  fields.each do |f|
-    next unless (f[2] & Attrib::PTR > 0)
-    str << "            if (#{f[1]} && (!#{f[1]}->getId() || !#{cap(f[0])}::findById(#{f[1]}->getId()))) {\n"
-    str << "                if (#{f[1]}->save()) {\n"
-    str << "                    if (#{f[1]}->getId()) {\n"
-    str << "                        #{f[1]}Id = #{f[1]}->getId();\n"
-    str << "                    } else {\n"
-    str << "                        #{f[1]}Id = MysqlAccess::getInstance().getLastInsertId();\n                        #{f[1]}->setId(#{f[1]}Id);\n                    }\n"
-    str << "                } else {\n"
-    str << "                    cerr << \"Unable to save #{f[1]}\" << endl;\n                }\n            }\n"
-  end
-  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{cap(plural(name))} ("
-  i = 0
-  fields.each do |f|
-    next if ((f[1] == "id" && attribs & Attrib::SAVEID == 0) || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
-    i += 1
-    str << "#{f[1]}, "
-  end
-  str = str[0..-3]
-  str << ") values ("
-  (1..i-1).each do
-    str << "?, "
-  end
-  str << "?)\");\n"
-  i = 0
-  fields.each do |f|
-    next if ((f[1] == "id" && attribs & Attrib::SAVEID == 0) || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
-    i += 1
-    if (f[0] == :bool)
-      str << "            ps->set#{cap(f[0].to_s)}ean(#{i}, #{f[1]});\n"
-    elsif (f[0] == :time_t)
-      str << "            ps->setString(#{i}, stringFromTime(#{f[1]}));\n"
-    else
-      str << "            ps->set#{cap(f[0].to_s)}(#{i}, #{f[1]});\n"
-    end
-  end
-  if (attribs & Attrib::SAVEVEC == 0)
-    str << "            return ps->executeUpdate();\n"
-  else
-    str << "            int saved = ps->executeUpdate();\n            if (!saved) {\n"
-    str << "                cerr << \"Not able to save #{name}\" << endl;\n                return 0;\n"
-    str << "            } else {\n"
-    str << "                const int id = MysqlAccess::getInstance().getLastInsertId();\n                if (id == 0) {\n"
-    str << "                    cerr << \"Inserted #{name}, but unable to retreive inserted ID.\" << endl;\n                    return 0;\n                }\n"
-    str << "                sql::PreparedStatement *ps;\n"
-    fields.each do |f|
-      if (isVector(f[0]))
-        str << "                ps = MysqlAccess::getInstance().getPreparedStatement(\"insert into #{capName}#{cap(f[1])} (#{name}Id, #{single(f[1])}Id) values (?, ?)\");\n                for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n"
-        str << "                    ps->setInt(1, id);\n                    ps->setInt(2, (*it)->getId());\n                    if (!ps->executeUpdate()) {\n                        cerr << \"Did not save #{single(f[1])} for #{name}\" << endl;\n                    }\n                }\n"
-      end
-    end
-    str << "                return 1;\n            }\n"
-  end
-  str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
+  str << cSaveFunction(name, fields, attribs)
   str << "\n# pragma mark accessors\n\n"
   fields.each do |f|
     str << cAccessor(name, f)
@@ -671,7 +671,7 @@ songFields = [
   ["Album", "album", Attrib::PTR],
   ["vector<Style*>", "styles", 0],
 ]
-songAttribs = Attrib::SAVEVEC
+songAttribs = 0
 songCustomMethods = "        explicit Song(RESong* song);\n\n        static void findSongsByStyle(const Style& style, vector<Song*>** songsPtr);\n        static RESong* createRESongFromSong(const Song& song);\n\n        const string reAlbum() const;\n        const string getDateAddedString() const;\n        void setDateAddedToNow();\n\n"
 songCustomHeaders = "#include \"Style.h\"\n"
 styleFields = [

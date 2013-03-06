@@ -310,7 +310,18 @@ namespace soulsifter {
             ps->setInt(8, releaseDateMonth);
             ps->setInt(9, releaseDateDay);
             ps->setInt(10, basicGenreId);
-            return ps->executeUpdate();
+            int saved = ps->executeUpdate();
+            if (!saved) {
+                cerr << "Not able to save album" << endl;
+                return saved;
+            } else {
+                const int id = MysqlAccess::getInstance().getLastInsertId();
+                if (id == 0) {
+                    cerr << "Inserted album, but unable to retreive inserted ID." << endl;
+                    return saved;
+                }
+                return saved;
+            }
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;

@@ -244,7 +244,34 @@ namespace soulsifter {
             ps->setString(1, name);
             ps->setInt(2, reId);
             ps->setString(3, reLabel);
-            return ps->executeUpdate();
+            int saved = ps->executeUpdate();
+            if (!saved) {
+                cerr << "Not able to save style" << endl;
+                return saved;
+            } else {
+                const int id = MysqlAccess::getInstance().getLastInsertId();
+                if (id == 0) {
+                    cerr << "Inserted style, but unable to retreive inserted ID." << endl;
+                    return saved;
+                }
+                ps = MysqlAccess::getInstance().getPreparedStatement("insert ignore into StyleChildren (styleId, childId) values (?, ?)");
+                for (vector<int>::iterator it = childrenIds.begin(); it != childrenIds.end(); ++it) {
+                    ps->setInt(1, id);
+                    ps->setInt(2, *it);
+                    if (!ps->executeUpdate()) {
+                        cerr << "Did not save child for style " << id << endl;
+                    }
+                }
+                ps = MysqlAccess::getInstance().getPreparedStatement("insert ignore into StyleParents (styleId, parentId) values (?, ?)");
+                for (vector<int>::iterator it = parentsIds.begin(); it != parentsIds.end(); ++it) {
+                    ps->setInt(1, id);
+                    ps->setInt(2, *it);
+                    if (!ps->executeUpdate()) {
+                        cerr << "Did not save parent for style " << id << endl;
+                    }
+                }
+                return saved;
+            }
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;

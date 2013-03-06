@@ -388,23 +388,22 @@ namespace soulsifter {
             int saved = ps->executeUpdate();
             if (!saved) {
                 cerr << "Not able to save song" << endl;
-                return 0;
+                return saved;
             } else {
                 const int id = MysqlAccess::getInstance().getLastInsertId();
                 if (id == 0) {
                     cerr << "Inserted song, but unable to retreive inserted ID." << endl;
-                    return 0;
+                    return saved;
                 }
-                sql::PreparedStatement *ps;
-                ps = MysqlAccess::getInstance().getPreparedStatement("insert into SongStyles (songId, styleId) values (?, ?)");
-                for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
+                ps = MysqlAccess::getInstance().getPreparedStatement("insert ignore into SongStyles (songId, styleId) values (?, ?)");
+                for (vector<int>::iterator it = stylesIds.begin(); it != stylesIds.end(); ++it) {
                     ps->setInt(1, id);
-                    ps->setInt(2, (*it)->getId());
+                    ps->setInt(2, *it);
                     if (!ps->executeUpdate()) {
-                        cerr << "Did not save style for song" << endl;
+                        cerr << "Did not save style for song " << id << endl;
                     }
                 }
-                return 1;
+                return saved;
             }
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;

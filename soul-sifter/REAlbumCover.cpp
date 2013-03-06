@@ -152,7 +152,18 @@ namespace soulsifter {
             sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into REAlbumCovers (reId, thumbnail) values (?, ?)");
             ps->setString(1, reId);
             ps->setString(2, thumbnail);
-            return ps->executeUpdate();
+            int saved = ps->executeUpdate();
+            if (!saved) {
+                cerr << "Not able to save reAlbumCover" << endl;
+                return saved;
+            } else {
+                const int id = MysqlAccess::getInstance().getLastInsertId();
+                if (id == 0) {
+                    cerr << "Inserted reAlbumCover, but unable to retreive inserted ID." << endl;
+                    return saved;
+                }
+                return saved;
+            }
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;

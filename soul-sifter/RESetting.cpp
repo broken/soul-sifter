@@ -152,7 +152,18 @@ namespace soulsifter {
             sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into RESettings (name, value) values (?, ?)");
             ps->setString(1, name);
             ps->setString(2, value);
-            return ps->executeUpdate();
+            int saved = ps->executeUpdate();
+            if (!saved) {
+                cerr << "Not able to save reSetting" << endl;
+                return saved;
+            } else {
+                const int id = MysqlAccess::getInstance().getLastInsertId();
+                if (id == 0) {
+                    cerr << "Inserted reSetting, but unable to retreive inserted ID." << endl;
+                    return saved;
+                }
+                return saved;
+            }
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;

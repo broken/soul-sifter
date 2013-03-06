@@ -599,7 +599,13 @@ namespace soulsifter {
             ps->setString(30, bpmEnd);
             ps->setInt(31, beatIntensity);
             ps->setString(32, replayGain);
-            return ps->executeUpdate();
+            int saved = ps->executeUpdate();
+            if (!saved) {
+                cerr << "Not able to save reSong" << endl;
+                return saved;
+            } else {
+                return saved;
+            }
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
