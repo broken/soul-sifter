@@ -305,12 +305,30 @@ namespace soulsifter {
         }
         return children;
     }
-    void Style::setChildren(const vector<Style*>& children) { this->children = children; }
-    void Style::addChild(const Style& child) { children.push_back(new Style(child)); }
+    void Style::setChildren(const vector<Style*>& children) {
+        dogatech::deleteVectorPointers<Style*>(&this->children);
+        this->children = children;
+        this->childrenIds.clear();
+        for (vector<Style*>::const_iterator it = children.begin(); it != children.end(); ++it) {
+            this->childrenIds.push_back((*it)->getId());
+        }
+    }
+    void Style::addChild(const Style& child) {
+        if (std::find(childrenIds.begin(), childrenIds.end(), child.getId()) == childrenIds.end()) {
+                childrenIds.push_back(child.getId());
+                if (!children.empty()) children.push_back(new Style(child));
+        }
+    }
     void Style::removeChild(int childId) {
         for (vector<Style*>::iterator it = children.begin(); it != children.end(); ++it) {
             if (childId == (*it)->getId()) {
+                delete (*it);
                 children.erase(it);
+            }
+        }
+        for (vector<int>::iterator it = childrenIds.begin(); it != childrenIds.end(); ++it) {
+            if (childId == *it) {
+                childrenIds.erase(it);
             }
         }
     }
@@ -323,12 +341,30 @@ namespace soulsifter {
         }
         return parents;
     }
-    void Style::setParents(const vector<Style*>& parents) { this->parents = parents; }
-    void Style::addParent(const Style& parent) { parents.push_back(new Style(parent)); }
+    void Style::setParents(const vector<Style*>& parents) {
+        dogatech::deleteVectorPointers<Style*>(&this->parents);
+        this->parents = parents;
+        this->parentsIds.clear();
+        for (vector<Style*>::const_iterator it = parents.begin(); it != parents.end(); ++it) {
+            this->parentsIds.push_back((*it)->getId());
+        }
+    }
+    void Style::addParent(const Style& parent) {
+        if (std::find(parentsIds.begin(), parentsIds.end(), parent.getId()) == parentsIds.end()) {
+                parentsIds.push_back(parent.getId());
+                if (!parents.empty()) parents.push_back(new Style(parent));
+        }
+    }
     void Style::removeParent(int parentId) {
         for (vector<Style*>::iterator it = parents.begin(); it != parents.end(); ++it) {
             if (parentId == (*it)->getId()) {
+                delete (*it);
                 parents.erase(it);
+            }
+        }
+        for (vector<int>::iterator it = parentsIds.begin(); it != parentsIds.end(); ++it) {
+            if (parentId == *it) {
+                parentsIds.erase(it);
             }
         }
     }

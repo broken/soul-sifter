@@ -495,12 +495,30 @@ namespace soulsifter {
         }
         return styles;
     }
-    void Song::setStyles(const vector<Style*>& styles) { this->styles = styles; }
-    void Song::addStyle(const Style& style) { styles.push_back(new Style(style)); }
+    void Song::setStyles(const vector<Style*>& styles) {
+        dogatech::deleteVectorPointers<Style*>(&this->styles);
+        this->styles = styles;
+        this->stylesIds.clear();
+        for (vector<Style*>::const_iterator it = styles.begin(); it != styles.end(); ++it) {
+            this->stylesIds.push_back((*it)->getId());
+        }
+    }
+    void Song::addStyle(const Style& style) {
+        if (std::find(stylesIds.begin(), stylesIds.end(), style.getId()) == stylesIds.end()) {
+                stylesIds.push_back(style.getId());
+                if (!styles.empty()) styles.push_back(new Style(style));
+        }
+    }
     void Song::removeStyle(int styleId) {
         for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
             if (styleId == (*it)->getId()) {
+                delete (*it);
                 styles.erase(it);
+            }
+        }
+        for (vector<int>::iterator it = stylesIds.begin(); it != stylesIds.end(); ++it) {
+            if (styleId == *it) {
+                stylesIds.erase(it);
             }
         }
     }

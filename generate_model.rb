@@ -30,8 +30,8 @@ def cap (x)
   end
 end
 
-def vectorGeneric(v)
-  return v.match(/^vector<(const )?([^*]*)\*?\>$/).captures[1]
+def vectorGeneric(t)
+  return t.match(/^vector<(const )?([^*]*)\*?\>$/).captures[1]
 end
 
 def isVector(t)
@@ -485,7 +485,9 @@ def cAccessor(name, f)
     str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        this->#{f[$name]}Id = #{f[$name]}.getId();\n        delete this->#{f[$name]};\n        this->#{f[$name]} = new #{f[$type]}(#{f[$name]});\n    }\n"
   elsif (isVector(f[$type]))
     str << "    const #{f[$type]}& #{cap(name)}::get#{cap(f[$name])}() {\n        if (#{f[$name]}.empty() && !#{vectorIds(f)}.empty()) {\n            for (vector<int>::const_iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n                #{f[$name]}.push_back(#{vectorGeneric(f[$type])}::findById(*it));\n            }\n        }\n        return #{f[$name]};\n    }\n"
-    str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) { this->#{f[$name]} = #{f[$name]}; }\n"
+    str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        dogatech::deleteVectorPointers<#{vectorGeneric(f[$type])}*>(&this->#{f[$name]});\n        this->#{f[$name]} = #{f[$name]};\n        this->#{vectorIds(f)}.clear();\n        for (#{f[$type]}::const_iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            this->#{vectorIds(f)}.push_back((*it)->getId());\n        }\n    }\n"
+    str << "    void #{cap(name)}::add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])}) {\n        if (std::find(#{vectorIds(f)}.begin(), #{vectorIds(f)}.end(), #{single(f[$name])}.getId()) == #{vectorIds(f)}.end()) {\n                #{vectorIds(f)}.push_back(#{single(f[$name])}.getId());\n                if (!#{f[$name]}.empty()) #{f[$name]}.push_back(new #{cap(vectorGeneric(f[$type]))}(#{single(f[$name])}));\n        }\n    }\n"
+    str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}(int #{single(f[$name])}Id) {\n        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            if (#{single(f[$name])}Id == (*it)->getId()) {\n                delete (*it);\n                #{f[$name]}.erase(it);\n            }\n        }\n        for (vector<int>::iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n            if (#{single(f[$name])}Id == *it) {\n                #{vectorIds(f)}.erase(it);\n            }\n        }\n    }\n"
   else
     str << "    const #{f[$type]} #{cap(name)}::get#{cap(f[$name])}() const { return #{f[$name]}; }\n"
     if (f[$type] == :int && f[$name] =~ /Id$/ && f[$attrib] & Attrib::ID > 0)
@@ -493,10 +495,6 @@ def cAccessor(name, f)
     else
       str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]} #{f[$name]}) { this->#{f[$name]} = #{f[$name]}; }\n"
     end
-  end
-  if (isVector(f[$type]))
-    str << "    void #{cap(name)}::add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])}) { #{f[$name]}.push_back(new #{cap(vectorGeneric(f[$type]))}(#{single(f[$name])})); }\n"
-    str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}(int #{single(f[$name])}Id) {\n        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            if (#{single(f[$name])}Id == (*it)->getId()) {\n                #{f[$name]}.erase(it);\n            }\n        }\n    }\n"
   end
   str << "\n"
 end
