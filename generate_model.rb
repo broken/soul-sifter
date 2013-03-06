@@ -65,6 +65,24 @@ def vectorIds(f)
   "#{f[$name]}Ids"
 end
 
+def vectorRelationTable(name, f)
+  t = []
+  if (f[$name].eql?("parents"))
+    t[0] = "#{cap(name)}Children"
+    t[1] = "parentId"
+    t[2] = "childId"
+  elsif (f[$name].eql?("children"))
+    t[0] = "#{cap(name)}Children"
+    t[1] = "childId"
+    t[2] = "parentId"
+  else
+    t[0] = "#{cap(name)}#{cap(plural(vectorGeneric(f[$type])))}"
+    t[1] = "#{single(f[$name])}Id"
+    t[2] = "#{name}Id"
+  end
+  return t
+end
+
 ######################### h & cc outputs
 
 def hFieldDeclaration(f)
@@ -76,25 +94,50 @@ def hFieldDeclaration(f)
   str << "\n"
 end
 
+def hConstructor(name)
+  return "        #{cap(name)}();\n"
+end
+
+def cConstructor(name, fields)
+  str = "    #{cap(name)}::#{cap(name)}() :\n"
+  fields.each do |f|
+    if (f[$type] == :int)
+      str << "    #{f[$name]}(0),\n"
+    elsif (f[$type] == :bool)
+      str << "    #{f[$name]}(false),\n"
+    elsif (f[$attrib] & Attrib::PTR > 0 || f[$type] == :time_t)
+      str << "    #{f[$name]}(NULL),\n"
+    elsif (isVector(f[$type]))
+      str << "    #{f[$name]}(),\n    #{vectorIds(f)}(),\n"
+    else
+      str << "    #{f[$name]}(),\n"
+    end
+  end
+  str = str[0..-3]
+  str << " {\n    }\n\n"
+end
+
+def hCopyConstructor(name)
+  return "        explicit #{cap(name)}(const #{cap(name)}& #{name});\n"
+end
+
 def cCopyConstructor(name, fields)
   str = "    #{cap(name)}::#{cap(name)}(const #{cap(name)}& #{name}) :\n"
   fields.each do |f|
     if (f[$attrib] & Attrib::PTR > 0)
       str << "    #{f[$name]}(NULL),\n"
     elsif (isVector(f[$type]))
-      str << "    #{f[$name]}(),\n"
+      str << "    #{f[$name]}(),\n    #{vectorIds(f)}(#{name}.#{vectorIds(f)}),\n"
     else
       str << "    #{f[$name]}(#{name}.get#{cap(f[$name])}()),\n"
     end
   end
   str = str[0..-3]
-  str << " {\n"
-  fields.each do |f|
-    if (isVector(f[$type]))
-      str << "        #{vectorIds(f)} = #{name}.#{vectorIds(f)};\n"
-    end
-  end
-  str << "    }\n\n"
+  str << " {\n    }\n\n"
+end
+
+def hAssignmentConstructor(name)
+  return "        void operator=(const #{cap(name)}& #{name});\n"
 end
 
 def cAssignmentConstructor(name, fields)
@@ -106,6 +149,48 @@ def cAssignmentConstructor(name, fields)
       str << "        #{vectorIds(f)} = #{name}.#{vectorIds(f)};\n"
     else
       str << "        #{f[$name]} = #{name}.get#{cap(f[$name])}();\n"
+    end
+  end
+  str << "    }\n\n"
+end
+
+def hDestructor(name)
+  return "        ~#{cap(name)}();\n"
+end
+
+def cDestructor(name, fields)
+  str = "    #{cap(name)}::~#{cap(name)}() {\n"
+  fields.each do |f|
+    if (f[$attrib] & Attrib::PTR > 0)
+      str << "        delete #{f[$name]};\n"
+      str << "        #{f[$name]} = NULL;\n"
+    elsif (isVector(f[$type]))
+      str << "        while (!#{f[$name]}.empty()) delete #{f[$name]}.back(), #{f[$name]}.pop_back();\n"
+    end
+  end
+  str << "    }\n\n"
+end
+
+def hClearFunction()
+  return "        void clear();\n"
+end
+
+def cClearFunction(name, fields)
+  str = "    void #{cap(name)}::clear() {\n"
+  fields.each do |f|
+    if (f[$type] == :int || f[$type] == :time_t)
+      str << "        #{f[$name]} = 0;\n"
+    elsif (f[$type] == :string)
+      str << "        #{f[$name]}.clear();\n"
+    elsif (f[$type] == :bool)
+      str << "        #{f[$name]} = false;\n"
+    elsif (f[$attrib] & Attrib::PTR > 0)
+      str << "        delete #{f[$name]};\n"
+      str << "        #{f[$name]} = NULL;\n"
+    elsif (isVector(f[$type]))
+      str << "        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            delete *it;\n        }\n        #{f[$name]}.clear();\n        #{vectorIds(f)}.clear();\n"
+    else
+      str << "        // TODO #{f[$name]}\n"
     end
   end
   str << "    }\n\n"
@@ -129,6 +214,151 @@ def cFindFunction(name, f, fields)
   str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where #{f[$name]} = ?\");\n"
   str << "        ps->set#{cap(f[$type].to_s)}(1, #{f[$name]});\n        sql::ResultSet *rs = ps->executeQuery();\n        #{cap(name)} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{cap(name)}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n"
   str << "        return #{name};\n    }\n\n"
+end
+
+def hSecondaryKeysFindFunction(name, secondaryKeys)
+  str = "        static #{cap(name)}* findBy"
+  secondaryKeys.each_with_index do |f,idx|
+    if (idx > 0)
+      str << "And"
+    end
+    str << "#{cap(f[$name])}"
+  end
+  str << "("
+  secondaryKeys.each_with_index do |f,idx|
+    if (idx > 0)
+      str << ", "
+    end
+    if ([:int, :bool, :time_t].include?(f[0]))
+      str << "#{f[$type]} #{f[$name]}"
+    else
+      str << "const #{f[$type]}& #{f[$name]}"
+    end
+  end
+  str << ");\n"
+end
+
+def cSecondaryKeysFindFunction(name, secondaryKeys)
+  str = "    #{cap(name)}* #{cap(name)}::findBy"
+  secondaryKeys.each_with_index do |f,idx|
+    if (idx > 0)
+      str << "And"
+    end
+    str << "#{cap(f[$name])}"
+  end
+  str << "("
+  secondaryKeys.each_with_index do |f,idx|
+    if (idx > 0)
+      str << ", "
+    end
+    if ([:int, :bool, :time_t].include?(f[0]))
+      str << "#{f[$type]} #{f[$name]}"
+    else
+      str << "const #{f[$type]}& #{f[$name]}"
+    end
+  end
+  str << ") {\n"
+  str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where "
+  secondaryKeys.each_with_index do |f,idx|
+    if (idx > 0)
+      str << " and "
+    end
+    str << "#{f[$name]} = ?"
+  end
+  str << "\");\n"
+  secondaryKeys.each_with_index do |f,idx|
+    str << "        ps->set#{cap(f[$type].to_s)}(1, #{f[$name]});\n"
+  end
+  str << "        sql::ResultSet *rs = ps->executeQuery();\n        #{cap(name)} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{cap(name)}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n        return #{name};\n    }\n\n"
+end
+
+def hSyncFunction()
+  return "        bool sync();\n"
+end
+
+def cSyncFunction(name, fields, secondaryKeys)
+  str = "    bool #{cap(name)}::sync() {\n        #{cap(name)}* #{name} = findById(id);\n"
+  if (!secondaryKeys.empty?)
+    str << "        if (!#{name}) #{name} = findBy"
+    secondaryKeys.each_with_index do |f,idx|
+      if (idx > 0)
+        str << "And"
+      end
+      str << "#{cap(f[$name])}"
+    end
+    str << "("
+    secondaryKeys.each_with_index do |f,idx|
+      if (idx > 0)
+        str << ", "
+      end
+      str << "#{f[$name]}"
+    end
+    str << ");\n"
+  end
+  str << "        if (!#{name}) {\n            return true;\n        }\n\n        // check fields\n        bool needsUpdate = false;\n"
+  fields.each do |f|
+    if (f[$attrib] & Attrib::TRANSIENT > 0)
+      next
+    elsif ([:int, :bool, :time_t].include?(f[$type]))
+      str << "        if (#{f[$name]} != #{name}->get#{cap(f[$name])}()) {\n            if (#{f[$name]}) {\n"
+      str << "                cout << \"updating #{name}'s #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
+      str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
+    elsif (f[$type] == :string)
+      str << "        if (#{f[$name]}.compare(#{name}->get#{cap(f[$name])}())) {\n            if (!#{f[$name]}.empty()) {\n"
+      str << "                cout << \"updating #{name} #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
+      str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
+    elsif (isVector(f[$type]))
+      str << "        if (!dogatech::equivalentVectors<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n            if (!dogatech::containsVector<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n"
+      str << "                cout << \"updating #{name} #{vectorIds(f)}\" << endl;\n                needsUpdate = true;\n            }\n"
+      str << "            dogatech::appendUniqueVector<int>(#{name}->#{vectorIds(f)}, &#{vectorIds(f)});\n            #{f[$name]}.clear();\n        }\n"
+    else
+      next
+    end
+  end
+  str << "        return needsUpdate;\n    }\n\n"
+end
+
+def hUpdateFunction()
+  return "        int update();\n"
+end
+
+def cUpdateFunction(name, fields)
+  str = "    int #{cap(name)}::update() {\n        try {\n"
+  fields.select{|f| f[$attrib] & Attrib::PTR > 0}.each do |f|
+    str << "            if (#{f[$name]} && #{f[$name]}->sync()) {\n                #{f[$name]}->update();\n            }\n"
+  end
+  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"update #{cap(plural(name))} set "
+  fields.each do |f|
+    next if (f[$name] == "id" || f[$attrib] & Attrib::PTR > 0 || isVector(f[$type]) || f[$attrib] & Attrib::TRANSIENT > 0)
+    str << "#{f[$name]}=?, "
+  end
+  str = str[0..-3]
+  str << " where id=?\");\n"
+  i = 0
+  fields.each do |f|
+    next if (f[$name] == "id" || f[$attrib] & Attrib::PTR > 0 || isVector(f[$type]) || f[$attrib] & Attrib::TRANSIENT > 0)
+    i += 1
+    if (f[$type] == :bool)
+      str << "            ps->setBoolean(#{i}, #{f[$name]});\n"
+    elsif (f[$type] == :time_t)
+      str << "            ps->setString(#{i}, stringFromTime(#{f[$name]}));\n"
+    else
+      str << "            ps->set#{cap(f[$type].to_s)}(#{i}, #{f[$name]});\n"
+    end
+  end
+  str << "            ps->setInt(#{i + 1}, id);\n            int result = ps->executeUpdate();\n"
+  fields.select{|f| isVector(f[$type])}.each do |f|
+    t = vectorRelationTable(name, f)
+    str << "            if (!#{vectorIds(f)}.empty()) {\n"
+    str << "                ps = MysqlAccess::getInstance().getPreparedStatement(\"insert ignore into #{t[0]} (#{t[2]}, #{t[1]}) values (?, ?)\");\n"
+    str << "                for (vector<int>::const_iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n                    ps->setInt(1, id);\n                    ps->setInt(2, *it);\n                    ps->executeUpdate();\n                }\n            }\n"
+  end
+  str << "            return result;\n"
+  str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
+end
+
+def hSaveFunction()
+  return "        int save();\n"
 end
 
 def hPopulateFieldFunctions(name, fields)
@@ -159,14 +389,9 @@ def cPopulateFieldFunctions(name, fields)
   # populate vector fields
   fields.select{|f| isVector(f[$type])}.each do |f|
     str << "    void #{cap(name)}::populate#{cap(vectorIds(f))}(#{cap(name)}* #{name}) {\n"
-    if (f[$name].eql?("parents"))
-      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select parentId from #{cap(name)}Children where childId = ?\");\n"
-    elsif (f[$name].eql?("children"))
-      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select childId from #{cap(name)}Children where parentId = ?\");\n"
-    else
-      str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select #{single(f[$name])}Id from #{cap(name)}#{cap(plural(vectorGeneric(f[$type])))} where #{name}Id = ?\");\n"
-    end
-    str << "        ps->setInt(1, #{name}->getId());\n        sql::ResultSet *rs = ps->executeQuery();\n        while (rs->next()) {\n            #{name}->#{vectorIds(f)}.push_back(rs->getInt(1));\n        }\n        rs->close();\n        delete rs;\n}\n\n"
+    t = vectorRelationTable(name, f)
+    str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select #{t[1]} from #{t[0]} where #{t[2]} = ?\");\n"
+    str << "        ps->setInt(1, #{name}->getId());\n        sql::ResultSet *rs = ps->executeQuery();\n        while (rs->next()) {\n            #{name}->#{vectorIds(f)}.push_back(rs->getInt(1));\n        }\n        rs->close();\n        delete rs;\n    }\n\n"
   end
   return str
 end
@@ -234,34 +459,23 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   end
   str << "\nnamespace sql {\n    class ResultSet;\n}\n\nusing namespace std;\n\nnamespace soulsifter {\n\n"
   str << "    class #{capName} {\n    public:\n"
-  str << "        #{capName}();\n        explicit #{capName}(const #{capName}& #{name});\n        void operator=(const #{capName}& #{name});\n        ~#{capName}();\n        void clear();\n\n"
-  fields.each do |f|
-    if (f[$attrib] & Attrib::FIND > 0)
-      str << hFindFunction(name, f)
-    end
+  str << hConstructor(name)
+  str << hCopyConstructor(name)
+  str << hAssignmentConstructor(name)
+  str << hDestructor(name)
+  str << hClearFunction()
+  str << "\n"
+  fields.select{|f| f[$attrib] & Attrib::FIND > 0}.each do |f|
+    str << hFindFunction(name, f)
   end
   if (!secondaryKeys.empty?)
-    str << "        static #{capName}* findBy"
-    secondaryKeys.each_with_index do |f,idx|
-      if (idx > 0)
-        str << "And"
-      end
-      str << "#{cap(f[1])}"
-    end
-    str << "("
-    secondaryKeys.each_with_index do |f,idx|
-      if (idx > 0)
-        str << ", "
-      end
-      if ([:int, :bool, :time_t].include?(f[0]))
-        str << "#{f[0]} #{f[1]}"
-      else
-        str << "const #{f[0]}& #{f[1]}"
-      end
-    end
-    str << ");\n"
+    str << hSecondaryKeysFindFunction(name, secondaryKeys)
   end
-  str << "\n        bool sync();\n        int update();\n        int save();\n\n"
+  str << "\n"
+  str << hSyncFunction()
+  str << hUpdateFunction()
+  str << hSaveFunction()
+  str << "\n"
   str << customMethods
   fields.each do |f|
     str << hAccessor(f)
@@ -280,157 +494,26 @@ end
 
 def writeCode (name, fields, attribs)
   capName = cap(name)
-  secondaryKeys = fields.select{|f| f[2] & Attrib::KEY2 > 0 }
+  secondaryKeys = fields.select{|f| f[$attrib] & Attrib::KEY2 > 0 }
   str = ""
-  str << "//\n//  #{capName}.cpp\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#include \"#{capName}.h\"\n\n#include <string>\n\n#include <cppconn/connection.h>\n#include <cppconn/statement.h>\n#include <cppconn/prepared_statement.h>\n#include <cppconn/resultset.h>\n#include <cppconn/exception.h>\n#include <cppconn/warning.h>\n\n#include \"MysqlAccess.h\"\n\nusing namespace std;\n\nnamespace soulsifter {\n"
+  str << "//\n//  #{capName}.cpp\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#include \"#{capName}.h\"\n\n#include <string>\n\n#include <cppconn/connection.h>\n#include <cppconn/statement.h>\n#include <cppconn/prepared_statement.h>\n#include <cppconn/resultset.h>\n#include <cppconn/exception.h>\n#include <cppconn/warning.h>\n\n#include \"MysqlAccess.h\"\n#include \"DTVectorUtil.h\"\n\nusing namespace std;\n\nnamespace soulsifter {\n"
   str << "\n# pragma mark initialization\n\n"
-  str << "    #{capName}::#{capName}() :\n"
-  fields.each do |f|
-    if (f[0] == :int)
-      str << "    #{f[1]}(0),\n"
-    elsif (f[0] == :bool)
-        str << "    #{f[1]}(false),\n"
-    elsif (f[2] & Attrib::PTR > 0 || f[0] == :time_t)
-        str << "    #{f[1]}(NULL),\n"
-    else
-        str << "    #{f[1]}(),\n"
-    end
-  end
-  str = str[0..-3]
-  str << " {\n    }\n\n"
+  str << cConstructor(name, fields)
   str << cCopyConstructor(name, fields)
   str << cAssignmentConstructor(name, fields)
-  str << "    #{capName}::~#{capName}() {\n"
-  fields.each do |f|
-    if (f[2] & Attrib::PTR > 0)
-      str << "        delete #{f[1]};\n"
-      str << "        #{f[1]} = NULL;\n"
-    elsif (isVector(f[0]))
-      str << "        while (!#{f[1]}.empty()) delete #{f[1]}.back(), #{f[1]}.pop_back();\n"
-    end
-  end
-  str << "    }\n\n"
-  str << "    void #{capName}::clear() {\n"
-  fields.each do |f|
-    if (f[0] == :int || f[0] == :time_t)
-      str << "        #{f[1]} = 0;\n"
-    elsif (f[0] == :string)
-      str << "        #{f[1]}.clear();\n"
-    elsif (f[0] == :bool)
-      str << "        #{f[1]} = false;\n"
-    elsif (f[2] & Attrib::PTR > 0)
-      str << "        delete #{f[1]};\n"
-      str << "        #{f[1]} = NULL;\n"
-    elsif (isVector(f[0]))
-      str << "        for (#{f[0]}::iterator it = #{f[1]}.begin(); it != #{f[1]}.end(); ++it) {\n            delete *it;\n        }\n        #{f[1]}.clear();\n"
-    else
-      str << "        // TODO #{f[1]}\n"
-    end
-  end
-  str << "    }\n\n"
+  str << cDestructor(name, fields)
+  str << cClearFunction(name, fields)
   str << "# pragma mark static methods\n\n"
   str << cPopulateFieldFunctions(name, fields)
-  fields.each do |f|
-    if (f[2] & Attrib::FIND > 0)
-      str << cFindFunction(name, f, fields)
-    end
+  fields.select{|f| f[$attrib] & Attrib::FIND > 0}.each do |f|
+    str << cFindFunction(name, f, fields)
   end
   if (!secondaryKeys.empty?)
-    str << "    #{capName}* #{capName}::findBy"
-    secondaryKeys.each_with_index do |f,idx|
-      if (idx > 0)
-        str << "And"
-      end
-      str << "#{cap(f[1])}"
-    end
-    str << "("
-    secondaryKeys.each_with_index do |f,idx|
-      if (idx > 0)
-        str << ", "
-      end
-      if ([:int, :bool, :time_t].include?(f[0]))
-        str << "#{f[0]} #{f[1]}"
-      else
-        str << "const #{f[0]}& #{f[1]}"
-      end
-    end
-    str << ") {\n"
-    str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where "
-    secondaryKeys.each_with_index do |f,idx|
-      if (idx > 0)
-        str << " and "
-      end
-      str << "#{f[1]} = ?"
-    end
-    str << "\");\n"
-    secondaryKeys.each_with_index do |f,idx|
-      str << "        ps->set#{cap(f[0].to_s)}(1, #{f[1]});\n"
-    end
-    str << "        sql::ResultSet *rs = ps->executeQuery();\n        #{capName} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{capName}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n        return #{name};\n    }\n\n"
+    str << cSecondaryKeysFindFunction(name, secondaryKeys)
   end
   str << "# pragma mark persistence\n\n"
-  # sync method
-  str << "    bool #{capName}::sync() {\n        #{capName}* #{name} = findById(id);\n"
-  if (!secondaryKeys.empty?)
-    str << "        if (!#{name}) #{name} = findBy"
-    secondaryKeys.each_with_index do |f,idx|
-      if (idx > 0)
-        str << "And"
-      end
-      str << "#{cap(f[1])}"
-    end
-    str << "("
-    secondaryKeys.each_with_index do |f,idx|
-      if (idx > 0)
-        str << ", "
-      end
-      str << "#{f[1]}"
-    end
-    str << ");\n"
-  end
-  str << "        if (!#{name}) {\n            return true;\n        }\n\n        // check fields\n        bool needsUpdate = false;\n"
-  fields.each do |f|
-    if (f[2] & Attrib::TRANSIENT > 0)
-      next
-    elsif ([:int, :bool, :time_t].include?(f[0]))
-      str << "        if (#{f[1]} != #{name}->get#{cap(f[1])}()) {\n            if (#{f[1]}) {\n"
-      str << "                cout << \"updating #{name}'s #{f[1]} from \" << #{name}->get#{cap(f[1])}() << \" to \" << #{f[1]} << endl;\n                needsUpdate = true;\n            } else {\n"
-      str << "                #{f[1]} = #{name}->get#{cap(f[1])}();\n            }\n        }\n"
-    elsif (f[0] == :string)
-      str << "        if (#{f[1]}.compare(#{name}->get#{cap(f[1])}())) {\n            if (!#{f[1]}.empty()) {\n"
-      str << "                cout << \"updating #{name} #{f[1]} from \" << #{name}->get#{cap(f[1])}() << \" to \" << #{f[1]} << endl;\n                needsUpdate = true;\n            } else {\n"
-      str << "                #{f[1]} = #{name}->get#{cap(f[1])}();\n            }\n        }\n"
-    else
-      next
-    end
-  end
-  str << "        return needsUpdate;\n    }\n\n"
-  str << "    int #{capName}::update() {\n        try {\n"
-  fields.each do |f|
-    next unless (f[2] & Attrib::PTR > 0)
-    str << "            if (#{f[1]} && #{f[1]}->sync()) {\n                #{f[1]}->update();\n            }\n"
-  end
-  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"update #{cap(plural(name))} set "
-  fields.each do |f|
-    next if (f[1] == "id" || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
-    str << "#{f[1]}=?, "
-  end
-  str = str[0..-3]  
-  str << " where id=?\");\n"
-  i = 0
-  fields.each do |f|
-    next if (f[1] == "id" || f[2] & Attrib::PTR > 0 || isVector(f[0]) || f[2] & Attrib::TRANSIENT > 0)
-    i += 1
-    if (f[0] == :bool)
-      str << "            ps->setBoolean(#{i}, #{f[1]});\n"
-    elsif (f[0] == :time_t)
-      str << "            ps->setString(#{i}, stringFromTime(#{f[1]}));\n"
-    else
-      str << "            ps->set#{cap(f[0].to_s)}(#{i}, #{f[1]});\n"
-    end
-  end
-  str << "            ps->setInt(#{i + 1}, id);\n            return ps->executeUpdate();\n"
-  str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
+  str << cSyncFunction(name, fields, secondaryKeys)
+  str << cUpdateFunction(name, fields)
   str << "    int #{capName}::save() {\n        try {\n"
   if (attribs & Attrib::SAVEID > 0)
     str << "            if (id == 0) {\n                sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select max(id) from #{cap(plural(name))}\");\n                sql::ResultSet *rs = ps->executeQuery();\n                rs->next();\n                id = rs->getInt(1) + 1;\n                rs->close();\n                delete rs;\n            }\n"

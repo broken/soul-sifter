@@ -18,6 +18,7 @@
 #include <cppconn/warning.h>
 
 #include "MysqlAccess.h"
+#include "DTVectorUtil.h"
 
 using namespace std;
 
@@ -31,7 +32,9 @@ namespace soulsifter {
     reId(0),
     reLabel(),
     children(),
-    parents() {
+    childrenIds(),
+    parents(),
+    parentsIds() {
     }
 
     Style::Style(const Style& style) :
@@ -40,9 +43,9 @@ namespace soulsifter {
     reId(style.getREId()),
     reLabel(style.getRELabel()),
     children(),
-    parents() {
-        childrenIds = style.childrenIds;
-        parentsIds = style.parentsIds;
+    childrenIds(style.childrenIds),
+    parents(),
+    parentsIds(style.parentsIds) {
     }
 
     void Style::operator=(const Style& style) {
@@ -68,10 +71,12 @@ namespace soulsifter {
             delete *it;
         }
         children.clear();
+        childrenIds.clear();
         for (vector<Style*>::iterator it = parents.begin(); it != parents.end(); ++it) {
             delete *it;
         }
         parents.clear();
+        parentsIds.clear();
     }
 
 # pragma mark static methods
@@ -94,7 +99,7 @@ namespace soulsifter {
         }
         rs->close();
         delete rs;
-}
+    }
 
     void Style::populateParentsIds(Style* style) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select parentId from StyleChildren where childId = ?");
@@ -105,7 +110,7 @@ namespace soulsifter {
         }
         rs->close();
         delete rs;
-}
+    }
 
     Style* Style::findById(int id) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles where id = ?");
@@ -179,6 +184,22 @@ namespace soulsifter {
                 reLabel = style->getRELabel();
             }
         }
+        if (!dogatech::equivalentVectors<int>(childrenIds, style->childrenIds)) {
+            if (!dogatech::containsVector<int>(childrenIds, style->childrenIds)) {
+                cout << "updating style childrenIds" << endl;
+                needsUpdate = true;
+            }
+            dogatech::appendUniqueVector<int>(style->childrenIds, &childrenIds);
+            children.clear();
+        }
+        if (!dogatech::equivalentVectors<int>(parentsIds, style->parentsIds)) {
+            if (!dogatech::containsVector<int>(parentsIds, style->parentsIds)) {
+                cout << "updating style parentsIds" << endl;
+                needsUpdate = true;
+            }
+            dogatech::appendUniqueVector<int>(style->parentsIds, &parentsIds);
+            parents.clear();
+        }
         return needsUpdate;
     }
 
@@ -189,7 +210,24 @@ namespace soulsifter {
             ps->setInt(2, reId);
             ps->setString(3, reLabel);
             ps->setInt(4, id);
-            return ps->executeUpdate();
+            int result = ps->executeUpdate();
+            if (!childrenIds.empty()) {
+                ps = MysqlAccess::getInstance().getPreparedStatement("insert ignore into StyleChildren (parentId, childId) values (?, ?)");
+                for (vector<int>::const_iterator it = childrenIds.begin(); it != childrenIds.end(); ++it) {
+                    ps->setInt(1, id);
+                    ps->setInt(2, *it);
+                    ps->executeUpdate();
+                }
+            }
+            if (!parentsIds.empty()) {
+                ps = MysqlAccess::getInstance().getPreparedStatement("insert ignore into StyleChildren (childId, parentId) values (?, ?)");
+                for (vector<int>::const_iterator it = parentsIds.begin(); it != parentsIds.end(); ++it) {
+                    ps->setInt(1, id);
+                    ps->setInt(2, *it);
+                    ps->executeUpdate();
+                }
+            }
+            return result;
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;

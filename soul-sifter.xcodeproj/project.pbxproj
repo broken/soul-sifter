@@ -51,6 +51,7 @@
 		188E1B241648FADB004754F4 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 188E1B231648FADB004754F4 /* libmysqlclient.18.dylib */; };
 		188E1B28164E198C004754F4 /* Style.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B26164E198C004754F4 /* Style.cpp */; };
 		188E1B2C1650B250004754F4 /* MysqlAccess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B2A1650B250004754F4 /* MysqlAccess.cpp */; };
+		189B9F6916CF157A00EA12EC /* TagWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 189B9F6716CF157900EA12EC /* TagWriter.cpp */; };
 		189C84F9153E647400F05E62 /* TagInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189C84F8153E647400F05E62 /* TagInfo.xib */; };
 		189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 189D22CA153D4F190043634A /* Cocoa.framework */; };
 		189D22D5153D4F190043634A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 189D22D3153D4F190043634A /* InfoPlist.strings */; };
@@ -186,6 +187,8 @@
 		188E1B27164E198C004754F4 /* Style.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Style.h; sourceTree = "<group>"; };
 		188E1B2A1650B250004754F4 /* MysqlAccess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MysqlAccess.cpp; sourceTree = "<group>"; };
 		188E1B2B1650B250004754F4 /* MysqlAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysqlAccess.h; sourceTree = "<group>"; };
+		189B9F6716CF157900EA12EC /* TagWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TagWriter.cpp; sourceTree = "<group>"; };
+		189B9F6816CF157900EA12EC /* TagWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagWriter.h; sourceTree = "<group>"; };
 		189C84F8153E647400F05E62 /* TagInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagInfo.xib; sourceTree = "<group>"; };
 		189D22C6153D4F190043634A /* soul-sifter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "soul-sifter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		189D22CA153D4F190043634A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -231,6 +234,7 @@
 		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
 		18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
 		18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
+		18C33FD416D76EBC0010BF10 /* DTVectorUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTVectorUtil.h; sourceTree = "<group>"; };
 		18C5F9D9166189A800912FD3 /* ArchiveUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveUtil.h; sourceTree = "<group>"; };
 		18C5F9DA166189A800912FD3 /* ArchiveUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveUtil.m; sourceTree = "<group>"; };
 		18C5F9E11661978400912FD3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -338,8 +342,18 @@
 				18028C3E1647870A00938259 /* RapidEvolutionMusicDatabaseReader.h */,
 				185A7297166B221D00D14E96 /* RapidEvolutionMusicDatabaseWriter.cpp */,
 				185A7298166B221E00D14E96 /* RapidEvolutionMusicDatabaseWriter.h */,
+				189B9F6716CF157900EA12EC /* TagWriter.cpp */,
+				189B9F6816CF157900EA12EC /* TagWriter.h */,
 			);
 			name = Organization;
+			sourceTree = "<group>";
+		};
+		1828523116E7E7530080D15B /* DT Utils */ = {
+			isa = PBXGroup;
+			children = (
+				18C33FD416D76EBC0010BF10 /* DTVectorUtil.h */,
+			);
+			name = "DT Utils";
 			sourceTree = "<group>";
 		};
 		182DC5F31605133500AA9011 /* LineReader (to package) */ = {
@@ -490,6 +504,7 @@
 				18169641154CADFB00593FEC /* AppController.h */,
 				18169642154CADFB00593FEC /* AppController.mm */,
 				189D22DC153D4F190043634A /* AppDelegate.h */,
+				1828523116E7E7530080D15B /* DT Utils */,
 				189D22DD153D4F190043634A /* AppDelegate.mm */,
 				18144CA2154DCA31009C36EE /* Constants.h */,
 				18144CA3154DCA31009C36EE /* Constants.m */,
@@ -712,6 +727,7 @@
 				18AA5FF016AFC669008E8DD3 /* RESettingHelper.cpp in Sources */,
 				18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */,
 				18AA5FF616AFCB6E008E8DD3 /* REAlbumCoverHelper.cpp in Sources */,
+				189B9F6916CF157A00EA12EC /* TagWriter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

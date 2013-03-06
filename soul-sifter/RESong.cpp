@@ -18,6 +18,7 @@
 #include <cppconn/warning.h>
 
 #include "MysqlAccess.h"
+#include "DTVectorUtil.h"
 
 using namespace std;
 
@@ -543,7 +544,8 @@ namespace soulsifter {
             ps->setInt(30, beatIntensity);
             ps->setString(31, replayGain);
             ps->setInt(32, id);
-            return ps->executeUpdate();
+            int result = ps->executeUpdate();
+            return result;
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;

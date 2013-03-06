@@ -18,6 +18,7 @@
 #include <cppconn/warning.h>
 
 #include "MysqlAccess.h"
+#include "DTVectorUtil.h"
 
 using namespace std;
 
@@ -41,7 +42,8 @@ namespace soulsifter {
     reSong(NULL),
     albumId(0),
     album(NULL),
-    styles() {
+    styles(),
+    stylesIds() {
     }
 
     Song::Song(const Song& song) :
@@ -60,8 +62,8 @@ namespace soulsifter {
     reSong(NULL),
     albumId(song.getAlbumId()),
     album(NULL),
-    styles() {
-        stylesIds = song.stylesIds;
+    styles(),
+    stylesIds(song.stylesIds) {
     }
 
     void Song::operator=(const Song& song) {
@@ -113,6 +115,7 @@ namespace soulsifter {
             delete *it;
         }
         styles.clear();
+        stylesIds.clear();
     }
 
 # pragma mark static methods
@@ -143,7 +146,7 @@ namespace soulsifter {
         }
         rs->close();
         delete rs;
-}
+    }
 
     Song* Song::findById(int id) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Songs where id = ?");
@@ -290,6 +293,14 @@ namespace soulsifter {
                 albumId = song->getAlbumId();
             }
         }
+        if (!dogatech::equivalentVectors<int>(stylesIds, song->stylesIds)) {
+            if (!dogatech::containsVector<int>(stylesIds, song->stylesIds)) {
+                cout << "updating song stylesIds" << endl;
+                needsUpdate = true;
+            }
+            dogatech::appendUniqueVector<int>(song->stylesIds, &stylesIds);
+            styles.clear();
+        }
         return needsUpdate;
     }
 
@@ -315,7 +326,16 @@ namespace soulsifter {
             ps->setInt(11, reSongId);
             ps->setInt(12, albumId);
             ps->setInt(13, id);
-            return ps->executeUpdate();
+            int result = ps->executeUpdate();
+            if (!stylesIds.empty()) {
+                ps = MysqlAccess::getInstance().getPreparedStatement("insert ignore into SongStyles (songId, styleId) values (?, ?)");
+                for (vector<int>::const_iterator it = stylesIds.begin(); it != stylesIds.end(); ++it) {
+                    ps->setInt(1, id);
+                    ps->setInt(2, *it);
+                    ps->executeUpdate();
+                }
+            }
+            return result;
         } catch (sql::SQLException &e) {
             cerr << "ERROR: SQLException in " << __FILE__;
             cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
