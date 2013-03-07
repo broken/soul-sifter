@@ -141,7 +141,7 @@ namespace soulsifter {
     Album* Album::findByNameAndArtist(const string& name, const string& artist) {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where name = ? and artist = ?");
         ps->setString(1, name);
-        ps->setString(1, artist);
+        ps->setString(2, artist);
         sql::ResultSet *rs = ps->executeQuery();
         Album *album = NULL;
         if (rs->next()) {
