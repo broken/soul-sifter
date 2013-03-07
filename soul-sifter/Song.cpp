@@ -505,13 +505,13 @@ namespace soulsifter {
             this->stylesIds.push_back((*it)->getId());
         }
     }
-    void Song::addStyle(const Style& style) {
-        if (std::find(stylesIds.begin(), stylesIds.end(), style.getId()) == stylesIds.end()) {
-                stylesIds.push_back(style.getId());
-                if (!styles.empty()) styles.push_back(new Style(style));
+    void Song::addStyleById(int styleId) {
+        if (std::find(stylesIds.begin(), stylesIds.end(), styleId) == stylesIds.end()) {
+                stylesIds.push_back(styleId);
+                if (!styles.empty()) styles.push_back(Style::findById(styleId));
         }
     }
-    void Song::removeStyle(int styleId) {
+    void Song::removeStyleById(int styleId) {
         for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
             if (styleId == (*it)->getId()) {
                 delete (*it);

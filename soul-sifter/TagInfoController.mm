@@ -108,7 +108,7 @@
     for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
         StyleTreeItem *item = [styles itemAtRow:idx];
         soulsifter::Style *style = [item style];
-        song.addStyle(*style);
+        song.addStyleById(style->getId());
     }
     song.setRESong(*soulsifter::Song::createRESongFromSong(song));
     

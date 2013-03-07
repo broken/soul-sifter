@@ -40,6 +40,11 @@ namespace dogatech {
         if (l.size() != r.size()) return false;
         return containsVector(l, r) && containsVector(r, l);
     }
+    
+    template <typename T>
+    static void deleteVectorPointers(vector<T>* v) {
+        while (!v->empty()) delete v->back(), v->pop_back();
+    }
 
 }  // namespace soulsifter
 

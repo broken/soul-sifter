@@ -43,7 +43,7 @@ namespace soulsifter {
         Style::findAllSorted(&allStyles);
         unsigned long pos = song->getStylesBitmask().find('1', 0);
         while (pos != string::npos) {
-            addStyle(*allStyles->at(pos));
+            addStyleById(allStyles->at(pos)->getId());
             pos = song->getStylesBitmask().find('1', ++pos);
         }
         while (!allStyles->empty()) delete allStyles->back(), allStyles->pop_back();

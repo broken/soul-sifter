@@ -466,13 +466,12 @@ def hAccessor(f)
   elsif (isVector(f[$type]))
     str << "        const #{f[$type]}& get#{cap(f[$name])}();\n"
     str << "        void set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]});\n"
+    #str << "        void add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])});\n"
+    str << "        void add#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id);\n"
+    str << "        void remove#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id);\n"
   else
     str << "        const #{f[$type]}& get#{cap(f[$name])}() const;\n"
     str << "        void set#{cap(f[$name])}(const #{f[$type]}& #{f[1]});\n"
-  end
-  if (isVector(f[$type]))
-    str << "        void add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])});\n"
-    str << "        void remove#{cap(single(f[$name]))}(int #{single(f[$name])}Id);\n"
   end
   return str
 end
@@ -488,8 +487,8 @@ def cAccessor(name, f)
   elsif (isVector(f[$type]))
     str << "    const #{f[$type]}& #{cap(name)}::get#{cap(f[$name])}() {\n        if (#{f[$name]}.empty() && !#{vectorIds(f)}.empty()) {\n            for (vector<int>::const_iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n                #{f[$name]}.push_back(#{vectorGeneric(f[$type])}::findById(*it));\n            }\n        }\n        return #{f[$name]};\n    }\n"
     str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        dogatech::deleteVectorPointers<#{vectorGeneric(f[$type])}*>(&this->#{f[$name]});\n        this->#{f[$name]} = #{f[$name]};\n        this->#{vectorIds(f)}.clear();\n        for (#{f[$type]}::const_iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            this->#{vectorIds(f)}.push_back((*it)->getId());\n        }\n    }\n"
-    str << "    void #{cap(name)}::add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])}) {\n        if (std::find(#{vectorIds(f)}.begin(), #{vectorIds(f)}.end(), #{single(f[$name])}.getId()) == #{vectorIds(f)}.end()) {\n                #{vectorIds(f)}.push_back(#{single(f[$name])}.getId());\n                if (!#{f[$name]}.empty()) #{f[$name]}.push_back(new #{cap(vectorGeneric(f[$type]))}(#{single(f[$name])}));\n        }\n    }\n"
-    str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}(int #{single(f[$name])}Id) {\n        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            if (#{single(f[$name])}Id == (*it)->getId()) {\n                delete (*it);\n                #{f[$name]}.erase(it);\n            }\n        }\n        for (vector<int>::iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n            if (#{single(f[$name])}Id == *it) {\n                #{vectorIds(f)}.erase(it);\n            }\n        }\n    }\n"
+    str << "    void #{cap(name)}::add#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id) {\n        if (std::find(#{vectorIds(f)}.begin(), #{vectorIds(f)}.end(), #{single(f[$name])}Id) == #{vectorIds(f)}.end()) {\n                #{vectorIds(f)}.push_back(#{single(f[$name])}Id);\n                if (!#{f[$name]}.empty()) #{f[$name]}.push_back(#{vectorGeneric(f[$type])}::findById(#{single(f[$name])}Id));\n        }\n    }\n"
+    str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id) {\n        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            if (#{single(f[$name])}Id == (*it)->getId()) {\n                delete (*it);\n                #{f[$name]}.erase(it);\n            }\n        }\n        for (vector<int>::iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n            if (#{single(f[$name])}Id == *it) {\n                #{vectorIds(f)}.erase(it);\n            }\n        }\n    }\n"
   else
     str << "    const #{f[$type]} #{cap(name)}::get#{cap(f[$name])}() const { return #{f[$name]}; }\n"
     if (f[$type] == :int && f[$name] =~ /Id$/ && f[$attrib] & Attrib::ID > 0)

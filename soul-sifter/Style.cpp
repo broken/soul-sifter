@@ -314,13 +314,13 @@ namespace soulsifter {
             this->childrenIds.push_back((*it)->getId());
         }
     }
-    void Style::addChild(const Style& child) {
-        if (std::find(childrenIds.begin(), childrenIds.end(), child.getId()) == childrenIds.end()) {
-                childrenIds.push_back(child.getId());
-                if (!children.empty()) children.push_back(new Style(child));
+    void Style::addChildById(int childId) {
+        if (std::find(childrenIds.begin(), childrenIds.end(), childId) == childrenIds.end()) {
+                childrenIds.push_back(childId);
+                if (!children.empty()) children.push_back(Style::findById(childId));
         }
     }
-    void Style::removeChild(int childId) {
+    void Style::removeChildById(int childId) {
         for (vector<Style*>::iterator it = children.begin(); it != children.end(); ++it) {
             if (childId == (*it)->getId()) {
                 delete (*it);
@@ -350,13 +350,13 @@ namespace soulsifter {
             this->parentsIds.push_back((*it)->getId());
         }
     }
-    void Style::addParent(const Style& parent) {
-        if (std::find(parentsIds.begin(), parentsIds.end(), parent.getId()) == parentsIds.end()) {
-                parentsIds.push_back(parent.getId());
-                if (!parents.empty()) parents.push_back(new Style(parent));
+    void Style::addParentById(int parentId) {
+        if (std::find(parentsIds.begin(), parentsIds.end(), parentId) == parentsIds.end()) {
+                parentsIds.push_back(parentId);
+                if (!parents.empty()) parents.push_back(Style::findById(parentId));
         }
     }
-    void Style::removeParent(int parentId) {
+    void Style::removeParentById(int parentId) {
         for (vector<Style*>::iterator it = parents.begin(); it != parents.end(); ++it) {
             if (parentId == (*it)->getId()) {
                 delete (*it);

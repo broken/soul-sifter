@@ -52,12 +52,12 @@ namespace soulsifter {
         void setRELabel(const string& reLabel);
         const vector<Style*>& getChildren();
         void setChildren(const vector<Style*>& children);
-        void addChild(const Style& child);
-        void removeChild(int childId);
+        void addChildById(int childId);
+        void removeChildById(int childId);
         const vector<Style*>& getParents();
         void setParents(const vector<Style*>& parents);
-        void addParent(const Style& parent);
-        void removeParent(int parentId);
+        void addParentById(int parentId);
+        void removeParentById(int parentId);
 
     private:
         int id;

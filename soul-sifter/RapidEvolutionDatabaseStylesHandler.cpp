@@ -39,8 +39,8 @@ void RapidEvolutionDatabaseStylesHandler::endElement(const XMLCh* const uri,
         parser->setContentHandler(parentHandler);
         for (vector<pair<int, int> >::iterator it = childStyles.begin(); it != childStyles.end(); ++it) {
             Style* parent = Style::findByREId(it->first);
-            Style* child = Style::findByREId(it->second);
-            parent->addChild(*child);
+            parent->addChildById(it->second);
+            if (parent->sync()) parent->update();
         }
     }
 }

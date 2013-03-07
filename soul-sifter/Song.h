@@ -80,8 +80,8 @@ namespace soulsifter {
         void setAlbum(const Album& album);
         const vector<Style*>& getStyles();
         void setStyles(const vector<Style*>& styles);
-        void addStyle(const Style& style);
-        void removeStyle(int styleId);
+        void addStyleById(int styleId);
+        void removeStyleById(int styleId);
 
     private:
         int id;
