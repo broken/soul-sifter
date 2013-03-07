@@ -310,6 +310,8 @@ def cSyncFunction(name, fields, secondaryKeys)
       str << "        if (!dogatech::equivalentVectors<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n            if (!dogatech::containsVector<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n"
       str << "                cout << \"updating #{name} #{vectorIds(f)}\" << endl;\n                needsUpdate = true;\n            }\n"
       str << "            dogatech::appendUniqueVector<int>(#{name}->#{vectorIds(f)}, &#{vectorIds(f)});\n            #{f[$name]}.clear();\n        }\n"
+    elsif (f[$attrib] & Attrib::PTR > 0)
+      str << "        if (#{f[$name]}) needsUpdate |= #{f[$name]}->sync();\n"
     else
       next
     end

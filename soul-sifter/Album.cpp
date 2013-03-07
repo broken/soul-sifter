@@ -253,6 +253,7 @@ namespace soulsifter {
                 basicGenreId = album->getBasicGenreId();
             }
         }
+        if (basicGenre) needsUpdate |= basicGenre->sync();
         return needsUpdate;
     }
 

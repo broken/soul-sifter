@@ -136,6 +136,7 @@ namespace soulsifter {
                 outSongId = mix->getOutSongId();
             }
         }
+        if (outSong) needsUpdate |= outSong->sync();
         if (inSongId != mix->getInSongId()) {
             if (inSongId) {
                 cout << "updating mix's inSongId from " << mix->getInSongId() << " to " << inSongId << endl;
@@ -144,6 +145,7 @@ namespace soulsifter {
                 inSongId = mix->getInSongId();
             }
         }
+        if (inSong) needsUpdate |= inSong->sync();
         if (bpmDiff.compare(mix->getBpmDiff())) {
             if (!bpmDiff.empty()) {
                 cout << "updating mix bpmDiff from " << mix->getBpmDiff() << " to " << bpmDiff << endl;

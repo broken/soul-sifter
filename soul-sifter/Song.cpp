@@ -285,6 +285,7 @@ namespace soulsifter {
                 reSongId = song->getRESongId();
             }
         }
+        if (reSong) needsUpdate |= reSong->sync();
         if (albumId != song->getAlbumId()) {
             if (albumId) {
                 cout << "updating song's albumId from " << song->getAlbumId() << " to " << albumId << endl;
@@ -293,6 +294,7 @@ namespace soulsifter {
                 albumId = song->getAlbumId();
             }
         }
+        if (album) needsUpdate |= album->sync();
         if (!dogatech::equivalentVectors<int>(stylesIds, song->stylesIds)) {
             if (!dogatech::containsVector<int>(stylesIds, song->stylesIds)) {
                 cout << "updating song stylesIds" << endl;
