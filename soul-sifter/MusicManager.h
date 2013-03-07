@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Dogatech. All rights reserved.
 //
 
+#ifndef __soul_sifter__MusicManager__
+#define __soul_sifter__MusicManager__
+
 #include <string>
 
 #include <boost/unordered_map.hpp>
@@ -61,3 +64,5 @@ private:
 };
     
 }
+
+#endif /* defined(__soul_sifter__MusicManager__) */
