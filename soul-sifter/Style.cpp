@@ -146,6 +146,7 @@ namespace soulsifter {
 
     bool Style::sync() {
         Style* style = findById(id);
+        if (!style) style = findByREId(reId);
         if (!style) {
             return true;
         }
