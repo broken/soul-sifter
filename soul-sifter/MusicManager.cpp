@@ -246,11 +246,19 @@ void MusicManager::writeTagsToSong(Song* song) {
         id3v2->setAlbum(song->getAlbum()->getName());
         {
             stringstream ss;
-            ss << song->getTitle() << " (" << song->getRemix() << ")";
+            ss << song->getTitle();
+            if (!song->getRemix().empty())
+                ss << " (" << song->getRemix() << ")";
             id3v2->setTitle(ss.str());
         }
         id3v2->setYear(song->getAlbum()->getReleaseDateYear());
-        setId3v2Text(id3v2, "TCON", song->getStyles().back()->getName().c_str());
+        for (long i = song->getStyles().size(); i > 0; --i) {
+            const char* style = song->getStyles().back()->getName().c_str();
+            if (style[0] != '=' && style[0] != '_' && style[0] != '.') {
+                setId3v2Text(id3v2, "TCON", style);
+                break;
+            }
+        }
         setId3v2Text(id3v2, "TPE4", song->getRemix().c_str());
         setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());
         setId3v2Text(id3v2, "TPE2", song->getAlbum()->getArtist().c_str());
@@ -279,7 +287,9 @@ void MusicManager::writeTagsToSong(Song* song) {
             setId3v2Text(id3v2, "TDAT", daymonth.str().c_str());
         }
         bool result = f.save();
-        cout << "saved: " << result << endl;
+        if (!result) {
+            cerr << "unable to save " << song->getFilepath() << endl;
+        }
     }
 }
 

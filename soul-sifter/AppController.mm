@@ -78,6 +78,14 @@
                            withObject:self];
 }
 
+- (IBAction)writeTags:(id)sender {
+    NSLog(@"writeTags");
+    [self showProcessProgressWindow:self];
+    [NSThread detachNewThreadSelector:@selector(writeTags:)
+                             toTarget:processProgressController
+                           withObject:self];
+}
+
 # pragma mark accessors
 
 @end

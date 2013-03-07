@@ -9,16 +9,19 @@
 #import <Foundation/Foundation.h>
 
 #include "RapidEvolutionMusicDatabaseReader.h"
+#include "TagWriter.h"
 
 @interface ProcessProgressController : NSWindowController {
 @public
     IBOutlet NSProgressIndicator *progressIndicator;
     soulsifter::RapidEvolutionMusicDatabaseReader *musicDatabaseReader;
+    soulsifter::TagWriter *tagWriter;
 }
 
 - (IBAction)showWindow:(id)sender;
 - (IBAction)readRapidEvolutionDatabase:(id)sender;
 - (IBAction)updateBasicGenres:(id)sender;
 - (IBAction)exportToRapidEvolutionDatabase:(id)sender;
+- (IBAction)writeTags:(id)sender;
 
 @end

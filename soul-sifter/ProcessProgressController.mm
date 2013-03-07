@@ -12,6 +12,7 @@
 #include "MusicManager.h"
 #include "RapidEvolutionMusicDatabaseReader.h"
 #include "RapidEvolutionMusicDatabaseWriter.h"
+#include "TagWriter.h"
 
 # pragma mark private method helpers
 
@@ -43,6 +44,13 @@
         [progressIndicator setIndeterminate:FALSE];
         [self performSelector:@selector(incrementProgressBar:) withObject:self afterDelay:1];
     }
+    if (tagWriter != NULL && tagWriter->getSrcLength()) {
+        [progressIndicator setMinValue:0.0];
+        [progressIndicator setMaxValue:tagWriter->getSrcLength()];
+        [progressIndicator setDoubleValue:tagWriter->getSrcOffset()];
+        [progressIndicator setIndeterminate:FALSE];
+        [self performSelector:@selector(incrementProgressBar:) withObject:self afterDelay:1];
+    }
     [self performSelector:@selector(startProgressBar:) withObject:self afterDelay:1];
 }
 
@@ -63,8 +71,16 @@
         [progressIndicator stopAnimation:self];
         return;
     }
+    if (!tagWriter || !tagWriter->isProcessing()) {
+        [progressIndicator stopAnimation:self];
+        return;
+    }
     
-    [progressIndicator setDoubleValue:musicDatabaseReader->getSrcOffset()];
+    if (musicDatabaseReader) {
+        [progressIndicator setDoubleValue:musicDatabaseReader->getSrcOffset()];
+    } else if (tagWriter) {
+        [progressIndicator setDoubleValue:tagWriter->getSrcOffset()];
+    }
     [self performSelector:@selector(incrementProgressBar:) withObject:self afterDelay:1];
 }
 
@@ -88,6 +104,19 @@
     [[self window] setTitle:@"Exporting to RapidEvolution Database"];
     soulsifter::RapidEvolutionMusicDatabaseWriter writer;
     writer.write();
+    [[self window] close];
+    [pool release];
+}
+
+- (IBAction)writeTags:(id)sender {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSLog(@"writeTags");
+    tagWriter = new soulsifter::TagWriter();
+    [self startProgressBar:self];
+    [[self window] setTitle:@"Writing tags to music files"];
+    tagWriter->writeAll();
+    delete tagWriter;
+    tagWriter = NULL;
     [[self window] close];
     [pool release];
 }

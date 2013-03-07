@@ -31,5 +31,6 @@
 - (IBAction)readRapidEvolutionDatabase:(id)sender;
 - (IBAction)updateBasicGenres:(id)sender;
 - (IBAction)exportToRapidEvolutionDatabase:(id)sender;
+- (IBAction)writeTags:(id)sender;
 
 @end
