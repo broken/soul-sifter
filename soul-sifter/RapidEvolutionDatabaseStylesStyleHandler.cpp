@@ -70,19 +70,15 @@ void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri
                                                           const XMLCh* const qName) {
     if (!XMLString::compareString(qName, getQname()) && parentHandler != NULL) {
         parser->setContentHandler(parentHandler);
-        Style* dbStyle = Style::findByREId(style.getREId());
-        if (dbStyle) {
-            // TODO revisit update style
-            if (dbStyle->getRELabel().compare(style.getRELabel())) {
-                cout << "updating style " << style.getId() << " re name from " << dbStyle->getRELabel() << " to " << style.getRELabel() << endl;
-                dbStyle->setRELabel(style.getRELabel());
-                dbStyle->update();
+        if (style.sync()) {
+            if (style.getId()) {
+                style.update();
+            } else {
+                if (style.getName().length() == 0) {
+                    style.setName(style.getRELabel());
+                }
+                style.save();
             }
-        } else {
-            if (style.getName().length() == 0) {
-                style.setName(style.getRELabel());
-            }
-            style.save();
         }
     }
 }
