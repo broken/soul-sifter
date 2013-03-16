@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "ResultSetIterator.h"
 #include "Song.h"
 
 namespace sql {
@@ -32,6 +33,7 @@ namespace soulsifter {
 
         static Mix* findById(int id);
         static Mix* findByOutSongIdAndInSongId(int outSongId, int inSongId);
+        static dogatech::ResultSetIterator<Mix>* findAll();
 
         bool sync();
         int update();
@@ -39,20 +41,7 @@ namespace soulsifter {
 
         friend class RapidEvolutionDatabaseMixoutsMixoutHandler;
 
-        class MixResultSet {
-        public:
-            explicit MixResultSet(sql::ResultSet* resultset);
-            ~MixResultSet();
-
-            bool next(Mix* mix);
-
-        private:
-            sql::ResultSet* rs;
-
-            MixResultSet();
-        };
-
-        static MixResultSet* findAll();
+        static int mixoutCountForRESongId(int outSongId);
 
         const int getId() const;
         void setId(int id);
@@ -72,6 +61,8 @@ namespace soulsifter {
         void setComments(const string& comments);
         const bool getAddon() const;
         void setAddon(bool addon);
+
+        friend dogatech::ResultSetIterator<Mix>;
 
     private:
         int id;

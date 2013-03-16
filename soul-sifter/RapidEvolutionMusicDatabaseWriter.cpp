@@ -21,6 +21,7 @@
 #include "RESetting.h"
 #include "RESong.h"
 #include "REXml.h"
+#include "ResultSetIterator.h"
 #include "Style.h"
 
 using namespace std;
@@ -147,13 +148,13 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     };
     w.startElement("songs", songsAttribs).endl();
     deleteAttribs(songsAttribs);
-    RESong::RESongIterator* songs = RESong::findAll();
+    dogatech::ResultSetIterator<RESong>* songs = RESong::findAll();
     RESong song;
     while (songs->next(&song)) {
         song.setStylesBitmaskFromDb();
         attrib* songAttribs[] = {
             new attrib("num_excludes","0"),
-            new attrib("num_mixouts",int2str(songs->getMixoutCountForCurrentSong())),
+            new attrib("num_mixouts",int2str(Mix::mixoutCountForRESongId(song.getId()))),
             NULL
         };
         w.startElement("song", songAttribs).endl();
@@ -262,7 +263,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     // TODO mixouts
     //f << "<mixouts>" << endl;
     w.startElement("mixouts", NULL).writeNewline();
-    Mix::MixResultSet* mixes = Mix::findAll();
+    dogatech::ResultSetIterator<Mix>* mixes = Mix::findAll();
     Mix mix;
     while (mixes->next(&mix)) {
         //f << "<mixout>" << endl;
@@ -296,7 +297,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     
     //f << "<albumcovers>" << endl;
     w.startElement("albumcovers", NULL).writeNewline();
-    REAlbumCover::REAlbumCoverIterator* covers = REAlbumCover::findAll();
+    dogatech::ResultSetIterator<REAlbumCover>* covers = REAlbumCover::findAll();
     REAlbumCover ac;
     while (covers->next(&ac)) {
         attrib* acAttribs[] = {

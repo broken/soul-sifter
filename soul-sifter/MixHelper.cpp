@@ -16,29 +16,26 @@
 
 namespace soulsifter {
     
-    Mix::MixResultSet* Mix::findAll() {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes");
-        sql::ResultSet *rs = ps->executeQuery();
-        MixResultSet *mrs = new MixResultSet(rs);
-        return mrs;
-    }
-    
-# pragma mark MixResultSet
-    
-    Mix::MixResultSet::MixResultSet(sql::ResultSet* resultset) :
-    rs(resultset) {
-    }
-    
-    Mix::MixResultSet::~MixResultSet() {
-        delete rs;
-    }
-    
-    bool Mix::MixResultSet::next(Mix* mix) {
-        if (rs->next()) {
-            populateFields(rs, mix);
-            return true;
-        } else {
-            return false;
+    int Mix::mixoutCountForRESongId(int outRESongId) {
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select count(*) from Song s join Mixes m on (s.id = m.outSongId) where s.reSongId = ?");
+            ps->setInt(1, outRESongId);
+            sql::ResultSet *rs = ps->executeQuery();
+            int count = 0;
+            if (rs->next()) {
+                count = rs->getInt(1);
+            }
+            rs->close();
+            delete rs;
+            
+            return count;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
         }
     }
     

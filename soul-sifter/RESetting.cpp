@@ -109,6 +109,13 @@ namespace soulsifter {
         }
     }
 
+    dogatech::ResultSetIterator<RESetting>* RESetting::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings");
+        sql::ResultSet *rs = ps->executeQuery();
+        dogatech::ResultSetIterator<RESetting> *dtrs = new dogatech::ResultSetIterator<RESetting>(rs);
+        return dtrs;
+    }
+
 # pragma mark persistence
 
     bool RESetting::sync() {

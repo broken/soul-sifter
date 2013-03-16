@@ -104,6 +104,13 @@ namespace soulsifter {
         }
     }
 
+    dogatech::ResultSetIterator<BasicGenre>* BasicGenre::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres");
+        sql::ResultSet *rs = ps->executeQuery();
+        dogatech::ResultSetIterator<BasicGenre> *dtrs = new dogatech::ResultSetIterator<BasicGenre>(rs);
+        return dtrs;
+    }
+
 # pragma mark persistence
 
     bool BasicGenre::sync() {

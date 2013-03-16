@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "ResultSetIterator.h"
 #include "BasicGenre.h"
 
 namespace sql {
@@ -33,6 +34,7 @@ namespace soulsifter {
         static Album* findById(int id);
         static Album* findByCoverFilepath(const string& coverFilepath);
         static Album* findByNameAndArtist(const string& name, const string& artist);
+        static dogatech::ResultSetIterator<Album>* findAll();
 
         bool sync();
         int update();
@@ -64,6 +66,8 @@ namespace soulsifter {
         void setBasicGenreId(int basicGenreId);
         BasicGenre* getBasicGenre() const;
         void setBasicGenre(const BasicGenre& basicGenre);
+
+        friend dogatech::ResultSetIterator<Album>;
 
     private:
         int id;

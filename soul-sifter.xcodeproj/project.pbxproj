@@ -41,6 +41,7 @@
 		185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC39167EE52F006FB8AF /* StylesViewController.m */; };
 		185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */; };
 		185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */; };
+		1884FAFA16F4309900CFD5AC /* MixHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1884FAF916F4309800CFD5AC /* MixHelper.cpp */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
 		188E1B141648E973004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */; };
 		188E1B171648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B151648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp */; };
@@ -70,13 +71,11 @@
 		18A73F7D1665EFFA0074E137 /* BasicGenre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */; };
 		18AA5FDD16AE7AFD008E8DD3 /* AlbumHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FDB16AE7AFD008E8DD3 /* AlbumHelper.cpp */; };
 		18AA5FE116AE7BD7008E8DD3 /* BasicGenreHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FDF16AE7BD7008E8DD3 /* BasicGenreHelper.cpp */; };
-		18AA5FE416AE8839008E8DD3 /* MixHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FE216AE8839008E8DD3 /* MixHelper.cpp */; };
 		18AA5FE716AEA1F5008E8DD3 /* RESongHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FE516AEA1F4008E8DD3 /* RESongHelper.cpp */; };
 		18AA5FEA16AEAAD4008E8DD3 /* SongHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FE816AEAAD3008E8DD3 /* SongHelper.cpp */; };
 		18AA5FED16AF3F04008E8DD3 /* StyleHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */; };
 		18AA5FF016AFC669008E8DD3 /* RESettingHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */; };
 		18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */; };
-		18AA5FF616AFCB6E008E8DD3 /* REAlbumCoverHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */; };
 		18AA5FFF16C0EC68008E8DD3 /* libtag.1.12.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */; };
 		18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */; };
 		18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */; };
@@ -169,6 +168,8 @@
 		185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StylesTreeDataSource.mm; sourceTree = "<group>"; };
 		185CFC40167EEC97006FB8AF /* StyleTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleTreeItem.h; sourceTree = "<group>"; };
 		185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StyleTreeItem.mm; sourceTree = "<group>"; };
+		1884FAF816F42A7D00CFD5AC /* ResultSetIterator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultSetIterator.h; sourceTree = "<group>"; };
+		1884FAF916F4309800CFD5AC /* MixHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MixHelper.cpp; sourceTree = "<group>"; };
 		188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigHandler.cpp; sourceTree = "<group>"; };
 		188E1B101648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseConfigHandler.h; sourceTree = "<group>"; };
 		188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseExcludesHandler.cpp; sourceTree = "<group>"; };
@@ -220,13 +221,11 @@
 		18A73F7C1665EFFA0074E137 /* BasicGenre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicGenre.h; sourceTree = "<group>"; };
 		18AA5FDB16AE7AFD008E8DD3 /* AlbumHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlbumHelper.cpp; sourceTree = "<group>"; };
 		18AA5FDF16AE7BD7008E8DD3 /* BasicGenreHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicGenreHelper.cpp; sourceTree = "<group>"; };
-		18AA5FE216AE8839008E8DD3 /* MixHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MixHelper.cpp; sourceTree = "<group>"; };
 		18AA5FE516AEA1F4008E8DD3 /* RESongHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESongHelper.cpp; sourceTree = "<group>"; };
 		18AA5FE816AEAAD3008E8DD3 /* SongHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SongHelper.cpp; sourceTree = "<group>"; };
 		18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StyleHelper.cpp; sourceTree = "<group>"; };
 		18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESettingHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXmlHelper.cpp; sourceTree = "<group>"; };
-		18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REAlbumCoverHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF716C02F2E008E8DD3 /* libid3-3.8.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libid3-3.8.3.0.0.dylib"; path = "../../../../../../../usr/local/lib/libid3-3.8.3.0.0.dylib"; sourceTree = "<group>"; };
 		18AA5FFC16C0E8AC008E8DD3 /* libtag.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtag.a; path = ../../../../../../../usr/local/lib/libtag.a; sourceTree = "<group>"; };
 		18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtag.1.12.0.dylib; path = ../../../../../../../usr/local/Cellar/taglib/1.8/lib/libtag.1.12.0.dylib; sourceTree = "<group>"; };
@@ -404,7 +403,7 @@
 				18AA5FDF16AE7BD7008E8DD3 /* BasicGenreHelper.cpp */,
 				18A73F7B1665EFFA0074E137 /* BasicGenre.cpp */,
 				18A73F7C1665EFFA0074E137 /* BasicGenre.h */,
-				18AA5FE216AE8839008E8DD3 /* MixHelper.cpp */,
+				1884FAF916F4309800CFD5AC /* MixHelper.cpp */,
 				185A729D166C9C6C00D14E96 /* Mix.cpp */,
 				185A729E166C9C6E00D14E96 /* Mix.h */,
 				18AA5FE516AEA1F4008E8DD3 /* RESongHelper.cpp */,
@@ -422,7 +421,6 @@
 				18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */,
 				185A728B166B048600D14E96 /* REXml.cpp */,
 				185A728C166B048600D14E96 /* REXml.h */,
-				18AA5FF416AFCB6D008E8DD3 /* REAlbumCoverHelper.cpp */,
 				185A7294166B154200D14E96 /* REAlbumCover.cpp */,
 				185A7295166B154300D14E96 /* REAlbumCover.h */,
 			);
@@ -434,6 +432,7 @@
 			children = (
 				188E1B2A1650B250004754F4 /* MysqlAccess.cpp */,
 				188E1B2B1650B250004754F4 /* MysqlAccess.h */,
+				1884FAF816F42A7D00CFD5AC /* ResultSetIterator.h */,
 			);
 			name = Persistence;
 			sourceTree = "<group>";
@@ -720,14 +719,13 @@
 				185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */,
 				18AA5FDD16AE7AFD008E8DD3 /* AlbumHelper.cpp in Sources */,
 				18AA5FE116AE7BD7008E8DD3 /* BasicGenreHelper.cpp in Sources */,
-				18AA5FE416AE8839008E8DD3 /* MixHelper.cpp in Sources */,
 				18AA5FE716AEA1F5008E8DD3 /* RESongHelper.cpp in Sources */,
 				18AA5FEA16AEAAD4008E8DD3 /* SongHelper.cpp in Sources */,
 				18AA5FED16AF3F04008E8DD3 /* StyleHelper.cpp in Sources */,
 				18AA5FF016AFC669008E8DD3 /* RESettingHelper.cpp in Sources */,
 				18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */,
-				18AA5FF616AFCB6E008E8DD3 /* REAlbumCoverHelper.cpp in Sources */,
 				189B9F6916CF157A00EA12EC /* TagWriter.cpp in Sources */,
+				1884FAFA16F4309900CFD5AC /* MixHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

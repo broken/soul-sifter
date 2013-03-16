@@ -258,6 +258,13 @@ namespace soulsifter {
         }
     }
 
+    dogatech::ResultSetIterator<RESong>* RESong::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs");
+        sql::ResultSet *rs = ps->executeQuery();
+        dogatech::ResultSetIterator<RESong> *dtrs = new dogatech::ResultSetIterator<RESong>(rs);
+        return dtrs;
+    }
+
 # pragma mark persistence
 
     bool RESong::sync() {

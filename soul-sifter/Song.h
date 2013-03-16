@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "Style.h"
+#include "ResultSetIterator.h"
 #include "RESong.h"
 #include "Album.h"
 
@@ -34,6 +35,7 @@ namespace soulsifter {
 
         static Song* findById(int id);
         static Song* findByRESongId(int reSongId);
+        static dogatech::ResultSetIterator<Song>* findAll();
 
         bool sync();
         int update();
@@ -82,6 +84,8 @@ namespace soulsifter {
         void setStyles(const vector<Style*>& styles);
         void addStyleById(int styleId);
         void removeStyleById(int styleId);
+
+        friend dogatech::ResultSetIterator<Song>;
 
     private:
         int id;

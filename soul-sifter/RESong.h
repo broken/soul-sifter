@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "Style.h"
+#include "ResultSetIterator.h"
 
 namespace sql {
     class ResultSet;
@@ -32,6 +33,7 @@ namespace soulsifter {
 
         static RESong* findById(int id);
         static RESong* findBySongid(const string& songid);
+        static dogatech::ResultSetIterator<RESong>* findAll();
 
         bool sync();
         int update();
@@ -39,22 +41,6 @@ namespace soulsifter {
 
         friend class RapidEvolutionDatabaseSongsSongHandler;
 
-        class RESongIterator {
-        public:
-            explicit RESongIterator(sql::ResultSet* resultset);
-            ~RESongIterator();
-
-            bool next(RESong* song);
-            const int getMixoutCountForCurrentSong() const;
-
-        private:
-            sql::ResultSet* rs;
-            int mixoutCount;
-
-            RESongIterator();
-        };
-
-        static RESongIterator* findAll();
         static const int maxREId();
         void getStylesFromBitmask(vector<Style*>** styles);
         void setStylesBitmaskFromDb();
@@ -126,6 +112,8 @@ namespace soulsifter {
         void setReplayGain(const string& replayGain);
         const string& getStylesBitmask() const;
         void setStylesBitmask(const string& stylesBitmask);
+
+        friend dogatech::ResultSetIterator<RESong>;
 
     private:
         int id;

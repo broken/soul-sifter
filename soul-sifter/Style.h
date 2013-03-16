@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "ResultSetIterator.h"
 
 namespace sql {
     class ResultSet;
@@ -31,6 +32,7 @@ namespace soulsifter {
 
         static Style* findById(int id);
         static Style* findByREId(int reId);
+        static dogatech::ResultSetIterator<Style>* findAll();
 
         bool sync();
         int update();
@@ -58,6 +60,8 @@ namespace soulsifter {
         void setParents(const vector<Style*>& parents);
         void addParentById(int parentId);
         void removeParentById(int parentId);
+
+        friend dogatech::ResultSetIterator<Style>;
 
     private:
         int id;

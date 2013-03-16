@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "ResultSetIterator.h"
 
 namespace sql {
     class ResultSet;
@@ -31,25 +32,11 @@ namespace soulsifter {
 
         static REAlbumCover* findById(int id);
         static REAlbumCover* findByREId(const string& reId);
+        static dogatech::ResultSetIterator<REAlbumCover>* findAll();
 
         bool sync();
         int update();
         int save();
-
-        class REAlbumCoverIterator {
-        public:
-            explicit REAlbumCoverIterator(sql::ResultSet* resultset);
-            ~REAlbumCoverIterator();
-
-            bool next(REAlbumCover* albumcover);
-
-        private:
-            sql::ResultSet* rs;
-
-            REAlbumCoverIterator();
-        };
-
-        static REAlbumCoverIterator* findAll();
 
         const int getId() const;
         void setId(int id);
@@ -57,6 +44,8 @@ namespace soulsifter {
         void setREId(const string& reId);
         const string& getThumbnail() const;
         void setThumbnail(const string& thumbnail);
+
+        friend dogatech::ResultSetIterator<REAlbumCover>;
 
     private:
         int id;

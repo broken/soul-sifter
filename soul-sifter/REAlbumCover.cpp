@@ -109,6 +109,13 @@ namespace soulsifter {
         }
     }
 
+    dogatech::ResultSetIterator<REAlbumCover>* REAlbumCover::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REAlbumCovers");
+        sql::ResultSet *rs = ps->executeQuery();
+        dogatech::ResultSetIterator<REAlbumCover> *dtrs = new dogatech::ResultSetIterator<REAlbumCover>(rs);
+        return dtrs;
+    }
+
 # pragma mark persistence
 
     bool REAlbumCover::sync() {

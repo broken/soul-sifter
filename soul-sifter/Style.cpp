@@ -160,6 +160,13 @@ namespace soulsifter {
         }
     }
 
+    dogatech::ResultSetIterator<Style>* Style::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles");
+        sql::ResultSet *rs = ps->executeQuery();
+        dogatech::ResultSetIterator<Style> *dtrs = new dogatech::ResultSetIterator<Style>(rs);
+        return dtrs;
+    }
+
 # pragma mark persistence
 
     bool Style::sync() {

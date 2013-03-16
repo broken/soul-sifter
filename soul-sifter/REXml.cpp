@@ -109,6 +109,13 @@ namespace soulsifter {
         }
     }
 
+    dogatech::ResultSetIterator<REXml>* REXml::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REXml");
+        sql::ResultSet *rs = ps->executeQuery();
+        dogatech::ResultSetIterator<REXml> *dtrs = new dogatech::ResultSetIterator<REXml>(rs);
+        return dtrs;
+    }
+
 # pragma mark persistence
 
     bool REXml::sync() {

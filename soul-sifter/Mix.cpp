@@ -144,6 +144,13 @@ namespace soulsifter {
         }
     }
 
+    dogatech::ResultSetIterator<Mix>* Mix::findAll() {
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes");
+        sql::ResultSet *rs = ps->executeQuery();
+        dogatech::ResultSetIterator<Mix> *dtrs = new dogatech::ResultSetIterator<Mix>(rs);
+        return dtrs;
+    }
+
 # pragma mark persistence
 
     bool Mix::sync() {
