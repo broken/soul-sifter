@@ -109,49 +109,76 @@ namespace soulsifter {
     }
 
     Album* Album::findById(int id) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where id = ?");
-        ps->setInt(1, id);
-        sql::ResultSet *rs = ps->executeQuery();
-        Album *album = NULL;
-        if (rs->next()) {
-            album = new Album();
-            populateFields(rs, album);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where id = ?");
+            ps->setInt(1, id);
+            sql::ResultSet *rs = ps->executeQuery();
+            Album *album = NULL;
+            if (rs->next()) {
+                album = new Album();
+                populateFields(rs, album);
+            }
+            rs->close();
+            delete rs;
 
-        return album;
+            return album;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
     Album* Album::findByCoverFilepath(const string& coverFilepath) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where coverFilepath = ?");
-        ps->setString(1, coverFilepath);
-        sql::ResultSet *rs = ps->executeQuery();
-        Album *album = NULL;
-        if (rs->next()) {
-            album = new Album();
-            populateFields(rs, album);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where coverFilepath = ?");
+            ps->setString(1, coverFilepath);
+            sql::ResultSet *rs = ps->executeQuery();
+            Album *album = NULL;
+            if (rs->next()) {
+                album = new Album();
+                populateFields(rs, album);
+            }
+            rs->close();
+            delete rs;
 
-        return album;
+            return album;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
     Album* Album::findByNameAndArtist(const string& name, const string& artist) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where name = ? and artist = ?");
-        ps->setString(1, name);
-        ps->setString(2, artist);
-        sql::ResultSet *rs = ps->executeQuery();
-        Album *album = NULL;
-        if (rs->next()) {
-            album = new Album();
-            populateFields(rs, album);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Albums where name = ? and artist = ?");
+            ps->setString(1, name);
+            ps->setString(2, artist);
+            sql::ResultSet *rs = ps->executeQuery();
+            Album *album = NULL;
+            if (rs->next()) {
+                album = new Album();
+                populateFields(rs, album);
+            }
+            rs->close();
+            delete rs;
 
-        return album;
+            return album;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
 # pragma mark persistence
@@ -282,7 +309,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 
@@ -329,7 +356,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 

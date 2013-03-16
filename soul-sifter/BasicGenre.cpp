@@ -57,33 +57,51 @@ namespace soulsifter {
     }
 
     BasicGenre* BasicGenre::findById(int id) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where id = ?");
-        ps->setInt(1, id);
-        sql::ResultSet *rs = ps->executeQuery();
-        BasicGenre *basicGenre = NULL;
-        if (rs->next()) {
-            basicGenre = new BasicGenre();
-            populateFields(rs, basicGenre);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where id = ?");
+            ps->setInt(1, id);
+            sql::ResultSet *rs = ps->executeQuery();
+            BasicGenre *basicGenre = NULL;
+            if (rs->next()) {
+                basicGenre = new BasicGenre();
+                populateFields(rs, basicGenre);
+            }
+            rs->close();
+            delete rs;
 
-        return basicGenre;
+            return basicGenre;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
     BasicGenre* BasicGenre::findByName(const string& name) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where name = ?");
-        ps->setString(1, name);
-        sql::ResultSet *rs = ps->executeQuery();
-        BasicGenre *basicGenre = NULL;
-        if (rs->next()) {
-            basicGenre = new BasicGenre();
-            populateFields(rs, basicGenre);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres where name = ?");
+            ps->setString(1, name);
+            sql::ResultSet *rs = ps->executeQuery();
+            BasicGenre *basicGenre = NULL;
+            if (rs->next()) {
+                basicGenre = new BasicGenre();
+                populateFields(rs, basicGenre);
+            }
+            rs->close();
+            delete rs;
 
-        return basicGenre;
+            return basicGenre;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
 # pragma mark persistence
@@ -129,7 +147,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 
@@ -155,7 +173,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 

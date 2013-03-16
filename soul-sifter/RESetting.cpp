@@ -62,33 +62,51 @@ namespace soulsifter {
     }
 
     RESetting* RESetting::findById(int id) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings where id = ?");
-        ps->setInt(1, id);
-        sql::ResultSet *rs = ps->executeQuery();
-        RESetting *reSetting = NULL;
-        if (rs->next()) {
-            reSetting = new RESetting();
-            populateFields(rs, reSetting);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings where id = ?");
+            ps->setInt(1, id);
+            sql::ResultSet *rs = ps->executeQuery();
+            RESetting *reSetting = NULL;
+            if (rs->next()) {
+                reSetting = new RESetting();
+                populateFields(rs, reSetting);
+            }
+            rs->close();
+            delete rs;
 
-        return reSetting;
+            return reSetting;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
     RESetting* RESetting::findByName(const string& name) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings where name = ?");
-        ps->setString(1, name);
-        sql::ResultSet *rs = ps->executeQuery();
-        RESetting *reSetting = NULL;
-        if (rs->next()) {
-            reSetting = new RESetting();
-            populateFields(rs, reSetting);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESettings where name = ?");
+            ps->setString(1, name);
+            sql::ResultSet *rs = ps->executeQuery();
+            RESetting *reSetting = NULL;
+            if (rs->next()) {
+                reSetting = new RESetting();
+                populateFields(rs, reSetting);
+            }
+            rs->close();
+            delete rs;
 
-        return reSetting;
+            return reSetting;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
 # pragma mark persistence
@@ -143,7 +161,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 
@@ -170,7 +188,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 

@@ -84,6 +84,10 @@ end
 
 ######################### h & cc outputs
 
+def sqlCatchBlock()
+  return "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            exit(1);\n        }\n"
+end
+
 def hFieldDeclaration(f)
   str = "        #{f[$type]}#{'*' if (f[$attrib] & Attrib::PTR > 0)} #{f[$name]};"
   str << "  // transient" if (f[$attrib] & Attrib::TRANSIENT > 0)
@@ -210,9 +214,12 @@ def cFindFunction(name, f, fields)
   else
     str << "    #{cap(name)}* #{cap(name)}::findBy#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n"
   end
-  str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where #{f[$name]} = ?\");\n"
-  str << "        ps->set#{cap(f[$type].to_s)}(1, #{f[$name]});\n        sql::ResultSet *rs = ps->executeQuery();\n        #{cap(name)} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{cap(name)}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n"
-  str << "        return #{name};\n    }\n\n"
+  str << "        try {\n"
+  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where #{f[$name]} = ?\");\n"
+  str << "            ps->set#{cap(f[$type].to_s)}(1, #{f[$name]});\n            sql::ResultSet *rs = ps->executeQuery();\n            #{cap(name)} *#{name} = NULL;\n            if (rs->next()) {\n                #{name} = new #{cap(name)}();\n                populateFields(rs, #{name});\n            }\n            rs->close();\n            delete rs;\n\n"
+  str << "            return #{name};\n"
+  str << sqlCatchBlock()
+  str << "    }\n\n"
 end
 
 def hSecondaryKeysFindFunction(name, secondaryKeys)
@@ -257,7 +264,8 @@ def cSecondaryKeysFindFunction(name, secondaryKeys)
     end
   end
   str << ") {\n"
-  str << "        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where "
+  str << "        try {\n"
+  str << "            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))} where "
   secondaryKeys.each_with_index do |f,idx|
     if (idx > 0)
       str << " and "
@@ -266,9 +274,11 @@ def cSecondaryKeysFindFunction(name, secondaryKeys)
   end
   str << "\");\n"
   secondaryKeys.each_with_index do |f,idx|
-    str << "        ps->set#{cap(f[$type].to_s)}(1, #{f[$name]});\n"
+    str << "            ps->set#{cap(f[$type].to_s)}(#{idx+1}, #{f[$name]});\n"
   end
-  str << "        sql::ResultSet *rs = ps->executeQuery();\n        #{cap(name)} *#{name} = NULL;\n        if (rs->next()) {\n            #{name} = new #{cap(name)}();\n            populateFields(rs, #{name});\n        }\n        rs->close();\n        delete rs;\n\n        return #{name};\n    }\n\n"
+  str << "            sql::ResultSet *rs = ps->executeQuery();\n            #{cap(name)} *#{name} = NULL;\n            if (rs->next()) {\n                #{name} = new #{cap(name)}();\n                populateFields(rs, #{name});\n            }\n            rs->close();\n            delete rs;\n\n            return #{name};\n"
+  str << sqlCatchBlock()
+  str << "    }\n\n"
 end
 
 def hSyncFunction()
@@ -355,7 +365,8 @@ def cUpdateFunction(name, fields)
     str << "                for (vector<int>::const_iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n                    ps->setInt(1, id);\n                    ps->setInt(2, *it);\n                    ps->executeUpdate();\n                }\n            }\n"
   end
   str << "            return result;\n"
-  str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
+  str << sqlCatchBlock()
+  str << "    }\n\n"
 end
 
 def hSaveFunction()
@@ -417,7 +428,8 @@ def cSaveFunction(name, fields, attribs)
     end
   end
   str << "                return saved;\n            }\n"
-  str << "        } catch (sql::SQLException &e) {\n            cerr << \"ERROR: SQLException in \" << __FILE__;\n            cerr << \" (\" << __func__<< \") on line \" << __LINE__ << endl;\n            cerr << \"ERROR: \" << e.what();\n            cerr << \" (MySQL error code: \" << e.getErrorCode();\n            cerr << \", SQLState: \" << e.getSQLState() << \")\" << endl;\n            return 0;\n        }\n    }\n\n"
+  str << sqlCatchBlock()
+  str << "    }\n\n"
 end
 
 def hPopulateFieldFunctions(name, fields)

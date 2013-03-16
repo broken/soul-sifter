@@ -62,33 +62,51 @@ namespace soulsifter {
     }
 
     REXml* REXml::findById(int id) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REXml where id = ?");
-        ps->setInt(1, id);
-        sql::ResultSet *rs = ps->executeQuery();
-        REXml *reXml = NULL;
-        if (rs->next()) {
-            reXml = new REXml();
-            populateFields(rs, reXml);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REXml where id = ?");
+            ps->setInt(1, id);
+            sql::ResultSet *rs = ps->executeQuery();
+            REXml *reXml = NULL;
+            if (rs->next()) {
+                reXml = new REXml();
+                populateFields(rs, reXml);
+            }
+            rs->close();
+            delete rs;
 
-        return reXml;
+            return reXml;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
     REXml* REXml::findByName(const string& name) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REXml where name = ?");
-        ps->setString(1, name);
-        sql::ResultSet *rs = ps->executeQuery();
-        REXml *reXml = NULL;
-        if (rs->next()) {
-            reXml = new REXml();
-            populateFields(rs, reXml);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REXml where name = ?");
+            ps->setString(1, name);
+            sql::ResultSet *rs = ps->executeQuery();
+            REXml *reXml = NULL;
+            if (rs->next()) {
+                reXml = new REXml();
+                populateFields(rs, reXml);
+            }
+            rs->close();
+            delete rs;
 
-        return reXml;
+            return reXml;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
 # pragma mark persistence
@@ -143,7 +161,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 
@@ -170,7 +188,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 

@@ -62,33 +62,51 @@ namespace soulsifter {
     }
 
     REAlbumCover* REAlbumCover::findById(int id) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REAlbumCovers where id = ?");
-        ps->setInt(1, id);
-        sql::ResultSet *rs = ps->executeQuery();
-        REAlbumCover *reAlbumCover = NULL;
-        if (rs->next()) {
-            reAlbumCover = new REAlbumCover();
-            populateFields(rs, reAlbumCover);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REAlbumCovers where id = ?");
+            ps->setInt(1, id);
+            sql::ResultSet *rs = ps->executeQuery();
+            REAlbumCover *reAlbumCover = NULL;
+            if (rs->next()) {
+                reAlbumCover = new REAlbumCover();
+                populateFields(rs, reAlbumCover);
+            }
+            rs->close();
+            delete rs;
 
-        return reAlbumCover;
+            return reAlbumCover;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
     REAlbumCover* REAlbumCover::findByREId(const string& reId) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REAlbumCovers where reId = ?");
-        ps->setString(1, reId);
-        sql::ResultSet *rs = ps->executeQuery();
-        REAlbumCover *reAlbumCover = NULL;
-        if (rs->next()) {
-            reAlbumCover = new REAlbumCover();
-            populateFields(rs, reAlbumCover);
-        }
-        rs->close();
-        delete rs;
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REAlbumCovers where reId = ?");
+            ps->setString(1, reId);
+            sql::ResultSet *rs = ps->executeQuery();
+            REAlbumCover *reAlbumCover = NULL;
+            if (rs->next()) {
+                reAlbumCover = new REAlbumCover();
+                populateFields(rs, reAlbumCover);
+            }
+            rs->close();
+            delete rs;
 
-        return reAlbumCover;
+            return reAlbumCover;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
     }
 
 # pragma mark persistence
@@ -143,7 +161,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 
@@ -170,7 +188,7 @@ namespace soulsifter {
             cerr << "ERROR: " << e.what();
             cerr << " (MySQL error code: " << e.getErrorCode();
             cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
-            return 0;
+            exit(1);
         }
     }
 
