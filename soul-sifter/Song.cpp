@@ -271,7 +271,7 @@ namespace soulsifter {
                 rating = song->getRating();
             }
         }
-        if (dateAdded != song->getDateAdded()) {
+        if (dateAdded != song->getDateAdded() && song->getDateAdded() - dateAdded != 3600) {
             if (dateAdded) {
                 cout << "updating song " << id << " dateAdded from " << song->getDateAdded() << " to " << dateAdded << endl;
                 needsUpdate = true;

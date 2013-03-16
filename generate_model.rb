@@ -308,8 +308,13 @@ def cSyncFunction(name, fields, secondaryKeys)
   fields.each do |f|
     if (f[$attrib] & Attrib::TRANSIENT > 0)
       next
-    elsif ([:int, :bool, :time_t].include?(f[$type]))
+    elsif ([:int, :bool].include?(f[$type]))
       str << "        if (#{f[$name]} != #{name}->get#{cap(f[$name])}()) {\n            if (#{f[$name]}) {\n"
+      str << "                cout << \"updating #{name} \" << id << \" #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
+      str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
+    elsif ([:time_t].include?(f[$type]))
+      # fuck working with daylight time in c++
+      str << "        if (#{f[$name]} != #{name}->get#{cap(f[$name])}() && #{name}->get#{cap(f[$name])}() - #{f[$name]} != 3600) {\n            if (#{f[$name]}) {\n"
       str << "                cout << \"updating #{name} \" << id << \" #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
     elsif (f[$type] == :string)
