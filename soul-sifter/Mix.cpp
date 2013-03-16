@@ -119,10 +119,36 @@ namespace soulsifter {
         }
     }
 
+    Mix* Mix::findByOutSongIdAndInSongId(int outSongId, int inSongId) {
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes where outSongId = ? and inSongId = ?");
+            ps->setInt(1, outSongId);
+            ps->setInt(2, inSongId);
+            sql::ResultSet *rs = ps->executeQuery();
+            Mix *mix = NULL;
+            if (rs->next()) {
+                mix = new Mix();
+                populateFields(rs, mix);
+            }
+            rs->close();
+            delete rs;
+
+            return mix;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
+    }
+
 # pragma mark persistence
 
     bool Mix::sync() {
         Mix* mix = findById(id);
+        if (!mix) mix = findByOutSongIdAndInSongId(outSongId, inSongId);
         if (!mix) {
             return true;
         }

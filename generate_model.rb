@@ -621,9 +621,9 @@ basicGenreAttribs = 0
 basicGenreCustomMethods = "        static const BasicGenre* findByFilepath(const string& filepath);\n        static void findAll(const vector<const BasicGenre*>** genresPtr);\n\n"
 mixFields = [
   [:int, "id", Attrib::FIND],
-  [:int, "outSongId", Attrib::ID],
+  [:int, "outSongId", Attrib::ID | Attrib::KEY2],
   ["Song", "outSong", Attrib::PTR],
-  [:int, "inSongId", Attrib::ID],
+  [:int, "inSongId", Attrib::ID | Attrib::KEY2],
   ["Song", "inSong", Attrib::PTR],
   [:string, "bpmDiff", 0],
   [:int, "rank", 0],
@@ -631,7 +631,7 @@ mixFields = [
   [:bool, "addon", 0],
 ]
 mixAttribs = 0
-mixCustomMethods = "        friend class RapidEvolutionDatabaseMixoutsMixoutHandler;\n\n        class MixResultSet {\n        public:\n            explicit MixResultSet(sql::ResultSet* resultset);\n            ~MixResultSet();\n\n            bool next(Mix* mix);\n\n        private:\n            sql::ResultSet* rs;\n\n            MixResultSet();\n        };\n\n        static Mix* findBySongIds(const int outSongId, const int inSongId);\n        static MixResultSet* findAll();\n\n"
+mixCustomMethods = "        friend class RapidEvolutionDatabaseMixoutsMixoutHandler;\n\n        class MixResultSet {\n        public:\n            explicit MixResultSet(sql::ResultSet* resultset);\n            ~MixResultSet();\n\n            bool next(Mix* mix);\n\n        private:\n            sql::ResultSet* rs;\n\n            MixResultSet();\n        };\n\n        static MixResultSet* findAll();\n\n"
 reSongFields = [
   [:int, "id", Attrib::FIND],
   [:string, "songidWinfo", 0],

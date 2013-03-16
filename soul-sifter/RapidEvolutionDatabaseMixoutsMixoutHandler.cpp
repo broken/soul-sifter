@@ -74,34 +74,12 @@ void RapidEvolutionDatabaseMixoutsMixoutHandler::endElement(const XMLCh* const u
         mix.setInSong(*inSong);
         
         // TODO currently this is limited to 1 mix per song pair. would be great to allow multiple.
-        Mix* dbMix = Mix::findBySongIds(outSong->getId(), inSong->getId());
-        if (dbMix) {
-            bool needsUpdating = false;
-            if (dbMix->getAddon() != mix.getAddon()) {
-                needsUpdating = true;
-                dbMix->setAddon(mix.getAddon());
-                cout << "updating mix " << dbMix->getId() << " addon from " << dbMix->getAddon() << " to " << mix.getAddon() << endl;
+        if (mix.sync()) {
+            if (mix.getId()) {
+                mix.update();
+            } else {
+                mix.save();
             }
-            if (dbMix->getBpmDiff().compare(0, mix.getBpmDiff().size(), mix.getBpmDiff()) &&
-                (mix.getBpmDiff().compare(0, dbMix->getBpmDiff().size()-1, dbMix->getBpmDiff()) || dbMix->getBpmDiff().size() < 4)) {
-                needsUpdating = true;
-                dbMix->setBpmDiff(mix.getBpmDiff());
-                cout << "updating mix " << dbMix->getId() << " bpm diff from " << dbMix->getBpmDiff() << " to " << mix.getBpmDiff() << endl;
-            }
-            if (dbMix->getRank() != mix.getRank()) {
-                needsUpdating = true;
-                dbMix->setRank(mix.getRank());
-                cout << "updating mix " << dbMix->getId() << " rank from " << dbMix->getRank() << " to " << mix.getRank() << endl;
-            }
-            if (dbMix->getComments().compare(mix.getComments())) {
-                needsUpdating = true;
-                dbMix->setComments(mix.getComments());
-                cout << "updating mix " << dbMix->getId() << " comments from " << dbMix->getComments() << " to " << mix.getComments() << endl;
-            }
-            if (needsUpdating)
-                dbMix->update();
-        } else {
-            mix.save();
         }
     }
 }

@@ -31,6 +31,7 @@ namespace soulsifter {
         void clear();
 
         static Mix* findById(int id);
+        static Mix* findByOutSongIdAndInSongId(int outSongId, int inSongId);
 
         bool sync();
         int update();
@@ -51,7 +52,6 @@ namespace soulsifter {
             MixResultSet();
         };
 
-        static Mix* findBySongIds(const int outSongId, const int inSongId);
         static MixResultSet* findAll();
 
         const int getId() const;

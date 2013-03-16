@@ -16,21 +16,6 @@
 
 namespace soulsifter {
     
-    Mix* Mix::findBySongIds(const int outSongId, const int inSongId) {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes where outSongId = ? and inSongId = ?");
-        ps->setInt(1, outSongId);
-        ps->setInt(2, inSongId);
-        sql::ResultSet *rs = ps->executeQuery();
-        Mix *mix = NULL;
-        if (rs->next()) {
-            mix = new Mix();
-            populateFields(rs, mix);
-        }
-        rs->close();
-        delete rs;
-        return mix;
-    }
-    
     Mix::MixResultSet* Mix::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes");
         sql::ResultSet *rs = ps->executeQuery();
