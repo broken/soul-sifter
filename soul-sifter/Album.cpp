@@ -194,31 +194,31 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != album->getId()) {
             if (id) {
-                cout << "updating album's id from " << album->getId() << " to " << id << endl;
+                cout << "updating album " << id << " id from " << album->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = album->getId();
             }
         }
-        if (name.compare(album->getName())) {
+        if (name.compare(album->getName()) && (!atoi(album->getName().c_str()) || !atoi(name.c_str()) || atoi(album->getName().c_str()) != atoi(name.c_str()))) {
             if (!name.empty()) {
-                cout << "updating album name from " << album->getName() << " to " << name << endl;
+                cout << "updating album " << id << " name from " << album->getName() << " to " << name << endl;
                 needsUpdate = true;
             } else {
                 name = album->getName();
             }
         }
-        if (artist.compare(album->getArtist())) {
+        if (artist.compare(album->getArtist()) && (!atoi(album->getArtist().c_str()) || !atoi(artist.c_str()) || atoi(album->getArtist().c_str()) != atoi(artist.c_str()))) {
             if (!artist.empty()) {
-                cout << "updating album artist from " << album->getArtist() << " to " << artist << endl;
+                cout << "updating album " << id << " artist from " << album->getArtist() << " to " << artist << endl;
                 needsUpdate = true;
             } else {
                 artist = album->getArtist();
             }
         }
-        if (coverFilepath.compare(album->getCoverFilepath())) {
+        if (coverFilepath.compare(album->getCoverFilepath()) && (!atoi(album->getCoverFilepath().c_str()) || !atoi(coverFilepath.c_str()) || atoi(album->getCoverFilepath().c_str()) != atoi(coverFilepath.c_str()))) {
             if (!coverFilepath.empty()) {
-                cout << "updating album coverFilepath from " << album->getCoverFilepath() << " to " << coverFilepath << endl;
+                cout << "updating album " << id << " coverFilepath from " << album->getCoverFilepath() << " to " << coverFilepath << endl;
                 needsUpdate = true;
             } else {
                 coverFilepath = album->getCoverFilepath();
@@ -226,23 +226,23 @@ namespace soulsifter {
         }
         if (mixed != album->getMixed()) {
             if (mixed) {
-                cout << "updating album's mixed from " << album->getMixed() << " to " << mixed << endl;
+                cout << "updating album " << id << " mixed from " << album->getMixed() << " to " << mixed << endl;
                 needsUpdate = true;
             } else {
                 mixed = album->getMixed();
             }
         }
-        if (label.compare(album->getLabel())) {
+        if (label.compare(album->getLabel()) && (!atoi(album->getLabel().c_str()) || !atoi(label.c_str()) || atoi(album->getLabel().c_str()) != atoi(label.c_str()))) {
             if (!label.empty()) {
-                cout << "updating album label from " << album->getLabel() << " to " << label << endl;
+                cout << "updating album " << id << " label from " << album->getLabel() << " to " << label << endl;
                 needsUpdate = true;
             } else {
                 label = album->getLabel();
             }
         }
-        if (catalogId.compare(album->getCatalogId())) {
+        if (catalogId.compare(album->getCatalogId()) && (!atoi(album->getCatalogId().c_str()) || !atoi(catalogId.c_str()) || atoi(album->getCatalogId().c_str()) != atoi(catalogId.c_str()))) {
             if (!catalogId.empty()) {
-                cout << "updating album catalogId from " << album->getCatalogId() << " to " << catalogId << endl;
+                cout << "updating album " << id << " catalogId from " << album->getCatalogId() << " to " << catalogId << endl;
                 needsUpdate = true;
             } else {
                 catalogId = album->getCatalogId();
@@ -250,7 +250,7 @@ namespace soulsifter {
         }
         if (releaseDateYear != album->getReleaseDateYear()) {
             if (releaseDateYear) {
-                cout << "updating album's releaseDateYear from " << album->getReleaseDateYear() << " to " << releaseDateYear << endl;
+                cout << "updating album " << id << " releaseDateYear from " << album->getReleaseDateYear() << " to " << releaseDateYear << endl;
                 needsUpdate = true;
             } else {
                 releaseDateYear = album->getReleaseDateYear();
@@ -258,7 +258,7 @@ namespace soulsifter {
         }
         if (releaseDateMonth != album->getReleaseDateMonth()) {
             if (releaseDateMonth) {
-                cout << "updating album's releaseDateMonth from " << album->getReleaseDateMonth() << " to " << releaseDateMonth << endl;
+                cout << "updating album " << id << " releaseDateMonth from " << album->getReleaseDateMonth() << " to " << releaseDateMonth << endl;
                 needsUpdate = true;
             } else {
                 releaseDateMonth = album->getReleaseDateMonth();
@@ -266,7 +266,7 @@ namespace soulsifter {
         }
         if (releaseDateDay != album->getReleaseDateDay()) {
             if (releaseDateDay) {
-                cout << "updating album's releaseDateDay from " << album->getReleaseDateDay() << " to " << releaseDateDay << endl;
+                cout << "updating album " << id << " releaseDateDay from " << album->getReleaseDateDay() << " to " << releaseDateDay << endl;
                 needsUpdate = true;
             } else {
                 releaseDateDay = album->getReleaseDateDay();
@@ -274,7 +274,7 @@ namespace soulsifter {
         }
         if (basicGenreId != album->getBasicGenreId()) {
             if (basicGenreId) {
-                cout << "updating album's basicGenreId from " << album->getBasicGenreId() << " to " << basicGenreId << endl;
+                cout << "updating album " << id << " basicGenreId from " << album->getBasicGenreId() << " to " << basicGenreId << endl;
                 needsUpdate = true;
             } else {
                 basicGenreId = album->getBasicGenreId();

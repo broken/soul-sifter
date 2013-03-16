@@ -122,23 +122,23 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != reXml->getId()) {
             if (id) {
-                cout << "updating reXml's id from " << reXml->getId() << " to " << id << endl;
+                cout << "updating reXml " << id << " id from " << reXml->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = reXml->getId();
             }
         }
-        if (name.compare(reXml->getName())) {
+        if (name.compare(reXml->getName()) && (!atoi(reXml->getName().c_str()) || !atoi(name.c_str()) || atoi(reXml->getName().c_str()) != atoi(name.c_str()))) {
             if (!name.empty()) {
-                cout << "updating reXml name from " << reXml->getName() << " to " << name << endl;
+                cout << "updating reXml " << id << " name from " << reXml->getName() << " to " << name << endl;
                 needsUpdate = true;
             } else {
                 name = reXml->getName();
             }
         }
-        if (xml.compare(reXml->getXml())) {
+        if (xml.compare(reXml->getXml()) && (!atoi(reXml->getXml().c_str()) || !atoi(xml.c_str()) || atoi(reXml->getXml().c_str()) != atoi(xml.c_str()))) {
             if (!xml.empty()) {
-                cout << "updating reXml xml from " << reXml->getXml() << " to " << xml << endl;
+                cout << "updating reXml " << id << " xml from " << reXml->getXml() << " to " << xml << endl;
                 needsUpdate = true;
             } else {
                 xml = reXml->getXml();

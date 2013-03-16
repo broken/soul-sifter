@@ -131,7 +131,7 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != mix->getId()) {
             if (id) {
-                cout << "updating mix's id from " << mix->getId() << " to " << id << endl;
+                cout << "updating mix " << id << " id from " << mix->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = mix->getId();
@@ -139,7 +139,7 @@ namespace soulsifter {
         }
         if (outSongId != mix->getOutSongId()) {
             if (outSongId) {
-                cout << "updating mix's outSongId from " << mix->getOutSongId() << " to " << outSongId << endl;
+                cout << "updating mix " << id << " outSongId from " << mix->getOutSongId() << " to " << outSongId << endl;
                 needsUpdate = true;
             } else {
                 outSongId = mix->getOutSongId();
@@ -148,16 +148,16 @@ namespace soulsifter {
         if (outSong) needsUpdate |= outSong->sync();
         if (inSongId != mix->getInSongId()) {
             if (inSongId) {
-                cout << "updating mix's inSongId from " << mix->getInSongId() << " to " << inSongId << endl;
+                cout << "updating mix " << id << " inSongId from " << mix->getInSongId() << " to " << inSongId << endl;
                 needsUpdate = true;
             } else {
                 inSongId = mix->getInSongId();
             }
         }
         if (inSong) needsUpdate |= inSong->sync();
-        if (bpmDiff.compare(mix->getBpmDiff())) {
+        if (bpmDiff.compare(mix->getBpmDiff()) && (!atoi(mix->getBpmDiff().c_str()) || !atoi(bpmDiff.c_str()) || atoi(mix->getBpmDiff().c_str()) != atoi(bpmDiff.c_str()))) {
             if (!bpmDiff.empty()) {
-                cout << "updating mix bpmDiff from " << mix->getBpmDiff() << " to " << bpmDiff << endl;
+                cout << "updating mix " << id << " bpmDiff from " << mix->getBpmDiff() << " to " << bpmDiff << endl;
                 needsUpdate = true;
             } else {
                 bpmDiff = mix->getBpmDiff();
@@ -165,15 +165,15 @@ namespace soulsifter {
         }
         if (rank != mix->getRank()) {
             if (rank) {
-                cout << "updating mix's rank from " << mix->getRank() << " to " << rank << endl;
+                cout << "updating mix " << id << " rank from " << mix->getRank() << " to " << rank << endl;
                 needsUpdate = true;
             } else {
                 rank = mix->getRank();
             }
         }
-        if (comments.compare(mix->getComments())) {
+        if (comments.compare(mix->getComments()) && (!atoi(mix->getComments().c_str()) || !atoi(comments.c_str()) || atoi(mix->getComments().c_str()) != atoi(comments.c_str()))) {
             if (!comments.empty()) {
-                cout << "updating mix comments from " << mix->getComments() << " to " << comments << endl;
+                cout << "updating mix " << id << " comments from " << mix->getComments() << " to " << comments << endl;
                 needsUpdate = true;
             } else {
                 comments = mix->getComments();
@@ -181,7 +181,7 @@ namespace soulsifter {
         }
         if (addon != mix->getAddon()) {
             if (addon) {
-                cout << "updating mix's addon from " << mix->getAddon() << " to " << addon << endl;
+                cout << "updating mix " << id << " addon from " << mix->getAddon() << " to " << addon << endl;
                 needsUpdate = true;
             } else {
                 addon = mix->getAddon();

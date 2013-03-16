@@ -310,15 +310,16 @@ def cSyncFunction(name, fields, secondaryKeys)
       next
     elsif ([:int, :bool, :time_t].include?(f[$type]))
       str << "        if (#{f[$name]} != #{name}->get#{cap(f[$name])}()) {\n            if (#{f[$name]}) {\n"
-      str << "                cout << \"updating #{name}'s #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
+      str << "                cout << \"updating #{name} \" << id << \" #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
     elsif (f[$type] == :string)
-      str << "        if (#{f[$name]}.compare(#{name}->get#{cap(f[$name])}())) {\n            if (!#{f[$name]}.empty()) {\n"
-      str << "                cout << \"updating #{name} #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
+      str << "        if (#{f[$name]}.compare(#{name}->get#{cap(f[$name])}()) && (!atoi(#{name}->get#{cap(f[$name])}().c_str()) || !atoi(#{f[$name]}.c_str()) || atoi(#{name}->get#{cap(f[$name])}().c_str()) != atoi(#{f[$name]}.c_str()))) {\n"
+      str << "            if (!#{f[$name]}.empty()) {\n"
+      str << "                cout << \"updating #{name} \" << id << \" #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
     elsif (isVector(f[$type]))
       str << "        if (!dogatech::equivalentVectors<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n            if (!dogatech::containsVector<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n"
-      str << "                cout << \"updating #{name} #{vectorIds(f)}\" << endl;\n                needsUpdate = true;\n            }\n"
+      str << "                cout << \"updating #{name} \" << id << \" #{vectorIds(f)}\" << endl;\n                needsUpdate = true;\n            }\n"
       str << "            dogatech::appendUniqueVector<int>(#{name}->#{vectorIds(f)}, &#{vectorIds(f)});\n            #{f[$name]}.clear();\n        }\n"
     elsif (f[$attrib] & Attrib::PTR > 0)
       str << "        if (#{f[$name]}) needsUpdate |= #{f[$name]}->sync();\n"

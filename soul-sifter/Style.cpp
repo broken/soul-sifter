@@ -173,15 +173,15 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != style->getId()) {
             if (id) {
-                cout << "updating style's id from " << style->getId() << " to " << id << endl;
+                cout << "updating style " << id << " id from " << style->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = style->getId();
             }
         }
-        if (name.compare(style->getName())) {
+        if (name.compare(style->getName()) && (!atoi(style->getName().c_str()) || !atoi(name.c_str()) || atoi(style->getName().c_str()) != atoi(name.c_str()))) {
             if (!name.empty()) {
-                cout << "updating style name from " << style->getName() << " to " << name << endl;
+                cout << "updating style " << id << " name from " << style->getName() << " to " << name << endl;
                 needsUpdate = true;
             } else {
                 name = style->getName();
@@ -189,15 +189,15 @@ namespace soulsifter {
         }
         if (reId != style->getREId()) {
             if (reId) {
-                cout << "updating style's reId from " << style->getREId() << " to " << reId << endl;
+                cout << "updating style " << id << " reId from " << style->getREId() << " to " << reId << endl;
                 needsUpdate = true;
             } else {
                 reId = style->getREId();
             }
         }
-        if (reLabel.compare(style->getRELabel())) {
+        if (reLabel.compare(style->getRELabel()) && (!atoi(style->getRELabel().c_str()) || !atoi(reLabel.c_str()) || atoi(style->getRELabel().c_str()) != atoi(reLabel.c_str()))) {
             if (!reLabel.empty()) {
-                cout << "updating style reLabel from " << style->getRELabel() << " to " << reLabel << endl;
+                cout << "updating style " << id << " reLabel from " << style->getRELabel() << " to " << reLabel << endl;
                 needsUpdate = true;
             } else {
                 reLabel = style->getRELabel();
@@ -205,7 +205,7 @@ namespace soulsifter {
         }
         if (!dogatech::equivalentVectors<int>(childrenIds, style->childrenIds)) {
             if (!dogatech::containsVector<int>(childrenIds, style->childrenIds)) {
-                cout << "updating style childrenIds" << endl;
+                cout << "updating style " << id << " childrenIds" << endl;
                 needsUpdate = true;
             }
             dogatech::appendUniqueVector<int>(style->childrenIds, &childrenIds);
@@ -213,7 +213,7 @@ namespace soulsifter {
         }
         if (!dogatech::equivalentVectors<int>(parentsIds, style->parentsIds)) {
             if (!dogatech::containsVector<int>(parentsIds, style->parentsIds)) {
-                cout << "updating style parentsIds" << endl;
+                cout << "updating style " << id << " parentsIds" << endl;
                 needsUpdate = true;
             }
             dogatech::appendUniqueVector<int>(style->parentsIds, &parentsIds);

@@ -122,23 +122,23 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != reSetting->getId()) {
             if (id) {
-                cout << "updating reSetting's id from " << reSetting->getId() << " to " << id << endl;
+                cout << "updating reSetting " << id << " id from " << reSetting->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = reSetting->getId();
             }
         }
-        if (name.compare(reSetting->getName())) {
+        if (name.compare(reSetting->getName()) && (!atoi(reSetting->getName().c_str()) || !atoi(name.c_str()) || atoi(reSetting->getName().c_str()) != atoi(name.c_str()))) {
             if (!name.empty()) {
-                cout << "updating reSetting name from " << reSetting->getName() << " to " << name << endl;
+                cout << "updating reSetting " << id << " name from " << reSetting->getName() << " to " << name << endl;
                 needsUpdate = true;
             } else {
                 name = reSetting->getName();
             }
         }
-        if (value.compare(reSetting->getValue())) {
+        if (value.compare(reSetting->getValue()) && (!atoi(reSetting->getValue().c_str()) || !atoi(value.c_str()) || atoi(reSetting->getValue().c_str()) != atoi(value.c_str()))) {
             if (!value.empty()) {
-                cout << "updating reSetting value from " << reSetting->getValue() << " to " << value << endl;
+                cout << "updating reSetting " << id << " value from " << reSetting->getValue() << " to " << value << endl;
                 needsUpdate = true;
             } else {
                 value = reSetting->getValue();

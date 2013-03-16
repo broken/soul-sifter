@@ -209,55 +209,55 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != song->getId()) {
             if (id) {
-                cout << "updating song's id from " << song->getId() << " to " << id << endl;
+                cout << "updating song " << id << " id from " << song->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = song->getId();
             }
         }
-        if (artist.compare(song->getArtist())) {
+        if (artist.compare(song->getArtist()) && (!atoi(song->getArtist().c_str()) || !atoi(artist.c_str()) || atoi(song->getArtist().c_str()) != atoi(artist.c_str()))) {
             if (!artist.empty()) {
-                cout << "updating song artist from " << song->getArtist() << " to " << artist << endl;
+                cout << "updating song " << id << " artist from " << song->getArtist() << " to " << artist << endl;
                 needsUpdate = true;
             } else {
                 artist = song->getArtist();
             }
         }
-        if (track.compare(song->getTrack())) {
+        if (track.compare(song->getTrack()) && (!atoi(song->getTrack().c_str()) || !atoi(track.c_str()) || atoi(song->getTrack().c_str()) != atoi(track.c_str()))) {
             if (!track.empty()) {
-                cout << "updating song track from " << song->getTrack() << " to " << track << endl;
+                cout << "updating song " << id << " track from " << song->getTrack() << " to " << track << endl;
                 needsUpdate = true;
             } else {
                 track = song->getTrack();
             }
         }
-        if (title.compare(song->getTitle())) {
+        if (title.compare(song->getTitle()) && (!atoi(song->getTitle().c_str()) || !atoi(title.c_str()) || atoi(song->getTitle().c_str()) != atoi(title.c_str()))) {
             if (!title.empty()) {
-                cout << "updating song title from " << song->getTitle() << " to " << title << endl;
+                cout << "updating song " << id << " title from " << song->getTitle() << " to " << title << endl;
                 needsUpdate = true;
             } else {
                 title = song->getTitle();
             }
         }
-        if (remix.compare(song->getRemix())) {
+        if (remix.compare(song->getRemix()) && (!atoi(song->getRemix().c_str()) || !atoi(remix.c_str()) || atoi(song->getRemix().c_str()) != atoi(remix.c_str()))) {
             if (!remix.empty()) {
-                cout << "updating song remix from " << song->getRemix() << " to " << remix << endl;
+                cout << "updating song " << id << " remix from " << song->getRemix() << " to " << remix << endl;
                 needsUpdate = true;
             } else {
                 remix = song->getRemix();
             }
         }
-        if (featuring.compare(song->getFeaturing())) {
+        if (featuring.compare(song->getFeaturing()) && (!atoi(song->getFeaturing().c_str()) || !atoi(featuring.c_str()) || atoi(song->getFeaturing().c_str()) != atoi(featuring.c_str()))) {
             if (!featuring.empty()) {
-                cout << "updating song featuring from " << song->getFeaturing() << " to " << featuring << endl;
+                cout << "updating song " << id << " featuring from " << song->getFeaturing() << " to " << featuring << endl;
                 needsUpdate = true;
             } else {
                 featuring = song->getFeaturing();
             }
         }
-        if (filepath.compare(song->getFilepath())) {
+        if (filepath.compare(song->getFilepath()) && (!atoi(song->getFilepath().c_str()) || !atoi(filepath.c_str()) || atoi(song->getFilepath().c_str()) != atoi(filepath.c_str()))) {
             if (!filepath.empty()) {
-                cout << "updating song filepath from " << song->getFilepath() << " to " << filepath << endl;
+                cout << "updating song " << id << " filepath from " << song->getFilepath() << " to " << filepath << endl;
                 needsUpdate = true;
             } else {
                 filepath = song->getFilepath();
@@ -265,7 +265,7 @@ namespace soulsifter {
         }
         if (rating != song->getRating()) {
             if (rating) {
-                cout << "updating song's rating from " << song->getRating() << " to " << rating << endl;
+                cout << "updating song " << id << " rating from " << song->getRating() << " to " << rating << endl;
                 needsUpdate = true;
             } else {
                 rating = song->getRating();
@@ -273,15 +273,15 @@ namespace soulsifter {
         }
         if (dateAdded != song->getDateAdded()) {
             if (dateAdded) {
-                cout << "updating song's dateAdded from " << song->getDateAdded() << " to " << dateAdded << endl;
+                cout << "updating song " << id << " dateAdded from " << song->getDateAdded() << " to " << dateAdded << endl;
                 needsUpdate = true;
             } else {
                 dateAdded = song->getDateAdded();
             }
         }
-        if (comments.compare(song->getComments())) {
+        if (comments.compare(song->getComments()) && (!atoi(song->getComments().c_str()) || !atoi(comments.c_str()) || atoi(song->getComments().c_str()) != atoi(comments.c_str()))) {
             if (!comments.empty()) {
-                cout << "updating song comments from " << song->getComments() << " to " << comments << endl;
+                cout << "updating song " << id << " comments from " << song->getComments() << " to " << comments << endl;
                 needsUpdate = true;
             } else {
                 comments = song->getComments();
@@ -289,7 +289,7 @@ namespace soulsifter {
         }
         if (trashed != song->getTrashed()) {
             if (trashed) {
-                cout << "updating song's trashed from " << song->getTrashed() << " to " << trashed << endl;
+                cout << "updating song " << id << " trashed from " << song->getTrashed() << " to " << trashed << endl;
                 needsUpdate = true;
             } else {
                 trashed = song->getTrashed();
@@ -297,7 +297,7 @@ namespace soulsifter {
         }
         if (reSongId != song->getRESongId()) {
             if (reSongId) {
-                cout << "updating song's reSongId from " << song->getRESongId() << " to " << reSongId << endl;
+                cout << "updating song " << id << " reSongId from " << song->getRESongId() << " to " << reSongId << endl;
                 needsUpdate = true;
             } else {
                 reSongId = song->getRESongId();
@@ -306,7 +306,7 @@ namespace soulsifter {
         if (reSong) needsUpdate |= reSong->sync();
         if (albumId != song->getAlbumId()) {
             if (albumId) {
-                cout << "updating song's albumId from " << song->getAlbumId() << " to " << albumId << endl;
+                cout << "updating song " << id << " albumId from " << song->getAlbumId() << " to " << albumId << endl;
                 needsUpdate = true;
             } else {
                 albumId = song->getAlbumId();
@@ -315,7 +315,7 @@ namespace soulsifter {
         if (album) needsUpdate |= album->sync();
         if (!dogatech::equivalentVectors<int>(stylesIds, song->stylesIds)) {
             if (!dogatech::containsVector<int>(stylesIds, song->stylesIds)) {
-                cout << "updating song stylesIds" << endl;
+                cout << "updating song " << id << " stylesIds" << endl;
                 needsUpdate = true;
             }
             dogatech::appendUniqueVector<int>(song->stylesIds, &stylesIds);

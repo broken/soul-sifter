@@ -122,23 +122,23 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != reAlbumCover->getId()) {
             if (id) {
-                cout << "updating reAlbumCover's id from " << reAlbumCover->getId() << " to " << id << endl;
+                cout << "updating reAlbumCover " << id << " id from " << reAlbumCover->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = reAlbumCover->getId();
             }
         }
-        if (reId.compare(reAlbumCover->getREId())) {
+        if (reId.compare(reAlbumCover->getREId()) && (!atoi(reAlbumCover->getREId().c_str()) || !atoi(reId.c_str()) || atoi(reAlbumCover->getREId().c_str()) != atoi(reId.c_str()))) {
             if (!reId.empty()) {
-                cout << "updating reAlbumCover reId from " << reAlbumCover->getREId() << " to " << reId << endl;
+                cout << "updating reAlbumCover " << id << " reId from " << reAlbumCover->getREId() << " to " << reId << endl;
                 needsUpdate = true;
             } else {
                 reId = reAlbumCover->getREId();
             }
         }
-        if (thumbnail.compare(reAlbumCover->getThumbnail())) {
+        if (thumbnail.compare(reAlbumCover->getThumbnail()) && (!atoi(reAlbumCover->getThumbnail().c_str()) || !atoi(thumbnail.c_str()) || atoi(reAlbumCover->getThumbnail().c_str()) != atoi(thumbnail.c_str()))) {
             if (!thumbnail.empty()) {
-                cout << "updating reAlbumCover thumbnail from " << reAlbumCover->getThumbnail() << " to " << thumbnail << endl;
+                cout << "updating reAlbumCover " << id << " thumbnail from " << reAlbumCover->getThumbnail() << " to " << thumbnail << endl;
                 needsUpdate = true;
             } else {
                 thumbnail = reAlbumCover->getThumbnail();

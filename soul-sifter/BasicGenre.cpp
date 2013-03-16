@@ -117,15 +117,15 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != basicGenre->getId()) {
             if (id) {
-                cout << "updating basicGenre's id from " << basicGenre->getId() << " to " << id << endl;
+                cout << "updating basicGenre " << id << " id from " << basicGenre->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = basicGenre->getId();
             }
         }
-        if (name.compare(basicGenre->getName())) {
+        if (name.compare(basicGenre->getName()) && (!atoi(basicGenre->getName().c_str()) || !atoi(name.c_str()) || atoi(basicGenre->getName().c_str()) != atoi(name.c_str()))) {
             if (!name.empty()) {
-                cout << "updating basicGenre name from " << basicGenre->getName() << " to " << name << endl;
+                cout << "updating basicGenre " << id << " name from " << basicGenre->getName() << " to " << name << endl;
                 needsUpdate = true;
             } else {
                 name = basicGenre->getName();

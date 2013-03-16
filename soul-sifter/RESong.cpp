@@ -270,119 +270,119 @@ namespace soulsifter {
         bool needsUpdate = false;
         if (id != reSong->getId()) {
             if (id) {
-                cout << "updating reSong's id from " << reSong->getId() << " to " << id << endl;
+                cout << "updating reSong " << id << " id from " << reSong->getId() << " to " << id << endl;
                 needsUpdate = true;
             } else {
                 id = reSong->getId();
             }
         }
-        if (songidWinfo.compare(reSong->getSongidWinfo())) {
+        if (songidWinfo.compare(reSong->getSongidWinfo()) && (!atoi(reSong->getSongidWinfo().c_str()) || !atoi(songidWinfo.c_str()) || atoi(reSong->getSongidWinfo().c_str()) != atoi(songidWinfo.c_str()))) {
             if (!songidWinfo.empty()) {
-                cout << "updating reSong songidWinfo from " << reSong->getSongidWinfo() << " to " << songidWinfo << endl;
+                cout << "updating reSong " << id << " songidWinfo from " << reSong->getSongidWinfo() << " to " << songidWinfo << endl;
                 needsUpdate = true;
             } else {
                 songidWinfo = reSong->getSongidWinfo();
             }
         }
-        if (songid.compare(reSong->getSongid())) {
+        if (songid.compare(reSong->getSongid()) && (!atoi(reSong->getSongid().c_str()) || !atoi(songid.c_str()) || atoi(reSong->getSongid().c_str()) != atoi(songid.c_str()))) {
             if (!songid.empty()) {
-                cout << "updating reSong songid from " << reSong->getSongid() << " to " << songid << endl;
+                cout << "updating reSong " << id << " songid from " << reSong->getSongid() << " to " << songid << endl;
                 needsUpdate = true;
             } else {
                 songid = reSong->getSongid();
             }
         }
-        if (shortid.compare(reSong->getShortid())) {
+        if (shortid.compare(reSong->getShortid()) && (!atoi(reSong->getShortid().c_str()) || !atoi(shortid.c_str()) || atoi(reSong->getShortid().c_str()) != atoi(shortid.c_str()))) {
             if (!shortid.empty()) {
-                cout << "updating reSong shortid from " << reSong->getShortid() << " to " << shortid << endl;
+                cout << "updating reSong " << id << " shortid from " << reSong->getShortid() << " to " << shortid << endl;
                 needsUpdate = true;
             } else {
                 shortid = reSong->getShortid();
             }
         }
-        if (shortidWinfo.compare(reSong->getShortidWinfo())) {
+        if (shortidWinfo.compare(reSong->getShortidWinfo()) && (!atoi(reSong->getShortidWinfo().c_str()) || !atoi(shortidWinfo.c_str()) || atoi(reSong->getShortidWinfo().c_str()) != atoi(shortidWinfo.c_str()))) {
             if (!shortidWinfo.empty()) {
-                cout << "updating reSong shortidWinfo from " << reSong->getShortidWinfo() << " to " << shortidWinfo << endl;
+                cout << "updating reSong " << id << " shortidWinfo from " << reSong->getShortidWinfo() << " to " << shortidWinfo << endl;
                 needsUpdate = true;
             } else {
                 shortidWinfo = reSong->getShortidWinfo();
             }
         }
-        if (artist.compare(reSong->getArtist())) {
+        if (artist.compare(reSong->getArtist()) && (!atoi(reSong->getArtist().c_str()) || !atoi(artist.c_str()) || atoi(reSong->getArtist().c_str()) != atoi(artist.c_str()))) {
             if (!artist.empty()) {
-                cout << "updating reSong artist from " << reSong->getArtist() << " to " << artist << endl;
+                cout << "updating reSong " << id << " artist from " << reSong->getArtist() << " to " << artist << endl;
                 needsUpdate = true;
             } else {
                 artist = reSong->getArtist();
             }
         }
-        if (album.compare(reSong->getAlbum())) {
+        if (album.compare(reSong->getAlbum()) && (!atoi(reSong->getAlbum().c_str()) || !atoi(album.c_str()) || atoi(reSong->getAlbum().c_str()) != atoi(album.c_str()))) {
             if (!album.empty()) {
-                cout << "updating reSong album from " << reSong->getAlbum() << " to " << album << endl;
+                cout << "updating reSong " << id << " album from " << reSong->getAlbum() << " to " << album << endl;
                 needsUpdate = true;
             } else {
                 album = reSong->getAlbum();
             }
         }
-        if (track.compare(reSong->getTrack())) {
+        if (track.compare(reSong->getTrack()) && (!atoi(reSong->getTrack().c_str()) || !atoi(track.c_str()) || atoi(reSong->getTrack().c_str()) != atoi(track.c_str()))) {
             if (!track.empty()) {
-                cout << "updating reSong track from " << reSong->getTrack() << " to " << track << endl;
+                cout << "updating reSong " << id << " track from " << reSong->getTrack() << " to " << track << endl;
                 needsUpdate = true;
             } else {
                 track = reSong->getTrack();
             }
         }
-        if (title.compare(reSong->getTitle())) {
+        if (title.compare(reSong->getTitle()) && (!atoi(reSong->getTitle().c_str()) || !atoi(title.c_str()) || atoi(reSong->getTitle().c_str()) != atoi(title.c_str()))) {
             if (!title.empty()) {
-                cout << "updating reSong title from " << reSong->getTitle() << " to " << title << endl;
+                cout << "updating reSong " << id << " title from " << reSong->getTitle() << " to " << title << endl;
                 needsUpdate = true;
             } else {
                 title = reSong->getTitle();
             }
         }
-        if (time.compare(reSong->getTime())) {
+        if (time.compare(reSong->getTime()) && (!atoi(reSong->getTime().c_str()) || !atoi(time.c_str()) || atoi(reSong->getTime().c_str()) != atoi(time.c_str()))) {
             if (!time.empty()) {
-                cout << "updating reSong time from " << reSong->getTime() << " to " << time << endl;
+                cout << "updating reSong " << id << " time from " << reSong->getTime() << " to " << time << endl;
                 needsUpdate = true;
             } else {
                 time = reSong->getTime();
             }
         }
-        if (timeSignature.compare(reSong->getTimeSignature())) {
+        if (timeSignature.compare(reSong->getTimeSignature()) && (!atoi(reSong->getTimeSignature().c_str()) || !atoi(timeSignature.c_str()) || atoi(reSong->getTimeSignature().c_str()) != atoi(timeSignature.c_str()))) {
             if (!timeSignature.empty()) {
-                cout << "updating reSong timeSignature from " << reSong->getTimeSignature() << " to " << timeSignature << endl;
+                cout << "updating reSong " << id << " timeSignature from " << reSong->getTimeSignature() << " to " << timeSignature << endl;
                 needsUpdate = true;
             } else {
                 timeSignature = reSong->getTimeSignature();
             }
         }
-        if (filename.compare(reSong->getFilename())) {
+        if (filename.compare(reSong->getFilename()) && (!atoi(reSong->getFilename().c_str()) || !atoi(filename.c_str()) || atoi(reSong->getFilename().c_str()) != atoi(filename.c_str()))) {
             if (!filename.empty()) {
-                cout << "updating reSong filename from " << reSong->getFilename() << " to " << filename << endl;
+                cout << "updating reSong " << id << " filename from " << reSong->getFilename() << " to " << filename << endl;
                 needsUpdate = true;
             } else {
                 filename = reSong->getFilename();
             }
         }
-        if (digitalOnly.compare(reSong->getDigitalOnly())) {
+        if (digitalOnly.compare(reSong->getDigitalOnly()) && (!atoi(reSong->getDigitalOnly().c_str()) || !atoi(digitalOnly.c_str()) || atoi(reSong->getDigitalOnly().c_str()) != atoi(digitalOnly.c_str()))) {
             if (!digitalOnly.empty()) {
-                cout << "updating reSong digitalOnly from " << reSong->getDigitalOnly() << " to " << digitalOnly << endl;
+                cout << "updating reSong " << id << " digitalOnly from " << reSong->getDigitalOnly() << " to " << digitalOnly << endl;
                 needsUpdate = true;
             } else {
                 digitalOnly = reSong->getDigitalOnly();
             }
         }
-        if (compilation.compare(reSong->getCompilation())) {
+        if (compilation.compare(reSong->getCompilation()) && (!atoi(reSong->getCompilation().c_str()) || !atoi(compilation.c_str()) || atoi(reSong->getCompilation().c_str()) != atoi(compilation.c_str()))) {
             if (!compilation.empty()) {
-                cout << "updating reSong compilation from " << reSong->getCompilation() << " to " << compilation << endl;
+                cout << "updating reSong " << id << " compilation from " << reSong->getCompilation() << " to " << compilation << endl;
                 needsUpdate = true;
             } else {
                 compilation = reSong->getCompilation();
             }
         }
-        if (keyStart.compare(reSong->getKeyStart())) {
+        if (keyStart.compare(reSong->getKeyStart()) && (!atoi(reSong->getKeyStart().c_str()) || !atoi(keyStart.c_str()) || atoi(reSong->getKeyStart().c_str()) != atoi(keyStart.c_str()))) {
             if (!keyStart.empty()) {
-                cout << "updating reSong keyStart from " << reSong->getKeyStart() << " to " << keyStart << endl;
+                cout << "updating reSong " << id << " keyStart from " << reSong->getKeyStart() << " to " << keyStart << endl;
                 needsUpdate = true;
             } else {
                 keyStart = reSong->getKeyStart();
@@ -390,15 +390,15 @@ namespace soulsifter {
         }
         if (keyAccuracy != reSong->getKeyAccuracy()) {
             if (keyAccuracy) {
-                cout << "updating reSong's keyAccuracy from " << reSong->getKeyAccuracy() << " to " << keyAccuracy << endl;
+                cout << "updating reSong " << id << " keyAccuracy from " << reSong->getKeyAccuracy() << " to " << keyAccuracy << endl;
                 needsUpdate = true;
             } else {
                 keyAccuracy = reSong->getKeyAccuracy();
             }
         }
-        if (bpmStart.compare(reSong->getBpmStart())) {
+        if (bpmStart.compare(reSong->getBpmStart()) && (!atoi(reSong->getBpmStart().c_str()) || !atoi(bpmStart.c_str()) || atoi(reSong->getBpmStart().c_str()) != atoi(bpmStart.c_str()))) {
             if (!bpmStart.empty()) {
-                cout << "updating reSong bpmStart from " << reSong->getBpmStart() << " to " << bpmStart << endl;
+                cout << "updating reSong " << id << " bpmStart from " << reSong->getBpmStart() << " to " << bpmStart << endl;
                 needsUpdate = true;
             } else {
                 bpmStart = reSong->getBpmStart();
@@ -406,7 +406,7 @@ namespace soulsifter {
         }
         if (bpmAccuracy != reSong->getBpmAccuracy()) {
             if (bpmAccuracy) {
-                cout << "updating reSong's bpmAccuracy from " << reSong->getBpmAccuracy() << " to " << bpmAccuracy << endl;
+                cout << "updating reSong " << id << " bpmAccuracy from " << reSong->getBpmAccuracy() << " to " << bpmAccuracy << endl;
                 needsUpdate = true;
             } else {
                 bpmAccuracy = reSong->getBpmAccuracy();
@@ -414,39 +414,39 @@ namespace soulsifter {
         }
         if (rating != reSong->getRating()) {
             if (rating) {
-                cout << "updating reSong's rating from " << reSong->getRating() << " to " << rating << endl;
+                cout << "updating reSong " << id << " rating from " << reSong->getRating() << " to " << rating << endl;
                 needsUpdate = true;
             } else {
                 rating = reSong->getRating();
             }
         }
-        if (dateAdded.compare(reSong->getDateAdded())) {
+        if (dateAdded.compare(reSong->getDateAdded()) && (!atoi(reSong->getDateAdded().c_str()) || !atoi(dateAdded.c_str()) || atoi(reSong->getDateAdded().c_str()) != atoi(dateAdded.c_str()))) {
             if (!dateAdded.empty()) {
-                cout << "updating reSong dateAdded from " << reSong->getDateAdded() << " to " << dateAdded << endl;
+                cout << "updating reSong " << id << " dateAdded from " << reSong->getDateAdded() << " to " << dateAdded << endl;
                 needsUpdate = true;
             } else {
                 dateAdded = reSong->getDateAdded();
             }
         }
-        if (catalogId.compare(reSong->getCatalogId())) {
+        if (catalogId.compare(reSong->getCatalogId()) && (!atoi(reSong->getCatalogId().c_str()) || !atoi(catalogId.c_str()) || atoi(reSong->getCatalogId().c_str()) != atoi(catalogId.c_str()))) {
             if (!catalogId.empty()) {
-                cout << "updating reSong catalogId from " << reSong->getCatalogId() << " to " << catalogId << endl;
+                cout << "updating reSong " << id << " catalogId from " << reSong->getCatalogId() << " to " << catalogId << endl;
                 needsUpdate = true;
             } else {
                 catalogId = reSong->getCatalogId();
             }
         }
-        if (label.compare(reSong->getLabel())) {
+        if (label.compare(reSong->getLabel()) && (!atoi(reSong->getLabel().c_str()) || !atoi(label.c_str()) || atoi(reSong->getLabel().c_str()) != atoi(label.c_str()))) {
             if (!label.empty()) {
-                cout << "updating reSong label from " << reSong->getLabel() << " to " << label << endl;
+                cout << "updating reSong " << id << " label from " << reSong->getLabel() << " to " << label << endl;
                 needsUpdate = true;
             } else {
                 label = reSong->getLabel();
             }
         }
-        if (remix.compare(reSong->getRemix())) {
+        if (remix.compare(reSong->getRemix()) && (!atoi(reSong->getRemix().c_str()) || !atoi(remix.c_str()) || atoi(reSong->getRemix().c_str()) != atoi(remix.c_str()))) {
             if (!remix.empty()) {
-                cout << "updating reSong remix from " << reSong->getRemix() << " to " << remix << endl;
+                cout << "updating reSong " << id << " remix from " << reSong->getRemix() << " to " << remix << endl;
                 needsUpdate = true;
             } else {
                 remix = reSong->getRemix();
@@ -454,55 +454,55 @@ namespace soulsifter {
         }
         if (numPlays != reSong->getNumPlays()) {
             if (numPlays) {
-                cout << "updating reSong's numPlays from " << reSong->getNumPlays() << " to " << numPlays << endl;
+                cout << "updating reSong " << id << " numPlays from " << reSong->getNumPlays() << " to " << numPlays << endl;
                 needsUpdate = true;
             } else {
                 numPlays = reSong->getNumPlays();
             }
         }
-        if (comments.compare(reSong->getComments())) {
+        if (comments.compare(reSong->getComments()) && (!atoi(reSong->getComments().c_str()) || !atoi(comments.c_str()) || atoi(reSong->getComments().c_str()) != atoi(comments.c_str()))) {
             if (!comments.empty()) {
-                cout << "updating reSong comments from " << reSong->getComments() << " to " << comments << endl;
+                cout << "updating reSong " << id << " comments from " << reSong->getComments() << " to " << comments << endl;
                 needsUpdate = true;
             } else {
                 comments = reSong->getComments();
             }
         }
-        if (releaseDate.compare(reSong->getReleaseDate())) {
+        if (releaseDate.compare(reSong->getReleaseDate()) && (!atoi(reSong->getReleaseDate().c_str()) || !atoi(releaseDate.c_str()) || atoi(reSong->getReleaseDate().c_str()) != atoi(releaseDate.c_str()))) {
             if (!releaseDate.empty()) {
-                cout << "updating reSong releaseDate from " << reSong->getReleaseDate() << " to " << releaseDate << endl;
+                cout << "updating reSong " << id << " releaseDate from " << reSong->getReleaseDate() << " to " << releaseDate << endl;
                 needsUpdate = true;
             } else {
                 releaseDate = reSong->getReleaseDate();
             }
         }
-        if (featuring.compare(reSong->getFeaturing())) {
+        if (featuring.compare(reSong->getFeaturing()) && (!atoi(reSong->getFeaturing().c_str()) || !atoi(featuring.c_str()) || atoi(reSong->getFeaturing().c_str()) != atoi(featuring.c_str()))) {
             if (!featuring.empty()) {
-                cout << "updating reSong featuring from " << reSong->getFeaturing() << " to " << featuring << endl;
+                cout << "updating reSong " << id << " featuring from " << reSong->getFeaturing() << " to " << featuring << endl;
                 needsUpdate = true;
             } else {
                 featuring = reSong->getFeaturing();
             }
         }
-        if (keyEnd.compare(reSong->getKeyEnd())) {
+        if (keyEnd.compare(reSong->getKeyEnd()) && (!atoi(reSong->getKeyEnd().c_str()) || !atoi(keyEnd.c_str()) || atoi(reSong->getKeyEnd().c_str()) != atoi(keyEnd.c_str()))) {
             if (!keyEnd.empty()) {
-                cout << "updating reSong keyEnd from " << reSong->getKeyEnd() << " to " << keyEnd << endl;
+                cout << "updating reSong " << id << " keyEnd from " << reSong->getKeyEnd() << " to " << keyEnd << endl;
                 needsUpdate = true;
             } else {
                 keyEnd = reSong->getKeyEnd();
             }
         }
-        if (disabled.compare(reSong->getDisabled())) {
+        if (disabled.compare(reSong->getDisabled()) && (!atoi(reSong->getDisabled().c_str()) || !atoi(disabled.c_str()) || atoi(reSong->getDisabled().c_str()) != atoi(disabled.c_str()))) {
             if (!disabled.empty()) {
-                cout << "updating reSong disabled from " << reSong->getDisabled() << " to " << disabled << endl;
+                cout << "updating reSong " << id << " disabled from " << reSong->getDisabled() << " to " << disabled << endl;
                 needsUpdate = true;
             } else {
                 disabled = reSong->getDisabled();
             }
         }
-        if (bpmEnd.compare(reSong->getBpmEnd())) {
+        if (bpmEnd.compare(reSong->getBpmEnd()) && (!atoi(reSong->getBpmEnd().c_str()) || !atoi(bpmEnd.c_str()) || atoi(reSong->getBpmEnd().c_str()) != atoi(bpmEnd.c_str()))) {
             if (!bpmEnd.empty()) {
-                cout << "updating reSong bpmEnd from " << reSong->getBpmEnd() << " to " << bpmEnd << endl;
+                cout << "updating reSong " << id << " bpmEnd from " << reSong->getBpmEnd() << " to " << bpmEnd << endl;
                 needsUpdate = true;
             } else {
                 bpmEnd = reSong->getBpmEnd();
@@ -510,15 +510,15 @@ namespace soulsifter {
         }
         if (beatIntensity != reSong->getBeatIntensity()) {
             if (beatIntensity) {
-                cout << "updating reSong's beatIntensity from " << reSong->getBeatIntensity() << " to " << beatIntensity << endl;
+                cout << "updating reSong " << id << " beatIntensity from " << reSong->getBeatIntensity() << " to " << beatIntensity << endl;
                 needsUpdate = true;
             } else {
                 beatIntensity = reSong->getBeatIntensity();
             }
         }
-        if (replayGain.compare(reSong->getReplayGain())) {
+        if (replayGain.compare(reSong->getReplayGain()) && (!atoi(reSong->getReplayGain().c_str()) || !atoi(replayGain.c_str()) || atoi(reSong->getReplayGain().c_str()) != atoi(replayGain.c_str()))) {
             if (!replayGain.empty()) {
-                cout << "updating reSong replayGain from " << reSong->getReplayGain() << " to " << replayGain << endl;
+                cout << "updating reSong " << id << " replayGain from " << reSong->getReplayGain() << " to " << replayGain << endl;
                 needsUpdate = true;
             } else {
                 replayGain = reSong->getReplayGain();
