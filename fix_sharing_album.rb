@@ -25,12 +25,17 @@ begin
   puts "Album: #{album['artist']} - #{album['name']}"
   
   updates = Array.new
+  last_song_id = -1
+  last_idx = -1
   res = dbh.query("select id, artist, track, title, remix, filepath from songs where albumid = #{albumid}")
   res.each do |song|
-    print "# for #{song['id']} - #{song['artist']} - #{song['track']} - #{song['title']} (#{song['remix']})  "
-    num = STDIN.gets.to_i
-    updates[num] ||= []
-    updates[num] << song["id"]
+    last_idx += 1 unless (song['id'] - last_song_id == 1)
+    print "# for #{song['id']} - #{song['artist']} - #{song['track']} - #{song['title']} (#{song['remix']}).. #{last_idx}?  "
+    last_song_id = song['id']
+    num = STDIN.gets
+    last_idx = num.to_i unless (num.empty?)
+    updates[last_idx] ||= []
+    updates[last_idx] << song["id"]
   end
   
   albums = [albumid]
