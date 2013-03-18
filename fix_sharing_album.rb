@@ -32,7 +32,7 @@ begin
     last_idx += 1 unless (song['id'] - last_song_id == 1)
     print "# for #{song['id']} - #{song['artist']} - #{song['track']} - #{song['title']} (#{song['remix']}).. #{last_idx}?  "
     last_song_id = song['id']
-    num = STDIN.gets
+    num = STDIN.gets.chomp!
     last_idx = num.to_i unless (num.empty?)
     updates[last_idx] ||= []
     updates[last_idx] << song["id"]
@@ -49,7 +49,7 @@ begin
   updates.each_with_index do |ids, idx|
     dbh.query("update songs set albumid = #{albums[idx]} where id in (#{ids.join(',')})")
     print "Updated artist for album #{idx}?  "
-    artist = STDIN.gets
+    artist = STDIN.gets.chomp!
     if (!artist.empty?)
       dbh.query("update albums set artist = '#{artist}' where id = #{albums[idx]}")
     end
