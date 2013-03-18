@@ -8,7 +8,10 @@
 
 #include "Style.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -178,6 +181,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != style->getId()) {
             if (id) {
                 cout << "updating style " << id << " id from " << style->getId() << " to " << id << endl;
@@ -186,7 +192,7 @@ namespace soulsifter {
                 id = style->getId();
             }
         }
-        if (name.compare(style->getName()) && (!atoi(style->getName().c_str()) || !atoi(name.c_str()) || atoi(style->getName().c_str()) != atoi(name.c_str()))) {
+        if (name.compare(style->getName())  && (!boost::regex_match(name, match1, decimal) || !boost::regex_match(style->getName(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!name.empty()) {
                 cout << "updating style " << id << " name from " << style->getName() << " to " << name << endl;
                 needsUpdate = true;
@@ -202,7 +208,7 @@ namespace soulsifter {
                 reId = style->getREId();
             }
         }
-        if (reLabel.compare(style->getRELabel()) && (!atoi(style->getRELabel().c_str()) || !atoi(reLabel.c_str()) || atoi(style->getRELabel().c_str()) != atoi(reLabel.c_str()))) {
+        if (reLabel.compare(style->getRELabel())  && (!boost::regex_match(reLabel, match1, decimal) || !boost::regex_match(style->getRELabel(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!reLabel.empty()) {
                 cout << "updating style " << id << " reLabel from " << style->getRELabel() << " to " << reLabel << endl;
                 needsUpdate = true;

@@ -8,7 +8,10 @@
 
 #include "Mix.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -162,6 +165,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != mix->getId()) {
             if (id) {
                 cout << "updating mix " << id << " id from " << mix->getId() << " to " << id << endl;
@@ -188,7 +194,7 @@ namespace soulsifter {
             }
         }
         if (inSong) needsUpdate |= inSong->sync();
-        if (bpmDiff.compare(mix->getBpmDiff()) && (!atoi(mix->getBpmDiff().c_str()) || !atoi(bpmDiff.c_str()) || atoi(mix->getBpmDiff().c_str()) != atoi(bpmDiff.c_str()))) {
+        if (bpmDiff.compare(mix->getBpmDiff())  && (!boost::regex_match(bpmDiff, match1, decimal) || !boost::regex_match(mix->getBpmDiff(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!bpmDiff.empty()) {
                 cout << "updating mix " << id << " bpmDiff from " << mix->getBpmDiff() << " to " << bpmDiff << endl;
                 needsUpdate = true;
@@ -204,7 +210,7 @@ namespace soulsifter {
                 rank = mix->getRank();
             }
         }
-        if (comments.compare(mix->getComments()) && (!atoi(mix->getComments().c_str()) || !atoi(comments.c_str()) || atoi(mix->getComments().c_str()) != atoi(comments.c_str()))) {
+        if (comments.compare(mix->getComments())  && (!boost::regex_match(comments, match1, decimal) || !boost::regex_match(mix->getComments(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!comments.empty()) {
                 cout << "updating mix " << id << " comments from " << mix->getComments() << " to " << comments << endl;
                 needsUpdate = true;

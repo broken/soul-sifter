@@ -42,6 +42,7 @@
 		185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */; };
 		185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */; };
 		1884FAFA16F4309900CFD5AC /* MixHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1884FAF916F4309800CFD5AC /* MixHelper.cpp */; };
+		1884FAFC16F6E8BA00CFD5AC /* libboost_regex-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1884FAFB16F6E8BA00CFD5AC /* libboost_regex-mt.dylib */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
 		188E1B141648E973004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */; };
 		188E1B171648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B151648E9CD004754F4 /* RapidEvolutionDatabaseArtistsHandler.cpp */; };
@@ -170,6 +171,7 @@
 		185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StyleTreeItem.mm; sourceTree = "<group>"; };
 		1884FAF816F42A7D00CFD5AC /* ResultSetIterator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultSetIterator.h; sourceTree = "<group>"; };
 		1884FAF916F4309800CFD5AC /* MixHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MixHelper.cpp; sourceTree = "<group>"; };
+		1884FAFB16F6E8BA00CFD5AC /* libboost_regex-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_regex-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_regex-mt.dylib"; sourceTree = "<group>"; };
 		188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigHandler.cpp; sourceTree = "<group>"; };
 		188E1B101648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseConfigHandler.h; sourceTree = "<group>"; };
 		188E1B121648E972004754F4 /* RapidEvolutionDatabaseExcludesHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseExcludesHandler.cpp; sourceTree = "<group>"; };
@@ -226,8 +228,6 @@
 		18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StyleHelper.cpp; sourceTree = "<group>"; };
 		18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESettingHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXmlHelper.cpp; sourceTree = "<group>"; };
-		18AA5FF716C02F2E008E8DD3 /* libid3-3.8.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libid3-3.8.3.0.0.dylib"; path = "../../../../../../../usr/local/lib/libid3-3.8.3.0.0.dylib"; sourceTree = "<group>"; };
-		18AA5FFC16C0E8AC008E8DD3 /* libtag.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtag.a; path = ../../../../../../../usr/local/lib/libtag.a; sourceTree = "<group>"; };
 		18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtag.1.12.0.dylib; path = ../../../../../../../usr/local/Cellar/taglib/1.8/lib/libtag.1.12.0.dylib; sourceTree = "<group>"; };
 		18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/Cellar/xerces-c/3.1.1/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
@@ -248,6 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1884FAFC16F6E8BA00CFD5AC /* libboost_regex-mt.dylib in Frameworks */,
 				18AA5FFF16C0EC68008E8DD3 /* libtag.1.12.0.dylib in Frameworks */,
 				18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */,
 				18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */,
@@ -440,9 +441,8 @@
 		189D22BB153D4F190043634A = {
 			isa = PBXGroup;
 			children = (
+				1884FAFB16F6E8BA00CFD5AC /* libboost_regex-mt.dylib */,
 				18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */,
-				18AA5FFC16C0E8AC008E8DD3 /* libtag.a */,
-				18AA5FF716C02F2E008E8DD3 /* libid3-3.8.3.0.0.dylib */,
 				18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */,
 				18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */,
 				18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */,
@@ -788,6 +788,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -814,6 +816,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -831,8 +835,11 @@
 		189D22F9153D4F1A0043634A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				GCC_VERSION = "";
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -854,8 +861,11 @@
 		189D22FA153D4F1A0043634A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "soul-sifter/soul-sifter-Prefix.pch";
+				GCC_VERSION = "";
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

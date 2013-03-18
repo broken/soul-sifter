@@ -8,7 +8,10 @@
 
 #include "Song.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -214,6 +217,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != song->getId()) {
             if (id) {
                 cout << "updating song " << id << " id from " << song->getId() << " to " << id << endl;
@@ -222,7 +228,7 @@ namespace soulsifter {
                 id = song->getId();
             }
         }
-        if (artist.compare(song->getArtist()) && (!atoi(song->getArtist().c_str()) || !atoi(artist.c_str()) || atoi(song->getArtist().c_str()) != atoi(artist.c_str()))) {
+        if (artist.compare(song->getArtist())  && (!boost::regex_match(artist, match1, decimal) || !boost::regex_match(song->getArtist(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!artist.empty()) {
                 cout << "updating song " << id << " artist from " << song->getArtist() << " to " << artist << endl;
                 needsUpdate = true;
@@ -230,7 +236,7 @@ namespace soulsifter {
                 artist = song->getArtist();
             }
         }
-        if (track.compare(song->getTrack()) && (!atoi(song->getTrack().c_str()) || !atoi(track.c_str()) || atoi(song->getTrack().c_str()) != atoi(track.c_str()))) {
+        if (track.compare(song->getTrack())  && (!boost::regex_match(track, match1, decimal) || !boost::regex_match(song->getTrack(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!track.empty()) {
                 cout << "updating song " << id << " track from " << song->getTrack() << " to " << track << endl;
                 needsUpdate = true;
@@ -238,7 +244,7 @@ namespace soulsifter {
                 track = song->getTrack();
             }
         }
-        if (title.compare(song->getTitle()) && (!atoi(song->getTitle().c_str()) || !atoi(title.c_str()) || atoi(song->getTitle().c_str()) != atoi(title.c_str()))) {
+        if (title.compare(song->getTitle())  && (!boost::regex_match(title, match1, decimal) || !boost::regex_match(song->getTitle(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!title.empty()) {
                 cout << "updating song " << id << " title from " << song->getTitle() << " to " << title << endl;
                 needsUpdate = true;
@@ -246,7 +252,7 @@ namespace soulsifter {
                 title = song->getTitle();
             }
         }
-        if (remix.compare(song->getRemix()) && (!atoi(song->getRemix().c_str()) || !atoi(remix.c_str()) || atoi(song->getRemix().c_str()) != atoi(remix.c_str()))) {
+        if (remix.compare(song->getRemix())  && (!boost::regex_match(remix, match1, decimal) || !boost::regex_match(song->getRemix(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!remix.empty()) {
                 cout << "updating song " << id << " remix from " << song->getRemix() << " to " << remix << endl;
                 needsUpdate = true;
@@ -254,7 +260,7 @@ namespace soulsifter {
                 remix = song->getRemix();
             }
         }
-        if (featuring.compare(song->getFeaturing()) && (!atoi(song->getFeaturing().c_str()) || !atoi(featuring.c_str()) || atoi(song->getFeaturing().c_str()) != atoi(featuring.c_str()))) {
+        if (featuring.compare(song->getFeaturing())  && (!boost::regex_match(featuring, match1, decimal) || !boost::regex_match(song->getFeaturing(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!featuring.empty()) {
                 cout << "updating song " << id << " featuring from " << song->getFeaturing() << " to " << featuring << endl;
                 needsUpdate = true;
@@ -262,7 +268,7 @@ namespace soulsifter {
                 featuring = song->getFeaturing();
             }
         }
-        if (filepath.compare(song->getFilepath()) && (!atoi(song->getFilepath().c_str()) || !atoi(filepath.c_str()) || atoi(song->getFilepath().c_str()) != atoi(filepath.c_str()))) {
+        if (filepath.compare(song->getFilepath())  && (!boost::regex_match(filepath, match1, decimal) || !boost::regex_match(song->getFilepath(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!filepath.empty()) {
                 cout << "updating song " << id << " filepath from " << song->getFilepath() << " to " << filepath << endl;
                 needsUpdate = true;
@@ -278,7 +284,7 @@ namespace soulsifter {
                 rating = song->getRating();
             }
         }
-        if (dateAdded != song->getDateAdded() && song->getDateAdded() - dateAdded != 3600) {
+        if (dateAdded != song->getDateAdded() && abs(song->getDateAdded() - dateAdded) != 3600) {
             if (dateAdded) {
                 cout << "updating song " << id << " dateAdded from " << song->getDateAdded() << " to " << dateAdded << endl;
                 needsUpdate = true;
@@ -286,7 +292,7 @@ namespace soulsifter {
                 dateAdded = song->getDateAdded();
             }
         }
-        if (comments.compare(song->getComments()) && (!atoi(song->getComments().c_str()) || !atoi(comments.c_str()) || atoi(song->getComments().c_str()) != atoi(comments.c_str()))) {
+        if (comments.compare(song->getComments())  && (!boost::regex_match(comments, match1, decimal) || !boost::regex_match(song->getComments(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!comments.empty()) {
                 cout << "updating song " << id << " comments from " << song->getComments() << " to " << comments << endl;
                 needsUpdate = true;

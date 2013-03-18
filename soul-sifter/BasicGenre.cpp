@@ -8,7 +8,10 @@
 
 #include "BasicGenre.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -122,6 +125,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != basicGenre->getId()) {
             if (id) {
                 cout << "updating basicGenre " << id << " id from " << basicGenre->getId() << " to " << id << endl;
@@ -130,7 +136,7 @@ namespace soulsifter {
                 id = basicGenre->getId();
             }
         }
-        if (name.compare(basicGenre->getName()) && (!atoi(basicGenre->getName().c_str()) || !atoi(name.c_str()) || atoi(basicGenre->getName().c_str()) != atoi(name.c_str()))) {
+        if (name.compare(basicGenre->getName())  && (!boost::regex_match(name, match1, decimal) || !boost::regex_match(basicGenre->getName(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!name.empty()) {
                 cout << "updating basicGenre " << id << " name from " << basicGenre->getName() << " to " << name << endl;
                 needsUpdate = true;

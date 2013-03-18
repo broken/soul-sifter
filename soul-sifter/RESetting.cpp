@@ -8,7 +8,10 @@
 
 #include "RESetting.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -127,6 +130,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != reSetting->getId()) {
             if (id) {
                 cout << "updating reSetting " << id << " id from " << reSetting->getId() << " to " << id << endl;
@@ -135,7 +141,7 @@ namespace soulsifter {
                 id = reSetting->getId();
             }
         }
-        if (name.compare(reSetting->getName()) && (!atoi(reSetting->getName().c_str()) || !atoi(name.c_str()) || atoi(reSetting->getName().c_str()) != atoi(name.c_str()))) {
+        if (name.compare(reSetting->getName())  && (!boost::regex_match(name, match1, decimal) || !boost::regex_match(reSetting->getName(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!name.empty()) {
                 cout << "updating reSetting " << id << " name from " << reSetting->getName() << " to " << name << endl;
                 needsUpdate = true;
@@ -143,7 +149,7 @@ namespace soulsifter {
                 name = reSetting->getName();
             }
         }
-        if (value.compare(reSetting->getValue()) && (!atoi(reSetting->getValue().c_str()) || !atoi(value.c_str()) || atoi(reSetting->getValue().c_str()) != atoi(value.c_str()))) {
+        if (value.compare(reSetting->getValue())  && (!boost::regex_match(value, match1, decimal) || !boost::regex_match(reSetting->getValue(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!value.empty()) {
                 cout << "updating reSetting " << id << " value from " << reSetting->getValue() << " to " << value << endl;
                 needsUpdate = true;

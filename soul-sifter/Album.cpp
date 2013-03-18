@@ -8,7 +8,10 @@
 
 #include "Album.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -199,6 +202,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != album->getId()) {
             if (id) {
                 cout << "updating album " << id << " id from " << album->getId() << " to " << id << endl;
@@ -207,7 +213,7 @@ namespace soulsifter {
                 id = album->getId();
             }
         }
-        if (name.compare(album->getName()) && (!atoi(album->getName().c_str()) || !atoi(name.c_str()) || atoi(album->getName().c_str()) != atoi(name.c_str()))) {
+        if (name.compare(album->getName())  && (!boost::regex_match(name, match1, decimal) || !boost::regex_match(album->getName(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!name.empty()) {
                 cout << "updating album " << id << " name from " << album->getName() << " to " << name << endl;
                 needsUpdate = true;
@@ -215,7 +221,7 @@ namespace soulsifter {
                 name = album->getName();
             }
         }
-        if (artist.compare(album->getArtist()) && (!atoi(album->getArtist().c_str()) || !atoi(artist.c_str()) || atoi(album->getArtist().c_str()) != atoi(artist.c_str()))) {
+        if (artist.compare(album->getArtist())  && (!boost::regex_match(artist, match1, decimal) || !boost::regex_match(album->getArtist(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!artist.empty()) {
                 cout << "updating album " << id << " artist from " << album->getArtist() << " to " << artist << endl;
                 needsUpdate = true;
@@ -223,7 +229,7 @@ namespace soulsifter {
                 artist = album->getArtist();
             }
         }
-        if (coverFilepath.compare(album->getCoverFilepath()) && (!atoi(album->getCoverFilepath().c_str()) || !atoi(coverFilepath.c_str()) || atoi(album->getCoverFilepath().c_str()) != atoi(coverFilepath.c_str()))) {
+        if (coverFilepath.compare(album->getCoverFilepath())  && (!boost::regex_match(coverFilepath, match1, decimal) || !boost::regex_match(album->getCoverFilepath(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!coverFilepath.empty()) {
                 cout << "updating album " << id << " coverFilepath from " << album->getCoverFilepath() << " to " << coverFilepath << endl;
                 needsUpdate = true;
@@ -239,7 +245,7 @@ namespace soulsifter {
                 mixed = album->getMixed();
             }
         }
-        if (label.compare(album->getLabel()) && (!atoi(album->getLabel().c_str()) || !atoi(label.c_str()) || atoi(album->getLabel().c_str()) != atoi(label.c_str()))) {
+        if (label.compare(album->getLabel())  && (!boost::regex_match(label, match1, decimal) || !boost::regex_match(album->getLabel(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!label.empty()) {
                 cout << "updating album " << id << " label from " << album->getLabel() << " to " << label << endl;
                 needsUpdate = true;
@@ -247,7 +253,7 @@ namespace soulsifter {
                 label = album->getLabel();
             }
         }
-        if (catalogId.compare(album->getCatalogId()) && (!atoi(album->getCatalogId().c_str()) || !atoi(catalogId.c_str()) || atoi(album->getCatalogId().c_str()) != atoi(catalogId.c_str()))) {
+        if (catalogId.compare(album->getCatalogId())  && (!boost::regex_match(catalogId, match1, decimal) || !boost::regex_match(album->getCatalogId(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!catalogId.empty()) {
                 cout << "updating album " << id << " catalogId from " << album->getCatalogId() << " to " << catalogId << endl;
                 needsUpdate = true;

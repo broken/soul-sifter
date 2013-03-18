@@ -8,7 +8,10 @@
 
 #include "REAlbumCover.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -127,6 +130,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != reAlbumCover->getId()) {
             if (id) {
                 cout << "updating reAlbumCover " << id << " id from " << reAlbumCover->getId() << " to " << id << endl;
@@ -135,7 +141,7 @@ namespace soulsifter {
                 id = reAlbumCover->getId();
             }
         }
-        if (reId.compare(reAlbumCover->getREId()) && (!atoi(reAlbumCover->getREId().c_str()) || !atoi(reId.c_str()) || atoi(reAlbumCover->getREId().c_str()) != atoi(reId.c_str()))) {
+        if (reId.compare(reAlbumCover->getREId())  && (!boost::regex_match(reId, match1, decimal) || !boost::regex_match(reAlbumCover->getREId(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!reId.empty()) {
                 cout << "updating reAlbumCover " << id << " reId from " << reAlbumCover->getREId() << " to " << reId << endl;
                 needsUpdate = true;
@@ -143,7 +149,7 @@ namespace soulsifter {
                 reId = reAlbumCover->getREId();
             }
         }
-        if (thumbnail.compare(reAlbumCover->getThumbnail()) && (!atoi(reAlbumCover->getThumbnail().c_str()) || !atoi(thumbnail.c_str()) || atoi(reAlbumCover->getThumbnail().c_str()) != atoi(thumbnail.c_str()))) {
+        if (thumbnail.compare(reAlbumCover->getThumbnail())  && (!boost::regex_match(thumbnail, match1, decimal) || !boost::regex_match(reAlbumCover->getThumbnail(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!thumbnail.empty()) {
                 cout << "updating reAlbumCover " << id << " thumbnail from " << reAlbumCover->getThumbnail() << " to " << thumbnail << endl;
                 needsUpdate = true;

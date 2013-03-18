@@ -8,7 +8,10 @@
 
 #include "REXml.h"
 
+#include <cmath>
 #include <string>
+
+#include <boost/regex.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
@@ -127,6 +130,9 @@ namespace soulsifter {
 
         // check fields
         bool needsUpdate = false;
+        boost::regex decimal("(-?\\d+)\\.?\\d*");
+        boost::smatch match1;
+        boost::smatch match2;
         if (id != reXml->getId()) {
             if (id) {
                 cout << "updating reXml " << id << " id from " << reXml->getId() << " to " << id << endl;
@@ -135,7 +141,7 @@ namespace soulsifter {
                 id = reXml->getId();
             }
         }
-        if (name.compare(reXml->getName()) && (!atoi(reXml->getName().c_str()) || !atoi(name.c_str()) || atoi(reXml->getName().c_str()) != atoi(name.c_str()))) {
+        if (name.compare(reXml->getName())  && (!boost::regex_match(name, match1, decimal) || !boost::regex_match(reXml->getName(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!name.empty()) {
                 cout << "updating reXml " << id << " name from " << reXml->getName() << " to " << name << endl;
                 needsUpdate = true;
@@ -143,7 +149,7 @@ namespace soulsifter {
                 name = reXml->getName();
             }
         }
-        if (xml.compare(reXml->getXml()) && (!atoi(reXml->getXml().c_str()) || !atoi(xml.c_str()) || atoi(reXml->getXml().c_str()) != atoi(xml.c_str()))) {
+        if (xml.compare(reXml->getXml())  && (!boost::regex_match(xml, match1, decimal) || !boost::regex_match(reXml->getXml(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
             if (!xml.empty()) {
                 cout << "updating reXml " << id << " xml from " << reXml->getXml() << " to " << xml << endl;
                 needsUpdate = true;
