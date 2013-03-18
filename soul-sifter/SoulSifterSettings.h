@@ -9,7 +9,6 @@
 #ifndef __soul_sifter__SoulSifterSettings__
 #define __soul_sifter__SoulSifterSettings__
 
-#include <hash_map.h>
 #include <string>
 
 using namespace std;

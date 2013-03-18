@@ -95,11 +95,6 @@ bool RapidEvolutionMusicDatabaseReader::read() {
         processing = false;
         return false;
     }
-    catch (...) {
-        cout << "Unexpected exception" << endl;
-        processing = false;
-        return false;
-    }
     
     // TODO: below line delete these?
     delete reDbHandler;

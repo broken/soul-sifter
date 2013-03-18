@@ -34,7 +34,7 @@ namespace soulsifter {
         offset = 0;
         computeSrcLength();
         
-        RESong::RESongIterator* songs = RESong::findAll();
+        dogatech::ResultSetIterator<RESong>* songs = RESong::findAll();
         RESong reSong;
         while (songs->next(&reSong)) {
             Song* song = Song::findByRESongId(reSong.getId());
