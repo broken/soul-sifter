@@ -47,7 +47,7 @@ begin
   albums = [albumid]
   (1..updates.size).each do |idx|
     next if idx == 1
-    dbh.query("insert into albums (name, artist, coverfilepath, mixed, label, catalogid, releasedateyear, releasedatemonth, releasedateday, basicgenreid) values ('#{album['name']}', '#{album['artist']}', '#{album['coverfilepath']}', #{album['mixed']}, '#{album['label']}', '#{album['catalogid']}', #{album['releasedateyear']}, #{album['releasedatemonth']}, #{album['releasedateday']}, #{album['basicgenreid']});")
+    dbh.query("insert into albums (name, artist, coverfilepath, mixed, label, catalogid, releasedateyear, releasedatemonth, releasedateday, basicgenreid) values ('#{dbh.escape(album['name'])}', '#{dbh.escape(album['artist'])}', '#{dbh.escape(album['coverfilepath'])}', #{album['mixed']}, '#{dbh.escape(album['label'])}', '#{dbh.escape(album['catalogid'])}', #{album['releasedateyear']}, #{album['releasedatemonth']}, #{album['releasedateday']}, #{album['basicgenreid']});")
     albums << dbh.last_id
     puts "Duplicated album to id #{albums[idx-1]}"
   end
@@ -58,7 +58,7 @@ begin
     artist = STDIN.gets.chomp!
     artist = artists[idx] if artist.empty?
     if (!artist.empty?)
-      dbh.query("update albums set artist = '#{artist}' where id = #{albums[idx]}")
+      dbh.query("update albums set artist = '#{dbh.escape(artist)}' where id = #{albums[idx]}")
     end
   end
 
