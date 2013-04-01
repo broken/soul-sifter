@@ -170,6 +170,7 @@ void MusicManager::writeTagsToSong(Song* song) {
         setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());
         id3v2->setTitle(song->getTitle());
         setId3v2Text(id3v2, "TPE4", song->getRemixer().c_str());
+        id3v2->setComment(song->getComments());
         setId3v2Text(id3v2, "TPE2", song->getAlbum()->getArtist().c_str());
         id3v2->setAlbum(song->getAlbum()->getName());
         setId3v2Text(id3v2, "TPUB", song->getAlbum()->getLabel().c_str());

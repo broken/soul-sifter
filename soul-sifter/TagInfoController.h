@@ -24,6 +24,7 @@
     IBOutlet NSTextField *trackNum;
     IBOutlet NSTextField *title;
     IBOutlet NSTextField *remixer;
+    IBOutlet NSTextField *comments;
     IBOutlet NSLevelIndicator *rating;
     IBOutlet NSTextField *albumArtist;
     IBOutlet NSTextField *album;
@@ -49,6 +50,7 @@
 @property(readwrite,retain,nonatomic) NSTextField *trackNum;
 @property(readwrite,retain,nonatomic) NSTextField *title;
 @property(readwrite,retain,nonatomic) NSTextField *remixer;
+@property(readwrite,retain,nonatomic) NSTextField *comments;
 @property(readwrite,retain) NSLevelIndicator *rating;
 @property(readwrite,retain,nonatomic) NSTextField *albumArtist;
 @property(readwrite,retain,nonatomic) NSTextField *album;

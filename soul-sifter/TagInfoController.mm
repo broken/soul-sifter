@@ -93,6 +93,7 @@
     song.setTrack([[trackNum stringValue] UTF8String]);
     song.setTitle([[title stringValue] UTF8String]);
     song.setRemixer([[remixer stringValue] UTF8String]);
+    song.setComments([[comments stringValue] UTF8String]);
     song.setRating([rating intValue]);
     songAlbum.setArtist([[albumArtist stringValue] UTF8String]);
     songAlbum.setName([[album stringValue] UTF8String]);
@@ -229,7 +230,8 @@
     if (!song->getTrack().empty()) [trackNum setStringValue:[NSString stringWithUTF8String:song->getTrack().c_str()]];
     if (!song->getTitle().empty()) [title setStringValue:[NSString stringWithUTF8String:song->getTitle().c_str()]];
     if (!song->getRemixer().empty()) [remixer setStringValue:[NSString stringWithUTF8String:song->getRemixer().c_str()]];
-    if (song->getRating()) [rating setIntValue:song->getRating()];
+    if (!song->getComments().empty()) [comments setStringValue:[NSString stringWithUTF8String:song->getComments().c_str()]];
+    [rating setIntValue:song->getRating()];
     if (!song->getAlbum()->getArtist().empty()) [albumArtist setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getArtist().c_str()]];
     if (!song->getAlbum()->getName().empty()) [album setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getName().c_str()]];
     if (!song->getAlbum()->getLabel().empty()) [label setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getLabel().c_str()]];
@@ -256,6 +258,7 @@
 @synthesize trackNum;
 @synthesize title;
 @synthesize remixer;
+@synthesize comments;
 @synthesize rating;
 @synthesize albumArtist;
 @synthesize album;
