@@ -35,6 +35,10 @@ public:
     void readTagsFromSong(Song* song);
     void writeTagsToSong(Song* song);  // takes ownership of song here
     
+    // monitor changes
+    void updateSongWithChanges(Song* song);
+    void setNewSongChanges(const Song& song);
+    
     // paths
     string getCopyToPath();
     bool moveSong(Song* song);

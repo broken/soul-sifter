@@ -122,6 +122,7 @@
     
     // save song
     song.save();
+    soulsifter::MusicManager::getInstance().setNewSongChanges(song);
     
     // load next song
     [self loadNextFile];
@@ -222,19 +223,19 @@
     soulsifter::Song *song = new soulsifter::Song();
     song->setFilepath([[fileUrl path] UTF8String]);
     soulsifter::MusicManager::getInstance().readTagsFromSong(song);
+    soulsifter::MusicManager::getInstance().updateSongWithChanges(song);
     if (!song->getArtist().empty()) [artist setStringValue:[NSString stringWithUTF8String:song->getArtist().c_str()]];
     if (!song->getTrack().empty()) [trackNum setStringValue:[NSString stringWithUTF8String:song->getTrack().c_str()]];
     if (!song->getTitle().empty()) [title setStringValue:[NSString stringWithUTF8String:song->getTitle().c_str()]];
     if (!song->getRemixer().empty()) [remixer setStringValue:[NSString stringWithUTF8String:song->getRemixer().c_str()]];
     if (song->getRating()) [rating setIntValue:song->getRating()];
-    if (!song->getAlbum()->getArtist().empty()) [artist setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getArtist().c_str()]];
+    if (!song->getAlbum()->getArtist().empty()) [albumArtist setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getArtist().c_str()]];
     if (!song->getAlbum()->getName().empty()) [album setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getName().c_str()]];
     if (!song->getAlbum()->getLabel().empty()) [label setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getLabel().c_str()]];
     if (!song->getAlbum()->getCatalogId().empty()) [catalogId setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getCatalogId().c_str()]];
     if (song->getAlbum()->getReleaseDateYear()) [releaseDateYear setStringValue:[NSString stringWithFormat:@"%i",song->getAlbum()->getReleaseDateYear()]];
     if (song->getAlbum()->getReleaseDateMonth()) [releaseDateMonth setStringValue:[NSString stringWithFormat:@"%i",song->getAlbum()->getReleaseDateMonth()]];
     if (song->getAlbum()->getReleaseDateDay()) [releaseDateDay setStringValue:[NSString stringWithFormat:@"%i",song->getAlbum()->getReleaseDateDay()]];
-    else [releaseDateDay setStringValue:@""];
     [mixed setState:(song->getAlbum()->getMixed()) ? NSOnState : NSOffState];
     const soulsifter::BasicGenre* basicGenre = soulsifter::MusicManager::getInstance().findBasicGenreForArtist(song->getArtist());
     if (basicGenre) [genreComboBox setStringValue:[NSString stringWithUTF8String:basicGenre->getName().c_str()]];

@@ -124,11 +124,6 @@ void MusicManager::readTagsFromSong(Song* song) {
             song->getAlbum()->setLabel(getId3v2Text(id3v2, "TPUB"));
             song->getAlbum()->setCatalogId(getId3v2Text(id3v2, "TCID"));
             if (id3v2->year() != 0) song->getAlbum()->setReleaseDateYear(id3v2->year());
-            if (id3v2->track() != 0) {
-                ss.clear();
-                ss << id3v2->track();
-                song->setTrack(ss.str());
-            }
             //TODO if (id3v2->genre() != TagLib::String::null) song->setGenre(id3v2->genre().to8Bit());
             if (id3v2->comment() != TagLib::String::null) song->setComments(id3v2->comment().to8Bit());
             
@@ -152,77 +147,6 @@ void MusicManager::readTagsFromSong(Song* song) {
             delete [] tmp;
         }
     }
-    
-    /* TODO split remix from title
-    if (song->getTitle()) {
-        regex rgx("\\((.* ((remix)|(rmx)|(mix)|(refix)|(edit))\\)$");
-        smatch groups;
-        if (regex_search(song->getTitle(), groups, rgx)) {
-        NSTextCheckingResult *match = nil;
-        if ((match = [regex firstMatchInString:[song title] options:0 range:NSMakeRange(0, [[song title] length])])) {
-            if (![song remix] || [[song remix] length] == 0) {
-                [song setRemix:[[song title] substringWithRange:[match rangeAtIndex:1]]];
-            }
-            [song setTitle:[regex stringByReplacingMatchesInString:[song title]
-                                                           options:0
-                                                             range:NSMakeRange(0, [[song title] length])
-                                                      withTemplate:@""]];
-        }
-    }
-    // split featuring from artist
-    if ([song artist]) {
-        NSError *error = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@" \\(?((ft)|(featuring)|(feat))\\.? (.*)\\)?$"
-                                                                               options:NSRegularExpressionCaseInsensitive
-                                                                                 error:&error];
-        NSTextCheckingResult *match = nil;
-        if ((match = [regex firstMatchInString:[song artist] options:0 range:NSMakeRange(0, [[song artist] length])])) {
-            [song setFeaturing:[[song artist] substringWithRange:[match rangeAtIndex:5]]];
-            [song setArtist:[regex stringByReplacingMatchesInString:[song artist]
-                                                            options:0
-                                                              range:NSMakeRange(0, [[song artist] length])
-                                                       withTemplate:@""]];
-        }
-    }*/
-    
-    Song *songBeforeFixing = new Song(*song);
-    
-    /*/ compare with last
-    if (lastParsedSong && lastSongFixed) {
-        if (song->getArtist().length() == 0 || !song->getArtist().compare(lastParsedSong->getArtist())) {
-            song->setArtist(lastSongFixed->getArtist());
-        }
-        if (song->getAlbum()->getName().length() == 0 || !lastParsedSong->getAlbum() || !song->getAlbum()->getName().compare(lastParsedSong->getAlbum()->getName())) {
-            song->getAlbum()->setName(lastSongFixed->getAlbum()->getName());
-        }
-        if (song->getTrack().length() == 0) {
-            // TODO increment track #
-        }
-        // we shouldn't auto set track title b/c it changes so much
-        // we shouldn't auto set remix title b/c it changes so much
-        // we shouldn't auto set featuring title b/c it changes so much
-        if (song->getAlbum()->getLabel().length() == 0 || !lastParsedSong->getAlbum() || !song->getAlbum()->getLabel().compare(lastParsedSong->getAlbum()->getLabel())) {
-            song->getAlbum()->setLabel(lastSongFixed->getAlbum()->getLabel());
-        }
-        if (song->getAlbum()->getCatalogId().length() == 0 || !lastParsedSong->getAlbum() || !song->getAlbum()->getCatalogId().compare(lastParsedSong->getAlbum()->getCatalogId())) {
-            song->getAlbum()->setCatalogId(lastSongFixed->getAlbum()->getCatalogId());
-        }
-        if (song->getAlbum()->getReleaseDateYear() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getReleaseDateYear() == lastParsedSong->getAlbum()->getReleaseDateYear()) {
-            song->getAlbum()->setReleaseDateYear(lastSongFixed->getAlbum()->getReleaseDateYear());
-        }
-        if (song->getAlbum()->getReleaseDateMonth() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getReleaseDateMonth() == lastParsedSong->getAlbum()->getReleaseDateMonth()) {
-            song->getAlbum()->setReleaseDateMonth(lastSongFixed->getAlbum()->getReleaseDateMonth());
-        }
-        if (song->getAlbum()->getReleaseDateDay() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getReleaseDateDay() == lastParsedSong->getAlbum()->getReleaseDateDay()) {
-            song->getAlbum()->setReleaseDateDay(lastSongFixed->getAlbum()->getReleaseDateDay());
-        }
-        if (song->getAlbum()->getBasicGenreId() == 0 || !lastParsedSong->getAlbum() || song->getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
-            song->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
-        }
-    }*/
-
-    delete lastParsedSong;
-    lastParsedSong = songBeforeFixing;
 }
 
 void MusicManager::writeTagsToSong(Song* song) {
@@ -289,7 +213,60 @@ void MusicManager::writeTagsToSong(Song* song) {
         }
     }
 }
-
+    
+# pragma mark monitor changes
+    
+    void MusicManager::updateSongWithChanges(Song *song) {
+        Song *songBeforeFixing = new Song(*song);
+        songBeforeFixing->setAlbum(*song->getAlbum());
+        
+        // compare with last
+        if (lastParsedSong && lastSongFixed) {
+            if (song->getArtist().length() == 0 || !song->getArtist().compare(lastParsedSong->getArtist())) {
+                song->setArtist(lastSongFixed->getArtist());
+            }
+            if (song->getTrack().length() == 0) {
+                // TODO increment track #
+            }
+            // we shouldn't auto set track title b/c it changes so much
+            if (song->getRemixer().length() == 0 || !song->getRemixer().compare(lastParsedSong->getRemixer())) {
+                song->setRemixer(lastSongFixed->getRemixer());
+            }
+            if (song->getAlbum()->getArtist().length() == 0 || !song->getAlbum()->getArtist().compare(lastParsedSong->getAlbum()->getArtist())) {
+                song->getAlbum()->setArtist(lastSongFixed->getAlbum()->getArtist());
+            }
+            if (song->getAlbum()->getName().length() == 0 || !song->getAlbum()->getName().compare(lastParsedSong->getAlbum()->getName())) {
+                song->getAlbum()->setName(lastSongFixed->getAlbum()->getName());
+            }
+            song->getAlbum()->setMixed(lastSongFixed->getAlbum()->getMixed());
+            if (song->getAlbum()->getLabel().length() == 0 || !song->getAlbum()->getLabel().compare(lastParsedSong->getAlbum()->getLabel())) {
+                song->getAlbum()->setLabel(lastSongFixed->getAlbum()->getLabel());
+            }
+            if (song->getAlbum()->getCatalogId().length() == 0 || !song->getAlbum()->getCatalogId().compare(lastParsedSong->getAlbum()->getCatalogId())) {
+                song->getAlbum()->setCatalogId(lastSongFixed->getAlbum()->getCatalogId());
+            }
+            if (song->getAlbum()->getReleaseDateYear() == 0 || song->getAlbum()->getReleaseDateYear() == lastParsedSong->getAlbum()->getReleaseDateYear()) {
+                song->getAlbum()->setReleaseDateYear(lastSongFixed->getAlbum()->getReleaseDateYear());
+            }
+            if (song->getAlbum()->getReleaseDateMonth() == 0 || song->getAlbum()->getReleaseDateMonth() == lastParsedSong->getAlbum()->getReleaseDateMonth()) {
+                song->getAlbum()->setReleaseDateMonth(lastSongFixed->getAlbum()->getReleaseDateMonth());
+            }
+            if (song->getAlbum()->getReleaseDateDay() == 0 || song->getAlbum()->getReleaseDateDay() == lastParsedSong->getAlbum()->getReleaseDateDay()) {
+                song->getAlbum()->setReleaseDateDay(lastSongFixed->getAlbum()->getReleaseDateDay());
+            }
+            if (song->getAlbum()->getBasicGenreId() == 0 || song->getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
+                song->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
+            }
+         }
+        
+        delete lastParsedSong;
+        lastParsedSong = songBeforeFixing;
+    }
+    
+    void MusicManager::setNewSongChanges(const Song& song) {
+        delete lastSongFixed;
+        lastSongFixed = new Song(song);
+    }
                 
 # pragma mark paths
  
