@@ -127,6 +127,11 @@
     [self loadNextFile];
 }
 
+- (IBAction)skipMusicFile:(id)sender {
+    NSLog(@"skipMusicFile");
+    [self loadNextFile];
+}
+
 - (void)loadNextFile {
     NSLog(@"tagInfoController.loadNextFile");
     ++index;

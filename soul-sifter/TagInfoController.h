@@ -37,6 +37,7 @@
 }
 
 - (IBAction)processMusicFile:(id)sender;
+- (IBAction)skipMusicFile:(id)sender;
 
 @property(readwrite,retain,nonatomic) NSArray *fileUrls;
 @property(readwrite,retain,nonatomic) NSArray *filesToTrash;
