@@ -1,11 +1,5 @@
 #!/usr/bin/ruby
 
-# TODO vectors are shallow copies; need to make them deep
-# TODO getter for vector
-# TODO rename reXml
-# TODO preset all pointers
-# TODO add syncing of objects
-
 module Attrib
   ID = 2**0  # field: an id field for another pointer field object
   FIND = 2**1  # field: add a find method for the field
