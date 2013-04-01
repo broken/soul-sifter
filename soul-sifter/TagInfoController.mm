@@ -188,11 +188,12 @@
         if (hasMovedFile || [fileUrls count] == 1) {
             // straight move image to last directory
             soulsifter::MusicManager::getInstance().moveImage([[[fileUrls objectAtIndex:index] path] UTF8String]);
+            // update album with cover art
+            soulsifter::MusicManager::getInstance().updateLastSongAlbumArtWithImage([[[fileUrls objectAtIndex:index] path] UTF8String]);
         } else {
             // place at end of list to process later
             [fileUrls addObject:fileUrl];
         }
-        //TODO [musicManager moveImage:fileUrl];
         [self loadNextFile];
         return;
     }

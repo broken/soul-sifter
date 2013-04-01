@@ -267,6 +267,19 @@ void MusicManager::writeTagsToSong(Song* song) {
         delete lastSongFixed;
         lastSongFixed = new Song(song);
     }
+    
+    void MusicManager::updateLastSongAlbumArtWithImage(const string& img) {
+        if (!lastSongFixed) return;
+        
+        // code taken from moveImage(img)
+        stringstream destpath;
+        boost::filesystem::path src(img);
+        destpath << lastDestinationPath << "/" << src.filename().string();
+        
+        Album* album = lastSongFixed->getAlbum();
+        album->setCoverFilepath(destpath.str());
+        album->update();
+    }
                 
 # pragma mark paths
  
