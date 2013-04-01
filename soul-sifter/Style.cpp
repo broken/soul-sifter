@@ -57,7 +57,9 @@ namespace soulsifter {
         reId = style.getREId();
         reLabel = style.getRELabel();
         childrenIds = style.childrenIds;
+        dogatech::deleteVectorPointers(&children);
         parentsIds = style.parentsIds;
+        dogatech::deleteVectorPointers(&parents);
     }
 
     Style::~Style() {
@@ -70,15 +72,9 @@ namespace soulsifter {
         name.clear();
         reId = 0;
         reLabel.clear();
-        for (vector<Style*>::iterator it = children.begin(); it != children.end(); ++it) {
-            delete *it;
-        }
-        children.clear();
+        dogatech::deleteVectorPointers(&children);
         childrenIds.clear();
-        for (vector<Style*>::iterator it = parents.begin(); it != parents.end(); ++it) {
-            delete *it;
-        }
-        parents.clear();
+        dogatech::deleteVectorPointers(&parents);
         parentsIds.clear();
     }
 

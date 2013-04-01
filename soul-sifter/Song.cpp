@@ -86,6 +86,7 @@ namespace soulsifter {
         albumId = song.getAlbumId();
         album = NULL;
         stylesIds = song.stylesIds;
+        dogatech::deleteVectorPointers(&styles);
     }
 
     Song::~Song() {
@@ -114,10 +115,7 @@ namespace soulsifter {
         albumId = 0;
         delete album;
         album = NULL;
-        for (vector<Style*>::iterator it = styles.begin(); it != styles.end(); ++it) {
-            delete *it;
-        }
-        styles.clear();
+        dogatech::deleteVectorPointers(&styles);
         stylesIds.clear();
     }
 

@@ -150,6 +150,7 @@ def cAssignmentConstructor(name, fields)
       str << "        #{f[$name]} = NULL;\n"
     elsif (isVector(f[$type]))
       str << "        #{vectorIds(f)} = #{name}.#{vectorIds(f)};\n"
+      str << "        dogatech::deleteVectorPointers(&#{f[$name]});\n"
     else
       str << "        #{f[$name]} = #{name}.get#{cap(f[$name])}();\n"
     end
@@ -191,7 +192,7 @@ def cClearFunction(name, fields)
       str << "        delete #{f[$name]};\n"
       str << "        #{f[$name]} = NULL;\n"
     elsif (isVector(f[$type]))
-      str << "        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            delete *it;\n        }\n        #{f[$name]}.clear();\n        #{vectorIds(f)}.clear();\n"
+      str << "        dogatech::deleteVectorPointers(&#{f[$name]});\n        #{vectorIds(f)}.clear();\n"
     else
       str << "        // TODO #{f[$name]}\n"
     end
