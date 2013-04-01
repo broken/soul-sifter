@@ -115,22 +115,22 @@ void MusicManager::readTagsFromSong(Song* song) {
         TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag();
         if (id3v2) {
             stringstream ss;
-            if (id3v2->title() != TagLib::String::null) song->setTitle(id3v2->title().to8Bit());
             if (id3v2->artist() != TagLib::String::null) song->setArtist(id3v2->artist().to8Bit());
+            song->setTrack(getId3v2Text(id3v2, "TRCK"));
+            if (id3v2->title() != TagLib::String::null) song->setTitle(id3v2->title().to8Bit());
+            song->setRemixer(getId3v2Text(id3v2, "TPE4"));
+            song->getAlbum()->setArtist(getId3v2Text(id3v2, "TPE2"));
             if (id3v2->album() != TagLib::String::null) song->getAlbum()->setName(id3v2->album().to8Bit());
-            if (id3v2->comment() != TagLib::String::null) song->setComments(id3v2->comment().to8Bit());
-            //TODO if (id3v2->genre() != TagLib::String::null) song->setGenre(id3v2->genre().to8Bit());
+            song->getAlbum()->setLabel(getId3v2Text(id3v2, "TPUB"));
+            song->getAlbum()->setCatalogId(getId3v2Text(id3v2, "TCID"));
             if (id3v2->year() != 0) song->getAlbum()->setReleaseDateYear(id3v2->year());
             if (id3v2->track() != 0) {
                 ss.clear();
                 ss << id3v2->track();
                 song->setTrack(ss.str());
             }
-            song->setRemix(getId3v2Text(id3v2, "TPE4"));
-            song->setTrack(getId3v2Text(id3v2, "TRCK"));
-            song->getAlbum()->setArtist(getId3v2Text(id3v2, "TPE2"));
-            song->getAlbum()->setLabel(getId3v2Text(id3v2, "TPUB"));
-            song->getAlbum()->setCatalogId(getId3v2Text(id3v2, "TCID"));
+            //TODO if (id3v2->genre() != TagLib::String::null) song->setGenre(id3v2->genre().to8Bit());
+            if (id3v2->comment() != TagLib::String::null) song->setComments(id3v2->comment().to8Bit());
             
             TagLib::ID3v2::FrameList frameList = id3v2->frameListMap()["POPM"];
             if (!frameList.isEmpty()) {
@@ -243,15 +243,15 @@ void MusicManager::writeTagsToSong(Song* song) {
         }
         f.strip(TagLib::MPEG::File::ID3v1);
         id3v2->setArtist(song->getArtist());
+        setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());
+        id3v2->setTitle(song->getTitle());
+        setId3v2Text(id3v2, "TPE4", song->getRemixer().c_str());
+        setId3v2Text(id3v2, "TPE2", song->getAlbum()->getArtist().c_str());
         id3v2->setAlbum(song->getAlbum()->getName());
-        {
-            stringstream ss;
-            ss << song->getTitle();
-            if (!song->getRemix().empty())
-                ss << " (" << song->getRemix() << ")";
-            id3v2->setTitle(ss.str());
-        }
+        setId3v2Text(id3v2, "TPUB", song->getAlbum()->getLabel().c_str());
+        setId3v2Text(id3v2, "TCID", song->getAlbum()->getCatalogId().c_str());
         id3v2->setYear(song->getAlbum()->getReleaseDateYear());
+        // set genre
         for (long i = song->getStyles().size(); i > 0; --i) {
             const char* style = song->getStyles().back()->getName().c_str();
             if (style[0] != '=' && style[0] != '_' && style[0] != '.') {
@@ -259,17 +259,14 @@ void MusicManager::writeTagsToSong(Song* song) {
                 break;
             }
         }
-        setId3v2Text(id3v2, "TPE4", song->getRemix().c_str());
-        setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());
-        setId3v2Text(id3v2, "TPE2", song->getAlbum()->getArtist().c_str());
-        setId3v2Text(id3v2, "TPUB", song->getAlbum()->getLabel().c_str());
-        setId3v2Text(id3v2, "TCID", song->getAlbum()->getCatalogId().c_str());
+        // set rating
         {
             id3v2->removeFrames("POPM");
             TagLib::ID3v2::PopularimeterFrame *frame = new TagLib::ID3v2::PopularimeterFrame();
             frame->setRating(song->getRating());
             id3v2->addFrame(frame);
         }
+        // set release day & month
         if (song->getAlbum()->getReleaseDateMonth() > 0) {
             ostringstream daymonth;
             if (song->getAlbum()->getReleaseDateDay() == 0) {

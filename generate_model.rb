@@ -689,7 +689,7 @@ songFields = [
   [:string, "artist", 0],
   [:string, "track", 0],
   [:string, "title", 0],
-  [:string, "remix", 0],
+  [:string, "remixer", 0],
   [:string, "featuring", 0],
   [:string, "filepath", 0],
   [:int, "rating", 0],

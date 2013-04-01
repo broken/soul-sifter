@@ -58,8 +58,8 @@ namespace soulsifter {
         void setTrack(const string& track);
         const string& getTitle() const;
         void setTitle(const string& title);
-        const string& getRemix() const;
-        void setRemix(const string& remix);
+        const string& getRemixer() const;
+        void setRemixer(const string& remixer);
         const string& getFeaturing() const;
         void setFeaturing(const string& featuring);
         const string& getFilepath() const;
@@ -92,7 +92,7 @@ namespace soulsifter {
         string artist;
         string track;
         string title;
-        string remix;
+        string remixer;
         string featuring;
         string filepath;
         int rating;

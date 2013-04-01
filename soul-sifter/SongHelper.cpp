@@ -25,7 +25,7 @@ namespace soulsifter {
     artist(song->getArtist()),
     track(song->getTrack()),
     title(song->getTitle()),
-    remix(song->getRemix()),
+    remixer(song->getRemix()),
     featuring(song->getFeaturing()),
     filepath(song->getFilename()),
     reSongId(song->getId()),
@@ -93,12 +93,7 @@ namespace soulsifter {
         if (!getAlbum()->getName().empty()) {
             return getAlbum()->getName();
         } else {
-            stringstream ss;
-            ss << title;
-            if (!remix.empty()) {
-                ss << " " << remix;
-            }
-            return ss.str();
+            return getTitle();
         }
     }
     
@@ -117,7 +112,7 @@ namespace soulsifter {
         re->setDateAdded(song.getDateAddedString());
         re->setCatalogId(song.getAlbum()->getCatalogId());
         re->setLabel(song.getAlbum()->getLabel());
-        re->setRemix(song.getRemix());
+        re->setRemix(song.getRemixer());
         re->setComments(song.getComments());
         re->setReleaseDate(song.getAlbum()->reReleaseDate());
         re->setFeaturing(song.getFeaturing());

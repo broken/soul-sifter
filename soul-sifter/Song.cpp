@@ -34,7 +34,7 @@ namespace soulsifter {
     artist(),
     track(),
     title(),
-    remix(),
+    remixer(),
     featuring(),
     filepath(),
     rating(0),
@@ -54,7 +54,7 @@ namespace soulsifter {
     artist(song.getArtist()),
     track(song.getTrack()),
     title(song.getTitle()),
-    remix(song.getRemix()),
+    remixer(song.getRemixer()),
     featuring(song.getFeaturing()),
     filepath(song.getFilepath()),
     rating(song.getRating()),
@@ -74,7 +74,7 @@ namespace soulsifter {
         artist = song.getArtist();
         track = song.getTrack();
         title = song.getTitle();
-        remix = song.getRemix();
+        remixer = song.getRemixer();
         featuring = song.getFeaturing();
         filepath = song.getFilepath();
         rating = song.getRating();
@@ -101,7 +101,7 @@ namespace soulsifter {
         artist.clear();
         track.clear();
         title.clear();
-        remix.clear();
+        remixer.clear();
         featuring.clear();
         filepath.clear();
         rating = 0;
@@ -128,7 +128,7 @@ namespace soulsifter {
         song->setArtist(rs->getString("artist"));
         song->setTrack(rs->getString("track"));
         song->setTitle(rs->getString("title"));
-        song->setRemix(rs->getString("remix"));
+        song->setRemixer(rs->getString("remixer"));
         song->setFeaturing(rs->getString("featuring"));
         song->setFilepath(rs->getString("filepath"));
         song->setRating(rs->getInt("rating"));
@@ -252,12 +252,12 @@ namespace soulsifter {
                 title = song->getTitle();
             }
         }
-        if (remix.compare(song->getRemix())  && (!boost::regex_match(remix, match1, decimal) || !boost::regex_match(song->getRemix(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
-            if (!remix.empty()) {
-                cout << "updating song " << id << " remix from " << song->getRemix() << " to " << remix << endl;
+        if (remixer.compare(song->getRemixer())  && (!boost::regex_match(remixer, match1, decimal) || !boost::regex_match(song->getRemixer(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
+            if (!remixer.empty()) {
+                cout << "updating song " << id << " remixer from " << song->getRemixer() << " to " << remixer << endl;
                 needsUpdate = true;
             } else {
-                remix = song->getRemix();
+                remixer = song->getRemixer();
             }
         }
         if (featuring.compare(song->getFeaturing())  && (!boost::regex_match(featuring, match1, decimal) || !boost::regex_match(song->getFeaturing(), match2, decimal) || match1[1].str().compare(match2[1].str()))) {
@@ -345,11 +345,11 @@ namespace soulsifter {
             if (album && album->sync()) {
                 album->update();
             }
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Songs set artist=?, track=?, title=?, remix=?, featuring=?, filepath=?, rating=?, dateAdded=?, comments=?, trashed=?, reSongId=?, albumId=? where id=?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Songs set artist=?, track=?, title=?, remixer=?, featuring=?, filepath=?, rating=?, dateAdded=?, comments=?, trashed=?, reSongId=?, albumId=? where id=?");
             ps->setString(1, artist);
             ps->setString(2, track);
             ps->setString(3, title);
-            ps->setString(4, remix);
+            ps->setString(4, remixer);
             ps->setString(5, featuring);
             ps->setString(6, filepath);
             ps->setInt(7, rating);
@@ -405,11 +405,11 @@ namespace soulsifter {
                     cerr << "Unable to save album" << endl;
                 }
             }
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, track, title, remix, featuring, filepath, rating, dateAdded, comments, trashed, reSongId, albumId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, track, title, remixer, featuring, filepath, rating, dateAdded, comments, trashed, reSongId, albumId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps->setString(1, artist);
             ps->setString(2, track);
             ps->setString(3, title);
-            ps->setString(4, remix);
+            ps->setString(4, remixer);
             ps->setString(5, featuring);
             ps->setString(6, filepath);
             ps->setInt(7, rating);
@@ -463,8 +463,8 @@ namespace soulsifter {
     const string& Song::getTitle() const { return title; }
     void Song::setTitle(const string& title) { this->title = title; }
 
-    const string& Song::getRemix() const { return remix; }
-    void Song::setRemix(const string& remix) { this->remix = remix; }
+    const string& Song::getRemixer() const { return remixer; }
+    void Song::setRemixer(const string& remixer) { this->remixer = remixer; }
 
     const string& Song::getFeaturing() const { return featuring; }
     void Song::setFeaturing(const string& featuring) { this->featuring = featuring; }
