@@ -82,6 +82,9 @@
 		18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */; };
 		18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */; };
 		18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */; };
+		18C41F801709B1EB00B23738 /* Collection.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18C41F7F1709B1EB00B23738 /* Collection.xib */; };
+		18C41F831709B5AF00B23738 /* CollectionController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C41F821709B5AF00B23738 /* CollectionController.mm */; };
+		18C41F861709C1F200B23738 /* SongWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C41F851709C1F200B23738 /* SongWrapper.mm */; };
 		18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9DA166189A800912FD3 /* ArchiveUtil.m */; };
 		18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9E21661978400912FD3 /* NSString+MD5.mm */; };
 		18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FB7CAB15572F0000BEF750 /* PathButton.m */; };
@@ -234,6 +237,11 @@
 		18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
 		18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		18C33FD416D76EBC0010BF10 /* DTVectorUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTVectorUtil.h; sourceTree = "<group>"; };
+		18C41F7F1709B1EB00B23738 /* Collection.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Collection.xib; path = ../Collection.xib; sourceTree = "<group>"; };
+		18C41F811709B5AF00B23738 /* CollectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionController.h; sourceTree = "<group>"; };
+		18C41F821709B5AF00B23738 /* CollectionController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CollectionController.mm; sourceTree = "<group>"; };
+		18C41F841709C1F200B23738 /* SongWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongWrapper.h; sourceTree = "<group>"; };
+		18C41F851709C1F200B23738 /* SongWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SongWrapper.mm; sourceTree = "<group>"; };
 		18C5F9D9166189A800912FD3 /* ArchiveUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveUtil.h; sourceTree = "<group>"; };
 		18C5F9DA166189A800912FD3 /* ArchiveUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveUtil.m; sourceTree = "<group>"; };
 		18C5F9E11661978400912FD3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -505,6 +513,9 @@
 				189D22DC153D4F190043634A /* AppDelegate.h */,
 				1828523116E7E7530080D15B /* DT Utils */,
 				189D22DD153D4F190043634A /* AppDelegate.mm */,
+				18C41F7F1709B1EB00B23738 /* Collection.xib */,
+				18C41F811709B5AF00B23738 /* CollectionController.h */,
+				18C41F821709B5AF00B23738 /* CollectionController.mm */,
 				18144CA2154DCA31009C36EE /* Constants.h */,
 				18144CA3154DCA31009C36EE /* Constants.m */,
 				189D22DF153D4F190043634A /* MainMenu.xib */,
@@ -522,6 +533,8 @@
 				18144CA0154DC6AD009C36EE /* PreferencesController.mm */,
 				189D22D1153D4F190043634A /* Supporting Files */,
 				185A72C01675AB4400D14E96 /* SoulSifterSettings.h */,
+				18C41F841709C1F200B23738 /* SongWrapper.h */,
+				18C41F851709C1F200B23738 /* SongWrapper.mm */,
 			);
 			path = "soul-sifter";
 			sourceTree = "<group>";
@@ -634,6 +647,7 @@
 				18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */,
 				18028C391647747C00938259 /* DVDRipper.icns in Resources */,
 				18A73F7016635B280074E137 /* ProcessProgress.xib in Resources */,
+				18C41F801709B1EB00B23738 /* Collection.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -726,6 +740,8 @@
 				18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */,
 				189B9F6916CF157A00EA12EC /* TagWriter.cpp in Sources */,
 				1884FAFA16F4309900CFD5AC /* MixHelper.cpp in Sources */,
+				18C41F831709B5AF00B23738 /* CollectionController.mm in Sources */,
+				18C41F861709C1F200B23738 /* SongWrapper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

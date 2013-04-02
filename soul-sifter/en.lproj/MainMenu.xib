@@ -841,6 +841,26 @@
 									<reference key="NSOnImage" ref="1047407121"/>
 									<reference key="NSMixedImage" ref="72086391"/>
 								</object>
+								<object class="NSMenuItem" id="617560832">
+									<reference key="NSMenu" ref="835318025"/>
+									<string key="NSTitle">Collection</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="1047407121"/>
+									<reference key="NSMixedImage" ref="72086391"/>
+								</object>
+								<object class="NSMenuItem" id="705806913">
+									<reference key="NSMenu" ref="835318025"/>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="1047407121"/>
+									<reference key="NSMixedImage" ref="72086391"/>
+								</object>
 								<object class="NSMenuItem" id="625202149">
 									<reference key="NSMenu" ref="835318025"/>
 									<string key="NSTitle">Bring All to Front</string>
@@ -1439,6 +1459,14 @@
 					</object>
 					<int key="connectionID">584</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showCollectionWindow:</string>
+						<reference key="source" ref="301580756"/>
+						<reference key="destination" ref="617560832"/>
+					</object>
+					<int key="connectionID">589</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1833,6 +1861,8 @@
 							<reference ref="625202149"/>
 							<reference ref="575023229"/>
 							<reference ref="1011231497"/>
+							<reference ref="705806913"/>
+							<reference ref="617560832"/>
 						</array>
 						<reference key="parent" ref="713487014"/>
 					</object>
@@ -2134,6 +2164,16 @@
 						<reference key="object" ref="981756972"/>
 						<reference key="parent" ref="1050465082"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">585</int>
+						<reference key="object" ref="705806913"/>
+						<reference key="parent" ref="835318025"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">587</int>
+						<reference key="object" ref="617560832"/>
+						<reference key="parent" ref="835318025"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -2234,6 +2274,8 @@
 				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="581.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="582.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="585.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="587.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="72.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="73.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2250,7 +2292,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">584</int>
+			<int key="maxID">589</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2262,6 +2304,7 @@
 						<string key="flushStagingDirectory:">id</string>
 						<string key="populateStagingDirectory:">id</string>
 						<string key="readRapidEvolutionDatabase:">id</string>
+						<string key="showCollectionWindow:">id</string>
 						<string key="showPreferencesPanel:">id</string>
 						<string key="showProcessProgressWindow:">id</string>
 						<string key="showTagInfoWindow:">id</string>
@@ -2283,6 +2326,10 @@
 						</object>
 						<object class="IBActionInfo" key="readRapidEvolutionDatabase:">
 							<string key="name">readRapidEvolutionDatabase:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showCollectionWindow:">
+							<string key="name">showCollectionWindow:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showPreferencesPanel:">

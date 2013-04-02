@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class CollectionController;
 @class DropBox;
 @class PreferencesController;
 @class ProcessProgressController;
@@ -17,14 +18,16 @@
 @private
     IBOutlet DropBox *dropBox;
     
+    CollectionController *collectionController;
     PreferencesController *preferencesController;
-    TagInfoController *tagInfoController;
     ProcessProgressController *processProgressController;
+    TagInfoController *tagInfoController;
 }
 
 - (IBAction)showPreferencesPanel:(id)sender;
 - (IBAction)showTagInfoWindow:(id)sender;
 - (IBAction)showProcessProgressWindow:(id)sender;
+- (IBAction)showCollectionWindow:(id)sender;
 
 - (IBAction)populateStagingDirectory:(id)sender;
 - (IBAction)flushStagingDirectory:(id)sender;

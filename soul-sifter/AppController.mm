@@ -8,6 +8,7 @@
 
 #import "AppController.h"
 
+#import "CollectionController.h"
 #import "DropBox.h"
 #include "MusicManager.h"
 #import "PreferencesController.h"
@@ -42,6 +43,14 @@
         processProgressController = [[ProcessProgressController alloc] initWithWindowNibName:@"ProcessProgress"];
     }
     [processProgressController showWindow:self];
+}
+
+- (IBAction)showCollectionWindow:(id)sender {
+    NSLog(@"appController.showCollectionWindow");
+    if (!collectionController) {
+        collectionController = [[CollectionController alloc] initWithWindowNibName:@"Collection"];
+    }
+    [collectionController showWindow:self];
 }
 
 - (IBAction)populateStagingDirectory:(id)sender {
