@@ -122,6 +122,8 @@
     hasMovedFile = true;
     
     // save song
+    song.getAlbum()->sync();
+    if (song.getAlbum()->getId()) song.setAlbumId(song.getAlbum()->getId());
     song.save();
     soulsifter::MusicManager::getInstance().setNewSongChanges(song);
     
