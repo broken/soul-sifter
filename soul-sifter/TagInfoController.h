@@ -35,6 +35,14 @@
     IBOutlet NSTextField *releaseDateDay;
     IBOutlet NSButton *mixed;
     IBOutlet NSOutlineView *styles;
+    
+    IBOutlet NSTextField *artistTag;
+    IBOutlet NSTextField *trackNumTag;
+    IBOutlet NSTextField *titleTag;
+    IBOutlet NSTextField *remixerTag;
+    IBOutlet NSTextField *commentsTag;
+    IBOutlet NSTextField *albumArtistTag;
+    IBOutlet NSTextField *albumTag;
 }
 
 - (IBAction)processMusicFile:(id)sender;
@@ -61,5 +69,13 @@
 @property(readwrite,retain) NSTextField *releaseDateDay;
 @property(readwrite,retain) NSButton *mixed;
 @property(readwrite,retain) NSOutlineView *styles;
+
+@property(readwrite,retain,nonatomic) NSTextField *artistTag;
+@property(readwrite,retain,nonatomic) NSTextField *trackNumTag;
+@property(readwrite,retain,nonatomic) NSTextField *titleTag;
+@property(readwrite,retain,nonatomic) NSTextField *remixerTag;
+@property(readwrite,retain,nonatomic) NSTextField *commentsTag;
+@property(readwrite,retain,nonatomic) NSTextField *albumArtistTag;
+@property(readwrite,retain,nonatomic) NSTextField *albumTag;
 
 @end

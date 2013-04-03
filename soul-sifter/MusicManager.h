@@ -36,7 +36,7 @@ public:
     void writeTagsToSong(Song* song);  // takes ownership of song here
     
     // monitor changes
-    void updateSongWithChanges(Song* song);
+    Song* updateSongWithChanges(const Song& song);
     void setNewSongChanges(const Song& song);
     void updateLastSongAlbumArtWithImage(const string& filepath);
     
