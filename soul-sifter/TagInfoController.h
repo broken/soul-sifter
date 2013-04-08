@@ -8,9 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include "Song.h"
+
 @interface TagInfoController : NSWindowController {
 @private
     int index;
+    soulsifter::Song *songInfo;
     bool hasMovedFile;
     NSMutableArray *fileUrls;
     NSMutableArray *filesToTrash;
@@ -44,6 +47,8 @@
     IBOutlet NSTextField *albumArtistTag;
     IBOutlet NSTextField *albumTag;
 }
+
+- (void)showWindow:(id)sender withSong:(soulsifter::Song *)song;
 
 - (IBAction)processMusicFile:(id)sender;
 - (IBAction)skipMusicFile:(id)sender;

@@ -23,6 +23,7 @@
 @interface TagInfoController()
 
 - (void)loadNextFile;
+- (void)setFieldsWithSong:(soulsifter::Song *)song andUpdate:(BOOL)update;
 
 @end
 
@@ -68,9 +69,23 @@
     [super showWindow:sender];
     
     // TODO alert if directories don't exist
+    songInfo = NULL;
     index = -1;
     hasMovedFile = false;
     [self loadNextFile];
+}
+
+
+- (void)showWindow:(id)sender withSong:(soulsifter::Song *)song {
+    NSLog(@"tagInfoController.showWindow withSong");
+    [super showWindow:sender];
+    
+    // TODO alert if song not found
+    songInfo = song;
+    index = -1;
+    hasMovedFile = false;
+    [fileUrls removeAllObjects];
+    [self setFieldsWithSong:song andUpdate:NO];
 }
 
 # pragma mark actions
@@ -88,23 +103,31 @@
     
     soulsifter::Song song;
     soulsifter::Album songAlbum;
-    song.setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
+    if (songInfo) {
+        song = *songInfo;
+        songAlbum = *song.getAlbum();
+    } else {
+        song.setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
+    }
     song.setArtist([[artist stringValue] UTF8String]);
     song.setTrack([[trackNum stringValue] UTF8String]);
     song.setTitle([[title stringValue] UTF8String]);
     song.setRemixer([[remixer stringValue] UTF8String]);
     song.setComments([[comments stringValue] UTF8String]);
     song.setRating([rating intValue]);
-    songAlbum.setArtist([[albumArtist stringValue] UTF8String]);
-    songAlbum.setName([[album stringValue] UTF8String]);
+    if (!songInfo) {
+        songAlbum.setArtist([[albumArtist stringValue] UTF8String]);
+        songAlbum.setName([[album stringValue] UTF8String]);
+    }
     songAlbum.setLabel([[label stringValue] UTF8String]);
     songAlbum.setCatalogId([[catalogId stringValue] UTF8String]);
     songAlbum.setMixed([mixed state] == NSOnState);
     songAlbum.setReleaseDateYear([releaseDateYear intValue]);
     songAlbum.setReleaseDateMonth([releaseDateMonth intValue]);
     songAlbum.setReleaseDateDay([releaseDateDay intValue]);
-    songAlbum.setBasicGenre(*soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
-    song.setDateAddedToNow();
+    if (!songInfo) {
+        songAlbum.setBasicGenre(*soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
+    }
     song.setAlbum(songAlbum);
     NSIndexSet *styleIndexes = [styles selectedRowIndexes];
     for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
@@ -112,20 +135,31 @@
         soulsifter::Style *style = [item style];
         song.addStyleById(style->getId());
     }
-    song.setRESong(*soulsifter::Song::createRESongFromSong(song));
+    if (!songInfo) {
+        song.setRESong(*soulsifter::Song::createRESongFromSong(song));
+    }
     
     // update tag
-    soulsifter::MusicManager::getInstance().writeTagsToSong(&song);
+    if (!songInfo) {
+        soulsifter::MusicManager::getInstance().writeTagsToSong(&song);
+    }
     
     // move file
-    soulsifter::MusicManager::getInstance().moveSong(&song);
-    hasMovedFile = true;
+    if (!songInfo) {
+        soulsifter::MusicManager::getInstance().moveSong(&song);
+        hasMovedFile = true;
+    }
     
     // save song
-    song.getAlbum()->sync();
-    if (song.getAlbum()->getId()) song.setAlbumId(song.getAlbum()->getId());
-    song.save();
-    soulsifter::MusicManager::getInstance().setNewSongChanges(song);
+    if (!songInfo) {
+        song.setDateAddedToNow();
+        song.getAlbum()->sync();
+        if (song.getAlbum()->getId()) song.setAlbumId(song.getAlbum()->getId());
+        song.save();
+        soulsifter::MusicManager::getInstance().setNewSongChanges(song);
+    } else {
+        song.update();
+    }
     
     // load next song
     [self loadNextFile];
@@ -227,7 +261,14 @@
     soulsifter::Song *song = new soulsifter::Song();
     song->setFilepath([[fileUrl path] UTF8String]);
     soulsifter::MusicManager::getInstance().readTagsFromSong(song);
-    soulsifter::Song *updatedSong = soulsifter::MusicManager::getInstance().updateSongWithChanges(*song);
+    
+    [self setFieldsWithSong:song andUpdate:YES];
+    
+    delete song;
+}
+
+- (void)setFieldsWithSong:(soulsifter::Song *)song andUpdate:(BOOL)update {
+    soulsifter::Song *updatedSong = update ? soulsifter::MusicManager::getInstance().updateSongWithChanges(*song) : song;
     if (!updatedSong->getArtist().empty()) [artist setStringValue:[NSString stringWithUTF8String:updatedSong->getArtist().c_str()]];
     if (!updatedSong->getTrack().empty()) [trackNum setStringValue:[NSString stringWithUTF8String:updatedSong->getTrack().c_str()]];
     if (!updatedSong->getTitle().empty()) [title setStringValue:[NSString stringWithUTF8String:updatedSong->getTitle().c_str()]];
@@ -242,7 +283,8 @@
     if (updatedSong->getAlbum()->getReleaseDateMonth()) [releaseDateMonth setStringValue:[NSString stringWithFormat:@"%i",updatedSong->getAlbum()->getReleaseDateMonth()]];
     if (updatedSong->getAlbum()->getReleaseDateDay()) [releaseDateDay setStringValue:[NSString stringWithFormat:@"%i",updatedSong->getAlbum()->getReleaseDateDay()]];
     [mixed setState:(updatedSong->getAlbum()->getMixed()) ? NSOnState : NSOffState];
-    const soulsifter::BasicGenre* basicGenre = soulsifter::MusicManager::getInstance().findBasicGenreForArtist(updatedSong->getArtist());
+    const soulsifter::BasicGenre* basicGenre = song->getAlbum()->getBasicGenre();
+    if (!basicGenre) basicGenre = soulsifter::MusicManager::getInstance().findBasicGenreForArtist(updatedSong->getArtist());
     if (basicGenre) [genreComboBox setStringValue:[NSString stringWithUTF8String:basicGenre->getName().c_str()]];
     
     [artistTag setStringValue:[NSString stringWithUTF8String:song->getArtist().c_str()]];
@@ -254,8 +296,7 @@
     [albumTag setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getName().c_str()]];
     
     delete basicGenre;
-    delete song;
-    delete updatedSong;
+    if (update) delete updatedSong;
 }
 
 # pragma mark accessors

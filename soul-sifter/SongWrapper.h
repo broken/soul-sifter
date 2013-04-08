@@ -11,7 +11,7 @@
 #include "Song.h"
 
 @interface SongWrapper : NSObject {
-@public
+@private
     soulsifter::Song *song;
     
     NSString *artist;
@@ -20,6 +20,7 @@
 
 - (SongWrapper *)initWithSong:(soulsifter::Song *)song;
 
+- (soulsifter::Song *)song;
 - (NSString *)artist;
 - (void)setArtist:(NSString *)artist;
 - (NSString *)title;

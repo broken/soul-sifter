@@ -47,8 +47,11 @@
 
 - (IBAction)showCollectionWindow:(id)sender {
     NSLog(@"appController.showCollectionWindow");
+    if (!tagInfoController) {
+        tagInfoController = [[TagInfoController alloc] initWithWindowNibName:@"TagInfo"];
+    }
     if (!collectionController) {
-        collectionController = [[CollectionController alloc] initWithWindowNibName:@"Collection"];
+        collectionController = [[CollectionController alloc] initWithWindowNibName:@"Collection" andTagInfoController:tagInfoController];
     }
     [collectionController showWindow:self];
 }

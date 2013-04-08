@@ -24,6 +24,10 @@
 
 # pragma mark accessors
 
+- (soulsifter::Song *)song {
+    return song;
+}
+
 - (NSString *)artist {
     return artist;
 }

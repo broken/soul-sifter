@@ -10,10 +10,18 @@
 
 #include "Song.h"
 #import "SongWrapper.h"
+#import "TagInfoController.h"
 
 @implementation CollectionController
 
 # pragma mark initialization
+
+- (id)initWithWindowNibName:(NSString *)name andTagInfoController:(TagInfoController *)tagInfo {
+    NSLog(@"tagInfoController.initWithWindowNibName");
+    self = [self initWithWindowNibName:name];
+    tagInfoController = tagInfo;
+    return self;
+}
 
 - (id)initWithWindow:(NSWindow *)window {
     NSLog(@"collectionController.initWithWindow");
@@ -34,6 +42,7 @@
     NSLog(@"collectionController.windowDidLoad");
     [super windowDidLoad];
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.;
+    [collectionTableView setDoubleAction:@selector(doubleClickAction:)];
     [self populateCollection];
 }
 
@@ -43,21 +52,23 @@
     dogatech::ResultSetIterator<soulsifter::Song>* songs = soulsifter::Song::findAll();
     soulsifter::Song* song = new soulsifter::Song();
     while (songs->next(song)) {
-        /*[collectionArrayController addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-         [NSString stringWithUTF8String:song->getArtist().c_str()], @"artist",
-         [NSString stringWithUTF8String:song->getTitle().c_str()], @"title",
-         nil]];*/
         [collectionArrayController addObject:[[SongWrapper alloc] initWithSong:song]];
-        //[collectionArrayController addObject:[NSValue valueWithPointer:song]];
-        //MyCPPObject *obj = [[MyArray objectAtIndex:index] pointerValue];
         song = new soulsifter::Song();
     }
     delete song;  // extra
     delete songs;
 }
 
+# pragma mark actions
+
+- (IBAction)doubleClickAction:(id)sender {
+    soulsifter::Song* song = [[[collectionArrayController selectedObjects] objectAtIndex:0] song];
+    [tagInfoController showWindow:self withSong:song];
+}
+
 # pragma mark accessors
 
+@synthesize collectionTableView;
 @synthesize collectionArrayController;
 
 @end
