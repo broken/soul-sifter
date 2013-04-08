@@ -54,6 +54,18 @@
     [self performSelector:@selector(startProgressBar:) withObject:self afterDelay:1];
 }
 
+# pragma mark update files
+
+- (IBAction)flushStagingDirectory:(id)sender {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSLog(@"processProgressController.flushStagingDirectory");
+    [self startProgressBar:self];
+    [[self window] setTitle:@"Flushing staging directory"];
+    soulsifter::MusicManager::getInstance().flushStagingDirectory();
+    [[self window] close];
+    [pool release];
+}
+
 # pragma mark update basic genres
 
 - (IBAction)updateBasicGenres:(id)sender {

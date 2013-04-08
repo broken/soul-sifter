@@ -385,72 +385,76 @@ bool MusicManager::moveSong(Song* song) {
 		}
 	}
 }
-
-- (void)flushStagingDirectory {
-    NSLog(@"musicManager.flushStagingDirectory");
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    BOOL isDir;
-    NSURL *stagingUrl = [[NSURL fileURLWithPath:[userDefaults stringForKey:UDStagingPath]] standardizedURL];
-    NSURL *musicUrl = [[NSURL fileURLWithPath:[userDefaults stringForKey:UDMusicPath]] standardizedURL];
-    
-    if (![fileManager fileExistsAtPath:[musicUrl path] isDirectory:&isDir]
-        || !isDir) {
-        NSLog(@"Music path does not exist");
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"Damn"];
-        [alert setMessageText:@"Flushing staging directory failed"];
-        [alert setInformativeText:@"Music path does not exist"];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
-        [alert release];
-        return;
-    }
-    if (![fileManager fileExistsAtPath:[stagingUrl path] isDirectory:&isDir]
-        || !isDir) {
-        NSLog(@"Staging path does not exist");
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"Damn"];
-        [alert setMessageText:@"Flushing staging directory failed"];
-        [alert setInformativeText:@"Staging path does not exist"];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
-        [alert release];
-        return;
-    }
-    
-    // enumerate over paths
-    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:[stagingUrl path]];
-    NSString *file;
-    while (file = [enumerator nextObject]) {
-        file = [file stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		NSDictionary *fileAttribs = [enumerator fileAttributes];
-        if ([fileAttribs objectForKey:NSFileType] == NSFileTypeRegular) {
-            NSURL *fileUrl = [NSURL URLWithString:file relativeToURL:stagingUrl];
-            if ([[fileUrl lastPathComponent] characterAtIndex:0] == '.') {
-				continue;
-			}
-            NSURL *dest = [NSURL URLWithString:file relativeToURL:musicUrl];
-            // create directory if it doesn't exist
-            if (![fileManager createDirectoryAtURL:[dest URLByDeletingLastPathComponent]
-                       withIntermediateDirectories:YES
-                                        attributes:nil
-                                             error:&error]) {
-                NSString *msg = [NSString stringWithFormat:@"Error occurred while trying to create directory: %@", error];
-                NSAssert(NO, msg);
+*/
+    void MusicManager::flushStagingDirectory() {
+        try {
+            filesystem::path musicPath(SoulSifterSettings::getInstance().getMusicPath());
+            if (!filesystem::exists(musicPath) || !filesystem::is_directory(musicPath)) {
+                cerr << "music path does not exist or is not a directory: " << musicPath.string() << endl;
+                return;
             }
-            // move file
-            NSLog(@"moving '%@' to '%@'", fileUrl, dest);
-            if (![fileManager moveItemAtURL:fileUrl toURL:dest error:&error]) {
-                NSString *msg = [NSString stringWithFormat:@"Unable to move %@", file];
-                NSAssert(NO, msg);
+            filesystem::path stagingPath(SoulSifterSettings::getInstance().getStagingPath());
+            if (!filesystem::exists(stagingPath) || !filesystem::is_directory(stagingPath)) {
+                cerr << "staging path does not exist or is not a directory: " << stagingPath.string() << endl;
+                return;
             }
+            
+            // enumerate over paths
+            unsigned long relativePathPosition = stagingPath.string().length();
+            filesystem::recursive_directory_iterator end; // default ctor yields past the end
+            for (filesystem::recursive_directory_iterator it(stagingPath); it != end; ++it) {
+                if (filesystem::is_directory(it->status())) {
+                    // do nothing
+                } else if (filesystem::is_regular_file(it->status())) {
+                    if (it->path().filename().string()[0] == '.') {
+                        continue;
+                    }
+                    // create directory if it doesn't exist
+                    string subPath = it->path().parent_path().string().substr(relativePathPosition);
+                    filesystem::path dir(musicPath.string() + subPath);
+                    if (!filesystem::exists(dir)) {
+                        if (!filesystem::create_directories(dir)) {
+                            cerr << "Error occurred while trying to create directory " << dir.string() << endl;
+                            continue;
+                        }
+                    } else if (!filesystem::is_directory(dir)) {
+                        cerr << "Cannot move file b/c destination is not a directory " << dir.string() << endl;
+                        continue;
+                    }
+                    // move file
+                    stringstream destpath;
+                    destpath << dir.string() << "/" << it->path().filename().string();
+                    filesystem::path dest(destpath.str());
+                    cerr << "Moving " << it->path().string() << " to " << dest.string() << endl;
+                    filesystem::copy(it->path(), dest);
+                    if (filesystem::exists(dest)) {
+                        filesystem::path trash("/Users/rneale/.Trash/" + it->path().filename().string());
+                        filesystem::rename(it->path(), trash);
+                    }
+                    
+                    // update song path
+                    Song *song = Song::findByFilepath(it->path().string());
+                    if (song) {
+                        song->setFilepath(dest.string());
+                        song->update();
+                        delete song;
+                    } else {
+                        Album *album = Album::findByCoverFilepath(it->path().string());
+                        if (album) {
+                            album->setCoverFilepath(dest.string());
+                            album->update();
+                            delete album;
+                        }
+                    }
+                } else {
+                    cerr << "wtf is this? " << it->path().string() << endl;
+                }
+            }
+        } catch (const filesystem::filesystem_error& ex) {
+            cerr << ex.what() << '\n';
         }
     }
-}
-*/
+
 # pragma mark db updates
 
 void MusicManager::updateDatabaseBasicGenres() {

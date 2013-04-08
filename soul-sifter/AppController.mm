@@ -63,7 +63,10 @@
 
 - (IBAction)flushStagingDirectory:(id)sender {
     NSLog(@"appController.flushStagingDirectory");
-    //TODO [[MusicManager default] flushStagingDirectory];
+    [self showProcessProgressWindow:self];
+    [NSThread detachNewThreadSelector:@selector(flushStagingDirectory:)
+                             toTarget:processProgressController
+                           withObject:self];
 }
 
 - (IBAction)readRapidEvolutionDatabase:(id)sender {
