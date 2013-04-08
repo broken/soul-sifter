@@ -302,7 +302,7 @@ bool MusicManager::moveSong(Song* song) {
     try {
         // create directory
         ostringstream dirpath;
-        dirpath << getCopyToPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
+        dirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
         filesystem::path dir(dirpath.str());
         if (!filesystem::exists(dir)) {
             if (!filesystem::create_directories(dir)) {
