@@ -173,6 +173,30 @@ namespace soulsifter {
         }
     }
 
+    Song* Song::findByFilepath(const string& filepath) {
+        try {
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Songs where filepath = ?");
+            ps->setString(1, filepath);
+            sql::ResultSet *rs = ps->executeQuery();
+            Song *song = NULL;
+            if (rs->next()) {
+                song = new Song();
+                populateFields(rs, song);
+            }
+            rs->close();
+            delete rs;
+
+            return song;
+        } catch (sql::SQLException &e) {
+            cerr << "ERROR: SQLException in " << __FILE__;
+            cerr << " (" << __func__<< ") on line " << __LINE__ << endl;
+            cerr << "ERROR: " << e.what();
+            cerr << " (MySQL error code: " << e.getErrorCode();
+            cerr << ", SQLState: " << e.getSQLState() << ")" << endl;
+            exit(1);
+        }
+    }
+
     Song* Song::findByRESongId(int reSongId) {
         try {
             sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Songs where reSongId = ?");

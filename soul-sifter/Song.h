@@ -34,6 +34,7 @@ namespace soulsifter {
         void clear();
 
         static Song* findById(int id);
+        static Song* findByFilepath(const string& filepath);
         static Song* findByRESongId(int reSongId);
         static dogatech::ResultSetIterator<Song>* findAll();
 

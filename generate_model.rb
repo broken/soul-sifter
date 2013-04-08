@@ -686,7 +686,7 @@ songFields = [
   [:string, "title", 0],
   [:string, "remixer", 0],
   [:string, "featuring", 0],
-  [:string, "filepath", 0],
+  [:string, "filepath", Attrib::FIND],
   [:int, "rating", 0],
   [:time_t, "dateAdded", 0],
   [:string, "comments", 0],
