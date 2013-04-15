@@ -429,7 +429,7 @@ def cSaveFunction(name, fields, attribs)
   str << "                cerr << \"Not able to save #{name}\" << endl;\n                return saved;\n"
   str << "            } else {\n"
   if (attribs & Attrib::SAVEID == 0)
-    str << "                const int id = MysqlAccess::getInstance().getLastInsertId();\n                if (id == 0) {\n"
+    str << "                id = MysqlAccess::getInstance().getLastInsertId();\n                if (id == 0) {\n"
     str << "                    cerr << \"Inserted #{name}, but unable to retreive inserted ID.\" << endl;\n                    return saved;\n                }\n"
   end
   fields.each do |f|

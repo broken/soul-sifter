@@ -277,7 +277,7 @@ namespace soulsifter {
                 cerr << "Not able to save style" << endl;
                 return saved;
             } else {
-                const int id = MysqlAccess::getInstance().getLastInsertId();
+                id = MysqlAccess::getInstance().getLastInsertId();
                 if (id == 0) {
                     cerr << "Inserted style, but unable to retreive inserted ID." << endl;
                     return saved;
