@@ -20,6 +20,7 @@
     NSLog(@"tagInfoController.initWithWindowNibName");
     self = [self initWithWindowNibName:name];
     tagInfoController = tagInfo;
+    [tagInfoController setCollectionController:self];
     return self;
 }
 
@@ -57,6 +58,11 @@
     }
     delete song;  // extra
     delete songs;
+}
+
+- (void)addSongToCollection:(soulsifter::Song *)song {
+    if ([[collectionArrayController arrangedObjects] count])
+        [collectionArrayController addObject:[[SongWrapper alloc] initWithSong:(new soulsifter::Song(*song))]];
 }
 
 # pragma mark actions

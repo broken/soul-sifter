@@ -11,6 +11,7 @@
 #include "Album.h"
 #import "ArchiveUtil.h"
 #include "BasicGenre.h"
+#import "CollectionController.h"
 #import "Constants.h"
 #include "MusicManager.h"
 #include "RESong.h"
@@ -157,6 +158,7 @@
         if (song.getAlbum()->getId()) song.setAlbumId(song.getAlbum()->getId());
         song.save();
         soulsifter::MusicManager::getInstance().setNewSongChanges(song);
+        [collectionController addSongToCollection:&song];
     } else {
         song.update();
     }
@@ -300,6 +302,8 @@
 }
 
 # pragma mark accessors
+
+@synthesize collectionController;
 
 @synthesize fileUrls;
 @synthesize filesToTrash;
