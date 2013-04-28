@@ -59,7 +59,9 @@ namespace soulsifter {
         
         // this next statement always returns false even though it sets the variable correctly
         MysqlAccess::getInstance().getPreparedStatement("set @n=0")->execute();
-        ps = MysqlAccess::getInstance().getPreparedStatement("select os.n from songs s join songstyles ss on s.id=ss.songid join (select @n:=1+@n n, id from styles order by relabel) os on ss.styleid=os.id where s.resongid=? order by os.n");
+        // the order of the styles in this query needs to be the order they're written out to the RE
+        // db to generate the correct styles bitmask
+        ps = MysqlAccess::getInstance().getPreparedStatement("select os.n from songs s join songstyles ss on s.id=ss.songid join (select @n:=1+@n n, id from styles order by id) os on ss.styleid=os.id where s.resongid=? order by os.n");
         ps->setInt(1, id);
         rs = ps->executeQuery();
         int nextStyleBit = -1;
