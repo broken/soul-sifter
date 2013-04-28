@@ -18,7 +18,7 @@ namespace soulsifter {
     
     int Mix::mixoutCountForRESongId(int outRESongId) {
         try {
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select count(*) from Song s join Mixes m on (s.id = m.outSongId) where s.reSongId = ?");
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select count(*) from Songs s join Mixes m on (s.id = m.outSongId) where s.reSongId = ?");
             ps->setInt(1, outRESongId);
             sql::ResultSet *rs = ps->executeQuery();
             int count = 0;

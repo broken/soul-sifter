@@ -20,7 +20,7 @@
 namespace soulsifter {
     
     const int RESong::maxREId() {
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(unique_id) from RESongs");
+        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select max(id) from RESongs");
         sql::ResultSet *rs = ps->executeQuery();
         int max = 0;
         if (rs->next())
@@ -57,9 +57,8 @@ namespace soulsifter {
         rs->close();
         delete rs;
         
-        ps = MysqlAccess::getInstance().getPreparedStatement("set @n=0");
-        if (!ps->execute())
-            cerr << "Unable to set count var" << endl;
+        // this next statement always returns false even though it sets the variable correctly
+        MysqlAccess::getInstance().getPreparedStatement("set @n=0")->execute();
         ps = MysqlAccess::getInstance().getPreparedStatement("select os.n from songs s join songstyles ss on s.id=ss.songid join (select @n:=1+@n n, id from styles order by relabel) os on ss.styleid=os.id where s.resongid=? order by os.n");
         ps->setInt(1, id);
         rs = ps->executeQuery();
