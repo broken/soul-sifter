@@ -63,7 +63,7 @@ def main():
             break
     if (playlist_id == 0):
         print "Creating {} playlist.".format(args.playlist_name)
-        playlist_id = api.create_playlist(name)
+        playlist_id = api.create_playlist(args.playlist_name)
     
     # update playlist
     print "Updating playlist..."
