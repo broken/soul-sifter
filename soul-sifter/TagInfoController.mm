@@ -14,8 +14,10 @@
 #import "CollectionController.h"
 #import "Constants.h"
 #include "MusicManager.h"
+#import "NSOutlineView+DTSelection.h"
 #include "RESong.h"
 #include "Song.h"
+#include "Style.h"
 #import "StyleTreeItem.h"
 
 
@@ -102,65 +104,69 @@
         return;
     }
     
-    soulsifter::Song song;
-    soulsifter::Album songAlbum;
+    soulsifter::Song *song;
+    soulsifter::Album *songAlbum;
     if (songInfo) {
-        song = *songInfo;
-        songAlbum = *song.getAlbum();
+        song = songInfo;
+        songAlbum = song->getAlbum();
     } else {
-        song.setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
+        song = new soulsifter::Song();
+        songAlbum = new soulsifter::Album();
+        song->setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
     }
-    song.setArtist([[artist stringValue] UTF8String]);
-    song.setTrack([[trackNum stringValue] UTF8String]);
-    song.setTitle([[title stringValue] UTF8String]);
-    song.setRemixer([[remixer stringValue] UTF8String]);
-    song.setComments([[comments stringValue] UTF8String]);
-    song.setRating([rating intValue]);
+    song->setArtist([[artist stringValue] UTF8String]);
+    song->setTrack([[trackNum stringValue] UTF8String]);
+    song->setTitle([[title stringValue] UTF8String]);
+    song->setRemixer([[remixer stringValue] UTF8String]);
+    song->setComments([[comments stringValue] UTF8String]);
+    song->setRating([rating intValue]);
     if (!songInfo) {
-        songAlbum.setArtist([[albumArtist stringValue] UTF8String]);
-        songAlbum.setName([[album stringValue] UTF8String]);
+        songAlbum->setArtist([[albumArtist stringValue] UTF8String]);
+        songAlbum->setName([[album stringValue] UTF8String]);
     }
-    songAlbum.setLabel([[label stringValue] UTF8String]);
-    songAlbum.setCatalogId([[catalogId stringValue] UTF8String]);
-    songAlbum.setMixed([mixed state] == NSOnState);
-    songAlbum.setReleaseDateYear([releaseDateYear intValue]);
-    songAlbum.setReleaseDateMonth([releaseDateMonth intValue]);
-    songAlbum.setReleaseDateDay([releaseDateDay intValue]);
+    songAlbum->setLabel([[label stringValue] UTF8String]);
+    songAlbum->setCatalogId([[catalogId stringValue] UTF8String]);
+    songAlbum->setMixed([mixed state] == NSOnState);
+    songAlbum->setReleaseDateYear([releaseDateYear intValue]);
+    songAlbum->setReleaseDateMonth([releaseDateMonth intValue]);
+    songAlbum->setReleaseDateDay([releaseDateDay intValue]);
     if (!songInfo) {
-        songAlbum.setBasicGenre(*soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
+        songAlbum->setBasicGenre(*soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
     }
-    song.setAlbum(songAlbum);
+    song->setAlbum(*songAlbum);
     NSIndexSet *styleIndexes = [styles selectedRowIndexes];
     for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
         StyleTreeItem *item = [styles itemAtRow:idx];
         soulsifter::Style *style = [item style];
-        song.addStyleById(style->getId());
+        song->addStyleById(style->getId());
     }
     if (!songInfo) {
-        song.setRESong(*soulsifter::Song::createRESongFromSong(song));
+        song->setRESong(*soulsifter::Song::createRESongFromSong(*song));
     }
     
     // update tag
     if (!songInfo) {
-        soulsifter::MusicManager::getInstance().writeTagsToSong(&song);
+        soulsifter::MusicManager::getInstance().writeTagsToSong(song);
     }
     
     // move file
     if (!songInfo) {
-        soulsifter::MusicManager::getInstance().moveSong(&song);
+        soulsifter::MusicManager::getInstance().moveSong(song);
         hasMovedFile = true;
     }
     
     // save song
     if (!songInfo) {
-        song.setDateAddedToNow();
-        song.getAlbum()->sync();
-        if (song.getAlbum()->getId()) song.setAlbumId(song.getAlbum()->getId());
-        song.save();
-        soulsifter::MusicManager::getInstance().setNewSongChanges(song);
-        [collectionController addSongToCollection:&song];
+        song->setDateAddedToNow();
+        song->getAlbum()->sync();
+        if (song->getAlbum()->getId()) song->setAlbumId(song->getAlbum()->getId());
+        song->save();
+        soulsifter::MusicManager::getInstance().setNewSongChanges(*song);
+        [collectionController addSongToCollection:song];
+        delete song;
+        delete songAlbum;
     } else {
-        song.update();
+        song->update();
     }
     
     // load next song
@@ -297,6 +303,24 @@
     [commentsTag setStringValue:[NSString stringWithUTF8String:song->getComments().c_str()]];
     [albumArtistTag setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getArtist().c_str()]];
     [albumTag setStringValue:[NSString stringWithUTF8String:song->getAlbum()->getName().c_str()]];
+    
+    [styles deselectAll:self];
+    [styles expandItem:nil expandChildren:YES];
+    NSMutableArray* styleItems = [NSMutableArray array];
+    for (vector<soulsifter::Style*>::const_iterator it = updatedSong->getStyles().begin(); it != updatedSong->getStyles().end(); ++it) {
+        for (NSUInteger idx = 0; idx < [styles numberOfRows]; idx = ++idx) {
+            StyleTreeItem *item = [styles itemAtRow:idx];
+            soulsifter::Style *style = [item style];
+            if ((*it)->getId() == style->getId()) {
+                [styleItems addObject:item];
+                continue;
+            }
+        }
+    }
+    [styles collapseItem:nil collapseChildren:YES];
+    for (StyleTreeItem *item in styleItems) {
+        [styles selectItem:item];
+    }
     
     delete basicGenre;
     if (update) delete updatedSong;

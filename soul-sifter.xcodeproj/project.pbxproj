@@ -41,6 +41,7 @@
 		185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC39167EE52F006FB8AF /* StylesViewController.m */; };
 		185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */; };
 		185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */; };
+		1873DDAA171BF48400B0F424 /* NSOutlineView+DTSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1873DDA9171BF48400B0F424 /* NSOutlineView+DTSelection.m */; };
 		1884FAFA16F4309900CFD5AC /* MixHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1884FAF916F4309800CFD5AC /* MixHelper.cpp */; };
 		1884FAFC16F6E8BA00CFD5AC /* libboost_regex-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1884FAFB16F6E8BA00CFD5AC /* libboost_regex-mt.dylib */; };
 		188E1B111648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B0F1648E8CA004754F4 /* RapidEvolutionDatabaseConfigHandler.cpp */; };
@@ -172,6 +173,8 @@
 		185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StylesTreeDataSource.mm; sourceTree = "<group>"; };
 		185CFC40167EEC97006FB8AF /* StyleTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleTreeItem.h; sourceTree = "<group>"; };
 		185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StyleTreeItem.mm; sourceTree = "<group>"; };
+		1873DDA8171BF48400B0F424 /* NSOutlineView+DTSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+DTSelection.h"; sourceTree = "<group>"; };
+		1873DDA9171BF48400B0F424 /* NSOutlineView+DTSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+DTSelection.m"; sourceTree = "<group>"; };
 		1884FAF816F42A7D00CFD5AC /* ResultSetIterator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultSetIterator.h; sourceTree = "<group>"; };
 		1884FAF916F4309800CFD5AC /* MixHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MixHelper.cpp; sourceTree = "<group>"; };
 		1884FAFB16F6E8BA00CFD5AC /* libboost_regex-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_regex-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_regex-mt.dylib"; sourceTree = "<group>"; };
@@ -322,6 +325,8 @@
 			children = (
 				18C5F9E11661978400912FD3 /* NSString+MD5.h */,
 				18C5F9E21661978400912FD3 /* NSString+MD5.mm */,
+				1873DDA8171BF48400B0F424 /* NSOutlineView+DTSelection.h */,
+				1873DDA9171BF48400B0F424 /* NSOutlineView+DTSelection.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -742,6 +747,7 @@
 				1884FAFA16F4309900CFD5AC /* MixHelper.cpp in Sources */,
 				18C41F831709B5AF00B23738 /* CollectionController.mm in Sources */,
 				18C41F861709C1F200B23738 /* SongWrapper.mm in Sources */,
+				1873DDAA171BF48400B0F424 /* NSOutlineView+DTSelection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
