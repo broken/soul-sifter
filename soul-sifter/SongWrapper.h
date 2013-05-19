@@ -16,6 +16,8 @@
     
     NSString *artist;
     NSString *title;
+    NSNumber *rating;
+    NSString *styles;
 }
 
 - (SongWrapper *)initWithSong:(soulsifter::Song *)song;
@@ -25,5 +27,9 @@
 - (void)setArtist:(NSString *)artist;
 - (NSString *)title;
 - (void)setTitle:(NSString *)title;
+- (NSNumber *)rating;
+- (void)setRating:(NSNumber *)rating;
+- (NSString *)styles;
+- (void)setStyles:(NSString *)styles;
 
 @end
