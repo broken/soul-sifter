@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#include "Song.h"
-
 @class TagInfoController;
 
 @interface CollectionController : NSWindowController {
@@ -20,7 +18,7 @@
     IBOutlet NSArrayController *collectionArrayController;
 }
 
-- (void)addSongToCollection:(soulsifter::Song *)song;
+- (void)addSongToCollection:(NSDictionary *)dicWithSong;
 
 - (id)initWithWindowNibName:(NSString *)name andTagInfoController:(TagInfoController *)tagInfoController;
 

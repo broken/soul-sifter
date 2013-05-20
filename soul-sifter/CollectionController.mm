@@ -8,6 +8,7 @@
 
 #import "CollectionController.h"
 
+#import "Constants.h"
 #include "Song.h"
 #import "SongWrapper.h"
 #import "TagInfoController.h"
@@ -20,7 +21,6 @@
     NSLog(@"tagInfoController.initWithWindowNibName");
     self = [self initWithWindowNibName:name];
     tagInfoController = tagInfo;
-    [tagInfoController setCollectionController:self];
     return self;
 }
 
@@ -29,6 +29,10 @@
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(addSongToCollection:)
+                                                     name:UDSAddedSong
+                                                   object:nil];
     }
     
     return self;
@@ -60,7 +64,9 @@
     delete songs;
 }
 
-- (void)addSongToCollection:(soulsifter::Song *)song {
+- (void)addSongToCollection:(NSDictionary *)dictWithSong {
+    NSValue *songVal = [dictWithSong valueForKey:UDSPSong];
+    soulsifter::Song* song = (soulsifter::Song*)[songVal pointerValue];
     if ([[collectionArrayController arrangedObjects] count])
         [collectionArrayController addObject:[[SongWrapper alloc] initWithSong:(new soulsifter::Song(*song))]];
 }

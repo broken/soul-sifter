@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-// User Defaults
+// User Defaults, User Default Signal, & User Default Signal Param
 extern NSString * const UDMusicPath;
 extern NSString * const UDRapidEvolutionPath;
 extern NSString * const UDStagingPath;
+extern NSString * const UDSAddedSong;
+extern NSString * const UDSUpdatedSongFormat;
+extern NSString * const UDSPSong;

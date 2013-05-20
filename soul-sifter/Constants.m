@@ -13,3 +13,6 @@
 NSString * const UDMusicPath = @"MusicPath";
 NSString * const UDRapidEvolutionPath = @"RapidEvolutionPath";
 NSString * const UDStagingPath = @"StagingPath";
+NSString * const UDSAddedSong = @"AddedSong";
+NSString * const UDSUpdatedSongFormat = @"UpdatedSong%i";
+NSString * const UDSPSong = @"song";

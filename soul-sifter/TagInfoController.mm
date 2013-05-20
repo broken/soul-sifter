@@ -11,7 +11,6 @@
 #include "Album.h"
 #import "ArchiveUtil.h"
 #include "BasicGenre.h"
-#import "CollectionController.h"
 #import "Constants.h"
 #include "MusicManager.h"
 #import "NSOutlineView+DTSelection.h"
@@ -162,11 +161,17 @@
         if (song->getAlbum()->getId()) song->setAlbumId(song->getAlbum()->getId());
         song->save();
         soulsifter::MusicManager::getInstance().setNewSongChanges(*song);
-        [collectionController addSongToCollection:song];
+        [[NSNotificationCenter defaultCenter] postNotificationName:UDSAddedSong object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:song], UDSPSong, nil]];
         delete song;
         delete songAlbum;
     } else {
         song->update();
+        
+        NSString *notificationName = [NSString stringWithFormat:UDSUpdatedSongFormat, song->getId()];
+        NSDictionary *songDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:song], UDSPSong, nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName
+                                                            object:self
+                                                          userInfo:songDict];
     }
     
     // load next song
@@ -327,8 +332,6 @@
 }
 
 # pragma mark accessors
-
-@synthesize collectionController;
 
 @synthesize fileUrls;
 @synthesize filesToTrash;

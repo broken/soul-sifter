@@ -22,6 +22,8 @@
 
 - (SongWrapper *)initWithSong:(soulsifter::Song *)song;
 
+- (void)updateValues:(NSDictionary *)unused;
+
 - (soulsifter::Song *)song;
 - (NSString *)artist;
 - (void)setArtist:(NSString *)artist;

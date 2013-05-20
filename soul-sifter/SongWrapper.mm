@@ -8,6 +8,7 @@
 
 #import "SongWrapper.h"
 
+#import "Constants.h"
 #include "Style.h"
 
 @implementation SongWrapper
@@ -18,6 +19,18 @@
     [super init];
     
     self->song = song_;
+    [self updateValues:nil];
+    
+    NSString *notificationChannel = [NSString stringWithFormat:UDSUpdatedSongFormat, song->getId()];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateValues:)
+                                                 name:notificationChannel
+                                               object:nil];
+    
+    return self;
+}
+
+- (void)updateValues:(NSDictionary *)unused {
     artist = [[NSString stringWithUTF8String:song->getArtist().c_str()] copy];
     title = [[NSString stringWithUTF8String:song->getTitle().c_str()] copy];
     rating = [[NSNumber numberWithInt:song->getRating()] copy];
@@ -28,8 +41,6 @@
         styles = [[styles stringByAppendingString:[NSString stringWithUTF8String:(*it)->getName().c_str()]] stringByAppendingString:@", "];
     }
     styles = [styles copy];
-    
-    return self;
 }
 
 # pragma mark accessors

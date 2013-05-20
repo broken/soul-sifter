@@ -10,8 +10,6 @@
 
 #include "Song.h"
 
-@class CollectionController;
-
 @interface TagInfoController : NSWindowController {
 @private
     int index;
@@ -19,7 +17,6 @@
     bool hasMovedFile;
     NSMutableArray *fileUrls;
     NSMutableArray *filesToTrash;
-    CollectionController *collectionController;
     
     IBOutlet NSComboBox *genreComboBox;
     IBOutlet NSArrayController *genreArrayController;
@@ -55,8 +52,6 @@
 
 - (IBAction)processMusicFile:(id)sender;
 - (IBAction)skipMusicFile:(id)sender;
-
-@property(readwrite,retain,nonatomic) CollectionController *collectionController;
 
 @property(readwrite,retain,nonatomic) NSArray *fileUrls;
 @property(readwrite,retain,nonatomic) NSArray *filesToTrash;
