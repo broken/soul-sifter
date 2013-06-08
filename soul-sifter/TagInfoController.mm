@@ -108,7 +108,7 @@
     soulsifter::Album *songAlbum;
     if (songInfo) {
         song = songInfo;
-        songAlbum = song->getAlbum();
+        songAlbum = new soulsifter::Album(*song->getAlbum());
     } else {
         song = new soulsifter::Song();
         songAlbum = new soulsifter::Album();
