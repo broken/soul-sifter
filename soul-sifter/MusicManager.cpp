@@ -9,6 +9,7 @@
 
 #include "MusicManager.h"
 
+#include <algorithm>
 #include <iostream>
 #include <regex.h>
 #include <stdlib.h>
@@ -299,23 +300,28 @@ string MusicManager::getCopyToPath() {
 bool MusicManager::moveSong(Song* song) {
     try {
         // create directory
-        ostringstream dirpath;
-        dirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
-        filesystem::path dir(dirpath.str());
+        string dirpath;
+        {
+            ostringstream ssdirpath;
+            ssdirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
+            dirpath = ssdirpath.str();
+        }
+        transform(dirpath.begin(), dirpath.end(), dirpath.begin(), ::tolower);
+        filesystem::path dir(dirpath);
         if (!filesystem::exists(dir)) {
             if (!filesystem::create_directories(dir)) {
-                cerr << "Error occurred while trying to create directory " << dirpath.str() << endl;
+                cerr << "Error occurred while trying to create directory " << dirpath << endl;
                 return false;
             }
         } else if (!filesystem::is_directory(dir)) {
-            cerr << "Cannot move file b/c destination is not a directory " << dirpath.str() << endl;
+            cerr << "Cannot move file b/c destination is not a directory " << dirpath << endl;
             return false;
         }
     
         // move file to dest
         stringstream destpath;
         boost::filesystem::path src(song->getFilepath());
-        lastDestinationPath = dirpath.str();
+        lastDestinationPath = dirpath;
         destpath << lastDestinationPath << "/" << src.filename().string();
         boost::filesystem::path dest(destpath.str());
         boost::filesystem::rename(src, dest);
