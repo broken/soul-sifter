@@ -19,6 +19,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/regex.hpp>
 #include <taglib/apetag.h>
 #include <taglib/fileref.h>
 #include <taglib/id3v2frame.h>
@@ -225,7 +226,8 @@ void MusicManager::writeTagsToSong(Song* song) {
         // compare with last
         if (lastParsedSong && lastSongFixed) {
             if (!song.getArtist().compare(lastParsedSong->getArtist())) {
-                updatedSong->setArtist(lastSongFixed->getArtist());
+                boost::regex featRegex(" [(]ft[.] .*");
+                updatedSong->setArtist(boost::regex_replace(lastSongFixed->getArtist(), featRegex, ""));
             }
             if (song.getTrack().length() == 0) {
                 // TODO increment track #
