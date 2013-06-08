@@ -88,6 +88,7 @@
     hasMovedFile = false;
     [fileUrls removeAllObjects];
     [self setFieldsWithSong:song andUpdate:NO];
+    [filePath setStringValue:[NSString stringWithUTF8String:song->getFilepath().substr(song->getFilepath().rfind('/') + 1).c_str()]];
 }
 
 # pragma mark actions
