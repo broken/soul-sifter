@@ -229,12 +229,14 @@
         return;
     }
     
-    // process image
+    // process image & info files
     // TODO bug if multiple images were selected w/o songs
     if ([[[fileUrl pathExtension] lowercaseString] isEqualToString:@"jpg"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"jpeg"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"gif"] ||
-        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"png"]) {
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"png"] ||
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"nfo"] ||
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"txt"]) {
         // only move image if it's only one in the group or previous files were moved
         if (hasMovedFile || [fileUrls count] == 1) {
             // straight move image to last directory
