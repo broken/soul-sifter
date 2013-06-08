@@ -259,7 +259,14 @@ void MusicManager::writeTagsToSong(Song* song) {
             if (song.getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
                 updatedSong->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
             }
-         }
+        }
+        // strip featuring from the title and add it to the artist.
+        boost::regex featRegex(" [(]?[Ff](eaturing|t[.]?|eat[.]?) (.*?)[)]?$");
+        boost::smatch featMatch;
+        if(boost::regex_search(song.getTitle(), featMatch, featRegex, boost::match_extra)) {
+            updatedSong->setArtist(updatedSong->getArtist() + " (ft. " + featMatch[2] + ")");
+            updatedSong->setTitle(boost::regex_replace(updatedSong->getTitle(), featRegex, ""));
+        }
         
         delete lastParsedSong;
         lastParsedSong = new Song(song);
