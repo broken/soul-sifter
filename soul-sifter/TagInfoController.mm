@@ -162,7 +162,10 @@
         if (song->getAlbum()->getId()) song->setAlbumId(song->getAlbum()->getId());
         song->save();
         soulsifter::MusicManager::getInstance().setNewSongChanges(*song);
-        [[NSNotificationCenter defaultCenter] postNotificationName:UDSAddedSong object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:song], UDSPSong, nil]];
+        NSDictionary *songDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:song], UDSPSong, nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:UDSAddedSong
+                                                            object:self
+                                                          userInfo:songDict];
         delete song;
         delete songAlbum;
     } else {

@@ -18,7 +18,7 @@
     IBOutlet NSArrayController *collectionArrayController;
 }
 
-- (void)addSongToCollection:(NSDictionary *)dicWithSong;
+- (void)addSongToCollection:(NSNotification *)notification;
 
 - (id)initWithWindowNibName:(NSString *)name andTagInfoController:(TagInfoController *)tagInfoController;
 

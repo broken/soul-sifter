@@ -30,7 +30,7 @@
     return self;
 }
 
-- (void)updateValues:(NSDictionary *)unused {
+- (void)updateValues:(NSNotification *)unused {
     artist = [[NSString stringWithUTF8String:song->getArtist().c_str()] copy];
     title = [[NSString stringWithUTF8String:song->getTitle().c_str()] copy];
     rating = [[NSNumber numberWithInt:song->getRating()] copy];

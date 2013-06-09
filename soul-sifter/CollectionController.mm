@@ -64,7 +64,8 @@
     delete songs;
 }
 
-- (void)addSongToCollection:(NSDictionary *)dictWithSong {
+- (void)addSongToCollection:(NSNotification *)notification {
+    NSDictionary *dictWithSong = [notification userInfo];
     NSValue *songVal = [dictWithSong valueForKey:UDSPSong];
     soulsifter::Song* song = (soulsifter::Song*)[songVal pointerValue];
     if ([[collectionArrayController arrangedObjects] count])
