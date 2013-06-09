@@ -260,12 +260,20 @@ void MusicManager::writeTagsToSong(Song* song) {
                 updatedSong->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
             }
         }
+        
         // strip featuring from the title and add it to the artist.
         boost::regex featRegex(" [(]?[Ff](eaturing|t[.]?|eat[.]?) (.*?)[)]?$");
         boost::smatch featMatch;
-        if(boost::regex_search(song.getTitle(), featMatch, featRegex, boost::match_extra)) {
+        if (boost::regex_search(song.getTitle(), featMatch, featRegex, boost::match_extra)) {
             updatedSong->setArtist(updatedSong->getArtist() + " (ft. " + featMatch[2] + ")");
             updatedSong->setTitle(boost::regex_replace(updatedSong->getTitle(), featRegex, ""));
+        }
+        // copy remixer
+        boost::regex rmxrRegex("[(](.*) ([Rr]emix|[Rr]mx|[Mm]ix|[Rr]efix)[)]$");
+        boost::smatch rmxrMatch;
+        if (boost::regex_search(song.getTitle(), rmxrMatch, rmxrRegex, boost::match_extra) &&
+            updatedSong->getRemixer().length() == 0) {
+            updatedSong->setRemixer(rmxrMatch[1]);
         }
         
         delete lastParsedSong;
