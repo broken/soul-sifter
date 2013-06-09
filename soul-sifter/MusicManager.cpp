@@ -460,6 +460,7 @@ bool MusicManager::moveSong(Song* song) {
                         song->update();
                         delete song;
                     } else {
+                        // TODO if albums share a cover, then only one here is updated
                         Album *album = Album::findByCoverFilepath(it->path().string());
                         if (album) {
                             album->setCoverFilepath(dest.string());
