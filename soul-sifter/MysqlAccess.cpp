@@ -13,6 +13,7 @@
 #include <string>
 
 /* MySQL Connector/C++ specific headers */
+#include <boost/date_time.hpp>
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
@@ -28,9 +29,8 @@ namespace soulsifter {
 # pragma mark public helpers
     
     time_t timeFromString(const std::string& str) {
-        struct tm dt;
-        memset(&dt, 0, sizeof(dt));
-        strptime(str.c_str(), "%Y-%m-%d %X", &dt);
+        boost::posix_time::ptime ptimedate = boost::posix_time::time_from_string(str);
+        struct tm dt = boost::posix_time::to_tm(ptimedate);
         return mktime(&dt);
     }
     
