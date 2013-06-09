@@ -60,7 +60,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     cout << "RapidEvolutionMusicDatabaseWriter.write" << endl;
     
     XMLPlatformUtils::Initialize();
-    DTXMLWriter w("UTF-8", "/Users/rneale/music_database.xml.out");
+    DTXMLWriter w("UTF-8", "/Volumes/flux/mp3/music_database.xml");
     
     w.startDocument();
     attrib* dbAttribs[] = { new attrib("version","1.04"), NULL };
