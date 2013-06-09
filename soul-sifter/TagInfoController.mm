@@ -239,7 +239,9 @@
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"gif"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"png"] ||
         [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"nfo"] ||
-        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"txt"]) {
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"txt"] ||
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"sfv"] ||
+        [[[fileUrl pathExtension] lowercaseString] isEqualToString:@"m3u"]) {
         // only move image if it's only one in the group or previous files were moved
         if (hasMovedFile || [fileUrls count] == 1) {
             // straight move image to last directory
