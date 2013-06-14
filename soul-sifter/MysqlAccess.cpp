@@ -12,8 +12,9 @@
 #include <map>
 #include <string>
 
-/* MySQL Connector/C++ specific headers */
 #include <boost/date_time.hpp>
+#include <boost/regex.hpp>
+/* MySQL Connector/C++ specific headers */
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
@@ -26,12 +27,24 @@
 
 namespace soulsifter {
     
+    namespace {
+        const boost::regex TZ_REGEX(" \\w{3}$");
+    }
+    
 # pragma mark public helpers
     
     time_t timeFromString(const std::string& str) {
-        boost::posix_time::ptime ptimedate = boost::posix_time::time_from_string(str);
-        struct tm dt = boost::posix_time::to_tm(ptimedate);
-        return mktime(&dt);
+        // so strptime can't get timezones right with dst, and boost fails when tz is defined
+        if (boost::regex_search(str, TZ_REGEX)) {
+            struct tm dt;
+            memset(&dt, 0, sizeof(dt));
+            strptime(str.c_str(), "%Y-%m-%d %X", &dt);
+            return mktime(&dt);
+        } else {
+            boost::posix_time::ptime ptimedate = boost::posix_time::time_from_string(str);
+            struct tm dt = boost::posix_time::to_tm(ptimedate);
+            return mktime(&dt);
+        }
     }
     
     std::string stringFromTime(const time_t time) {
