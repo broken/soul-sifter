@@ -318,8 +318,7 @@ def cSyncFunction(name, fields, secondaryKeys)
       str << "                cout << \"updating #{name} \" << id << \" #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
     elsif ([:time_t].include?(f[$type]))
-      # fuck working with daylight time in c++
-      str << "        if (#{f[$name]} != #{name}->get#{cap(f[$name])}() && abs(#{name}->get#{cap(f[$name])}() - #{f[$name]}) != 3600) {\n            if (#{f[$name]}) {\n"
+      str << "        if (#{f[$name]} != #{name}->get#{cap(f[$name])}()) {\n            if (!#{name}->get#{cap(f[$name])}()) {\n"
       str << "                cout << \"updating #{name} \" << id << \" #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
     elsif (f[$type] == :string)
