@@ -30,20 +30,6 @@ namespace soulsifter {
         return max;
     }
     
-    void RESong::getStylesFromBitmask(vector<Style*>** styles) {
-        *styles = new vector<Style*>();
-        vector<Style*>* allStyles;
-        Style::findAllSorted(&allStyles);
-        
-        unsigned long pos = getStylesBitmask().find('1', 0);
-        while (pos != string::npos) {
-            (*styles)->push_back(allStyles->at(pos));
-            pos = getStylesBitmask().find('1', ++pos);
-        }
-        
-        while (!allStyles->empty()) delete allStyles->back(), allStyles->pop_back();
-    }
-    
     void RESong::setStylesBitmaskFromDb() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select count(*) from Styles");
         sql::ResultSet *rs = ps->executeQuery();
