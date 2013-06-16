@@ -41,7 +41,7 @@ void RapidEvolutionMusicDatabaseReader::computeMusicDatabaseLength() {
     parser->setContentHandler(startTagCounter);
     parser->setErrorHandler(startTagCounter);
     try {
-        parser->parse("/Users/rneale/Library/Application Support/Rapid Evolution 2/music_database.xml");
+        parser->parse("/Volumes/flux/mp3/music_database.xml");
     }
     catch (const XMLException& toCatch) {
         cout << "Exception message is: " << toCatch.getMessage() << endl;
@@ -83,7 +83,7 @@ bool RapidEvolutionMusicDatabaseReader::read() {
     parser->setErrorHandler(reDbHandler);
     
     try {
-        parser->parse("/Users/rneale/Library/Application Support/Rapid Evolution 2/music_database.xml");
+        parser->parse("/Volumes/flux/mp3/music_database.xml");
     }
     catch (const XMLException& toCatch) {
         cout << "Exception message is: " << toCatch.getMessage() << endl;
