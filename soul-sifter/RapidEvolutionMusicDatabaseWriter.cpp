@@ -164,13 +164,13 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         //f << "<unique_id>" << song.getUniqueId() << "</unique_id>" << endl;
         w.startElement("unique_id", NULL).writeInt(reSong.getId()).endElement("unique_id");
         //f << "<songid_winfo>" << song.getSongIdWInfo() << "</songid_winfo>" << endl;
-        w.startElement("songid_winfo", NULL).writeChars(reSong.getSongidWinfo())->endElement("songid_winfo");
+        //w.startElement("songid_winfo", NULL).writeChars(reSong.getSongidWinfo())->endElement("songid_winfo");
         //f << "<songid>" << song.getSongId() << "</songid>" << endl;
-        w.startElement("songid", NULL).writeChars(reSong.getSongid())->endElement("songid");
+        //w.startElement("songid", NULL).writeChars(reSong.getSongid())->endElement("songid");
         //f << "<shortid>" << song.getShortId() << "</shortid>" << endl;
-        w.startElement("shortid", NULL).writeChars(reSong.getShortid())->endElement("shortid");
+        //w.startElement("shortid", NULL).writeChars(reSong.getShortid())->endElement("shortid");
         //f << "<shortid_winfo>" << song.getShortIdWInfo() << "</shortid_winfo>" << endl;
-        w.startElement("shortid_winfo", NULL).writeChars(reSong.getShortidWinfo())->endElement("shortid_winfo");
+        //w.startElement("shortid_winfo", NULL).writeChars(reSong.getShortidWinfo())->endElement("shortid_winfo");
         if (song->getArtist().length() > 0)
             //f << "<artist>" << song.getArtist() << "</artist>" << endl;
             w.startElement("artist", NULL).writeChars(song->getArtist())->endElement("artist");
@@ -192,9 +192,9 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         if (song->getComments().length() > 0)
             //f << "<comments>" << song.getComments() << "</comments>" << endl;
             w.startElement("comments", NULL).writeChars(song->getComments())->endElement("comments");
-        if (reSong.getFeaturing().length() > 0)
+        //if (reSong.getFeaturing().length() > 0)
             //f << "<custom1>" << song.getFeaturing() << "</custom1>" << endl;
-            w.startElement("custom1", NULL).writeChars(reSong.getFeaturing())->endElement("custom1");
+            //w.startElement("custom1", NULL).writeChars(reSong.getFeaturing())->endElement("custom1");
         if (song->getAlbum()->getReleaseDateYear() != 0)
             //f << "<custom2>" << song.getReleaseDate() << "</custom2>" << endl;
             w.startElement("custom2", NULL).writeChars(song->getAlbum()->reReleaseDate())->endElement("custom2");
