@@ -9,6 +9,8 @@
 #ifndef soul_sifter_DTResultSet_h
 #define soul_sifter_DTResultSet_h
 
+#include <vector.h>
+
 #include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
 
@@ -27,6 +29,16 @@ namespace dogatech {
             } else {
                 return false;
             }
+        }
+        
+        std::vector<T*>* toVector() {
+            std::vector<T*>* v = new std::vector<T*>;
+            T* obj = new T();
+            while (this->next(obj)) {
+                v->push_back(obj);
+            }
+            delete this;
+            return v;
         }
         
     private:
