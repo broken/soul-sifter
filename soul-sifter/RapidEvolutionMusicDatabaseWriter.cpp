@@ -93,7 +93,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     vector<Style*>* styles;
     const vector<Style*>* children;
     const vector<Style*>* parents;
-    Style::findAll(&styles);
+    Style::findAllSortedByREId(&styles);
     //f << "<styles dirty=\"no\" num_styles=\"" << styles->size() << "\">" << endl;
     attrib* styleAttribs[] = { new attrib("dirty","no"), new attrib("num_styles", int2str((int)styles->size())), NULL };
     w.startElement("styles", styleAttribs).endl();

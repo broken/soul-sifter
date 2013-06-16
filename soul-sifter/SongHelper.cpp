@@ -40,7 +40,7 @@ namespace soulsifter {
         
         // styles
         vector<Style*>* allStyles;
-        Style::findAllSorted(&allStyles);
+        Style::findAllSortedByName(&allStyles);
         unsigned long pos = song->getStylesBitmask().find('1', 0);
         while (pos != string::npos) {
             addStyleById(allStyles->at(pos)->getId());

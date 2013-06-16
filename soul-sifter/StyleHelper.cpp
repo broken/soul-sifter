@@ -26,6 +26,12 @@ namespace soulsifter {
             }
         };
         
+        struct reIdLessThanKey {
+            inline bool operator()(const Style* v1, const Style* v2) {
+                return v1->getREId() < v2->getREId();
+            }
+        };
+        
     }
     
 # pragma mark operator overrides
@@ -40,23 +46,13 @@ namespace soulsifter {
     
 # pragma mark static methods
     
-    void Style::findAll(vector<Style*>** stylesPtr) {
-        vector<Style*>* styles = new vector<Style*>();
-        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles");
-        sql::ResultSet *rs = ps->executeQuery();
-        while (rs->next()) {
-            Style *style = new Style();
-            populateFields(rs, style);
-            styles->push_back(style);
-        }
-        rs->close();
-        delete rs;
-        (*stylesPtr) = styles;
+    void Style::findAllSortedByName(vector<Style*>** stylesPtr) {
+        vector<Style*>* styles = Style::findAll()->toVector();
+        sort(styles->begin(), styles->end(), lessThanKey());
     }
     
-    void Style::findAllSorted(vector<Style*>** stylesPtr) {
-        findAll(stylesPtr);
-        vector<Style*>* styles = *stylesPtr;
-        sort(styles->begin(), styles->end(), lessThanKey());
+    void Style::findAllSortedByREId(vector<Style*>** stylesPtr) {
+        vector<Style*>* styles = Style::findAll()->toVector();
+        sort(styles->begin(), styles->end(), reIdLessThanKey());
     }
 }

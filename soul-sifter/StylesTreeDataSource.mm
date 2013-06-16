@@ -23,7 +23,7 @@
     
     styleItems = [[NSMutableArray alloc] init];
     vector<soulsifter::Style*>* styles;
-    soulsifter::Style::findAllSorted(&styles);
+    soulsifter::Style::findAllSortedByName(&styles);
     for (vector<soulsifter::Style*>::iterator it = styles->begin(); it != styles->end(); ++it) {
         const vector<soulsifter::Style*> parents = (*it)->getParents();
         if (parents.empty()) {
