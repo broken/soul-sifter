@@ -26,8 +26,6 @@ public:
     static MusicManager& getInstance() {
         static MusicManager instance;  // guaranteed to be destroyed
         // instantiated on first use
-        // TODO maybe not update all
-        instance.updateDatabaseBasicGenres();
         return instance;
     }
     
