@@ -44,7 +44,6 @@ namespace soulsifter {
         static const int maxREId();
         void getStylesFromBitmask(vector<Style*>** styles);
         void setStylesBitmaskFromDb();
-        void setStylesBitmask(const vector<Style*>& styles);
 
         const int getId() const;
         void setId(int id);

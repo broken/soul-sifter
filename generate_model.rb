@@ -676,7 +676,7 @@ reSongFields = [
   [:string, "stylesBitmask", Attrib::TRANSIENT],
 ]
 reSongAttribs = Attrib::SAVEID
-reSongCustomMethods = "        friend class RapidEvolutionDatabaseSongsSongHandler;\n\n        static const int maxREId();\n        void getStylesFromBitmask(vector<Style*>** styles);\n        void setStylesBitmaskFromDb();\n        void setStylesBitmask(const vector<Style*>& styles);\n\n"
+reSongCustomMethods = "        friend class RapidEvolutionDatabaseSongsSongHandler;\n\n        static const int maxREId();\n        void getStylesFromBitmask(vector<Style*>** styles);\n        void setStylesBitmaskFromDb();\n\n"
 reSongCustomHeaders = "#include \"Style.h\"\n"
 songFields = [
   [:int, "id", Attrib::FIND],
