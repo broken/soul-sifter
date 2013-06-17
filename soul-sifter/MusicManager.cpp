@@ -59,6 +59,12 @@ namespace {
         id3v2->addFrame(frame);
     }
     
+    string* cleanDirName(string* name) {
+        std::replace(name->begin(), name->end(), '/', '+');
+        std::replace(name->begin(), name->end(), ':', '-');
+        return name;
+    }
+    
 }
 
 # pragma mark initialization
@@ -321,10 +327,13 @@ bool MusicManager::moveSong(Song* song) {
         {
             string artistpart = song->getAlbum()->getArtist().length() > 0 ? song->getAlbum()->getArtist() : "_compilations_";
             ostringstream ssdirpath;
-            ssdirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
+            string albumartist = song->getAlbum()->getArtist();
+            string albumname = song->getAlbum()->getName();
+            ssdirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << *cleanDirName(&albumartist) << "/" << *cleanDirName(&albumname);
             imgDestinationPath = ssdirpath.str();
             if (song->getAlbumPart()) {
-                ssdirpath << "/" << song->getAlbumPart()->getName();
+                string part = song->getAlbumPart()->getName();
+                ssdirpath << "/" << *cleanDirName(&part);
             }
             dirpath = ssdirpath.str();
         }
