@@ -56,7 +56,7 @@ private:
     
     // paths
     boost::unordered_map<string, const BasicGenre*> artistToGenre;
-    string lastDestinationPath;
+    string imgDestinationPath;
     
     // singleton
     MusicManager();

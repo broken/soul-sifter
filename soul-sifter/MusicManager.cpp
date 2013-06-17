@@ -67,7 +67,7 @@ MusicManager::MusicManager() :
 lastParsedSong(NULL),
 lastSongFixed(NULL),
 artistToGenre(1600),
-lastDestinationPath() {
+imgDestinationPath() {
 }
 
 MusicManager::~MusicManager() {
@@ -293,7 +293,7 @@ void MusicManager::writeTagsToSong(Song* song) {
         // code taken from moveImage(img)
         stringstream destpath;
         boost::filesystem::path src(img);
-        destpath << lastDestinationPath << "/" << src.filename().string();
+        destpath << imgDestinationPath << "/" << src.filename().string();
         
         Album* album = lastSongFixed->getAlbum();
         album->setCoverFilepath(destpath.str());
@@ -322,6 +322,7 @@ bool MusicManager::moveSong(Song* song) {
             string artistpart = song->getAlbum()->getArtist().length() > 0 ? song->getAlbum()->getArtist() : "_compilations_";
             ostringstream ssdirpath;
             ssdirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
+            imgDestinationPath = ssdirpath.str();
             dirpath = ssdirpath.str();
         }
         transform(dirpath.begin(), dirpath.end(), dirpath.begin(), ::tolower);
@@ -339,8 +340,7 @@ bool MusicManager::moveSong(Song* song) {
         // move file to dest
         stringstream destpath;
         boost::filesystem::path src(song->getFilepath());
-        lastDestinationPath = dirpath;
-        destpath << lastDestinationPath << "/" << src.filename().string();
+        destpath << dirpath << "/" << src.filename().string();
         boost::filesystem::path dest(destpath.str());
         boost::filesystem::rename(src, dest);
         
@@ -359,7 +359,7 @@ bool MusicManager::moveSong(Song* song) {
             // move file to dest
             stringstream destpath;
             boost::filesystem::path src(img);
-            destpath << lastDestinationPath << "/" << src.filename().string();
+            destpath << imgDestinationPath << "/" << src.filename().string();
             boost::filesystem::path dest(destpath.str());
             boost::filesystem::rename(src, dest);
             
