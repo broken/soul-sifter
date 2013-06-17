@@ -319,6 +319,7 @@ bool MusicManager::moveSong(Song* song) {
         // create directory
         string dirpath;
         {
+            string artistpart = song->getAlbum()->getArtist().length() > 0 ? song->getAlbum()->getArtist() : "_compilations_";
             ostringstream ssdirpath;
             ssdirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
             dirpath = ssdirpath.str();
