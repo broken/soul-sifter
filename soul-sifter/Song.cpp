@@ -45,6 +45,8 @@ namespace soulsifter {
     reSong(NULL),
     albumId(0),
     album(NULL),
+    albumPartId(0),
+    albumPart(NULL),
     styles(),
     stylesIds() {
     }
@@ -65,6 +67,8 @@ namespace soulsifter {
     reSong(NULL),
     albumId(song.getAlbumId()),
     album(NULL),
+    albumPartId(song.getAlbumPartId()),
+    albumPart(NULL),
     styles(),
     stylesIds(song.stylesIds) {
     }
@@ -85,6 +89,8 @@ namespace soulsifter {
         reSong = NULL;
         albumId = song.getAlbumId();
         album = NULL;
+        albumPartId = song.getAlbumPartId();
+        albumPart = NULL;
         stylesIds = song.stylesIds;
         dogatech::deleteVectorPointers(&styles);
     }
@@ -94,6 +100,8 @@ namespace soulsifter {
         reSong = NULL;
         delete album;
         album = NULL;
+        delete albumPart;
+        albumPart = NULL;
         while (!styles.empty()) delete styles.back(), styles.pop_back();
     }
 
@@ -115,6 +123,9 @@ namespace soulsifter {
         albumId = 0;
         delete album;
         album = NULL;
+        albumPartId = 0;
+        delete albumPart;
+        albumPart = NULL;
         dogatech::deleteVectorPointers(&styles);
         stylesIds.clear();
     }
@@ -135,6 +146,8 @@ namespace soulsifter {
         song->setTrashed(rs->getBoolean("trashed"));
         song->setRESongId(rs->getInt("reSongId"));
         song->setAlbumId(rs->getInt("albumId"));
+        if (rs->isNull("albumPartId")) song->setAlbumPartId(0);
+        else song->setAlbumPartId(rs->getInt("albumPartId"));
         populateStylesIds(song);
     }
 
@@ -348,6 +361,15 @@ namespace soulsifter {
             }
         }
         if (album) needsUpdate |= album->sync();
+        if (albumPartId != song->getAlbumPartId()) {
+            if (albumPartId) {
+                cout << "updating song " << id << " albumPartId from " << song->getAlbumPartId() << " to " << albumPartId << endl;
+                needsUpdate = true;
+            } else {
+                albumPartId = song->getAlbumPartId();
+            }
+        }
+        if (albumPart) needsUpdate |= albumPart->sync();
         if (!dogatech::equivalentVectors<int>(stylesIds, song->stylesIds)) {
             if (!dogatech::containsVector<int>(stylesIds, song->stylesIds)) {
                 cout << "updating song " << id << " stylesIds" << endl;
@@ -367,7 +389,10 @@ namespace soulsifter {
             if (album && album->sync()) {
                 album->update();
             }
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Songs set artist=?, track=?, title=?, remixer=?, featuring=?, filepath=?, rating=?, dateAdded=?, comments=?, trashed=?, reSongId=?, albumId=? where id=?");
+            if (albumPart && albumPart->sync()) {
+                albumPart->update();
+            }
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("update Songs set artist=?, track=?, title=?, remixer=?, featuring=?, filepath=?, rating=?, dateAdded=?, comments=?, trashed=?, reSongId=?, albumId=?, albumPartId=? where id=?");
             ps->setString(1, artist);
             ps->setString(2, track);
             ps->setString(3, title);
@@ -380,7 +405,9 @@ namespace soulsifter {
             ps->setBoolean(10, trashed);
             ps->setInt(11, reSongId);
             ps->setInt(12, albumId);
-            ps->setInt(13, id);
+            if (albumPartId > 0) ps->setInt(13, albumPartId);
+            else ps->setNull(13, sql::DataType::INTEGER);
+            ps->setInt(14, id);
             int result = ps->executeUpdate();
             if (!stylesIds.empty()) {
                 ps = MysqlAccess::getInstance().getPreparedStatement("insert ignore into SongStyles (songId, styleId) values (?, ?)");
@@ -427,7 +454,19 @@ namespace soulsifter {
                     cerr << "Unable to save album" << endl;
                 }
             }
-            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, track, title, remixer, featuring, filepath, rating, dateAdded, comments, trashed, reSongId, albumId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            if (albumPart && (!albumPart->getId() || !AlbumPart::findById(albumPart->getId()))) {
+                if (albumPart->save()) {
+                    if (albumPart->getId()) {
+                        albumPartId = albumPart->getId();
+                    } else {
+                        albumPartId = MysqlAccess::getInstance().getLastInsertId();
+                        albumPart->setId(albumPartId);
+                    }
+                } else {
+                    cerr << "Unable to save albumPart" << endl;
+                }
+            }
+            sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("insert into Songs (artist, track, title, remixer, featuring, filepath, rating, dateAdded, comments, trashed, reSongId, albumId, albumPartId) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps->setString(1, artist);
             ps->setString(2, track);
             ps->setString(3, title);
@@ -440,6 +479,8 @@ namespace soulsifter {
             ps->setBoolean(10, trashed);
             ps->setInt(11, reSongId);
             ps->setInt(12, albumId);
+            if (albumPartId > 0) ps->setInt(13, albumPartId);
+            else ps->setNull(13, sql::DataType::INTEGER);
             int saved = ps->executeUpdate();
             if (!saved) {
                 cerr << "Not able to save song" << endl;
@@ -540,6 +581,24 @@ namespace soulsifter {
         this->albumId = album.getId();
         delete this->album;
         this->album = new Album(album);
+    }
+
+    const int Song::getAlbumPartId() const { return albumPartId; }
+    void Song::setAlbumPartId(const int albumPartId) {
+        this->albumPartId = albumPartId;
+        delete albumPart;
+        albumPart = NULL;
+    }
+
+    AlbumPart* Song::getAlbumPart() const {
+        if (!albumPart && albumPartId)
+            return AlbumPart::findById(albumPartId);
+        return albumPart;
+    }
+    void Song::setAlbumPart(const AlbumPart& albumPart) {
+        this->albumPartId = albumPart.getId();
+        delete this->albumPart;
+        this->albumPart = new AlbumPart(albumPart);
     }
 
     const vector<Style*>& Song::getStyles() {

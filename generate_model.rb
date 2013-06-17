@@ -616,6 +616,13 @@ end
 
 ######################### table definitions
 
+albumPartFields = [
+  [:int, "id", Attrib::FIND],
+  [:string, "pos", Attrib::KEY2],
+  [:string, "name", 0],
+  [:int, "albumId", Attrib::ID | Attrib::KEY2],
+  ["Album", "album", Attrib::PTR],
+]
 albumFields = [
   [:int, "id", Attrib::FIND],
   [:string, "name", Attrib::KEY2],
@@ -704,6 +711,8 @@ songFields = [
   ["RESong", "reSong", Attrib::PTR],
   [:int, "albumId", Attrib::ID],
   ["Album", "album", Attrib::PTR],
+  [:int, "albumPartId", Attrib::ID | Attrib::NULLABLE],
+  ["AlbumPart", "albumPart", Attrib::PTR],
   ["vector<Style*>", "styles", 0],
 ]
 songAttribs = 0
@@ -752,6 +761,12 @@ output << writeHeader("album", albumFields, 0, albumCustomMethods, "")
 output.close
 output = File.open("soul-sifter/Album.cpp", "w")
 output << writeCode("album", albumFields, 0)
+output.close
+output = File.open("soul-sifter/AlbumPart.h", "w")
+output << writeHeader("albumPart", albumPartFields, 0, "", "")
+output.close
+output = File.open("soul-sifter/AlbumPart.cpp", "w")
+output << writeCode("albumPart", albumPartFields, 0)
 output.close
 output = File.open("soul-sifter/BasicGenre.h", "w")
 output << writeHeader("basicGenre", basicGenreFields, basicGenreAttribs, basicGenreCustomMethods, "")

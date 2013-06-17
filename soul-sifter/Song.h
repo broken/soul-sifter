@@ -16,6 +16,7 @@
 #include "ResultSetIterator.h"
 #include "RESong.h"
 #include "Album.h"
+#include "AlbumPart.h"
 
 namespace sql {
     class ResultSet;
@@ -81,6 +82,10 @@ namespace soulsifter {
         void setAlbumId(int albumId);
         Album* getAlbum() const;
         void setAlbum(const Album& album);
+        const int getAlbumPartId() const;
+        void setAlbumPartId(int albumPartId);
+        AlbumPart* getAlbumPart() const;
+        void setAlbumPart(const AlbumPart& albumPart);
         const vector<Style*>& getStyles();
         void setStyles(const vector<Style*>& styles);
         void addStyleById(int styleId);
@@ -104,6 +109,8 @@ namespace soulsifter {
         RESong* reSong;
         int albumId;
         Album* album;
+        int albumPartId;
+        AlbumPart* albumPart;
         vector<Style*> styles;
         vector<int> stylesIds;
 
