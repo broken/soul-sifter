@@ -26,6 +26,7 @@
 
 - (void)loadNextFile;
 - (void)setFieldsWithSong:(soulsifter::Song *)song andUpdate:(BOOL)update;
+- (soulsifter::Song *)processSong;
 
 @end
 
@@ -93,15 +94,13 @@
 
 # pragma mark actions
 
-- (IBAction)processMusicFile:(id)sender {
-    NSLog(@"tagInfoController.processMusicFile");
-    
+- (soulsifter::Song *)processSong {
     // unable to move file if any of these are blank
     if ([genreComboBox stringValue] == nil || [[genreComboBox stringValue] length] <= 0 ||
         [artist stringValue] == nil || [[artist stringValue] length] <= 0 ||
         [album stringValue] == nil || [[album stringValue] length] <= 0) {
         NSBeep();
-        return;
+        return NULL;
     }
     
     soulsifter::Song *song;
@@ -166,7 +165,6 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UDSAddedSong
                                                             object:self
                                                           userInfo:songDict];
-        delete song;
         delete songAlbum;
     } else {
         song->update();
@@ -178,12 +176,47 @@
                                                           userInfo:songDict];
     }
     
-    // load next song
-    [self loadNextFile];
+    return song;
+}
+
+- (IBAction)processMusicFile:(id)sender {
+    NSLog(@"tagInfoController.processMusicFile");
+    
+    soulsifter::Song *song = [self processSong];
+    if (song) {
+        delete song;
+        // load next song
+        [self loadNextFile];
+    }
 }
 
 - (IBAction)skipMusicFile:(id)sender {
     NSLog(@"skipMusicFile");
+    [self loadNextFile];
+}
+
+- (IBAction)trashMusicFile:(id)sender {
+    NSLog(@"trashMusicFile");
+    
+    soulsifter::Song *song = [self processSong];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *oldPath = [NSURL fileURLWithPath:[NSString stringWithUTF8String:song->getFilepath().c_str()]];
+    std::string newPath = song->getFilepath() + ".txt";
+    if (![fileManager createFileAtPath:[NSString stringWithUTF8String:newPath.c_str()]
+                               contents:nil
+                            attributes:nil]) {
+        NSBeep();
+        delete song;
+        return;
+    }
+    
+    song->setTrashed(true);
+    song->setFilepath(newPath);
+    song->update();
+    
+    [fileManager trashItemAtURL:oldPath resultingItemURL:nil error:nil];
+    
     [self loadNextFile];
 }
 
