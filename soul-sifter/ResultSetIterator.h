@@ -36,7 +36,9 @@ namespace dogatech {
             T* obj = new T();
             while (this->next(obj)) {
                 v->push_back(obj);
+                obj = new T();
             }
+            delete obj;
             delete this;
             return v;
         }
