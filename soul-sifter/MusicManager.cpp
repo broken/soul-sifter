@@ -323,6 +323,9 @@ bool MusicManager::moveSong(Song* song) {
             ostringstream ssdirpath;
             ssdirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << song->getAlbum()->getArtist() << "/" << song->getAlbum()->getName();
             imgDestinationPath = ssdirpath.str();
+            if (song->getAlbumPart()) {
+                ssdirpath << "/" << song->getAlbumPart()->getName();
+            }
             dirpath = ssdirpath.str();
         }
         transform(dirpath.begin(), dirpath.end(), dirpath.begin(), ::tolower);

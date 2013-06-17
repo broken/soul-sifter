@@ -14,6 +14,7 @@
 		18028C4D1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C4B1647B71800938259 /* RapidEvolutionDatabaseSongsSongHandler.cpp */; };
 		18028C501647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C4E1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.cpp */; };
 		18028C531647BA9D00938259 /* DTAbstractHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18028C511647BA9D00938259 /* DTAbstractHandler.cpp */; };
+		1812225F176EB551004FB69C /* AlbumPart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1812225D176EB551004FB69C /* AlbumPart.cpp */; };
 		18144C9D154DC5F0009C36EE /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18144C9C154DC5F0009C36EE /* Preferences.xib */; };
 		18144CA1154DC6AD009C36EE /* PreferencesController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA0154DC6AD009C36EE /* PreferencesController.mm */; };
 		18144CA4154DCA31009C36EE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 18144CA3154DCA31009C36EE /* Constants.m */; };
@@ -116,6 +117,8 @@
 		18028C4F1647BA7300938259 /* RapidEvolutionDatabaseStylesHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidEvolutionDatabaseStylesHandler.h; sourceTree = "<group>"; };
 		18028C511647BA9D00938259 /* DTAbstractHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DTAbstractHandler.cpp; sourceTree = "<group>"; };
 		18028C521647BA9D00938259 /* DTAbstractHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTAbstractHandler.h; sourceTree = "<group>"; };
+		1812225D176EB551004FB69C /* AlbumPart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlbumPart.cpp; sourceTree = "<group>"; };
+		1812225E176EB551004FB69C /* AlbumPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumPart.h; sourceTree = "<group>"; };
 		18144C9C154DC5F0009C36EE /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		18144C9F154DC6AD009C36EE /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		18144CA0154DC6AD009C36EE /* PreferencesController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferencesController.mm; sourceTree = "<group>"; };
@@ -411,6 +414,8 @@
 		188E1B25164E1968004754F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1812225D176EB551004FB69C /* AlbumPart.cpp */,
+				1812225E176EB551004FB69C /* AlbumPart.h */,
 				18AA5FDB16AE7AFD008E8DD3 /* AlbumHelper.cpp */,
 				185A72B316755C4500D14E96 /* Album.cpp */,
 				185A72B416755C4500D14E96 /* Album.h */,
@@ -748,6 +753,7 @@
 				18C41F831709B5AF00B23738 /* CollectionController.mm in Sources */,
 				18C41F861709C1F200B23738 /* SongWrapper.mm in Sources */,
 				1873DDAA171BF48400B0F424 /* NSOutlineView+DTSelection.m in Sources */,
+				1812225F176EB551004FB69C /* AlbumPart.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

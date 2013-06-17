@@ -9,6 +9,7 @@
 #import "TagInfoController.h"
 
 #include "Album.h"
+#include "AlbumPart.h"
 #import "ArchiveUtil.h"
 #include "BasicGenre.h"
 #import "Constants.h"
@@ -143,6 +144,19 @@
         song->setRESong(*soulsifter::Song::createRESongFromSong(*song));
     }
     
+    // album part update
+    if ([[albumPartOfSet stringValue] length] > 0 || [[albumPartName stringValue] length] > 0) {
+        soulsifter::AlbumPart *albumPart = song->getAlbumPart();
+        if (!albumPart) {
+            albumPart = new soulsifter::AlbumPart();
+        }
+        albumPart->setAlbum(*songAlbum);
+        albumPart->setName([[albumPartName stringValue] UTF8String]);
+        albumPart->setPos([[albumPartOfSet stringValue] UTF8String]);
+        song->setAlbumPart(*albumPart);
+        delete albumPart;
+    }
+    
     // update tag
     if (!songInfo) {
         soulsifter::MusicManager::getInstance().writeTagsToSong(song);
@@ -158,7 +172,16 @@
     if (!songInfo) {
         song->setDateAddedToNow();
         song->getAlbum()->sync();
-        if (song->getAlbum()->getId()) song->setAlbumId(song->getAlbum()->getId());
+        if (!song->getAlbum()->getId()) {
+            // save album since ID used multiple places
+            song->getAlbum()->save();
+        }
+        song->setAlbumId(song->getAlbum()->getId());
+        if (song->getAlbumPart()) {
+            song->getAlbumPart()->setAlbumId(song->getAlbum()->getId());
+            song->getAlbumPart()->sync();
+            if (song->getAlbumPart()->getId()) song->setAlbumPartId(song->getAlbumPart()->getId());
+        }
         song->save();
         soulsifter::MusicManager::getInstance().setNewSongChanges(*song);
         NSDictionary *songDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:song], UDSPSong, nil];
@@ -376,6 +399,12 @@
         [styles selectItem:item];
     }
     
+    const soulsifter::AlbumPart* albumPart = song->getAlbumPart();
+    if (albumPart) {
+        [albumPartOfSet setStringValue:[NSString stringWithUTF8String:albumPart->getPos().c_str()]];
+        [albumPartName setStringValue:[NSString stringWithUTF8String:albumPart->getName().c_str()]];
+    }
+    
     delete basicGenre;
     if (update) delete updatedSong;
 }
@@ -396,6 +425,8 @@
 @synthesize rating;
 @synthesize albumArtist;
 @synthesize album;
+@synthesize albumPartOfSet;
+@synthesize albumPartName;
 @synthesize label;
 @synthesize catalogId;
 @synthesize releaseDateYear;

@@ -31,6 +31,8 @@
     IBOutlet NSLevelIndicator *rating;
     IBOutlet NSTextField *albumArtist;
     IBOutlet NSTextField *album;
+    IBOutlet NSTextField *albumPartOfSet;
+    IBOutlet NSTextField *albumPartName;
     IBOutlet NSTextField *label;
     IBOutlet NSTextField *catalogId;
     IBOutlet NSTextField *releaseDateYear;
@@ -68,6 +70,8 @@
 @property(readwrite,retain) NSLevelIndicator *rating;
 @property(readwrite,retain,nonatomic) NSTextField *albumArtist;
 @property(readwrite,retain,nonatomic) NSTextField *album;
+@property(readwrite,retain,nonatomic) NSTextField *albumPartOfSet;
+@property(readwrite,retain,nonatomic) NSTextField *albumPartName;
 @property(readwrite,retain,nonatomic) NSTextField *label;
 @property(readwrite,retain,nonatomic) NSTextField *catalogId;
 @property(readwrite,retain) NSTextField *releaseDateYear;
