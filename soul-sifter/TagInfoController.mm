@@ -184,7 +184,9 @@
     
     soulsifter::Song *song = [self processSong];
     if (song) {
-        delete song;
+        if (!songInfo) {
+            delete song;
+        }
         // load next song
         [self loadNextFile];
     }
@@ -207,7 +209,9 @@
                                contents:nil
                             attributes:nil]) {
         NSBeep();
-        delete song;
+        if (!songInfo) {
+            delete song;
+        }
         return;
     }
     
@@ -216,6 +220,10 @@
     song->update();
     
     [fileManager trashItemAtURL:oldPath resultingItemURL:nil error:nil];
+    
+    if (!songInfo) {
+        delete song;
+    }
     
     [self loadNextFile];
 }
