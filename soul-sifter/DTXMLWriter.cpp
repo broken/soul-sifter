@@ -92,13 +92,13 @@ DTXMLWriter& DTXMLWriter::endElement(string qname) {
     return *this;
 }
 
-DTXMLWriter* DTXMLWriter::writeChars(string element, bool encode) {
+DTXMLWriter& DTXMLWriter::writeChars(string element, bool encode) {
     if (encode) {
         xmlFormatter << XMLFormatter::CharEscapes << XMLString::transcode(element.c_str());
     } else {
         xmlFormatter << XMLString::transcode(element.c_str());
     }
-    return this;
+    return *this;
 }
 
 DTXMLWriter& DTXMLWriter::writeStr(string element, bool encode) {
@@ -129,9 +129,9 @@ DTXMLWriter& DTXMLWriter::writeBoolAsYesOrNo(bool toWrite) {
     return *this;
 }
 
-DTXMLWriter* DTXMLWriter::writeNewline() {
+DTXMLWriter& DTXMLWriter::writeNewline() {
     xmlFormatter << chLF;
-    return this;
+    return *this;
 }
 
 DTXMLWriter& DTXMLWriter::endl() {

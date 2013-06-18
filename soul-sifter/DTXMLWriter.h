@@ -30,12 +30,12 @@ public:
                               pair<string,string>* attribs[],
                               bool close = false);
     DTXMLWriter& endElement(string qname);
-    DTXMLWriter* writeChars(string toWrite, bool encode = true);
+    DTXMLWriter& writeChars(string toWrite, bool encode = true);
     DTXMLWriter& writeStr(string toWrite, bool encode = true);
     DTXMLWriter& writeInt(int toWrite);
     DTXMLWriter& writeDouble(double toWrite);
     DTXMLWriter& writeBoolAsYesOrNo(bool toWrite);
-    DTXMLWriter* writeNewline();
+    DTXMLWriter& writeNewline();
     DTXMLWriter& endl();
     
 private:

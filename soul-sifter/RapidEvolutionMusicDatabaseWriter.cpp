@@ -164,70 +164,70 @@ void RapidEvolutionMusicDatabaseWriter::write() {
         //f << "<unique_id>" << song.getUniqueId() << "</unique_id>" << endl;
         w.startElement("unique_id", NULL).writeInt(reSong.getId()).endElement("unique_id");
         //f << "<songid_winfo>" << song.getSongIdWInfo() << "</songid_winfo>" << endl;
-        //w.startElement("songid_winfo", NULL).writeChars(reSong.getSongidWinfo())->endElement("songid_winfo");
+        //w.startElement("songid_winfo", NULL).writeChars(reSong.getSongidWinfo()).endElement("songid_winfo");
         //f << "<songid>" << song.getSongId() << "</songid>" << endl;
-        //w.startElement("songid", NULL).writeChars(reSong.getSongid())->endElement("songid");
+        //w.startElement("songid", NULL).writeChars(reSong.getSongid()).endElement("songid");
         //f << "<shortid>" << song.getShortId() << "</shortid>" << endl;
-        //w.startElement("shortid", NULL).writeChars(reSong.getShortid())->endElement("shortid");
+        //w.startElement("shortid", NULL).writeChars(reSong.getShortid()).endElement("shortid");
         //f << "<shortid_winfo>" << song.getShortIdWInfo() << "</shortid_winfo>" << endl;
-        //w.startElement("shortid_winfo", NULL).writeChars(reSong.getShortidWinfo())->endElement("shortid_winfo");
+        //w.startElement("shortid_winfo", NULL).writeChars(reSong.getShortidWinfo()).endElement("shortid_winfo");
         if (song->getArtist().length() > 0)
             //f << "<artist>" << song.getArtist() << "</artist>" << endl;
-            w.startElement("artist", NULL).writeChars(song->getArtist())->endElement("artist");
+            w.startElement("artist", NULL).writeChars(song->getArtist()).endElement("artist");
         if (song->getAlbum()->getName().length() > 0)
             //f << "<album>" << song.getAlbum() << "</album>" << endl;
-            w.startElement("album", NULL).writeChars(song->getAlbum()->getName())->endElement("album");
+            w.startElement("album", NULL).writeChars(song->getAlbum()->getName()).endElement("album");
         else
             //f << "<album>" << song.getAlbum() << "</album>" << endl;
-            w.startElement("album", NULL).writeChars(song->getTitle())->endElement("album");
+            w.startElement("album", NULL).writeChars(song->getTitle()).endElement("album");
         if (song->getTrack().length() > 0)
             //f << "<track>" << song.getTrack() << "</track>" << endl;
-            w.startElement("track", NULL).writeChars(song->getTrack())->endElement("track");
+            w.startElement("track", NULL).writeChars(song->getTrack()).endElement("track");
         if (song->getTitle().length() > 0)
             //f << "<title>" << song.getTitle() << "</title>" << endl;
-            w.startElement("title", NULL).writeChars(song->getTitle())->endElement("title");
+            w.startElement("title", NULL).writeChars(song->getTitle()).endElement("title");
         if (song->getRemixer().length() > 0)
             //f << "<remix>" << song.getRemix() << "</remix>" << endl;
-            w.startElement("remix", NULL).writeChars(song->getRemixer())->endElement("remix");
+            w.startElement("remix", NULL).writeChars(song->getRemixer()).endElement("remix");
         if (song->getComments().length() > 0)
             //f << "<comments>" << song.getComments() << "</comments>" << endl;
-            w.startElement("comments", NULL).writeChars(song->getComments())->endElement("comments");
+            w.startElement("comments", NULL).writeChars(song->getComments()).endElement("comments");
         //if (reSong.getFeaturing().length() > 0)
             //f << "<custom1>" << song.getFeaturing() << "</custom1>" << endl;
-            //w.startElement("custom1", NULL).writeChars(reSong.getFeaturing())->endElement("custom1");
+            //w.startElement("custom1", NULL).writeChars(reSong.getFeaturing()).endElement("custom1");
         if (song->getAlbum()->getReleaseDateYear() != 0)
             //f << "<custom2>" << song.getReleaseDate() << "</custom2>" << endl;
-            w.startElement("custom2", NULL).writeChars(song->getAlbum()->reReleaseDate())->endElement("custom2");
+            w.startElement("custom2", NULL).writeChars(song->getAlbum()->reReleaseDate()).endElement("custom2");
         if (song->getAlbum()->getLabel().length() > 0)
             //f << "<custom3>" << song.getLabel() << "</custom3>" << endl;
-            w.startElement("custom3", NULL).writeChars(song->getAlbum()->getLabel())->endElement("custom3");
+            w.startElement("custom3", NULL).writeChars(song->getAlbum()->getLabel()).endElement("custom3");
         if (song->getAlbum()->getCatalogId().length() > 0)
             //f << "<custom4>" << song.getCatalogId() << "</custom4>" << endl;
-            w.startElement("custom4", NULL).writeChars(song->getAlbum()->getCatalogId())->endElement("custom4");
+            w.startElement("custom4", NULL).writeChars(song->getAlbum()->getCatalogId()).endElement("custom4");
         if (reSong.getTime().length() > 0)
             //f << "<time>" << song.getTime() << "</time>" << endl;
-            w.startElement("time", NULL).writeChars(reSong.getTime())->endElement("time");
+            w.startElement("time", NULL).writeChars(reSong.getTime()).endElement("time");
         if (reSong.getTimeSignature().length() > 0)
             //f << "<time_signature>" << song.getTimeSignature() << "</time_signature>" << endl;
-            w.startElement("time_signature", NULL).writeChars(reSong.getTimeSignature())->endElement("time_signature");
+            w.startElement("time_signature", NULL).writeChars(reSong.getTimeSignature()).endElement("time_signature");
         if (song->getFilepath().length() > 0)
             //f << "<filename>" << song.getFilename() << "</filename>" << endl;
-            w.startElement("filename", NULL).writeChars(song->getFilepath())->endElement("filename");
+            w.startElement("filename", NULL).writeChars(song->getFilepath()).endElement("filename");
         if (reSong.getDigitalOnly().length() > 0)
             //f << "<digital_only>" << song.getDigitalOnly() << "</digital_only>" << endl;
-            w.startElement("digital_only", NULL).writeChars(reSong.getDigitalOnly())->endElement("digital_only");
+            w.startElement("digital_only", NULL).writeChars(reSong.getDigitalOnly()).endElement("digital_only");
         if (reSong.getDisabled().length() > 0)
             //f << "<disabled>" << song.getDisabled() << "</disabled>" << endl;
             w.startElement("disabled", NULL).writeBoolAsYesOrNo(song->getTrashed()).endElement("disabled");
         if (reSong.getCompilation().length() > 0)
             //f << "<compilation>" << song.getCompilation() << "</compilation>" << endl;
-            w.startElement("compilation", NULL).writeChars(reSong.getCompilation())->endElement("compilation");
+            w.startElement("compilation", NULL).writeChars(reSong.getCompilation()).endElement("compilation");
         if (reSong.getKeyStart().length() > 0)
             //f << "<key_start>" << song.getKeyStart() << "</key_start>" << endl;
-            w.startElement("key_start", NULL).writeChars(reSong.getKeyStart())->endElement("key_start");
+            w.startElement("key_start", NULL).writeChars(reSong.getKeyStart()).endElement("key_start");
         if (reSong.getKeyEnd().length() > 0)
             //f << "<key_end>" << song.getKeyEnd() << "</key_end>" << endl;
-            w.startElement("key_end", NULL).writeChars(reSong.getKeyEnd())->endElement("key_end");
+            w.startElement("key_end", NULL).writeChars(reSong.getKeyEnd()).endElement("key_end");
         if (reSong.getKeyAccuracy() > 0)
             //f << "<key_accuracy>" << song.getKeyAccuracy() << "</key_accuracy>" << endl;
             w.startElement("key_accuracy", NULL).writeInt(reSong.getKeyAccuracy()).endElement("key_accuracy");
@@ -254,10 +254,10 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             w.startElement("rating", NULL).writeInt(song->getRating()).endElement("rating");
         if (song->getDateAdded() > 0)
             //f << "<date_added>" << song.getDateAdded() << "</date_added>" << endl;
-            w.startElement("date_added", NULL).writeChars(song->getDateAddedString())->endElement("date_added");
+            w.startElement("date_added", NULL).writeChars(song->getDateAddedString()).endElement("date_added");
         if (reSong.getStylesBitmask().length() > 0)
             //f << "<styles_bitmask>" << song.getStylesBitmask() << "</styles_bitmask>" << endl;
-            w.startElement("styles_bitmask", NULL).writeChars(reSong.getStylesBitmask())->endElement("styles_bitmask");
+            w.startElement("styles_bitmask", NULL).writeChars(reSong.getStylesBitmask()).endElement("styles_bitmask");
         //f << "</song>" << endl;
         w.endElement("song");
         delete song;
@@ -284,7 +284,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             w.startElement("rank", NULL).writeInt(mix.getRank()).endElement("rank");
         if (mix.getComments().length() > 0)
             //f << "<comments>" << mix.getComments() << "</comments>" << endl;
-            w.startElement("comments", NULL).writeChars(mix.getComments())->endElement("comments");
+            w.startElement("comments", NULL).writeChars(mix.getComments()).endElement("comments");
         if (mix.getAddon())
             //f << "<addon>yes</addon>" << endl;
             w.startElement("addon", NULL).writeBoolAsYesOrNo(mix.getAddon()).endElement("addon");
