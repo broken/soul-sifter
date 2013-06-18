@@ -30,13 +30,15 @@ namespace soulsifter {
     filepath(song->getFilename()),
     reSongId(song->getId()),
     reSong(new RESong(*song)),
-    styles(),
     rating(song->getRating()),
-    albumId(0),
-    album(NULL),
     dateAdded(timeFromString(song->getDateAdded())),
     comments(song->getComments()),
-    trashed(!song->getDisabled().compare("yes")) {
+    trashed(!song->getDisabled().compare("yes")),
+    albumId(0),
+    album(NULL),
+    albumPartId(0),
+    albumPart(NULL),
+    styles() {
         
         // styles
         vector<Style*>* allStyles;
