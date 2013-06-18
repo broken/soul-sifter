@@ -218,7 +218,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
             w.startElement("digital_only", NULL).writeChars(reSong.getDigitalOnly())->endElement("digital_only");
         if (reSong.getDisabled().length() > 0)
             //f << "<disabled>" << song.getDisabled() << "</disabled>" << endl;
-            w.startElement("disabled", NULL).writeChars(reSong.getDisabled())->endElement("disabled");
+            w.startElement("disabled", NULL).writeBoolAsYesOrNo(song->getTrashed()).endElement("disabled");
         if (reSong.getCompilation().length() > 0)
             //f << "<compilation>" << song.getCompilation() << "</compilation>" << endl;
             w.startElement("compilation", NULL).writeChars(reSong.getCompilation())->endElement("compilation");
