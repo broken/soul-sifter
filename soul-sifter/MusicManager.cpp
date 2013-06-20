@@ -141,6 +141,17 @@ void MusicManager::readTagsFromSong(Song* song) {
                 song->setRating(popm->rating());
             }
             
+            // part of set
+            const string pos = getId3v2Text(id3v2, "TPOS");
+            if (pos.length() > 0) {
+                if (!song->getAlbumPart()) {
+                    AlbumPart ap;
+                    song->setAlbumPart(ap);
+                }
+                song->getAlbumPart()->setAlbum(*song->getAlbum());
+                song->getAlbumPart()->setPos(pos);
+            }
+            
             // string in the DDMM format
             const string date = getId3v2Text(id3v2, "TDAT");
             char *tmp = new char[3];
@@ -198,6 +209,10 @@ void MusicManager::writeTagsToSong(Song* song) {
             TagLib::ID3v2::PopularimeterFrame *frame = new TagLib::ID3v2::PopularimeterFrame();
             frame->setRating(song->getRating());
             id3v2->addFrame(frame);
+        }
+        // part of set
+        if (song->getAlbumPart()) {
+            setId3v2Text(id3v2, "TPOS", song->getAlbumPart()->getPos().c_str());
         }
         // set release day & month
         if (song->getAlbum()->getReleaseDateMonth() > 0) {
