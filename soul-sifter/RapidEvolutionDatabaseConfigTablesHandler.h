@@ -12,6 +12,7 @@
 #include "DTCopyHandler.h"
 #include "REXml.h"
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionDatabaseConfigTablesHandler : public DTCopyHandler {
@@ -31,6 +32,7 @@ private:
     REXml xml;
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseConfigTablesHandler__) */

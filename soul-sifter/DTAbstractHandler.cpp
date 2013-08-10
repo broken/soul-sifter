@@ -17,6 +17,9 @@
 using namespace std;
 using namespace xercesc;
 
+
+namespace dogatech {
+  
 # pragma mark initialization
 
 unsigned long DTAbstractHandler::startTagCount = 0;
@@ -73,4 +76,6 @@ void DTAbstractHandler::characters(const XMLCh* const chars, const XMLSize_t len
 
 unsigned long DTAbstractHandler::getStartTagCount() {
     return startTagCount;
+}
+
 }

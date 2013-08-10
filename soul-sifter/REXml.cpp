@@ -25,6 +25,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -112,10 +113,10 @@ namespace soulsifter {
         }
     }
 
-    dogatech::ResultSetIterator<REXml>* REXml::findAll() {
+    ResultSetIterator<REXml>* REXml::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REXml");
         sql::ResultSet *rs = ps->executeQuery();
-        dogatech::ResultSetIterator<REXml> *dtrs = new dogatech::ResultSetIterator<REXml>(rs);
+        ResultSetIterator<REXml> *dtrs = new ResultSetIterator<REXml>(rs);
         return dtrs;
     }
 
@@ -217,4 +218,5 @@ namespace soulsifter {
     const string& REXml::getXml() const { return xml; }
     void REXml::setXml(const string& xml) { this->xml = xml; }
 
+}
 }

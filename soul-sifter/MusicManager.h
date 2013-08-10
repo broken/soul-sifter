@@ -15,6 +15,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 class BasicGenre;
@@ -66,6 +67,7 @@ private:
     void initializePathMembers();
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__MusicManager__) */

@@ -8,10 +8,12 @@
 
 #include "REXml.h"
 
+namespace dogatech {
 namespace soulsifter {
     
 #pragma mark accessors
     
     string& REXml::getXmlRef() { return xml; }
 
+}
 }

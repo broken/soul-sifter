@@ -14,8 +14,8 @@
 @interface ProcessProgressController : NSWindowController {
 @public
     IBOutlet NSProgressIndicator *progressIndicator;
-    soulsifter::RapidEvolutionMusicDatabaseReader *musicDatabaseReader;
-    soulsifter::TagWriter *tagWriter;
+    dogatech::soulsifter::RapidEvolutionMusicDatabaseReader *musicDatabaseReader;
+    dogatech::soulsifter::TagWriter *tagWriter;
 }
 
 - (IBAction)showWindow:(id)sender;

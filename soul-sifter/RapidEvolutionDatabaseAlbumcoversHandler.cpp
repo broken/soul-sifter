@@ -21,6 +21,7 @@
 
 using namespace xercesc;
 
+namespace dogatech {
 namespace soulsifter {
 
 RapidEvolutionDatabaseAlbumcoversHandler::RapidEvolutionDatabaseAlbumcoversHandler(SAX2XMLReader* parser,
@@ -67,4 +68,5 @@ void RapidEvolutionDatabaseAlbumcoversHandler::endElement(const XMLCh* const uri
     }
 }
     
+}
 }

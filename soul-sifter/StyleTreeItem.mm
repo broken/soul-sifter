@@ -12,7 +12,7 @@
 
 # pragma mark initialization
 
-- (id)initWithStyle:(soulsifter::Style *)ssStyle {
+- (id)initWithStyle:(dogatech::soulsifter::Style *)ssStyle {
 	NSLog(@"initWithStyle");
 	if (![super init]) {
 		return nil;
@@ -22,15 +22,15 @@
     name = [NSString stringWithUTF8String:style->getName().c_str()];
     [name retain];
     children = [[NSMutableArray alloc] init];
-    const vector<soulsifter::Style*> kids = style->getChildren();
-    for (vector<soulsifter::Style*>::const_iterator it = kids.begin(); it != kids.end(); ++it) {
+    const vector<dogatech::soulsifter::Style*> kids = style->getChildren();
+    for (vector<dogatech::soulsifter::Style*>::const_iterator it = kids.begin(); it != kids.end(); ++it) {
         [children addObject:[[StyleTreeItem alloc] initWithStyle:*it andParent:self]];
     }
     return self;
 }
 
 
-- (id)initWithStyle:(soulsifter::Style *)ssStyle andParent:(StyleTreeItem *)itemParent {
+- (id)initWithStyle:(dogatech::soulsifter::Style *)ssStyle andParent:(StyleTreeItem *)itemParent {
 	NSLog(@"initWithStyle:andParent");
     [self initWithStyle:ssStyle];
     parent = itemParent;

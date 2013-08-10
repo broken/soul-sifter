@@ -17,6 +17,7 @@
 using namespace std;
 using namespace xercesc;
 
+namespace dogatech {
 namespace soulsifter {
 
 RapidEvolutionDatabaseConfigTablesHandler::RapidEvolutionDatabaseConfigTablesHandler(SAX2XMLReader* parser,
@@ -46,4 +47,5 @@ void RapidEvolutionDatabaseConfigTablesHandler::commit() {
     xml.clear();
 }
 
+}
 }

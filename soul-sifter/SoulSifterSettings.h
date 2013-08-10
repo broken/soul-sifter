@@ -13,6 +13,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
     
     class SoulSifterSettings {
@@ -42,6 +43,7 @@ namespace soulsifter {
         string stagingPath;
     };
     
+}
 }
 
 #endif /* defined(__soul_sifter__SoulSifterSettings__) */

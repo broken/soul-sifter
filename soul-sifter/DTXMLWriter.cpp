@@ -20,6 +20,8 @@
 using namespace std;
 using namespace xercesc;
 
+namespace dogatech {
+  
 # pragma mark local const data
 
 static const XMLCh gEndElement[] = { chOpenAngle, chForwardSlash, chNull };
@@ -142,3 +144,4 @@ DTXMLWriter& DTXMLWriter::endl() {
 void DTXMLWriter::endDocument() {
 }
 
+}

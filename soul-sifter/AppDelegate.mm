@@ -23,9 +23,9 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    soulsifter::SoulSifterSettings::getInstance().setMusicPath([[userDefaults stringForKey:UDMusicPath] UTF8String]);
-    soulsifter::SoulSifterSettings::getInstance().setREPath([[userDefaults stringForKey:UDRapidEvolutionPath] UTF8String]);
-    soulsifter::SoulSifterSettings::getInstance().setStagingPath([[userDefaults stringForKey:UDStagingPath] UTF8String]);
+    dogatech::soulsifter::SoulSifterSettings::getInstance().setMusicPath([[userDefaults stringForKey:UDMusicPath] UTF8String]);
+    dogatech::soulsifter::SoulSifterSettings::getInstance().setREPath([[userDefaults stringForKey:UDRapidEvolutionPath] UTF8String]);
+    dogatech::soulsifter::SoulSifterSettings::getInstance().setStagingPath([[userDefaults stringForKey:UDStagingPath] UTF8String]);
 }
 
 # pragma mark actions

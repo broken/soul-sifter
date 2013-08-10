@@ -13,6 +13,8 @@
 
 #include <string>
 
+namespace dogatech {
+  
 class DTCopyHandler : public DTAbstractHandler {
 public:
     DTCopyHandler(xercesc::SAX2XMLReader* parser,
@@ -38,5 +40,7 @@ protected:
     std::string* text;
     bool data;
 };
+  
+}
 
 #endif /* defined(__soul_sifter__DTCopyHandler__) */

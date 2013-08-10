@@ -22,10 +22,10 @@
 	}
     
     styleItems = [[NSMutableArray alloc] init];
-    vector<soulsifter::Style*>* styles;
-    soulsifter::Style::findAllSortedByName(&styles);
-    for (vector<soulsifter::Style*>::iterator it = styles->begin(); it != styles->end(); ++it) {
-        const vector<soulsifter::Style*> parents = (*it)->getParents();
+    vector<dogatech::soulsifter::Style*>* styles;
+    dogatech::soulsifter::Style::findAllSortedByName(&styles);
+    for (vector<dogatech::soulsifter::Style*>::iterator it = styles->begin(); it != styles->end(); ++it) {
+        const vector<dogatech::soulsifter::Style*> parents = (*it)->getParents();
         if (parents.empty()) {
             StyleTreeItem *styleItem = [[StyleTreeItem alloc] initWithStyle:*it];
             [styleItems addObject:styleItem];

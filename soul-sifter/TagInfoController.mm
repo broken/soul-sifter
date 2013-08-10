@@ -26,8 +26,8 @@
 @interface TagInfoController()
 
 - (void)loadNextFile;
-- (void)setFieldsWithSong:(soulsifter::Song *)song andUpdate:(BOOL)update;
-- (soulsifter::Song *)processSong;
+- (void)setFieldsWithSong:(dogatech::soulsifter::Song *)song andUpdate:(BOOL)update;
+- (dogatech::soulsifter::Song *)processSong;
 
 @end
 
@@ -59,10 +59,10 @@
     
     filesToTrash = [[NSMutableArray alloc] init];
     
-    const vector<const soulsifter::BasicGenre*>* genres;
-    soulsifter::BasicGenre::findAll(&genres);
+    const vector<const dogatech::soulsifter::BasicGenre*>* genres;
+    dogatech::soulsifter::BasicGenre::findAll(&genres);
     NSMutableArray* genresArray = [[NSMutableArray alloc] init];
-    for (vector<const soulsifter::BasicGenre*>::const_iterator it = genres->begin(); it != genres->end(); ++it) {
+    for (vector<const dogatech::soulsifter::BasicGenre*>::const_iterator it = genres->begin(); it != genres->end(); ++it) {
         [genresArray addObject:[NSString stringWithUTF8String:(*it)->getName().c_str()]];
     }
     [genreArrayController setContent:genresArray];
@@ -80,7 +80,7 @@
 }
 
 
-- (void)showWindow:(id)sender withSong:(soulsifter::Song *)song {
+- (void)showWindow:(id)sender withSong:(dogatech::soulsifter::Song *)song {
     NSLog(@"tagInfoController.showWindow withSong");
     [super showWindow:sender];
     
@@ -95,7 +95,7 @@
 
 # pragma mark actions
 
-- (soulsifter::Song *)processSong {
+- (dogatech::soulsifter::Song *)processSong {
     // unable to move file if any of these are blank
     if ([genreComboBox stringValue] == nil || [[genreComboBox stringValue] length] <= 0 ||
         [artist stringValue] == nil || [[artist stringValue] length] <= 0 ||
@@ -104,14 +104,14 @@
         return NULL;
     }
     
-    soulsifter::Song *song;
-    soulsifter::Album *songAlbum;
+    dogatech::soulsifter::Song *song;
+    dogatech::soulsifter::Album *songAlbum;
     if (songInfo) {
         song = songInfo;
-        songAlbum = new soulsifter::Album(*song->getAlbum());
+        songAlbum = new dogatech::soulsifter::Album(*song->getAlbum());
     } else {
-        song = new soulsifter::Song();
-        songAlbum = new soulsifter::Album();
+        song = new dogatech::soulsifter::Song();
+        songAlbum = new dogatech::soulsifter::Album();
         song->setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
     }
     song->setArtist([[artist stringValue] UTF8String]);
@@ -131,24 +131,24 @@
     songAlbum->setReleaseDateMonth([releaseDateMonth intValue]);
     songAlbum->setReleaseDateDay([releaseDateDay intValue]);
     if (!songInfo) {
-        songAlbum->setBasicGenre(*soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
+        songAlbum->setBasicGenre(*dogatech::soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
     }
     song->setAlbum(*songAlbum);
     NSIndexSet *styleIndexes = [styles selectedRowIndexes];
     for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
         StyleTreeItem *item = [styles itemAtRow:idx];
-        soulsifter::Style *style = [item style];
+        dogatech::soulsifter::Style *style = [item style];
         song->addStyleById(style->getId());
     }
     if (!songInfo) {
-        song->setRESong(*soulsifter::Song::createRESongFromSong(*song));
+        song->setRESong(*dogatech::soulsifter::Song::createRESongFromSong(*song));
     }
     
     // album part update
     if ([[albumPartOfSet stringValue] length] > 0 || [[albumPartName stringValue] length] > 0) {
-        soulsifter::AlbumPart *albumPart = song->getAlbumPart();
+        dogatech::soulsifter::AlbumPart *albumPart = song->getAlbumPart();
         if (!albumPart) {
-            albumPart = new soulsifter::AlbumPart();
+            albumPart = new dogatech::soulsifter::AlbumPart();
         }
         albumPart->setAlbum(*songAlbum);
         albumPart->setName([[albumPartName stringValue] UTF8String]);
@@ -159,12 +159,12 @@
     
     // update tag
     if (!songInfo) {
-        soulsifter::MusicManager::getInstance().writeTagsToSong(song);
+        dogatech::soulsifter::MusicManager::getInstance().writeTagsToSong(song);
     }
     
     // move file
     if (!songInfo) {
-        soulsifter::MusicManager::getInstance().moveSong(song);
+        dogatech::soulsifter::MusicManager::getInstance().moveSong(song);
         hasMovedFile = true;
     }
     
@@ -183,7 +183,7 @@
             if (song->getAlbumPart()->getId()) song->setAlbumPartId(song->getAlbumPart()->getId());
         }
         song->save();
-        soulsifter::MusicManager::getInstance().setNewSongChanges(*song);
+        dogatech::soulsifter::MusicManager::getInstance().setNewSongChanges(*song);
         NSDictionary *songDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithPointer:song], UDSPSong, nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:UDSAddedSong
                                                             object:self
@@ -205,7 +205,7 @@
 - (IBAction)processMusicFile:(id)sender {
     NSLog(@"tagInfoController.processMusicFile");
     
-    soulsifter::Song *song = [self processSong];
+    dogatech::soulsifter::Song *song = [self processSong];
     if (song) {
         if (!songInfo) {
             delete song;
@@ -223,7 +223,7 @@
 - (IBAction)trashMusicFile:(id)sender {
     NSLog(@"trashMusicFile");
     
-    soulsifter::Song *song = [self processSong];
+    dogatech::soulsifter::Song *song = [self processSong];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *oldPath = [NSURL fileURLWithPath:[NSString stringWithUTF8String:song->getFilepath().c_str()]];
@@ -309,9 +309,9 @@
         // only move image if it's only one in the group or previous files were moved
         if (hasMovedFile || [fileUrls count] == 1) {
             // straight move image to last directory
-            soulsifter::MusicManager::getInstance().moveImage([[[fileUrls objectAtIndex:index] path] UTF8String]);
+            dogatech::soulsifter::MusicManager::getInstance().moveImage([[[fileUrls objectAtIndex:index] path] UTF8String]);
             // update album with cover art
-            soulsifter::MusicManager::getInstance().updateLastSongAlbumArtWithImage([[[fileUrls objectAtIndex:index] path] UTF8String]);
+            dogatech::soulsifter::MusicManager::getInstance().updateLastSongAlbumArtWithImage([[[fileUrls objectAtIndex:index] path] UTF8String]);
         } else {
             // place at end of list to process later
             [fileUrls addObject:fileUrl];
@@ -343,17 +343,17 @@
     
     // at this point it should be a normal file that needs processing
     [filePath setStringValue:[fileUrl lastPathComponent]];
-    soulsifter::Song *song = new soulsifter::Song();
+    dogatech::soulsifter::Song *song = new dogatech::soulsifter::Song();
     song->setFilepath([[fileUrl path] UTF8String]);
-    soulsifter::MusicManager::getInstance().readTagsFromSong(song);
+    dogatech::soulsifter::MusicManager::getInstance().readTagsFromSong(song);
     
     [self setFieldsWithSong:song andUpdate:YES];
     
     delete song;
 }
 
-- (void)setFieldsWithSong:(soulsifter::Song *)song andUpdate:(BOOL)update {
-    soulsifter::Song *updatedSong = update ? soulsifter::MusicManager::getInstance().updateSongWithChanges(*song) : song;
+- (void)setFieldsWithSong:(dogatech::soulsifter::Song *)song andUpdate:(BOOL)update {
+    dogatech::soulsifter::Song *updatedSong = update ? dogatech::soulsifter::MusicManager::getInstance().updateSongWithChanges(*song) : song;
     [artist setStringValue:[NSString stringWithUTF8String:updatedSong->getArtist().c_str()]];
     [trackNum setStringValue:[NSString stringWithUTF8String:updatedSong->getTrack().c_str()]];
     [title setStringValue:[NSString stringWithUTF8String:updatedSong->getTitle().c_str()]];
@@ -369,8 +369,8 @@
     [releaseDateDay setStringValue:[NSString stringWithFormat:@"%i",updatedSong->getAlbum()->getReleaseDateDay()]];
     [mixed setState:(updatedSong->getAlbum()->getMixed()) ? NSOnState : NSOffState];
     
-    const soulsifter::BasicGenre* basicGenre = song->getAlbum()->getBasicGenre();
-    if (!basicGenre) basicGenre = soulsifter::MusicManager::getInstance().findBasicGenreForArtist(updatedSong->getArtist());
+    const dogatech::soulsifter::BasicGenre* basicGenre = song->getAlbum()->getBasicGenre();
+    if (!basicGenre) basicGenre = dogatech::soulsifter::MusicManager::getInstance().findBasicGenreForArtist(updatedSong->getArtist());
     if (basicGenre) [genreComboBox setStringValue:[NSString stringWithUTF8String:basicGenre->getName().c_str()]];
     
     [artistTag setStringValue:[NSString stringWithUTF8String:song->getArtist().c_str()]];
@@ -384,10 +384,10 @@
     [styles deselectAll:self];
     [styles expandItem:nil expandChildren:YES];
     NSMutableArray* styleItems = [NSMutableArray array];
-    for (vector<soulsifter::Style*>::const_iterator it = updatedSong->getStyles().begin(); it != updatedSong->getStyles().end(); ++it) {
+    for (vector<dogatech::soulsifter::Style*>::const_iterator it = updatedSong->getStyles().begin(); it != updatedSong->getStyles().end(); ++it) {
         for (NSUInteger idx = 0; idx < [styles numberOfRows]; idx = ++idx) {
             StyleTreeItem *item = [styles itemAtRow:idx];
-            soulsifter::Style *style = [item style];
+            dogatech::soulsifter::Style *style = [item style];
             if ((*it)->getId() == style->getId()) {
                 [styleItems addObject:item];
                 continue;
@@ -399,7 +399,7 @@
         [styles selectItem:item];
     }
     
-    const soulsifter::AlbumPart* albumPart = song->getAlbumPart();
+    const dogatech::soulsifter::AlbumPart* albumPart = song->getAlbumPart();
     if (albumPart) {
         [albumPartOfSet setStringValue:[NSString stringWithUTF8String:albumPart->getPos().c_str()]];
         [albumPartName setStringValue:[NSString stringWithUTF8String:albumPart->getName().c_str()]];

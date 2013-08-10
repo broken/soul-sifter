@@ -21,6 +21,8 @@
 using namespace std;
 using namespace xercesc;
 
+namespace dogatech {
+  
 DTCopyHandler::DTCopyHandler(SAX2XMLReader* parser,
                              DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler),
@@ -66,4 +68,6 @@ void DTCopyHandler::characters(const XMLCh* const chars, const XMLSize_t length)
         text->append(">");
     }
     text->append(XMLString::transcode(chars));
+}
+  
 }

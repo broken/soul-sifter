@@ -17,6 +17,7 @@
 #include "MysqlAccess.h"
 #include "Style.h"
 
+namespace dogatech {
 namespace soulsifter {
     
     const int RESong::maxREId() {
@@ -68,4 +69,5 @@ namespace soulsifter {
         
         setStylesBitmask(ss.str());
     }
+}
 }

@@ -12,7 +12,7 @@
 
 @interface SongWrapper : NSObject {
 @private
-    soulsifter::Song *song;
+    dogatech::soulsifter::Song *song;
     
     NSString *artist;
     NSString *title;
@@ -20,11 +20,11 @@
     NSString *styles;
 }
 
-- (SongWrapper *)initWithSong:(soulsifter::Song *)song;
+- (SongWrapper *)initWithSong:(dogatech::soulsifter::Song *)song;
 
 - (void)updateValues:(NSNotification *)unused;
 
-- (soulsifter::Song *)song;
+- (dogatech::soulsifter::Song *)song;
 - (NSString *)artist;
 - (void)setArtist:(NSString *)artist;
 - (NSString *)title;

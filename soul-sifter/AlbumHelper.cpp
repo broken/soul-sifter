@@ -10,6 +10,7 @@
 
 #include <sstream>
 
+namespace dogatech {
 namespace soulsifter {
     
     const string Album::reReleaseDate() const {
@@ -28,4 +29,5 @@ namespace soulsifter {
         return oss.str();
     }
     
+}
 }

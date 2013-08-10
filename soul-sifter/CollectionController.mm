@@ -54,11 +54,11 @@
 - (void)populateCollection {
     NSLog(@"collectionController.populateCollection");
     
-    dogatech::ResultSetIterator<soulsifter::Song>* songs = soulsifter::Song::findAll();
-    soulsifter::Song* song = new soulsifter::Song();
+    dogatech::ResultSetIterator<dogatech::soulsifter::Song>* songs = dogatech::soulsifter::Song::findAll();
+    dogatech::soulsifter::Song* song = new dogatech::soulsifter::Song();
     while (songs->next(song)) {
         [collectionArrayController addObject:[[SongWrapper alloc] initWithSong:song]];
-        song = new soulsifter::Song();
+        song = new dogatech::soulsifter::Song();
     }
     delete song;  // extra
     delete songs;
@@ -67,15 +67,15 @@
 - (void)addSongToCollection:(NSNotification *)notification {
     NSDictionary *dictWithSong = [notification userInfo];
     NSValue *songVal = [dictWithSong valueForKey:UDSPSong];
-    soulsifter::Song* song = (soulsifter::Song*)[songVal pointerValue];
+    dogatech::soulsifter::Song* song = (dogatech::soulsifter::Song*)[songVal pointerValue];
     if ([[collectionArrayController arrangedObjects] count])
-        [collectionArrayController addObject:[[SongWrapper alloc] initWithSong:(new soulsifter::Song(*song))]];
+        [collectionArrayController addObject:[[SongWrapper alloc] initWithSong:(new dogatech::soulsifter::Song(*song))]];
 }
 
 # pragma mark actions
 
 - (IBAction)doubleClickAction:(id)sender {
-    soulsifter::Song* song = [[[collectionArrayController selectedObjects] objectAtIndex:0] song];
+    dogatech::soulsifter::Song* song = [[[collectionArrayController selectedObjects] objectAtIndex:0] song];
     [tagInfoController showWindow:self withSong:song];
 }
 

@@ -11,6 +11,7 @@
 
 #include "DTAbstractHandler.h"
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionDatabaseHandler : public DTAbstractHandler {
@@ -25,6 +26,7 @@ private:
     const XMLCh* const qname;
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseHandler__) */

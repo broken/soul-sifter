@@ -20,6 +20,7 @@ namespace sql {
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
     class BasicGenre {
@@ -32,7 +33,7 @@ namespace soulsifter {
 
         static BasicGenre* findById(int id);
         static BasicGenre* findByName(const string& name);
-        static dogatech::ResultSetIterator<BasicGenre>* findAll();
+        static ResultSetIterator<BasicGenre>* findAll();
 
         bool sync();
         int update();
@@ -46,7 +47,7 @@ namespace soulsifter {
         const string& getName() const;
         void setName(const string& name);
 
-        friend dogatech::ResultSetIterator<BasicGenre>;
+        friend ResultSetIterator<BasicGenre>;
 
     private:
         int id;
@@ -55,6 +56,7 @@ namespace soulsifter {
         static void populateFields(const sql::ResultSet* rs, BasicGenre* basicGenre);
     };
 
+}
 }
 
 #endif /* defined(__soul_sifter__BasicGenre__) */

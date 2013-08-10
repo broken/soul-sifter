@@ -20,6 +20,7 @@ namespace sql {
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
     class Style {
@@ -32,7 +33,7 @@ namespace soulsifter {
 
         static Style* findById(int id);
         static Style* findByREId(int reId);
-        static dogatech::ResultSetIterator<Style>* findAll();
+        static ResultSetIterator<Style>* findAll();
 
         bool sync();
         int update();
@@ -61,7 +62,7 @@ namespace soulsifter {
         void addParentById(int parentId);
         void removeParentById(int parentId);
 
-        friend dogatech::ResultSetIterator<Style>;
+        friend ResultSetIterator<Style>;
 
     private:
         int id;
@@ -78,6 +79,7 @@ namespace soulsifter {
         static void populateParentsIds(Style* style);
     };
 
+}
 }
 
 #endif /* defined(__soul_sifter__Style__) */

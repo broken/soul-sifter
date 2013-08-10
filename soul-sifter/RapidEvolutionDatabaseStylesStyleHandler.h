@@ -16,6 +16,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionDatabaseStylesStyleHandler : public DTAbstractHandler {
@@ -50,6 +51,7 @@ private:
     const XMLCh* const parent_ids_attrib;
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseStylesStyleHandler__) */

@@ -25,6 +25,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -147,10 +148,10 @@ namespace soulsifter {
         }
     }
 
-    dogatech::ResultSetIterator<Mix>* Mix::findAll() {
+    ResultSetIterator<Mix>* Mix::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Mixes");
         sql::ResultSet *rs = ps->executeQuery();
-        dogatech::ResultSetIterator<Mix> *dtrs = new dogatech::ResultSetIterator<Mix>(rs);
+        ResultSetIterator<Mix> *dtrs = new ResultSetIterator<Mix>(rs);
         return dtrs;
     }
 
@@ -366,4 +367,5 @@ namespace soulsifter {
     const bool Mix::getAddon() const { return addon; }
     void Mix::setAddon(const bool addon) { this->addon = addon; }
 
+}
 }

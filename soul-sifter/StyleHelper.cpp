@@ -14,6 +14,7 @@
 
 #include "MysqlAccess.h"
 
+namespace dogatech {
 namespace soulsifter {
     
 # pragma mark helpers
@@ -57,4 +58,5 @@ namespace soulsifter {
         sort(styles->begin(), styles->end(), reIdLessThanKey());
         (*stylesPtr) = styles;
     }
+}
 }

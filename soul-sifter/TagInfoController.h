@@ -13,7 +13,7 @@
 @interface TagInfoController : NSWindowController {
 @private
     int index;
-    soulsifter::Song *songInfo;
+    dogatech::soulsifter::Song *songInfo;
     bool hasMovedFile;
     NSMutableArray *fileUrls;
     NSMutableArray *filesToTrash;
@@ -50,7 +50,7 @@
     IBOutlet NSTextField *albumTag;
 }
 
-- (void)showWindow:(id)sender withSong:(soulsifter::Song *)song;
+- (void)showWindow:(id)sender withSong:(dogatech::soulsifter::Song *)song;
 
 - (IBAction)processMusicFile:(id)sender;
 - (IBAction)skipMusicFile:(id)sender;

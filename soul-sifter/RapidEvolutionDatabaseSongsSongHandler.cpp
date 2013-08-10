@@ -20,6 +20,7 @@
 using namespace std;
 using namespace xercesc;
 
+namespace dogatech {
 namespace soulsifter {
 
 RapidEvolutionDatabaseSongsSongHandler::RapidEvolutionDatabaseSongsSongHandler(SAX2XMLReader* parser,
@@ -170,4 +171,5 @@ void RapidEvolutionDatabaseSongsSongHandler::characters(const XMLCh* const chars
     }
 }
 
+}
 }

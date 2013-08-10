@@ -14,6 +14,8 @@
 
 #include "MysqlAccess.h"
 
+
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark static methods
@@ -33,4 +35,5 @@ namespace soulsifter {
 # pragma mark accessors
 
     string& RESetting::getValueRef() { return value; }
+}
 }

@@ -25,6 +25,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -261,10 +262,10 @@ namespace soulsifter {
         }
     }
 
-    dogatech::ResultSetIterator<RESong>* RESong::findAll() {
+    ResultSetIterator<RESong>* RESong::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from RESongs");
         sql::ResultSet *rs = ps->executeQuery();
-        dogatech::ResultSetIterator<RESong> *dtrs = new dogatech::ResultSetIterator<RESong>(rs);
+        ResultSetIterator<RESong> *dtrs = new ResultSetIterator<RESong>(rs);
         return dtrs;
     }
 
@@ -749,4 +750,5 @@ namespace soulsifter {
     const string& RESong::getStylesBitmask() const { return stylesBitmask; }
     void RESong::setStylesBitmask(const string& stylesBitmask) { this->stylesBitmask = stylesBitmask; }
 
+}
 }

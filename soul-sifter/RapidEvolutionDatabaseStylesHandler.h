@@ -15,6 +15,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
     
 class Style;
@@ -38,6 +39,7 @@ private:
     vector<pair<int, int> > childStyles;  // re_id -> child re_id
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseStylesHandler__) */

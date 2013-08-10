@@ -25,6 +25,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -112,10 +113,10 @@ namespace soulsifter {
         }
     }
 
-    dogatech::ResultSetIterator<REAlbumCover>* REAlbumCover::findAll() {
+    ResultSetIterator<REAlbumCover>* REAlbumCover::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from REAlbumCovers");
         sql::ResultSet *rs = ps->executeQuery();
-        dogatech::ResultSetIterator<REAlbumCover> *dtrs = new dogatech::ResultSetIterator<REAlbumCover>(rs);
+        ResultSetIterator<REAlbumCover> *dtrs = new ResultSetIterator<REAlbumCover>(rs);
         return dtrs;
     }
 
@@ -217,4 +218,5 @@ namespace soulsifter {
     const string& REAlbumCover::getThumbnail() const { return thumbnail; }
     void REAlbumCover::setThumbnail(const string& thumbnail) { this->thumbnail = thumbnail; }
 
+}
 }

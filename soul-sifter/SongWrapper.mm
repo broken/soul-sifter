@@ -15,7 +15,7 @@
 
 # pragma mark initialization
 
-- (SongWrapper *)initWithSong:(soulsifter::Song *)song_ {
+- (SongWrapper *)initWithSong:(dogatech::soulsifter::Song *)song_ {
     [super init];
     
     self->song = song_;
@@ -36,8 +36,8 @@
     rating = [[NSNumber numberWithInt:song->getRating()] copy];
     
     styles = @"";
-    vector<soulsifter::Style*> s = song->getStyles();
-    for (vector<soulsifter::Style*>::iterator it = s.begin(); it != s.end(); ++it) {
+    vector<dogatech::soulsifter::Style*> s = song->getStyles();
+    for (vector<dogatech::soulsifter::Style*>::iterator it = s.begin(); it != s.end(); ++it) {
         styles = [[styles stringByAppendingString:[NSString stringWithUTF8String:(*it)->getName().c_str()]] stringByAppendingString:@", "];
     }
     styles = [styles copy];
@@ -45,7 +45,7 @@
 
 # pragma mark accessors
 
-- (soulsifter::Song *)song {
+- (dogatech::soulsifter::Song *)song {
     return song;
 }
 

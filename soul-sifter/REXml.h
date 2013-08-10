@@ -20,6 +20,7 @@ namespace sql {
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
     class REXml {
@@ -32,7 +33,7 @@ namespace soulsifter {
 
         static REXml* findById(int id);
         static REXml* findByName(const string& name);
-        static dogatech::ResultSetIterator<REXml>* findAll();
+        static ResultSetIterator<REXml>* findAll();
 
         bool sync();
         int update();
@@ -47,7 +48,7 @@ namespace soulsifter {
         const string& getXml() const;
         void setXml(const string& xml);
 
-        friend dogatech::ResultSetIterator<REXml>;
+        friend ResultSetIterator<REXml>;
 
     private:
         int id;
@@ -57,6 +58,7 @@ namespace soulsifter {
         static void populateFields(const sql::ResultSet* rs, REXml* reXml);
     };
 
+}
 }
 
 #endif /* defined(__soul_sifter__REXml__) */

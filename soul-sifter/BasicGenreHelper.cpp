@@ -18,6 +18,7 @@
 #include "MysqlAccess.h"
 
 
+namespace dogatech {
 namespace soulsifter {
     
     const BasicGenre* BasicGenre::findByFilepath(const string& filepath) {
@@ -64,4 +65,5 @@ namespace soulsifter {
         (*genresPtr) = &basicGenres;
     }
     
+}
 }

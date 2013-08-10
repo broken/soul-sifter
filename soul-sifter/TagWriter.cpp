@@ -11,6 +11,7 @@
 #include "RESong.h"
 #include "Song.h"
 
+namespace dogatech {
 namespace soulsifter {
     
 # pragma mark initialization
@@ -34,7 +35,7 @@ namespace soulsifter {
         offset = 0;
         computeSrcLength();
         
-        dogatech::ResultSetIterator<RESong>* songs = RESong::findAll();
+        ResultSetIterator<RESong>* songs = RESong::findAll();
         RESong reSong;
         while (songs->next(&reSong)) {
             Song* song = Song::findByRESongId(reSong.getId());
@@ -54,4 +55,5 @@ namespace soulsifter {
         return processing;
     }
     
+}
 }

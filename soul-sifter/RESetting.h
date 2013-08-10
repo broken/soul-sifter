@@ -20,6 +20,7 @@ namespace sql {
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
     class RESetting {
@@ -32,7 +33,7 @@ namespace soulsifter {
 
         static RESetting* findById(int id);
         static RESetting* findByName(const string& name);
-        static dogatech::ResultSetIterator<RESetting>* findAll();
+        static ResultSetIterator<RESetting>* findAll();
 
         bool sync();
         int update();
@@ -49,7 +50,7 @@ namespace soulsifter {
         const string& getValue() const;
         void setValue(const string& value);
 
-        friend dogatech::ResultSetIterator<RESetting>;
+        friend ResultSetIterator<RESetting>;
 
     private:
         int id;
@@ -59,6 +60,7 @@ namespace soulsifter {
         static void populateFields(const sql::ResultSet* rs, RESetting* reSetting);
     };
 
+}
 }
 
 #endif /* defined(__soul_sifter__RESetting__) */

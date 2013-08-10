@@ -13,6 +13,7 @@
 
 #include "REAlbumCover.h"
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionDatabaseAlbumcoversHandler : public DTAbstractHandler {
@@ -42,6 +43,7 @@ private:
     const XMLCh* const thumbnail_attrib;
 };
 
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseAlbumcoversHandler__) */

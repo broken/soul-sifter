@@ -25,6 +25,7 @@
 #include <cppconn/warning.h>
 #include <mysql_driver.h>
 
+namespace dogatech {
 namespace soulsifter {
     
     namespace {
@@ -153,4 +154,5 @@ const int MysqlAccess::getLastInsertId() {
     }
 }
     
+}
 }

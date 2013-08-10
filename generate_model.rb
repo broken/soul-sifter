@@ -145,7 +145,7 @@ def cAssignmentConstructor(name, fields)
       str << "        #{f[$name]} = NULL;\n"
     elsif (isVector(f[$type]))
       str << "        #{vectorIds(f)} = #{name}.#{vectorIds(f)};\n"
-      str << "        dogatech::deleteVectorPointers(&#{f[$name]});\n"
+      str << "        deleteVectorPointers(&#{f[$name]});\n"
     else
       str << "        #{f[$name]} = #{name}.get#{cap(f[$name])}();\n"
     end
@@ -187,7 +187,7 @@ def cClearFunction(name, fields)
       str << "        delete #{f[$name]};\n"
       str << "        #{f[$name]} = NULL;\n"
     elsif (isVector(f[$type]))
-      str << "        dogatech::deleteVectorPointers(&#{f[$name]});\n        #{vectorIds(f)}.clear();\n"
+      str << "        deleteVectorPointers(&#{f[$name]});\n        #{vectorIds(f)}.clear();\n"
     else
       str << "        // TODO #{f[$name]}\n"
     end
@@ -278,11 +278,11 @@ def cSecondaryKeysFindFunction(name, secondaryKeys)
 end
 
 def hFindAllFunction(name)
-  return "        static dogatech::ResultSetIterator<#{cap(name)}>* findAll();\n"
+  return "        static ResultSetIterator<#{cap(name)}>* findAll();\n"
 end
 
 def cFindAllFunction(name)
-  return "    dogatech::ResultSetIterator<#{cap(name)}>* #{cap(name)}::findAll() {\n        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))}\");\n        sql::ResultSet *rs = ps->executeQuery();\n        dogatech::ResultSetIterator<#{cap(name)}> *dtrs = new dogatech::ResultSetIterator<#{cap(name)}>(rs);\n        return dtrs;\n    }\n"
+  return "    ResultSetIterator<#{cap(name)}>* #{cap(name)}::findAll() {\n        sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement(\"select * from #{cap(plural(name))}\");\n        sql::ResultSet *rs = ps->executeQuery();\n        ResultSetIterator<#{cap(name)}> *dtrs = new ResultSetIterator<#{cap(name)}>(rs);\n        return dtrs;\n    }\n"
 end
 
 def hSyncFunction()
@@ -328,9 +328,9 @@ def cSyncFunction(name, fields, secondaryKeys)
       str << "                cout << \"updating #{name} \" << id << \" #{f[$name]} from \" << #{name}->get#{cap(f[$name])}() << \" to \" << #{f[$name]} << endl;\n                needsUpdate = true;\n            } else {\n"
       str << "                #{f[$name]} = #{name}->get#{cap(f[$name])}();\n            }\n        }\n"
     elsif (isVector(f[$type]))
-      str << "        if (!dogatech::equivalentVectors<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n            if (!dogatech::containsVector<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n"
+      str << "        if (!equivalentVectors<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n            if (!containsVector<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n"
       str << "                cout << \"updating #{name} \" << id << \" #{vectorIds(f)}\" << endl;\n                needsUpdate = true;\n            }\n"
-      str << "            dogatech::appendUniqueVector<int>(#{name}->#{vectorIds(f)}, &#{vectorIds(f)});\n            #{f[$name]}.clear();\n        }\n"
+      str << "            appendUniqueVector<int>(#{name}->#{vectorIds(f)}, &#{vectorIds(f)});\n            #{f[$name]}.clear();\n        }\n"
     elsif (f[$attrib] & Attrib::PTR > 0)
       str << "        if (#{f[$name]}) needsUpdate |= #{f[$name]}->sync();\n"
     else
@@ -518,7 +518,7 @@ def cAccessor(name, f)
     str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        this->#{f[$name]}Id = #{f[$name]}.getId();\n        delete this->#{f[$name]};\n        this->#{f[$name]} = new #{f[$type]}(#{f[$name]});\n    }\n"
   elsif (isVector(f[$type]))
     str << "    const #{f[$type]}& #{cap(name)}::get#{cap(f[$name])}() {\n        if (#{f[$name]}.empty() && !#{vectorIds(f)}.empty()) {\n            for (vector<int>::const_iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n                #{f[$name]}.push_back(#{vectorGeneric(f[$type])}::findById(*it));\n            }\n        }\n        return #{f[$name]};\n    }\n"
-    str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        dogatech::deleteVectorPointers<#{vectorGeneric(f[$type])}*>(&this->#{f[$name]});\n        this->#{f[$name]} = #{f[$name]};\n        this->#{vectorIds(f)}.clear();\n        for (#{f[$type]}::const_iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            this->#{vectorIds(f)}.push_back((*it)->getId());\n        }\n    }\n"
+    str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        deleteVectorPointers<#{vectorGeneric(f[$type])}*>(&this->#{f[$name]});\n        this->#{f[$name]} = #{f[$name]};\n        this->#{vectorIds(f)}.clear();\n        for (#{f[$type]}::const_iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            this->#{vectorIds(f)}.push_back((*it)->getId());\n        }\n    }\n"
     str << "    void #{cap(name)}::add#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id) {\n        if (std::find(#{vectorIds(f)}.begin(), #{vectorIds(f)}.end(), #{single(f[$name])}Id) == #{vectorIds(f)}.end()) {\n                #{vectorIds(f)}.push_back(#{single(f[$name])}Id);\n                if (!#{f[$name]}.empty()) #{f[$name]}.push_back(#{vectorGeneric(f[$type])}::findById(#{single(f[$name])}Id));\n        }\n    }\n"
     str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id) {\n        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            if (#{single(f[$name])}Id == (*it)->getId()) {\n                delete (*it);\n                #{f[$name]}.erase(it);\n            }\n        }\n        for (vector<int>::iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n            if (#{single(f[$name])}Id == *it) {\n                #{vectorIds(f)}.erase(it);\n            }\n        }\n    }\n"
   else
@@ -546,7 +546,7 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
       str << "#include \"#{t}.h\"\n"
     end
   end
-  str << "\nnamespace sql {\n    class ResultSet;\n}\n\nusing namespace std;\n\nnamespace soulsifter {\n\n"
+  str << "\nnamespace sql {\n    class ResultSet;\n}\n\nusing namespace std;\n\nnamespace dogatech {\nnamespace soulsifter {\n\n"
   str << "    class #{capName} {\n    public:\n"
   str << hConstructor(name)
   str << hCopyConstructor(name)
@@ -570,14 +570,14 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   fields.each do |f|
     str << hAccessor(f)
   end
-  str << "\n        friend dogatech::ResultSetIterator<#{cap(name)}>;\n"
+  str << "\n        friend ResultSetIterator<#{cap(name)}>;\n"
   str << "\n    private:\n"
   fields.each do |f|
     str << hFieldDeclaration(f)
   end
   str << "\n"
   str << hPopulateFieldFunctions(name, fields)
-  str << "    };\n\n}\n\n#endif /* defined(__soul_sifter__#{capName}__) */\n"
+  str << "    };\n\n}\n}\n\n#endif /* defined(__soul_sifter__#{capName}__) */\n"
   return str
 end
 
@@ -587,7 +587,7 @@ def writeCode (name, fields, attribs)
   capName = cap(name)
   secondaryKeys = fields.select{|f| f[$attrib] & Attrib::KEY2 > 0 }
   str = ""
-  str << "//\n//  #{capName}.cpp\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#include \"#{capName}.h\"\n\n#include <cmath>\n#include <string>\n\n#include <boost/regex.hpp>\n\n#include <cppconn/connection.h>\n#include <cppconn/statement.h>\n#include <cppconn/prepared_statement.h>\n#include <cppconn/resultset.h>\n#include <cppconn/exception.h>\n#include <cppconn/warning.h>\n\n#include \"MysqlAccess.h\"\n#include \"DTVectorUtil.h\"\n\nusing namespace std;\n\nnamespace soulsifter {\n"
+  str << "//\n//  #{capName}.cpp\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#include \"#{capName}.h\"\n\n#include <cmath>\n#include <string>\n\n#include <boost/regex.hpp>\n\n#include <cppconn/connection.h>\n#include <cppconn/statement.h>\n#include <cppconn/prepared_statement.h>\n#include <cppconn/resultset.h>\n#include <cppconn/exception.h>\n#include <cppconn/warning.h>\n\n#include \"MysqlAccess.h\"\n#include \"DTVectorUtil.h\"\n\nusing namespace std;\n\nnamespace dogatech {\nnamespace soulsifter {\n"
   str << "\n# pragma mark initialization\n\n"
   str << cConstructor(name, fields)
   str << cCopyConstructor(name, fields)
@@ -611,7 +611,7 @@ def writeCode (name, fields, attribs)
   fields.each do |f|
     str << cAccessor(name, f)
   end
-  str << "}\n"
+  str << "}\n}\n"
 end
 
 ######################### table definitions

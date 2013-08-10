@@ -25,6 +25,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -92,7 +93,7 @@ namespace soulsifter {
         albumPartId = song.getAlbumPartId();
         albumPart = NULL;
         stylesIds = song.stylesIds;
-        dogatech::deleteVectorPointers(&styles);
+        deleteVectorPointers(&styles);
     }
 
     Song::~Song() {
@@ -126,7 +127,7 @@ namespace soulsifter {
         albumPartId = 0;
         delete albumPart;
         albumPart = NULL;
-        dogatech::deleteVectorPointers(&styles);
+        deleteVectorPointers(&styles);
         stylesIds.clear();
     }
 
@@ -234,10 +235,10 @@ namespace soulsifter {
         }
     }
 
-    dogatech::ResultSetIterator<Song>* Song::findAll() {
+    ResultSetIterator<Song>* Song::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Songs");
         sql::ResultSet *rs = ps->executeQuery();
-        dogatech::ResultSetIterator<Song> *dtrs = new dogatech::ResultSetIterator<Song>(rs);
+        ResultSetIterator<Song> *dtrs = new ResultSetIterator<Song>(rs);
         return dtrs;
     }
 
@@ -370,12 +371,12 @@ namespace soulsifter {
             }
         }
         if (albumPart) needsUpdate |= albumPart->sync();
-        if (!dogatech::equivalentVectors<int>(stylesIds, song->stylesIds)) {
-            if (!dogatech::containsVector<int>(stylesIds, song->stylesIds)) {
+        if (!equivalentVectors<int>(stylesIds, song->stylesIds)) {
+            if (!containsVector<int>(stylesIds, song->stylesIds)) {
                 cout << "updating song " << id << " stylesIds" << endl;
                 needsUpdate = true;
             }
-            dogatech::appendUniqueVector<int>(song->stylesIds, &stylesIds);
+            appendUniqueVector<int>(song->stylesIds, &stylesIds);
             styles.clear();
         }
         return needsUpdate;
@@ -610,7 +611,7 @@ namespace soulsifter {
         return styles;
     }
     void Song::setStyles(const vector<Style*>& styles) {
-        dogatech::deleteVectorPointers<Style*>(&this->styles);
+        deleteVectorPointers<Style*>(&this->styles);
         this->styles = styles;
         this->stylesIds.clear();
         for (vector<Style*>::const_iterator it = styles.begin(); it != styles.end(); ++it) {
@@ -637,4 +638,5 @@ namespace soulsifter {
         }
     }
 
+}
 }

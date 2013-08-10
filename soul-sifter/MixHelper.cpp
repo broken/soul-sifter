@@ -14,6 +14,7 @@
 
 #include "MysqlAccess.h"
 
+namespace dogatech {
 namespace soulsifter {
     
     int Mix::mixoutCountForRESongId(int outRESongId) {
@@ -39,4 +40,5 @@ namespace soulsifter {
         }
     }
     
+}
 }

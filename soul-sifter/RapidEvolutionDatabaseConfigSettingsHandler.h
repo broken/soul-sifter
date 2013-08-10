@@ -12,6 +12,7 @@
 #include "DTAbstractHandler.h"
 #include "RESetting.h"
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionDatabaseConfigSettingsHandler : public DTAbstractHandler {
@@ -39,6 +40,7 @@ private:
     const string searchHistoryLabel;
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseConfigSettingsHandler__) */

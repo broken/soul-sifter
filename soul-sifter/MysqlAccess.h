@@ -4,7 +4,7 @@
 //
 //  Created by Robby Neale on 11/11/12.
 //
-//
+//  TODO make this derived from a generic version
 
 #ifndef __soul_sifter__MysqlAccess__
 #define __soul_sifter__MysqlAccess__
@@ -20,6 +20,7 @@
 class Connection;
 class Driver;
 
+namespace dogatech {
 namespace soulsifter {
     
     // public helper methods for working with times & a db
@@ -55,7 +56,8 @@ private:
     sql::Connection *connection;
     std::map<std::string, sql::PreparedStatement*> preparedStatements;
 };
-    
+  
+}
 }
 
 #endif /* defined(__soul_sifter__MysqlAccess__) */

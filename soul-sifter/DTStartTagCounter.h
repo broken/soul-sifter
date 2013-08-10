@@ -11,6 +11,8 @@
 
 #include "DTAbstractHandler.h"
 
+namespace dogatech {
+  
 class DTStartTagCounter : public DTAbstractHandler {
 public:
     DTStartTagCounter(xercesc::SAX2XMLReader* parser,
@@ -20,5 +22,7 @@ public:
         return NULL;
     }
 };
+
+}
 
 #endif /* defined(__soul_sifter__DTStartTagCounter__) */

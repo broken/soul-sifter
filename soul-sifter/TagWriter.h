@@ -11,6 +11,7 @@
 
 #include "MusicManager.h"
 
+namespace dogatech {
 namespace soulsifter {
     
     class TagWriter {
@@ -35,6 +36,7 @@ namespace soulsifter {
         void computeSrcLength();
     };
     
+}
 }
 
 #endif /* defined(__soul_sifter__TagWriter__) */

@@ -11,6 +11,7 @@
 
 #include "RapidEvolutionDatabaseHandler.h"
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionMusicDatabaseReader {
@@ -34,6 +35,7 @@ private:
     void computeMusicDatabaseLength();
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionMusicDatabaseReader__) */

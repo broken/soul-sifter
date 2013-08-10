@@ -17,6 +17,7 @@
 
 #include "Mix.h"
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionDatabaseMixoutsMixoutHandler : public DTAbstractHandler {
@@ -54,6 +55,7 @@ private:
     const XMLCh* const addon_elem;
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseMixoutsMixoutHandler__) */

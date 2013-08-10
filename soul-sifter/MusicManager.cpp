@@ -41,6 +41,7 @@
 using namespace boost;
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark private helpers
@@ -557,4 +558,5 @@ const BasicGenre* MusicManager::findBasicGenreForArtist(const string& artist) {
 }
 
 @end*/
+}
 }

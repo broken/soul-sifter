@@ -25,6 +25,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -107,10 +108,10 @@ namespace soulsifter {
         }
     }
 
-    dogatech::ResultSetIterator<BasicGenre>* BasicGenre::findAll() {
+    ResultSetIterator<BasicGenre>* BasicGenre::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from BasicGenres");
         sql::ResultSet *rs = ps->executeQuery();
-        dogatech::ResultSetIterator<BasicGenre> *dtrs = new dogatech::ResultSetIterator<BasicGenre>(rs);
+        ResultSetIterator<BasicGenre> *dtrs = new ResultSetIterator<BasicGenre>(rs);
         return dtrs;
     }
 
@@ -199,4 +200,5 @@ namespace soulsifter {
     const string& BasicGenre::getName() const { return name; }
     void BasicGenre::setName(const string& name) { this->name = name; }
 
+}
 }

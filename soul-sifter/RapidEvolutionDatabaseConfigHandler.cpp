@@ -18,6 +18,7 @@
 
 using namespace xercesc;
 
+namespace dogatech {
 namespace soulsifter {
 
 RapidEvolutionDatabaseConfigHandler::RapidEvolutionDatabaseConfigHandler(SAX2XMLReader* parser,
@@ -32,4 +33,5 @@ qname(XMLString::transcode("config")) {
     childHandlers[4] = NULL;
 }
     
+}
 }

@@ -18,6 +18,7 @@
 #include "MysqlAccess.h"
 #include "RESong.h"
 
+namespace dogatech {
 namespace soulsifter {
     
     Song::Song(RESong* song) :
@@ -121,4 +122,5 @@ namespace soulsifter {
         re->setDisabled(song.getTrashed() ? "yes" : "no");
         return re;
     }
+}
 }

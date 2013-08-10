@@ -61,7 +61,7 @@
     NSLog(@"processProgressController.flushStagingDirectory");
     [self startProgressBar:self];
     [[self window] setTitle:@"Flushing staging directory"];
-    soulsifter::MusicManager::getInstance().flushStagingDirectory();
+    dogatech::soulsifter::MusicManager::getInstance().flushStagingDirectory();
     [[self window] close];
     [pool release];
 }
@@ -71,7 +71,7 @@
 - (IBAction)updateBasicGenres:(id)sender {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [[self window] setTitle:@"Updating Basic Genres"];
-    soulsifter::MusicManager::getInstance().updateDatabaseBasicGenres();
+    dogatech::soulsifter::MusicManager::getInstance().updateDatabaseBasicGenres();
     [[self window] close];
     [pool release];
 }
@@ -99,7 +99,7 @@
 - (IBAction)readRapidEvolutionDatabase:(id)sender {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSLog(@"processProgressController.readRapidEvolutionDatabase");
-    musicDatabaseReader = new soulsifter::RapidEvolutionMusicDatabaseReader();
+    musicDatabaseReader = new dogatech::soulsifter::RapidEvolutionMusicDatabaseReader();
     [self startProgressBar:self];
     [[self window] setTitle:@"Reading RapidEvolution Database"];
     musicDatabaseReader->read();
@@ -114,7 +114,7 @@
     NSLog(@"processProgressController.exportToRapidEvolutionDatabase");
     [self startProgressBar:self];
     [[self window] setTitle:@"Exporting to RapidEvolution Database"];
-    soulsifter::RapidEvolutionMusicDatabaseWriter writer;
+    dogatech::soulsifter::RapidEvolutionMusicDatabaseWriter writer;
     writer.write();
     [[self window] close];
     [pool release];
@@ -123,7 +123,7 @@
 - (IBAction)writeTags:(id)sender {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSLog(@"writeTags");
-    tagWriter = new soulsifter::TagWriter();
+    tagWriter = new dogatech::soulsifter::TagWriter();
     [self startProgressBar:self];
     [[self window] setTitle:@"Writing tags to music files"];
     tagWriter->writeAll();

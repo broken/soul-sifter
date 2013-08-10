@@ -17,6 +17,7 @@
 
 #include "RESong.h"
 
+namespace dogatech {
 namespace soulsifter {
 
 class RapidEvolutionDatabaseSongsSongHandler : public DTAbstractHandler {
@@ -80,6 +81,7 @@ private:
     const XMLCh* const styles_bitmask_elem;
 };
     
+}
 }
 
 #endif /* defined(__soul_sifter__RapidEvolutionDatabaseSongsSongHandler__) */

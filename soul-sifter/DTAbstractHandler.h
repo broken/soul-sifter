@@ -12,6 +12,8 @@
 #include <xercesc/sax2/DefaultHandler.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 
+namespace dogatech {
+  
 class DTAbstractHandler : public xercesc::DefaultHandler {
 public:
     DTAbstractHandler(xercesc::SAX2XMLReader* parser,
@@ -40,5 +42,6 @@ protected:
     static unsigned long startTagCount;
 };
 
+}
 
 #endif /* defined(__soul_sifter__DTAbstractHandler__) */

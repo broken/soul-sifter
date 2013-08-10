@@ -20,6 +20,7 @@ namespace sql {
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
     class REAlbumCover {
@@ -32,7 +33,7 @@ namespace soulsifter {
 
         static REAlbumCover* findById(int id);
         static REAlbumCover* findByREId(const string& reId);
-        static dogatech::ResultSetIterator<REAlbumCover>* findAll();
+        static ResultSetIterator<REAlbumCover>* findAll();
 
         bool sync();
         int update();
@@ -45,7 +46,7 @@ namespace soulsifter {
         const string& getThumbnail() const;
         void setThumbnail(const string& thumbnail);
 
-        friend dogatech::ResultSetIterator<REAlbumCover>;
+        friend ResultSetIterator<REAlbumCover>;
 
     private:
         int id;
@@ -55,6 +56,7 @@ namespace soulsifter {
         static void populateFields(const sql::ResultSet* rs, REAlbumCover* reAlbumCover);
     };
 
+}
 }
 
 #endif /* defined(__soul_sifter__REAlbumCover__) */

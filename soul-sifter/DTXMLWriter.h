@@ -18,6 +18,8 @@
 using namespace std;
 using namespace xercesc;
 
+namespace dogatech {
+  
 class DTXMLWriter {
 public:
     DTXMLWriter(const char* const encodingName,
@@ -42,5 +44,7 @@ private:
     LocalFileFormatTarget file;
     XMLFormatter xmlFormatter;
 };
+  
+}
 
 #endif /* defined(__soul_sifter__DTXMLWriter__) */

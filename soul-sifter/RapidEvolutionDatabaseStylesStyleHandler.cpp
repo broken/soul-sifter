@@ -24,6 +24,7 @@
 
 using namespace xercesc;
 
+namespace dogatech {
 namespace soulsifter {
 
 RapidEvolutionDatabaseStylesStyleHandler::RapidEvolutionDatabaseStylesStyleHandler(SAX2XMLReader* parser,
@@ -83,4 +84,5 @@ void RapidEvolutionDatabaseStylesStyleHandler::endElement(const XMLCh* const uri
     }
 }
 
+}
 }

@@ -14,9 +14,12 @@
 
 using namespace xercesc;
 
+namespace dogatech {
+  
 DTStartTagCounter::DTStartTagCounter(SAX2XMLReader* parser,
                                      DTAbstractHandler* parentHandler) :
 DTAbstractHandler::DTAbstractHandler(parser, parentHandler) {
     startTagCount = 0;
 }
 
+}

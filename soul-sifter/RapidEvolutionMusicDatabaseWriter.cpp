@@ -46,6 +46,7 @@ namespace {
     
 }
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -149,7 +150,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     };
     w.startElement("songs", songsAttribs).endl();
     deleteAttribs(songsAttribs);
-    dogatech::ResultSetIterator<RESong>* songs = RESong::findAll();
+    ResultSetIterator<RESong>* songs = RESong::findAll();
     RESong reSong;
     while (songs->next(&reSong)) {
         reSong.setStylesBitmaskFromDb();
@@ -269,7 +270,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     // TODO mixouts
     //f << "<mixouts>" << endl;
     w.startElement("mixouts", NULL).writeNewline();
-    dogatech::ResultSetIterator<Mix>* mixes = Mix::findAll();
+    ResultSetIterator<Mix>* mixes = Mix::findAll();
     Mix mix;
     while (mixes->next(&mix)) {
         //f << "<mixout>" << endl;
@@ -303,7 +304,7 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     
     //f << "<albumcovers>" << endl;
     w.startElement("albumcovers", NULL).writeNewline();
-    dogatech::ResultSetIterator<REAlbumCover>* covers = REAlbumCover::findAll();
+    ResultSetIterator<REAlbumCover>* covers = REAlbumCover::findAll();
     REAlbumCover ac;
     while (covers->next(&ac)) {
         attrib* acAttribs[] = {
@@ -327,4 +328,5 @@ void RapidEvolutionMusicDatabaseWriter::write() {
     w.endDocument();
 }
 
+}
 }

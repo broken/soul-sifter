@@ -23,6 +23,7 @@
 using namespace std;
 using namespace xercesc;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -112,4 +113,5 @@ bool RapidEvolutionMusicDatabaseReader::isProcessing() {
     return processing;
 }
 
+}
 }

@@ -25,6 +25,7 @@
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
 # pragma mark initialization
@@ -57,9 +58,9 @@ namespace soulsifter {
         reId = style.getREId();
         reLabel = style.getRELabel();
         childrenIds = style.childrenIds;
-        dogatech::deleteVectorPointers(&children);
+        deleteVectorPointers(&children);
         parentsIds = style.parentsIds;
-        dogatech::deleteVectorPointers(&parents);
+        deleteVectorPointers(&parents);
     }
 
     Style::~Style() {
@@ -72,9 +73,9 @@ namespace soulsifter {
         name.clear();
         reId = 0;
         reLabel.clear();
-        dogatech::deleteVectorPointers(&children);
+        deleteVectorPointers(&children);
         childrenIds.clear();
-        dogatech::deleteVectorPointers(&parents);
+        deleteVectorPointers(&parents);
         parentsIds.clear();
     }
 
@@ -159,10 +160,10 @@ namespace soulsifter {
         }
     }
 
-    dogatech::ResultSetIterator<Style>* Style::findAll() {
+    ResultSetIterator<Style>* Style::findAll() {
         sql::PreparedStatement *ps = MysqlAccess::getInstance().getPreparedStatement("select * from Styles");
         sql::ResultSet *rs = ps->executeQuery();
-        dogatech::ResultSetIterator<Style> *dtrs = new dogatech::ResultSetIterator<Style>(rs);
+        ResultSetIterator<Style> *dtrs = new ResultSetIterator<Style>(rs);
         return dtrs;
     }
 
@@ -212,20 +213,20 @@ namespace soulsifter {
                 reLabel = style->getRELabel();
             }
         }
-        if (!dogatech::equivalentVectors<int>(childrenIds, style->childrenIds)) {
-            if (!dogatech::containsVector<int>(childrenIds, style->childrenIds)) {
+        if (!equivalentVectors<int>(childrenIds, style->childrenIds)) {
+            if (!containsVector<int>(childrenIds, style->childrenIds)) {
                 cout << "updating style " << id << " childrenIds" << endl;
                 needsUpdate = true;
             }
-            dogatech::appendUniqueVector<int>(style->childrenIds, &childrenIds);
+            appendUniqueVector<int>(style->childrenIds, &childrenIds);
             children.clear();
         }
-        if (!dogatech::equivalentVectors<int>(parentsIds, style->parentsIds)) {
-            if (!dogatech::containsVector<int>(parentsIds, style->parentsIds)) {
+        if (!equivalentVectors<int>(parentsIds, style->parentsIds)) {
+            if (!containsVector<int>(parentsIds, style->parentsIds)) {
                 cout << "updating style " << id << " parentsIds" << endl;
                 needsUpdate = true;
             }
-            dogatech::appendUniqueVector<int>(style->parentsIds, &parentsIds);
+            appendUniqueVector<int>(style->parentsIds, &parentsIds);
             parents.clear();
         }
         return needsUpdate;
@@ -334,7 +335,7 @@ namespace soulsifter {
         return children;
     }
     void Style::setChildren(const vector<Style*>& children) {
-        dogatech::deleteVectorPointers<Style*>(&this->children);
+        deleteVectorPointers<Style*>(&this->children);
         this->children = children;
         this->childrenIds.clear();
         for (vector<Style*>::const_iterator it = children.begin(); it != children.end(); ++it) {
@@ -370,7 +371,7 @@ namespace soulsifter {
         return parents;
     }
     void Style::setParents(const vector<Style*>& parents) {
-        dogatech::deleteVectorPointers<Style*>(&this->parents);
+        deleteVectorPointers<Style*>(&this->parents);
         this->parents = parents;
         this->parentsIds.clear();
         for (vector<Style*>::const_iterator it = parents.begin(); it != parents.end(); ++it) {
@@ -397,4 +398,5 @@ namespace soulsifter {
         }
     }
 
+}
 }

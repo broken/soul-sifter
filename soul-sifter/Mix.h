@@ -21,6 +21,7 @@ namespace sql {
 
 using namespace std;
 
+namespace dogatech {
 namespace soulsifter {
 
     class Mix {
@@ -33,7 +34,7 @@ namespace soulsifter {
 
         static Mix* findById(int id);
         static Mix* findByOutSongIdAndInSongId(int outSongId, int inSongId);
-        static dogatech::ResultSetIterator<Mix>* findAll();
+        static ResultSetIterator<Mix>* findAll();
 
         bool sync();
         int update();
@@ -62,7 +63,7 @@ namespace soulsifter {
         const bool getAddon() const;
         void setAddon(bool addon);
 
-        friend dogatech::ResultSetIterator<Mix>;
+        friend ResultSetIterator<Mix>;
 
     private:
         int id;
@@ -78,6 +79,7 @@ namespace soulsifter {
         static void populateFields(const sql::ResultSet* rs, Mix* mix);
     };
 
+}
 }
 
 #endif /* defined(__soul_sifter__Mix__) */
