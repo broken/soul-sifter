@@ -25,9 +25,10 @@
 
 @interface TagInfoController()
 
-- (void)loadNextFile;
-- (void)setFieldsWithSong:(dogatech::soulsifter::Song *)song andUpdate:(BOOL)update;
-- (dogatech::soulsifter::Song *)processSong;
+- (void)preprocessAllFiles:(NSArray *)files;
+- (void)loadNextSong;
+- (void)setFieldsAndUpdate:(BOOL)update;
+- (bool)processSong;
 
 @end
 
@@ -40,7 +41,8 @@
     NSLog(@"tagInfoController.initWithWindow");
     self = [super initWithWindow:window];
     if (self) {
-        // Initialization code here.
+      // Initialization code here.
+      filesToTrash = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -56,9 +58,7 @@
     NSLog(@"tagInfoController.windowDidLoad");
     [super windowDidLoad];
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    
-    filesToTrash = [[NSMutableArray alloc] init];
-    
+  
     const vector<const dogatech::soulsifter::BasicGenre*>* genres;
     dogatech::soulsifter::BasicGenre::findAll(&genres);
     NSMutableArray* genresArray = [[NSMutableArray alloc] init];
@@ -69,70 +69,156 @@
 }
 
 - (IBAction)showWindow:(id)sender {
-    NSLog(@"tagInfoController.showWindow");
-    [super showWindow:sender];
+  NSLog(@"tagInfoController.showWindow");
+  [super showWindow:sender];
     
-    // TODO alert if directories don't exist
-    songInfo = NULL;
-    index = -1;
-    hasMovedFile = false;
-    [self loadNextFile];
+  // TODO alert if directories don't exist
+  delete filesToAdd;
+  filesToAdd = new dogatech::soulsifter::FilesToAdd();
+  hasMovedFile = false;
+  [self preprocessAllFiles:fileUrls];
+  [fileUrls removeAllObjects];
+  [self loadNextSong];
 }
 
 
-- (void)showWindow:(id)sender withSong:(dogatech::soulsifter::Song *)song {
-    NSLog(@"tagInfoController.showWindow withSong");
-    [super showWindow:sender];
-    
-    // TODO alert if song not found
-    songInfo = song;
-    index = -1;
-    hasMovedFile = false;
-    [fileUrls removeAllObjects];
-    [self setFieldsWithSong:song andUpdate:NO];
-    [filePath setStringValue:[NSString stringWithUTF8String:song->getFilepath().substr(song->getFilepath().rfind('/') + 1).c_str()]];
+- (void)showWindow:(id)sender withSong:(dogatech::soulsifter::Song *)initialSong {
+  NSLog(@"tagInfoController.showWindow withSong");
+  [super showWindow:sender];
+  
+  // TODO alert if song not found
+  delete filesToAdd;
+  filesToAdd = new dogatech::soulsifter::FilesToAdd();
+  filesToAdd->addSong(initialSong);
+  hasMovedFile = false;
+  [fileUrls removeAllObjects];
+  [self loadNextSong];
 }
 
 # pragma mark actions
 
-- (dogatech::soulsifter::Song *)processSong {
+- (void)preprocessAllFiles:(NSArray *)files {
+  NSLog(@"tagInfoController.preprocessAllFiles");
+  
+  // TODO So I'd like to do this all in the FilesToAdd class, and should slowly move this over, but
+  // I don't want to rewrite a lot of code, so I'll leverage this until porting the code over
+  // to c++.
+  for (NSURL *fileUrl in files) {
+    // skip files starting with period
+    if ([[fileUrl lastPathComponent] characterAtIndex:0] == '.') {
+      NSLog(@"skipping %@", fileUrl);
+      continue;
+    }
+    
+    // if file is directory, enumerate over it and add files
+    NSDictionary *fileAttribs =
+    [[NSFileManager defaultManager] attributesOfItemAtPath:[fileUrl path] error:nil];
+    if ([fileAttribs objectForKey:NSFileType] == NSFileTypeDirectory) {
+      NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:[fileUrl path]];
+      NSString *childFile;
+      NSMutableArray *childFileUrls = [[NSMutableArray alloc] init];
+      while (childFile = [enumerator nextObject]) {
+        NSDictionary *childFileAttribs = [enumerator fileAttributes];
+        // this enumerator recurses directories. so no need to add them.
+        if ([childFileAttribs objectForKey:NSFileType] == NSFileTypeRegular) {
+          [childFileUrls addObject:[fileUrl URLByAppendingPathComponent:childFile]];
+        }
+      }
+      // TODO fix issue where any files skipped in this directory will be deleted
+      [filesToTrash addObject:fileUrl];
+      [self preprocessAllFiles:childFileUrls];
+      [childFileUrls release];
+      continue;
+    }
+    
+    // unarchive zips & rars, adding extracted files
+    if ([[NSPredicate predicateWithFormat:@"self matches[c] \".+\\.part\\d+\\.rar$\""] evaluateWithObject:[fileUrl lastPathComponent]]) {
+      if ([[fileUrl path] hasSuffix:@".part1.rar"]) {
+        [self preprocessAllFiles:[NSArray arrayWithObject:[ArchiveUtil unrarFile:fileUrl]]];
+      }
+      [filesToTrash addObject:fileUrl];
+      continue;
+    } else if ([[fileUrl pathExtension] isEqualToString:@"rar"]) {
+      [self preprocessAllFiles:[NSArray arrayWithObject:[ArchiveUtil unrarFile:fileUrl]]];
+      [filesToTrash addObject:fileUrl];
+      continue;
+    } else if ([[fileUrl pathExtension] isEqualToString:@"zip"]) {
+      [self preprocessAllFiles:[NSArray arrayWithObject:[ArchiveUtil unzipFile:fileUrl]]];
+      [filesToTrash addObject:fileUrl];
+      continue;
+    }
+    
+    // let FilesToAdd do the rest
+    filesToAdd->addFile([[fileUrl path] UTF8String]);
+  }
+}
+
+- (void)loadNextSong {
+  NSLog(@"tagInfoController.loadNextSong");
+  
+  if (filesToAdd->pullSong(&song)) {
+    [self setFieldsAndUpdate:YES];
+    return;
+  }
+  
+  std::string *path;
+  if (filesToAdd->pullFile(&path)) {
+    // TODO only move image if a song has been moved or a song has not been skipped
+    if (hasMovedFile) {
+      // TODO move to last parent (no subalbums)
+      // straight move image to last directory
+      dogatech::soulsifter::MusicManager::getInstance().moveImage(*path);
+      // TODO this should not happen here; let user choose
+      // update album with cover art
+      dogatech::soulsifter::MusicManager::getInstance().updateLastSongAlbumArtWithImage(*path);
+    }
+    delete path;
+    [self loadNextSong];
+  }
+  
+  // close window if no more files to process
+  NSLog(@"No more files to process; closing tag info window");
+  // trash files if desired
+  NSURL *fileToTrash;
+  for (fileToTrash in filesToTrash) {
+    NSLog(@"trashing file %@", fileToTrash);
+    [[NSFileManager defaultManager] trashItemAtURL:fileToTrash resultingItemURL:nil error:nil];
+  }
+  [filesToTrash removeAllObjects];
+  [self close];
+}
+
+- (bool)processSong {
     // unable to move file if any of these are blank
     if ([genreComboBox stringValue] == nil || [[genreComboBox stringValue] length] <= 0 ||
         [artist stringValue] == nil || [[artist stringValue] length] <= 0 ||
         [album stringValue] == nil || [[album stringValue] length] <= 0) {
-        NSBeep();
-        return NULL;
+      NSBeep();
+      return false;
     }
-    
-    dogatech::soulsifter::Song *song;
-    dogatech::soulsifter::Album *songAlbum;
-    if (songInfo) {
-        song = songInfo;
-        songAlbum = new dogatech::soulsifter::Album(*song->getAlbum());
-    } else {
-        song = new dogatech::soulsifter::Song();
-        songAlbum = new dogatech::soulsifter::Album();
-        song->setFilepath([[[fileUrls objectAtIndex:index] path] UTF8String]);
-    }
+  
+  dogatech::soulsifter::Album *songAlbum;
+  if (song->getAlbum()) {
+    // we make a copy of the album because we will end up deleting the original album and this one
+    songAlbum = new dogatech::soulsifter::Album(*song->getAlbum());
+  } else {
+    songAlbum = new dogatech::soulsifter::Album();
+  }
     song->setArtist([[artist stringValue] UTF8String]);
     song->setTrack([[trackNum stringValue] UTF8String]);
     song->setTitle([[title stringValue] UTF8String]);
     song->setRemixer([[remixer stringValue] UTF8String]);
     song->setComments([[comments stringValue] UTF8String]);
     song->setRating([rating intValue]);
-    if (!songInfo) {
-        songAlbum->setArtist([[albumArtist stringValue] UTF8String]);
-        songAlbum->setName([[album stringValue] UTF8String]);
-    }
+    songAlbum->setArtist([[albumArtist stringValue] UTF8String]);
+    songAlbum->setName([[album stringValue] UTF8String]);
     songAlbum->setLabel([[label stringValue] UTF8String]);
     songAlbum->setCatalogId([[catalogId stringValue] UTF8String]);
     songAlbum->setMixed([mixed state] == NSOnState);
     songAlbum->setReleaseDateYear([releaseDateYear intValue]);
     songAlbum->setReleaseDateMonth([releaseDateMonth intValue]);
     songAlbum->setReleaseDateDay([releaseDateDay intValue]);
-    if (!songInfo) {
-        songAlbum->setBasicGenre(*dogatech::soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
-    }
+    songAlbum->setBasicGenre(*dogatech::soulsifter::BasicGenre::findByName([[genreComboBox stringValue] UTF8String]));
     song->setAlbum(*songAlbum);
     NSIndexSet *styleIndexes = [styles selectedRowIndexes];
     for (NSUInteger idx = [styleIndexes firstIndex]; idx != NSNotFound; idx = [styleIndexes indexGreaterThanIndex:idx]) {
@@ -140,7 +226,7 @@
         dogatech::soulsifter::Style *style = [item style];
         song->addStyleById(style->getId());
     }
-    if (!songInfo) {
+    if (!song->getRESongId()) {
         song->setRESong(*dogatech::soulsifter::Song::createRESongFromSong(*song));
     }
     
@@ -158,18 +244,14 @@
     }
     
     // update tag
-    if (!songInfo) {
-        dogatech::soulsifter::MusicManager::getInstance().writeTagsToSong(song);
-    }
+    dogatech::soulsifter::MusicManager::getInstance().writeTagsToSong(song);
     
     // move file
-    if (!songInfo) {
-        dogatech::soulsifter::MusicManager::getInstance().moveSong(song);
-        hasMovedFile = true;
-    }
+    dogatech::soulsifter::MusicManager::getInstance().moveSong(song);
+    hasMovedFile = true;
     
     // save song
-    if (!songInfo) {
+    if (!song->getId()) {
         song->setDateAddedToNow();
         song->getAlbum()->sync();
         if (!song->getAlbum()->getId()) {
@@ -188,7 +270,6 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UDSAddedSong
                                                             object:self
                                                           userInfo:songDict];
-        delete songAlbum;
     } else {
         song->update();
         
@@ -198,63 +279,71 @@
                                                             object:self
                                                           userInfo:songDict];
     }
-    
-    return song;
+  delete songAlbum;
+  return true;
 }
 
 - (IBAction)processMusicFile:(id)sender {
-    NSLog(@"tagInfoController.processMusicFile");
+  NSLog(@"tagInfoController.processMusicFile");
     
-    dogatech::soulsifter::Song *song = [self processSong];
-    if (song) {
-        if (!songInfo) {
-            delete song;
-        }
-        // load next song
-        [self loadNextFile];
+  if ([self processSong]) {
+    // if the song has no id, it's a new object and not being used elsewhere
+    // TODO is this true?
+    if (!song->getId()) {
+      delete song;
     }
+    [self loadNextSong];
+  }
 }
 
 - (IBAction)skipMusicFile:(id)sender {
-    NSLog(@"skipMusicFile");
-    [self loadNextFile];
+  NSLog(@"skipMusicFile");
+  
+  // if the song has no id, it was never saved and we should delete the object
+  if (!song->getId()) {
+    delete song;
+  }
+  [self loadNextSong];
 }
 
 - (IBAction)trashMusicFile:(id)sender {
-    NSLog(@"trashMusicFile");
+  NSLog(@"trashMusicFile");
     
-    dogatech::soulsifter::Song *song = [self processSong];
+  if (![self processSong]) return;
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *oldPath = [NSURL fileURLWithPath:[NSString stringWithUTF8String:song->getFilepath().c_str()]];
-    std::string newPath = song->getFilepath() + ".txt";
-    if (![fileManager createFileAtPath:[NSString stringWithUTF8String:newPath.c_str()]
-                               contents:nil
-                            attributes:nil]) {
-        NSBeep();
-        if (!songInfo) {
-            delete song;
-        }
-        return;
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSURL *oldPath = [NSURL fileURLWithPath:[NSString stringWithUTF8String:song->getFilepath().c_str()]];
+  std::string newPath = song->getFilepath() + ".txt";
+  if (![fileManager createFileAtPath:[NSString stringWithUTF8String:newPath.c_str()]
+                            contents:nil
+                          attributes:nil]) {
+    NSBeep();
+    // TODO can't tell by id, then how do we tell?
+    if (!song->getId()) {
+      delete song;
     }
+    return;
+  }
     
-    song->setTrashed(true);
-    song->setFilepath(newPath);
-    song->update();
+  song->setTrashed(true);
+  song->setFilepath(newPath);
+  song->update();
     
-    [fileManager trashItemAtURL:oldPath resultingItemURL:nil error:nil];
-    
-    if (!songInfo) {
-        delete song;
-    }
-    
-    [self loadNextFile];
+  [fileManager trashItemAtURL:oldPath resultingItemURL:nil error:nil];
+  
+  // TODO can't tell by id, then how do we tell?
+  if (!song->getId()) {
+    delete song;
+  }
+  
+  [self loadNextSong];
 }
 
+/* DEPRECATED
 - (void)loadNextFile {
     NSLog(@"tagInfoController.loadNextFile");
     ++index;
-    
+  
     // close window if no more files to process
     if ([fileUrls count] <= index) {
         NSLog(@"No more files to process; closing tag info window");
@@ -350,9 +439,9 @@
     [self setFieldsWithSong:song andUpdate:YES];
     
     delete song;
-}
+}*/
 
-- (void)setFieldsWithSong:(dogatech::soulsifter::Song *)song andUpdate:(BOOL)update {
+- (void)setFieldsAndUpdate:(BOOL)update {
     dogatech::soulsifter::Song *updatedSong = update ? dogatech::soulsifter::MusicManager::getInstance().updateSongWithChanges(*song) : song;
     [artist setStringValue:[NSString stringWithUTF8String:updatedSong->getArtist().c_str()]];
     [trackNum setStringValue:[NSString stringWithUTF8String:updatedSong->getTrack().c_str()]];
@@ -404,6 +493,8 @@
         [albumPartOfSet setStringValue:[NSString stringWithUTF8String:albumPart->getPos().c_str()]];
         [albumPartName setStringValue:[NSString stringWithUTF8String:albumPart->getName().c_str()]];
     }
+  
+  [filePath setStringValue:[NSString stringWithUTF8String:song->getFilepath().substr(song->getFilepath().rfind('/') + 1).c_str()]];
     
     delete basicGenre;
     if (update) delete updatedSong;

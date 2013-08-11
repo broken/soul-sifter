@@ -8,16 +8,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include "FilesToAdd.h"
 #include "Song.h"
 
 @interface TagInfoController : NSWindowController {
 @private
-    int index;
-    dogatech::soulsifter::Song *songInfo;
-    bool hasMovedFile;
-    NSMutableArray *fileUrls;
-    NSMutableArray *filesToTrash;
-    
+  bool hasMovedFile;
+  NSMutableArray *fileUrls;
+  NSMutableArray *filesToTrash;
+  dogatech::soulsifter::FilesToAdd *filesToAdd;
+  dogatech::soulsifter::Song *song;
+  
     IBOutlet NSComboBox *genreComboBox;
     IBOutlet NSArrayController *genreArrayController;
     

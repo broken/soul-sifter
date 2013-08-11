@@ -46,6 +46,6 @@ namespace dogatech {
         while (!v->empty()) delete v->back(), v->pop_back();
     }
 
-}  // namespace soulsifter
+}
 
 #endif

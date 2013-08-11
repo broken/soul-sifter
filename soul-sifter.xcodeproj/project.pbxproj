@@ -42,6 +42,7 @@
 		185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC39167EE52F006FB8AF /* StylesViewController.m */; };
 		185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */; };
 		185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */; };
+		186CB07217B6CA1600D984CE /* FilesToAdd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CB07017B6CA1600D984CE /* FilesToAdd.cpp */; };
 		1873DDAA171BF48400B0F424 /* NSOutlineView+DTSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1873DDA9171BF48400B0F424 /* NSOutlineView+DTSelection.m */; };
 		1884FAFA16F4309900CFD5AC /* MixHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1884FAF916F4309800CFD5AC /* MixHelper.cpp */; };
 		1884FAFC16F6E8BA00CFD5AC /* libboost_regex-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1884FAFB16F6E8BA00CFD5AC /* libboost_regex-mt.dylib */; };
@@ -176,6 +177,8 @@
 		185CFC3D167EE75F006FB8AF /* StylesTreeDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StylesTreeDataSource.mm; sourceTree = "<group>"; };
 		185CFC40167EEC97006FB8AF /* StyleTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleTreeItem.h; sourceTree = "<group>"; };
 		185CFC41167EEC97006FB8AF /* StyleTreeItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StyleTreeItem.mm; sourceTree = "<group>"; };
+		186CB07017B6CA1600D984CE /* FilesToAdd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FilesToAdd.cpp; sourceTree = "<group>"; };
+		186CB07117B6CA1600D984CE /* FilesToAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesToAdd.h; sourceTree = "<group>"; };
 		1873DDA8171BF48400B0F424 /* NSOutlineView+DTSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+DTSelection.h"; sourceTree = "<group>"; };
 		1873DDA9171BF48400B0F424 /* NSOutlineView+DTSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+DTSelection.m"; sourceTree = "<group>"; };
 		1884FAF816F42A7D00CFD5AC /* ResultSetIterator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultSetIterator.h; sourceTree = "<group>"; };
@@ -238,6 +241,7 @@
 		18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESettingHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXmlHelper.cpp; sourceTree = "<group>"; };
 		18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtag.1.12.0.dylib; path = ../../../../../../../usr/local/Cellar/taglib/1.8/lib/libtag.1.12.0.dylib; sourceTree = "<group>"; };
+		18B1D88817B6F362008B3BD0 /* QueueUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QueueUtil.h; sourceTree = "<group>"; };
 		18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/Cellar/xerces-c/3.1.1/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
 		18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
@@ -368,6 +372,7 @@
 			isa = PBXGroup;
 			children = (
 				18C33FD416D76EBC0010BF10 /* DTVectorUtil.h */,
+				18B1D88817B6F362008B3BD0 /* QueueUtil.h */,
 			);
 			name = "DT Utils";
 			sourceTree = "<group>";
@@ -536,6 +541,8 @@
 				185CFC3F167EEC35006FB8AF /* Styles Tree */,
 				18169649154CD8E000593FEC /* TagInfoController.h */,
 				1816964A154CD8E000593FEC /* TagInfoController.mm */,
+				186CB07017B6CA1600D984CE /* FilesToAdd.cpp */,
+				186CB07117B6CA1600D984CE /* FilesToAdd.h */,
 				18C5F9D9166189A800912FD3 /* ArchiveUtil.h */,
 				18C5F9DA166189A800912FD3 /* ArchiveUtil.m */,
 				18144C9C154DC5F0009C36EE /* Preferences.xib */,
@@ -754,6 +761,7 @@
 				18C41F861709C1F200B23738 /* SongWrapper.mm in Sources */,
 				1873DDAA171BF48400B0F424 /* NSOutlineView+DTSelection.m in Sources */,
 				1812225F176EB551004FB69C /* AlbumPart.cpp in Sources */,
+				186CB07217B6CA1600D984CE /* FilesToAdd.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
