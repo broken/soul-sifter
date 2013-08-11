@@ -336,6 +336,7 @@ string MusicManager::getCopyToPath() {
     return "";
 }
 
+  // TODO shouldn't need to lower case full path
 bool MusicManager::moveSong(Song* song) {
     try {
         // create directory
@@ -347,6 +348,7 @@ bool MusicManager::moveSong(Song* song) {
             string albumname = song->getAlbum()->getName();
             ssdirpath << SoulSifterSettings::getInstance().getStagingPath() << "/" << song->getAlbum()->getBasicGenre()->getName() << "/" << *cleanDirName(&albumartist) << "/" << *cleanDirName(&albumname);
             imgDestinationPath = ssdirpath.str();
+            transform(imgDestinationPath.begin(), imgDestinationPath.end(), imgDestinationPath.begin(), ::tolower);
             if (song->getAlbumPart()) {
                 string part = song->getAlbumPart()->getName();
                 ssdirpath << "/" << *cleanDirName(&part);
