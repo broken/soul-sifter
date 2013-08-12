@@ -49,6 +49,8 @@
     IBOutlet NSTextField *commentsTag;
     IBOutlet NSTextField *albumArtistTag;
     IBOutlet NSTextField *albumTag;
+  
+  IBOutlet NSImageView *imageView;
 }
 
 - (void)showWindow:(id)sender withSong:(dogatech::soulsifter::Song *)song;
@@ -88,5 +90,7 @@
 @property(readwrite,retain,nonatomic) NSTextField *commentsTag;
 @property(readwrite,retain,nonatomic) NSTextField *albumArtistTag;
 @property(readwrite,retain,nonatomic) NSTextField *albumTag;
+
+@property(readwrite,retain,nonatomic) NSImageView *imageView;
 
 @end

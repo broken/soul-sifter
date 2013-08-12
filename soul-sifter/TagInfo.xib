@@ -18,6 +18,8 @@
 			<string>NSComboBox</string>
 			<string>NSComboBoxCell</string>
 			<string>NSCustomObject</string>
+			<string>NSImageCell</string>
+			<string>NSImageView</string>
 			<string>NSLevelIndicator</string>
 			<string>NSLevelIndicatorCell</string>
 			<string>NSOutlineView</string>
@@ -53,7 +55,7 @@
 			<object class="NSWindowTemplate" id="1005">
 				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{155, 264}, {557, 690}}</string>
+				<string key="NSWindowRect">{{155, 264}, {825, 690}}</string>
 				<int key="NSWTFlags">544735232</int>
 				<string key="NSWindowTitle">Song Metadata</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -1352,7 +1354,7 @@
 									<string key="NSFrame">{{2, 435}, {222, 16}}</string>
 									<reference key="NSSuperview" ref="688258554"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView" ref="1062208034"/>
+									<reference key="NSNextKeyView" ref="20265389"/>
 									<string key="NSReuseIdentifierKey">_NS:60</string>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 									<int key="NSsFlags">1</int>
@@ -1402,8 +1404,41 @@
 							</object>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
+						<object class="NSImageView" id="20265389">
+							<reference key="NSNextResponder" ref="1006"/>
+							<int key="NSvFlags">268</int>
+							<object class="NSMutableSet" key="NSDragTypes">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="set.sortedObjects">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>Apple PDF pasteboard type</string>
+									<string>Apple PICT pasteboard type</string>
+									<string>Apple PNG pasteboard type</string>
+									<string>NSFilenamesPboardType</string>
+									<string>NeXT Encapsulated PostScript v1.2 pasteboard type</string>
+									<string>NeXT TIFF v4.0 pasteboard type</string>
+								</object>
+							</object>
+							<string key="NSFrame">{{542, 382}, {266, 266}}</string>
+							<reference key="NSSuperview" ref="1006"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="1062208034"/>
+							<string key="NSReuseIdentifierKey">_NS:9</string>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSImageCell" key="NSCell" id="924035087">
+								<int key="NSCellFlags">134217728</int>
+								<int key="NSCellFlags2">33554432</int>
+								<string key="NSCellIdentifier">_NS:9</string>
+								<int key="NSAlign">0</int>
+								<int key="NSScale">0</int>
+								<int key="NSStyle">2</int>
+								<bool key="NSAnimates">NO</bool>
+							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+							<bool key="NSEditable">YES</bool>
+						</object>
 					</object>
-					<string key="NSFrameSize">{557, 690}</string>
+					<string key="NSFrameSize">{825, 690}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="355988258"/>
@@ -1693,6 +1728,14 @@
 					<int key="connectionID">296</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">imageView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="20265389"/>
+					</object>
+					<int key="connectionID">301</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">content: arrangedObjects</string>
 						<reference key="source" ref="159782537"/>
@@ -1863,6 +1906,7 @@
 							<reference ref="269860794"/>
 							<reference ref="456705161"/>
 							<reference ref="35223713"/>
+							<reference ref="20265389"/>
 						</object>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -2580,6 +2624,20 @@
 						<reference key="object" ref="230188050"/>
 						<reference key="parent" ref="35223713"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">299</int>
+						<reference key="object" ref="20265389"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="924035087"/>
+						</object>
+						<reference key="parent" ref="1006"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">300</int>
+						<reference key="object" ref="924035087"/>
+						<reference key="parent" ref="20265389"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2669,7 +2727,9 @@
 					<string>292.IBPluginDependency</string>
 					<string>293.IBPluginDependency</string>
 					<string>294.IBPluginDependency</string>
+					<string>299.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
+					<string>300.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>50.IBPluginDependency</string>
 					<string>51.IBPluginDependency</string>
@@ -2811,6 +2871,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -2825,7 +2887,7 @@
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">296</int>
+			<int key="maxID">301</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2873,13 +2935,11 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>processMusicFile:</string>
-							<string>showWindow:</string>
 							<string>skipMusicFile:</string>
 							<string>trashMusicFile:</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2890,7 +2950,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>processMusicFile:</string>
-							<string>showWindow:</string>
 							<string>skipMusicFile:</string>
 							<string>trashMusicFile:</string>
 						</object>
@@ -2898,10 +2957,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">processMusicFile:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showWindow:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -2932,6 +2987,7 @@
 							<string>filePath</string>
 							<string>genreArrayController</string>
 							<string>genreComboBox</string>
+							<string>imageView</string>
 							<string>label</string>
 							<string>mixed</string>
 							<string>rating</string>
@@ -2962,6 +3018,7 @@
 							<string>NSTextField</string>
 							<string>NSArrayController</string>
 							<string>NSComboBox</string>
+							<string>NSImageView</string>
 							<string>NSTextField</string>
 							<string>NSButton</string>
 							<string>NSLevelIndicator</string>
@@ -2995,6 +3052,7 @@
 							<string>filePath</string>
 							<string>genreArrayController</string>
 							<string>genreComboBox</string>
+							<string>imageView</string>
 							<string>label</string>
 							<string>mixed</string>
 							<string>rating</string>
@@ -3066,6 +3124,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">genreComboBox</string>
 								<string key="candidateClassName">NSComboBox</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">imageView</string>
+								<string key="candidateClassName">NSImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">label</string>

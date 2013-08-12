@@ -495,6 +495,10 @@
     }
   
   [filePath setStringValue:[NSString stringWithUTF8String:song->getFilepath().substr(song->getFilepath().rfind('/') + 1).c_str()]];
+  
+  NSImage *image = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:song->getAlbum()->getCoverFilepath().c_str()]];
+  [imageView setImage:image];
+  [image release];
     
     delete basicGenre;
     if (update) delete updatedSong;
@@ -533,5 +537,7 @@
 @synthesize commentsTag;
 @synthesize albumArtistTag;
 @synthesize albumTag;
+
+@synthesize imageView;
 
 @end
