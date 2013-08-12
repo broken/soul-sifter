@@ -95,13 +95,14 @@ namespace {
         id3v2->addFrame(frame);
     }
   
+  // other formats: https://gist.github.com/guymac/1468279
   void setId3v2Picture(TagLib::ID3v2::Tag* id3v2, string path, bool replace) {
     TagLib::ID3v2::FrameList frames = id3v2->frameListMap()["APIC"];  // get pictures
     if (!frames.isEmpty() && !replace) {
       cout << "Picture exists: not replacing." << endl;
       return;
     } else if (!frames.isEmpty() && replace) {
-      // TODO remove
+      id3v2->removeFrames("APIC");
     }
     ImageFile image(path.c_str());
     if (!image.isValid()) {
