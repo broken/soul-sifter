@@ -21,6 +21,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <taglib/apetag.h>
+#include <taglib/attachedpictureframe.h>
 #include <taglib/fileref.h>
 #include <taglib/id3v2frame.h>
 #include <taglib/id3v1tag.h>
@@ -47,6 +48,40 @@ namespace soulsifter {
 # pragma mark private helpers
 
 namespace {
+  
+  class ImageFile : public TagLib::File {
+  public:
+    ImageFile(const char *file) : TagLib::File(file) { }
+    
+    TagLib::String mimeType() const {
+      string filename = name();
+      
+      if (boost::algorithm::iends_with(filename, "jpg") ||
+          boost::algorithm::iends_with(filename, "jpeg")) {
+        return "image/jpeg";
+      } else if (boost::algorithm::iends_with(filename, "gif")) {
+        return "image/gif";
+      } else if (boost::algorithm::iends_with(filename, "png")) {
+        return "image/png";
+      } else {
+        cerr << "Unknown image type for file " << filename << endl;
+        return TagLib::String::null;
+      }
+    }
+    
+    TagLib::ByteVector data() {
+      return readBlock(length());
+    }
+    
+    bool isValid() const {
+      return isOpen() && !mimeType().isNull();
+    }
+    
+  private:
+    virtual TagLib::Tag *tag() const { return NULL; }
+    virtual TagLib::AudioProperties *audioProperties() const { return NULL; }
+    virtual bool save() { return false; }
+  };
     
     const string getId3v2Text(TagLib::ID3v2::Tag* id3v2, const char* name) {
         TagLib::ID3v2::FrameList frameList = id3v2->frameListMap()[name];
@@ -59,6 +94,24 @@ namespace {
         frame->setText(TagLib::String(value, TagLib::String::UTF8));
         id3v2->addFrame(frame);
     }
+  
+  void setId3v2Picture(TagLib::ID3v2::Tag* id3v2, string path, bool replace) {
+    TagLib::ID3v2::FrameList frames = id3v2->frameListMap()["APIC"];  // get pictures
+    if (!frames.isEmpty() && !replace) {
+      cout << "Picture exists: not replacing." << endl;
+      return;
+    } else if (!frames.isEmpty() && replace) {
+      // TODO remove
+    }
+    ImageFile image(path.c_str());
+    if (!image.isValid()) {
+      return;
+    }
+    TagLib::ID3v2::AttachedPictureFrame *frame = new TagLib::ID3v2::AttachedPictureFrame;
+    frame->setMimeType(image.mimeType());
+    frame->setPicture(image.data());
+    id3v2->addFrame(frame);
+  }
     
     string* cleanDirName(string* name) {
         std::replace(name->begin(), name->end(), '/', '+');
@@ -89,7 +142,7 @@ void MusicManager::readTagsFromSong(Song* song) {
         song->setAlbum(album);
     }
     
-    if (boost::algorithm::ends_with(song->getFilepath(), ".mp3")) {
+    if (boost::algorithm::iends_with(song->getFilepath(), ".mp3")) {
         TagLib::MPEG::File f(song->getFilepath().c_str());
         TagLib::ID3v1::Tag* id3v1 = f.ID3v1Tag();
         if (id3v1) {
@@ -173,7 +226,7 @@ void MusicManager::writeTagsToSong(Song* song) {
     delete lastSongFixed;
     lastSongFixed = new Song(*song);
     
-    if (boost::algorithm::ends_with(song->getFilepath(), ".mp3")) {
+    if (boost::algorithm::iends_with(song->getFilepath(), ".mp3")) {
         TagLib::MPEG::File f(song->getFilepath().c_str());
         TagLib::ID3v1::Tag* v1 = f.ID3v1Tag();
         TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag(true);
@@ -232,6 +285,9 @@ void MusicManager::writeTagsToSong(Song* song) {
             }
             setId3v2Text(id3v2, "TDAT", daymonth.str().c_str());
         }
+        // picture
+        setId3v2Picture(id3v2, song->getAlbum()->getCoverFilepath(), false);
+        // save
         bool result = f.save();
         if (!result) {
             cerr << "unable to save " << song->getFilepath() << endl;
