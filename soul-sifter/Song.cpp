@@ -65,13 +65,16 @@ namespace soulsifter {
     comments(song.getComments()),
     trashed(song.getTrashed()),
     reSongId(song.getRESongId()),
-    reSong(song.getRESong()),
+    reSong(NULL),
     albumId(song.getAlbumId()),
-    album(song.getAlbum()),
+    album(NULL),
     albumPartId(song.getAlbumPartId()),
-    albumPart(song.getAlbumPart()),
+    albumPart(NULL),
     styles(),
     stylesIds(song.stylesIds) {
+        if (song.getRESong()) setRESong(*song.getRESong());
+        if (song.getAlbum()) setAlbum(*song.getAlbum());
+        if (song.getAlbumPart()) setAlbumPart(*song.getAlbumPart());
     }
 
     void Song::operator=(const Song& song) {

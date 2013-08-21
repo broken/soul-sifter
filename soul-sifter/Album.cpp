@@ -57,7 +57,8 @@ namespace soulsifter {
     releaseDateMonth(album.getReleaseDateMonth()),
     releaseDateDay(album.getReleaseDateDay()),
     basicGenreId(album.getBasicGenreId()),
-    basicGenre(album.getBasicGenre()) {
+    basicGenre(NULL) {
+        if (album.getBasicGenre()) setBasicGenre(*album.getBasicGenre());
     }
 
     void Album::operator=(const Album& album) {

@@ -43,7 +43,8 @@ namespace soulsifter {
     pos(albumPart.getPos()),
     name(albumPart.getName()),
     albumId(albumPart.getAlbumId()),
-    album(albumPart.getAlbum()) {
+    album(NULL) {
+        if (albumPart.getAlbum()) setAlbum(*albumPart.getAlbum());
     }
 
     void AlbumPart::operator=(const AlbumPart& albumPart) {

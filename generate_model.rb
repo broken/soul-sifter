@@ -122,14 +122,22 @@ end
 def cCopyConstructor(name, fields)
   str = "    #{cap(name)}::#{cap(name)}(const #{cap(name)}& #{name}) :\n"
   fields.each do |f|
-    if (isVector(f[$type]))
+    if (f[$attrib] & Attrib::PTR > 0)
+      str << "    #{f[$name]}(NULL),\n"
+    elsif (isVector(f[$type]))
       str << "    #{f[$name]}(),\n    #{vectorIds(f)}(#{name}.#{vectorIds(f)}),\n"
     else
       str << "    #{f[$name]}(#{name}.get#{cap(f[$name])}()),\n"
     end
   end
   str = str[0..-3]
-  str << " {\n    }\n\n"
+  str << " {\n"
+  fields.each do |f|
+    if (f[$attrib] & Attrib::PTR > 0)
+      str << "        if (#{name}.get#{cap(f[$name])}()) set#{cap(f[$name])}(*#{name}.get#{cap(f[$name])}());\n"
+    end
+  end
+  str << "    }\n\n"
 end
 
 def hAssignmentConstructor(name)

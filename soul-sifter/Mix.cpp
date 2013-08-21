@@ -45,13 +45,15 @@ namespace soulsifter {
     Mix::Mix(const Mix& mix) :
     id(mix.getId()),
     outSongId(mix.getOutSongId()),
-    outSong(mix.getOutSong()),
+    outSong(NULL),
     inSongId(mix.getInSongId()),
-    inSong(mix.getInSong()),
+    inSong(NULL),
     bpmDiff(mix.getBpmDiff()),
     rank(mix.getRank()),
     comments(mix.getComments()),
     addon(mix.getAddon()) {
+        if (mix.getOutSong()) setOutSong(*mix.getOutSong());
+        if (mix.getInSong()) setInSong(*mix.getInSong());
     }
 
     void Mix::operator=(const Mix& mix) {
