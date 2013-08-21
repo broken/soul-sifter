@@ -65,11 +65,11 @@ namespace soulsifter {
     comments(song.getComments()),
     trashed(song.getTrashed()),
     reSongId(song.getRESongId()),
-    reSong(NULL),
+    reSong(song.getRESong()),
     albumId(song.getAlbumId()),
-    album(NULL),
+    album(song.getAlbum()),
     albumPartId(song.getAlbumPartId()),
-    albumPart(NULL),
+    albumPart(song.getAlbumPart()),
     styles(),
     stylesIds(song.stylesIds) {
     }

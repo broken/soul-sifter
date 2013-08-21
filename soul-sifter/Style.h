@@ -27,7 +27,6 @@ namespace soulsifter {
     public:
         Style();
         explicit Style(const Style& style);
-        void operator=(const Style& style);
         ~Style();
         void clear();
 
@@ -77,6 +76,8 @@ namespace soulsifter {
         static void populateFields(const sql::ResultSet* rs, Style* style);
         static void populateChildrenIds(Style* style);
         static void populateParentsIds(Style* style);
+
+        void operator=(const Style& style);
     };
 
 }

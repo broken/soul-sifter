@@ -28,7 +28,6 @@ namespace soulsifter {
     public:
         AlbumPart();
         explicit AlbumPart(const AlbumPart& albumPart);
-        void operator=(const AlbumPart& albumPart);
         ~AlbumPart();
         void clear();
 
@@ -61,6 +60,8 @@ namespace soulsifter {
         Album* album;
 
         static void populateFields(const sql::ResultSet* rs, AlbumPart* albumPart);
+
+        void operator=(const AlbumPart& albumPart);
     };
 
 }

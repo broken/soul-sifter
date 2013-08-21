@@ -301,7 +301,6 @@ void MusicManager::writeTagsToSong(Song* song) {
     
     Song* MusicManager::updateSongWithChanges(const Song& song) {
         Song *updatedSong = new Song(song);
-        updatedSong->setAlbum(*song.getAlbum());
         
         // compare with last
         if (lastParsedSong && lastSongFixed) {
@@ -358,7 +357,6 @@ void MusicManager::writeTagsToSong(Song* song) {
         
         delete lastParsedSong;
         lastParsedSong = new Song(song);
-        lastParsedSong->setAlbum(*song.getAlbum());
         return updatedSong;
     }
     

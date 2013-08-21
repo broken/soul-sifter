@@ -28,7 +28,6 @@ namespace soulsifter {
     public:
         RESong();
         explicit RESong(const RESong& reSong);
-        void operator=(const RESong& reSong);
         ~RESong();
         void clear();
 
@@ -150,6 +149,8 @@ namespace soulsifter {
         string stylesBitmask;  // transient
 
         static void populateFields(const sql::ResultSet* rs, RESong* reSong);
+
+        void operator=(const RESong& reSong);
     };
 
 }

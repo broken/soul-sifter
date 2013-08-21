@@ -122,9 +122,7 @@ end
 def cCopyConstructor(name, fields)
   str = "    #{cap(name)}::#{cap(name)}(const #{cap(name)}& #{name}) :\n"
   fields.each do |f|
-    if (f[$attrib] & Attrib::PTR > 0)
-      str << "    #{f[$name]}(NULL),\n"
-    elsif (isVector(f[$type]))
+    if (isVector(f[$type]))
       str << "    #{f[$name]}(),\n    #{vectorIds(f)}(#{name}.#{vectorIds(f)}),\n"
     else
       str << "    #{f[$name]}(#{name}.get#{cap(f[$name])}()),\n"
@@ -550,7 +548,6 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   str << "    class #{capName} {\n    public:\n"
   str << hConstructor(name)
   str << hCopyConstructor(name)
-  str << hAssignmentConstructor(name)
   str << hDestructor(name)
   str << hClearFunction()
   str << "\n"
@@ -577,6 +574,8 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   end
   str << "\n"
   str << hPopulateFieldFunctions(name, fields)
+  str << "\n"
+  str << hAssignmentConstructor(name)
   str << "    };\n\n}\n}\n\n#endif /* defined(__soul_sifter__#{capName}__) */\n"
   return str
 end

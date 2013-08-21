@@ -45,9 +45,9 @@ namespace soulsifter {
     Mix::Mix(const Mix& mix) :
     id(mix.getId()),
     outSongId(mix.getOutSongId()),
-    outSong(NULL),
+    outSong(mix.getOutSong()),
     inSongId(mix.getInSongId()),
-    inSong(NULL),
+    inSong(mix.getInSong()),
     bpmDiff(mix.getBpmDiff()),
     rank(mix.getRank()),
     comments(mix.getComments()),

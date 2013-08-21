@@ -28,7 +28,6 @@ namespace soulsifter {
     public:
         Mix();
         explicit Mix(const Mix& mix);
-        void operator=(const Mix& mix);
         ~Mix();
         void clear();
 
@@ -77,6 +76,8 @@ namespace soulsifter {
         bool addon;
 
         static void populateFields(const sql::ResultSet* rs, Mix* mix);
+
+        void operator=(const Mix& mix);
     };
 
 }
