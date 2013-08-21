@@ -113,13 +113,14 @@ namespace {
     frame->setPicture(image.data());
     id3v2->addFrame(frame);
   }
-    
-    string* cleanDirName(string* name) {
-        std::replace(name->begin(), name->end(), '/', '+');
-        std::replace(name->begin(), name->end(), ':', '-');
-        return name;
-    }
-    
+  
+  string* cleanDirName(string* name) {
+    std::replace(name->begin(), name->end(), '/', '+');
+    std::replace(name->begin(), name->end(), ':', ' ');
+    std::replace(name->begin(), name->end(), '-', ' ');
+    //std::replace(name->begin(), name->end(), '.', '');
+    return name;
+  }
 }
 
 # pragma mark initialization
