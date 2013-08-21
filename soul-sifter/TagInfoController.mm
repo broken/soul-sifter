@@ -241,6 +241,8 @@
         albumPart->setPos([[albumPartOfSet stringValue] UTF8String]);
         song->setAlbumPart(*albumPart);
         delete albumPart;
+    } else {
+        song->setAlbumPartId(0);
     }
     
     // update tag
@@ -458,7 +460,7 @@
     [releaseDateDay setStringValue:[NSString stringWithFormat:@"%i",updatedSong->getAlbum()->getReleaseDateDay()]];
     [mixed setState:(updatedSong->getAlbum()->getMixed()) ? NSOnState : NSOffState];
     
-    const dogatech::soulsifter::BasicGenre* basicGenre = song->getAlbum()->getBasicGenre();
+    const dogatech::soulsifter::BasicGenre* basicGenre = updatedSong->getAlbum()->getBasicGenre();
     if (!basicGenre) basicGenre = dogatech::soulsifter::MusicManager::getInstance().findBasicGenreForArtist(updatedSong->getArtist());
     if (basicGenre) [genreComboBox setStringValue:[NSString stringWithUTF8String:basicGenre->getName().c_str()]];
     
@@ -488,13 +490,16 @@
         [styles selectItem:item];
     }
     
-    const dogatech::soulsifter::AlbumPart* albumPart = song->getAlbumPart();
+    const dogatech::soulsifter::AlbumPart* albumPart = updatedSong->getAlbumPart();
     if (albumPart) {
         [albumPartOfSet setStringValue:[NSString stringWithUTF8String:albumPart->getPos().c_str()]];
         [albumPartName setStringValue:[NSString stringWithUTF8String:albumPart->getName().c_str()]];
+    } else {
+        [albumPartOfSet setStringValue:@""];
+        [albumPartName setStringValue:@""];
     }
   
-  [filePath setStringValue:[NSString stringWithUTF8String:song->getFilepath().substr(song->getFilepath().rfind('/') + 1).c_str()]];
+  [filePath setStringValue:[NSString stringWithUTF8String:updatedSong->getFilepath().substr(updatedSong->getFilepath().rfind('/') + 1).c_str()]];
   
   NSImage *image = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:song->getAlbum()->getCoverFilepath().c_str()]];
   [imageView setImage:image];

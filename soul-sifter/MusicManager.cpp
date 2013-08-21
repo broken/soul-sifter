@@ -269,6 +269,8 @@ void MusicManager::writeTagsToSong(Song* song) {
         // part of set
         if (song->getAlbumPart()) {
             setId3v2Text(id3v2, "TPOS", song->getAlbumPart()->getPos().c_str());
+        } else {
+            id3v2->removeFrames("TPOS");
         }
         // set release day & month
         if (song->getAlbum()->getReleaseDateMonth() > 0) {
@@ -298,67 +300,85 @@ void MusicManager::writeTagsToSong(Song* song) {
 }
     
 # pragma mark monitor changes
+  
+  Song* MusicManager::updateSongWithChanges(const Song& song) {
+    Song *updatedSong = new Song(song);
     
-    Song* MusicManager::updateSongWithChanges(const Song& song) {
-        Song *updatedSong = new Song(song);
-        
-        // compare with last
-        if (lastParsedSong && lastSongFixed) {
-            if (!song.getArtist().compare(lastParsedSong->getArtist())) {
-                boost::regex featRegex(" [(]ft[.] .*");
-                updatedSong->setArtist(boost::regex_replace(lastSongFixed->getArtist(), featRegex, ""));
-            }
-            if (song.getTrack().length() == 0) {
-                // TODO increment track #
-            }
-            // we shouldn't auto set track title b/c it changes so much
-            // nor should we auto update remixer
-            if (!song.getAlbum()->getArtist().compare(lastParsedSong->getAlbum()->getArtist())) {
-                updatedSong->getAlbum()->setArtist(lastSongFixed->getAlbum()->getArtist());
-            }
-            if (!song.getAlbum()->getName().compare(lastParsedSong->getAlbum()->getName())) {
-                updatedSong->getAlbum()->setName(lastSongFixed->getAlbum()->getName());
-            }
-            updatedSong->getAlbum()->setMixed(lastSongFixed->getAlbum()->getMixed());
-            if (!song.getAlbum()->getLabel().compare(lastParsedSong->getAlbum()->getLabel())) {
-                updatedSong->getAlbum()->setLabel(lastSongFixed->getAlbum()->getLabel());
-            }
-            if (!song.getAlbum()->getCatalogId().compare(lastParsedSong->getAlbum()->getCatalogId())) {
-                updatedSong->getAlbum()->setCatalogId(lastSongFixed->getAlbum()->getCatalogId());
-            }
-            if (song.getAlbum()->getReleaseDateYear() == lastParsedSong->getAlbum()->getReleaseDateYear()) {
-                updatedSong->getAlbum()->setReleaseDateYear(lastSongFixed->getAlbum()->getReleaseDateYear());
-            }
-            if (song.getAlbum()->getReleaseDateMonth() == lastParsedSong->getAlbum()->getReleaseDateMonth()) {
-                updatedSong->getAlbum()->setReleaseDateMonth(lastSongFixed->getAlbum()->getReleaseDateMonth());
-            }
-            if (song.getAlbum()->getReleaseDateDay() == lastParsedSong->getAlbum()->getReleaseDateDay()) {
-                updatedSong->getAlbum()->setReleaseDateDay(lastSongFixed->getAlbum()->getReleaseDateDay());
-            }
-            if (song.getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
-                updatedSong->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
-            }
+    // compare with last
+    if (lastParsedSong && lastSongFixed) {
+      if (!song.getArtist().compare(lastParsedSong->getArtist())) {
+        boost::regex featRegex(" [(]ft[.] .*");
+        updatedSong->setArtist(boost::regex_replace(lastSongFixed->getArtist(), featRegex, ""));
+      }
+      if (song.getTrack().length() == 0) {
+        // TODO increment track #
+      }
+      // we shouldn't auto set track title b/c it changes so much
+      // nor should we auto update remixer
+      if (!song.getAlbum()->getArtist().compare(lastParsedSong->getAlbum()->getArtist())) {
+        updatedSong->getAlbum()->setArtist(lastSongFixed->getAlbum()->getArtist());
+      }
+      if (!song.getAlbum()->getName().compare(lastParsedSong->getAlbum()->getName())) {
+        updatedSong->getAlbum()->setName(lastSongFixed->getAlbum()->getName());
+      }
+      updatedSong->getAlbum()->setMixed(lastSongFixed->getAlbum()->getMixed());
+      if (!song.getAlbum()->getLabel().compare(lastParsedSong->getAlbum()->getLabel())) {
+        updatedSong->getAlbum()->setLabel(lastSongFixed->getAlbum()->getLabel());
+      }
+      if (!song.getAlbum()->getCatalogId().compare(lastParsedSong->getAlbum()->getCatalogId())) {
+        updatedSong->getAlbum()->setCatalogId(lastSongFixed->getAlbum()->getCatalogId());
+      }
+      if (song.getAlbum()->getReleaseDateYear() == lastParsedSong->getAlbum()->getReleaseDateYear()) {
+        updatedSong->getAlbum()->setReleaseDateYear(lastSongFixed->getAlbum()->getReleaseDateYear());
+      }
+      if (song.getAlbum()->getReleaseDateMonth() == lastParsedSong->getAlbum()->getReleaseDateMonth()) {
+        updatedSong->getAlbum()->setReleaseDateMonth(lastSongFixed->getAlbum()->getReleaseDateMonth());
+      }
+      if (song.getAlbum()->getReleaseDateDay() == lastParsedSong->getAlbum()->getReleaseDateDay()) {
+        updatedSong->getAlbum()->setReleaseDateDay(lastSongFixed->getAlbum()->getReleaseDateDay());
+      }
+      if (song.getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
+        updatedSong->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
+      }
+      // we may not always have an album part
+      if (song.getAlbumPart() && lastParsedSong->getAlbumPart()) {
+        if (!song.getAlbumPart()->getName().compare(lastParsedSong->getAlbumPart()->getName()) &&
+            !song.getAlbumPart()->getPos().compare(lastParsedSong->getAlbumPart()->getPos())) {
+          if (lastSongFixed->getAlbumPart()) {
+            updatedSong->getAlbumPart()->setName(lastSongFixed->getAlbumPart()->getName());
+            updatedSong->getAlbumPart()->setPos(lastSongFixed->getAlbumPart()->getPos());
+          } else {
+            updatedSong->setAlbumPartId(0);
+          }
+        } else if (!song.getAlbumPart()->getName().compare(lastParsedSong->getAlbumPart()->getName()) &&
+                   lastSongFixed->getAlbumPart()) {
+          updatedSong->getAlbumPart()->setName(lastSongFixed->getAlbumPart()->getName());
+        } else if (!song.getAlbumPart()->getPos().compare(lastParsedSong->getAlbumPart()->getPos()) &&
+                   lastSongFixed->getAlbumPart()) {
+          updatedSong->getAlbumPart()->setPos(lastSongFixed->getAlbumPart()->getPos());
         }
-        
-        // strip featuring from the title and add it to the artist.
-        boost::regex featRegex(" [(]?[Ff](eaturing|t[.]?|eat[.]?) (.*?)[)]?$");
-        boost::smatch featMatch;
-        if (boost::regex_search(song.getTitle(), featMatch, featRegex, boost::match_extra)) {
-            updatedSong->setArtist(updatedSong->getArtist() + " (ft. " + featMatch[2] + ")");
-            updatedSong->setTitle(boost::regex_replace(updatedSong->getTitle(), featRegex, ""));
-        }
-        // copy remixer
-        boost::regex rmxrRegex("[(](.*) ([Rr]emix|[Rr]mx|[Mm]ix|[Rr]efix)[)]$");
-        boost::smatch rmxrMatch;
-        if (boost::regex_search(song.getTitle(), rmxrMatch, rmxrRegex, boost::match_extra) &&
-            updatedSong->getRemixer().length() == 0) {
-            updatedSong->setRemixer(rmxrMatch[1]);
-        }
-        
-        delete lastParsedSong;
-        lastParsedSong = new Song(song);
-        return updatedSong;
+      }
     }
+    
+    // strip featuring from the title and add it to the artist.
+    boost::regex featRegex(" [(]?[Ff](eaturing|t[.]?|eat[.]?) (.*?)[)]?$");
+    boost::smatch featMatch;
+    if (boost::regex_search(song.getTitle(), featMatch, featRegex, boost::match_extra)) {
+      updatedSong->setArtist(updatedSong->getArtist() + " (ft. " + featMatch[2] + ")");
+      updatedSong->setTitle(boost::regex_replace(updatedSong->getTitle(), featRegex, ""));
+    }
+    // copy remixer
+    boost::regex rmxrRegex("[(](.*) ([Rr]emix|[Rr]mx|[Mm]ix|[Rr]efix)[)]$");
+    boost::smatch rmxrMatch;
+    if (boost::regex_search(song.getTitle(), rmxrMatch, rmxrRegex, boost::match_extra) &&
+      updatedSong->getRemixer().length() == 0) {
+      updatedSong->setRemixer(rmxrMatch[1]);
+    }
+    
+    delete lastParsedSong;
+    lastParsedSong = new Song(song);
+    return updatedSong;
+  }
     
     void MusicManager::setNewSongChanges(const Song& song) {
         delete lastSongFixed;
