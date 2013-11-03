@@ -6,6 +6,10 @@
 //  Copyright (c) 2012 Dogatech. All rights reserved.
 //
 //  Core that manages possible tags for the music file. This is not multi-thread safe.
+//
+//  At some point I'd like to upgrade this to C++11, but it'll require getting libs compiled
+//  for it as well. In cases I used homebrew, update the formula to include the C++11 compiler:
+//  ENV['CXXFLAGS'] = " -std=c++11 -stdlib=libc++"
 
 #include "MusicManager.h"
 
@@ -311,7 +315,15 @@ void MusicManager::writeTagsToSong(Song* song) {
         updatedSong->setArtist(boost::regex_replace(lastSongFixed->getArtist(), featRegex, ""));
       }
       if (song.getTrack().length() == 0) {
-        // TODO increment track #
+        int trackNum = atoi(lastSongFixed->getTrack().c_str());  // returns 0 on error
+        if (trackNum > 0) {
+          ++trackNum;
+          if (lastSongFixed->getTrack().length() > 1 && trackNum < 10) {
+            updatedSong->setTrack('0' + static_cast<ostringstream*>(&(ostringstream() << trackNum))->str());
+          } else {
+            updatedSong->setTrack(static_cast<ostringstream*>(&(ostringstream() << trackNum))->str());
+          }
+        }
       }
       // we shouldn't auto set track title b/c it changes so much
       // nor should we auto update remixer
