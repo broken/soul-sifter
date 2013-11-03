@@ -255,16 +255,21 @@
     // save song
     if (!song->getId()) {
         song->setDateAddedToNow();
+        // save / update album. need to do here so we can use id to set album part
         song->getAlbum()->sync();
         if (!song->getAlbum()->getId()) {
             // save album since ID used multiple places
             song->getAlbum()->save();
         }
-        song->setAlbumId(song->getAlbum()->getId());
+        dogatech::soulsifter::Album* a = new dogatech::soulsifter::Album(*song->getAlbum());
+        song->setAlbum(*a);
+        delete a;
         if (song->getAlbumPart()) {
             song->getAlbumPart()->setAlbumId(song->getAlbum()->getId());
             song->getAlbumPart()->sync();
-            if (song->getAlbumPart()->getId()) song->setAlbumPartId(song->getAlbumPart()->getId());
+            if (song->getAlbumPart()->getId()) {
+              song->setAlbumPartId(song->getAlbumPart()->getId());
+            }
         }
         song->save();
         dogatech::soulsifter::MusicManager::getInstance().setNewSongChanges(*song);
