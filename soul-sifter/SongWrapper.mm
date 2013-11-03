@@ -76,7 +76,7 @@
 - (void)setRating:(NSNumber *)rating_ {
     [rating release];
     rating = [rating_ copy];
-    // TODO song->setRating(rating);
+    song->setRating([rating intValue]);
 }
 
 - (NSString *)styles {
