@@ -23,6 +23,7 @@
 		1816964B154CD8E000593FEC /* TagInfoController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1816964A154CD8E000593FEC /* TagInfoController.mm */; };
 		18169651154D06EB00593FEC /* MusicManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18169650154D06EB00593FEC /* MusicManager.cpp */; };
 		1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816965E154D4A2700593FEC /* LowerCaseFormatter.m */; };
+		181E3C841826597600BCC0AC /* libtag.1.14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */; };
 		182DC5F01605132A00AA9011 /* FileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5ED1605132A00AA9011 /* FileReader.m */; };
 		182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5EF1605132A00AA9011 /* NSDataExtensions.m */; };
 		1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1834E3B216689EBC00E4A761 /* RESong.cpp */; };
@@ -80,7 +81,6 @@
 		18AA5FED16AF3F04008E8DD3 /* StyleHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */; };
 		18AA5FF016AFC669008E8DD3 /* RESettingHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */; };
 		18AA5FF316AFCA23008E8DD3 /* REXmlHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */; };
-		18AA5FFF16C0EC68008E8DD3 /* libtag.1.12.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */; };
 		18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */; };
 		18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */; };
 		18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */; };
@@ -136,6 +136,7 @@
 		18169655154D34A300593FEC /* libid3-3.8.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libid3-3.8.3.0.0.dylib"; path = "/usr/local/Cellar/id3lib/3.8.3/lib/libid3-3.8.3.0.0.dylib"; sourceTree = "<absolute>"; };
 		1816965D154D4A2700593FEC /* LowerCaseFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LowerCaseFormatter.h; sourceTree = "<group>"; };
 		1816965E154D4A2700593FEC /* LowerCaseFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LowerCaseFormatter.m; sourceTree = "<group>"; };
+		181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtag.1.14.0.dylib; path = ../../../../../../../usr/local/Cellar/taglib/1.9.1/lib/libtag.1.14.0.dylib; sourceTree = "<group>"; };
 		182DC5EC1605132A00AA9011 /* FileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileReader.h; sourceTree = "<group>"; };
 		182DC5ED1605132A00AA9011 /* FileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileReader.m; sourceTree = "<group>"; };
 		182DC5EE1605132A00AA9011 /* NSDataExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataExtensions.h; sourceTree = "<group>"; };
@@ -240,7 +241,6 @@
 		18AA5FEB16AF3F03008E8DD3 /* StyleHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StyleHelper.cpp; sourceTree = "<group>"; };
 		18AA5FEE16AFC668008E8DD3 /* RESettingHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESettingHelper.cpp; sourceTree = "<group>"; };
 		18AA5FF116AFCA22008E8DD3 /* REXmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REXmlHelper.cpp; sourceTree = "<group>"; };
-		18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtag.1.12.0.dylib; path = ../../../../../../../usr/local/Cellar/taglib/1.8/lib/libtag.1.12.0.dylib; sourceTree = "<group>"; };
 		18B1D88817B6F362008B3BD0 /* QueueUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QueueUtil.h; sourceTree = "<group>"; };
 		18BB611516ACA187009495A9 /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libxerces-c-3.1.dylib"; path = "../../../../../../../usr/local/Cellar/xerces-c/3.1.1/lib/libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 		18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.52.0/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
@@ -266,8 +266,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				181E3C841826597600BCC0AC /* libtag.1.14.0.dylib in Frameworks */,
 				1884FAFC16F6E8BA00CFD5AC /* libboost_regex-mt.dylib in Frameworks */,
-				18AA5FFF16C0EC68008E8DD3 /* libtag.1.12.0.dylib in Frameworks */,
 				18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */,
 				18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */,
 				18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */,
@@ -465,7 +465,6 @@
 			isa = PBXGroup;
 			children = (
 				1884FAFB16F6E8BA00CFD5AC /* libboost_regex-mt.dylib */,
-				18AA5FFE16C0EC68008E8DD3 /* libtag.1.12.0.dylib */,
 				18BB611916ACA53C009495A9 /* libboost_date_time-mt.dylib */,
 				18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */,
 				18BB611716ACA508009495A9 /* libboost_filesystem-mt.dylib */,
@@ -497,6 +496,7 @@
 		189D22C9153D4F190043634A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */,
 				189D22CA153D4F190043634A /* Cocoa.framework */,
 				189D22E8153D4F190043634A /* SenTestingKit.framework */,
 				189D22CC153D4F190043634A /* Other Frameworks */,
@@ -891,12 +891,13 @@
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+					"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib",
 					/usr/local/Cellar/mysql/5.5.27/lib,
 					/usr/local/Cellar/boost/1.51.0/lib,
-					"\"/usr/local/Cellar/xerces-c/3.1.1/lib\"",
+					"/usr/local/Cellar/xerces-c/3.1.1/lib",
 					/usr/local/Cellar/boost/1.52.0/lib,
 					/usr/local/Cellar/taglib/1.8/lib,
+					/usr/local/Cellar/taglib/1.9.1/lib,
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -918,12 +919,13 @@
 				INFOPLIST_FILE = "soul-sifter/soul-sifter-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib\"",
+					"/usr/local/Cellar/mysql-connector-c++/1.1.0/lib",
 					/usr/local/Cellar/mysql/5.5.27/lib,
 					/usr/local/Cellar/boost/1.51.0/lib,
-					"\"/usr/local/Cellar/xerces-c/3.1.1/lib\"",
+					"/usr/local/Cellar/xerces-c/3.1.1/lib",
 					/usr/local/Cellar/boost/1.52.0/lib,
 					/usr/local/Cellar/taglib/1.8/lib,
+					/usr/local/Cellar/taglib/1.9.1/lib,
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
