@@ -318,6 +318,8 @@
   if ([self processSong]) {
     // if the song has no id, it's a new object and not being used elsewhere
     // TODO is this true?
+    // No, we should delete though b/c it means it failed to save. Otherwise, on save & update,
+    // it'll have an idea. So we should make sure that the object is disposed elsewhere.
     if (!song->getId()) {
       delete song;
     }
@@ -427,7 +429,7 @@
   [filePath setStringValue:[NSString stringWithUTF8String:updatedSong->getFilepath().substr(updatedSong->getFilepath().rfind('/') + 1).c_str()]];
     
   delete basicGenre;
-  if (update) delete updatedSong;
+  //if (update) delete updatedSong;
 }
 
 # pragma mark accessors
