@@ -19,7 +19,8 @@
 namespace dogatech {
   namespace soulsifter {
   
-    FilesToAdd::FilesToAdd() {
+    FilesToAdd::FilesToAdd()
+    : coverIndex(0) {
     }
   
     FilesToAdd::~FilesToAdd() {
@@ -64,6 +65,10 @@ namespace dogatech {
     
     void FilesToAdd::addSong(Song *song) {
       songs.push(song);
+      
+      if (song->getAlbum() != NULL && song->getAlbum()->getCoverFilepath().length() > 0) {
+        images.push_back(new string(song->getAlbum()->getCoverFilepath()));
+      }
     }
     
     bool FilesToAdd::pullSong(Song** song) {
@@ -88,7 +93,14 @@ namespace dogatech {
     const string* FilesToAdd::coverPath() const {
       if (images.empty()) return NULL;
       
-      return images.at(images.size() - 1);
+      return images.at(coverIndex);
+    }
+    
+    void FilesToAdd::switchCover() {
+      ++coverIndex;
+      if (images.empty() || coverIndex >= images.size()) {
+        coverIndex = 0;
+      }
     }
     
   }  // namespace soulsifter

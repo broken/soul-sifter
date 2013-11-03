@@ -31,11 +31,13 @@ namespace dogatech {
       bool pullFile(string** path);
       
       const string* coverPath() const;
+      void switchCover();
     
     private:
       queue<Song*> songs;
       vector<string*> images;
       queue<string*> misc;
+      int coverIndex;
     };
   
   }  // namespace soulsifter

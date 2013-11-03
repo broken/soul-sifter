@@ -26,6 +26,7 @@
 @interface TagInfoController()
 
 - (void)preprocessAllFiles:(NSArray *)files;
+- (void)loadCover;
 - (void)loadNextSong;
 - (void)setFieldsAndUpdate:(BOOL)update;
 - (bool)processSong;
@@ -77,6 +78,7 @@
   filesToAdd = new dogatech::soulsifter::FilesToAdd();
   hasMovedFile = false;
   [self preprocessAllFiles:fileUrls];
+  [self loadCover];
   [fileUrls removeAllObjects];
   [self loadNextSong];
 }
@@ -90,6 +92,7 @@
   delete filesToAdd;
   filesToAdd = new dogatech::soulsifter::FilesToAdd();
   filesToAdd->addSong(initialSong);
+  [self loadCover];
   hasMovedFile = false;
   [fileUrls removeAllObjects];
   [self loadNextSong];
@@ -153,6 +156,23 @@
   }
 }
 
+- (void)loadCover {
+  NSLog(@"tagInfoController.loadCover");
+  if (filesToAdd->coverPath() == nil ||
+      ![[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithUTF8String:filesToAdd->coverPath()->c_str()]]) {
+    return;
+  }
+  NSImage* img = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:filesToAdd->coverPath()->c_str()]];
+  [img autorelease];
+  [imageView setImage:img];
+}
+
+- (IBAction)switchCover:(id)sender {
+  NSLog(@"tagInfoController.switchCover");
+  filesToAdd->switchCover();
+  [self loadCover];
+}
+
 - (void)loadNextSong {
   NSLog(@"tagInfoController.loadNextSong");
   
@@ -168,9 +188,11 @@
       // TODO move to last parent (no subalbums)
       // straight move image to last directory
       dogatech::soulsifter::MusicManager::getInstance().moveImage(*path);
-      // TODO this should not happen here; let user choose
+      // TODO should this really happen here?
       // update album with cover art
-      dogatech::soulsifter::MusicManager::getInstance().updateLastSongAlbumArtWithImage(*path);
+      if (!strcasecmp(path->c_str(), filesToAdd->coverPath()->c_str())) {
+        dogatech::soulsifter::MusicManager::getInstance().updateLastSongAlbumArtWithImage(*path);
+      }
     }
     delete path;
     [self loadNextSong];
@@ -403,13 +425,9 @@
     }
   
   [filePath setStringValue:[NSString stringWithUTF8String:updatedSong->getFilepath().substr(updatedSong->getFilepath().rfind('/') + 1).c_str()]];
-  
-  NSImage *image = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:song->getAlbum()->getCoverFilepath().c_str()]];
-  [imageView setImage:image];
-  [image release];
     
-    delete basicGenre;
-    if (update) delete updatedSong;
+  delete basicGenre;
+  if (update) delete updatedSong;
 }
 
 # pragma mark accessors
