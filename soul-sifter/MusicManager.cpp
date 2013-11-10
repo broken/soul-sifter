@@ -15,6 +15,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <map>
 #include <regex.h>
 #include <stdlib.h>
 #include <string>
@@ -30,6 +31,7 @@
 #include <taglib/id3v2frame.h>
 #include <taglib/id3v1tag.h>
 #include <taglib/id3v2tag.h>
+#include <taglib/mp4file.h>
 #include <taglib/mpegfile.h>
 #include <taglib/popularimeterframe.h>
 #include <taglib/tbytevector.h>
@@ -141,13 +143,62 @@ MusicManager::~MusicManager() {
 }
 
 # pragma mark tagging
+  
+  void MusicManager::readId3v2Tag(Song* song) {
+    TagLib::MPEG::File f(song->getFilepath().c_str());
+    TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag();
+    if (id3v2) {
+      stringstream ss;
+      if (id3v2->artist() != TagLib::String::null) song->setArtist(id3v2->artist().to8Bit());
+      song->setTrack(getId3v2Text(id3v2, "TRCK"));
+      if (id3v2->title() != TagLib::String::null) song->setTitle(id3v2->title().to8Bit());
+      song->setRemixer(getId3v2Text(id3v2, "TPE4"));
+      song->getAlbum()->setArtist(getId3v2Text(id3v2, "TPE2"));
+      if (id3v2->album() != TagLib::String::null) song->getAlbum()->setName(id3v2->album().to8Bit());
+      song->getAlbum()->setLabel(getId3v2Text(id3v2, "TPUB"));
+      song->getAlbum()->setCatalogId(getId3v2Text(id3v2, "TCID"));
+      if (id3v2->year() != 0) song->getAlbum()->setReleaseDateYear(id3v2->year());
+      //TODO if (id3v2->genre() != TagLib::String::null) song->setGenre(id3v2->genre().to8Bit());
+      if (id3v2->comment() != TagLib::String::null) song->setComments(id3v2->comment().to8Bit());
+      
+      TagLib::ID3v2::FrameList frameList = id3v2->frameListMap()["POPM"];
+      if (!frameList.isEmpty()) {
+        TagLib::ID3v2::PopularimeterFrame *popm = dynamic_cast<TagLib::ID3v2::PopularimeterFrame*>(frameList.front());
+        song->setRating(popm->rating());
+      }
+      
+      // part of set
+      const string pos = getId3v2Text(id3v2, "TPOS");
+      if (pos.length() > 0) {
+        if (!song->getAlbumPart()) {
+          AlbumPart ap;
+          song->setAlbumPart(ap);
+        }
+        song->getAlbumPart()->setAlbum(*song->getAlbum());
+        song->getAlbumPart()->setPos(pos);
+      }
+      
+      // string in the DDMM format
+      const string date = getId3v2Text(id3v2, "TDAT");
+      char *tmp = new char[3];
+      tmp[0] = date[0];
+      tmp[1] = date[1];
+      tmp[2] = '\0';
+      if (tmp[0] != '0' || tmp[1] != '0')
+        song->getAlbum()->setReleaseDateDay(atoi(tmp));
+      tmp[0] = date[2];
+      tmp[1] = date[3];
+      song->getAlbum()->setReleaseDateMonth(atoi(tmp));
+      delete [] tmp;
+    }
+  }
 
 void MusicManager::readTagsFromSong(Song* song) {
     if (!song->getAlbum()) {
         Album album;
         song->setAlbum(album);
     }
-    
+  
     if (boost::algorithm::iends_with(song->getFilepath(), ".mp3")) {
         TagLib::MPEG::File f(song->getFilepath().c_str());
         TagLib::ID3v1::Tag* id3v1 = f.ID3v1Tag();
@@ -180,70 +231,37 @@ void MusicManager::readTagsFromSong(Song* song) {
                 song->setTrack(ss.str());
             }*/
         }
-        TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag();
-        if (id3v2) {
-            stringstream ss;
-            if (id3v2->artist() != TagLib::String::null) song->setArtist(id3v2->artist().to8Bit());
-            song->setTrack(getId3v2Text(id3v2, "TRCK"));
-            if (id3v2->title() != TagLib::String::null) song->setTitle(id3v2->title().to8Bit());
-            song->setRemixer(getId3v2Text(id3v2, "TPE4"));
-            song->getAlbum()->setArtist(getId3v2Text(id3v2, "TPE2"));
-            if (id3v2->album() != TagLib::String::null) song->getAlbum()->setName(id3v2->album().to8Bit());
-            song->getAlbum()->setLabel(getId3v2Text(id3v2, "TPUB"));
-            song->getAlbum()->setCatalogId(getId3v2Text(id3v2, "TCID"));
-            if (id3v2->year() != 0) song->getAlbum()->setReleaseDateYear(id3v2->year());
-            //TODO if (id3v2->genre() != TagLib::String::null) song->setGenre(id3v2->genre().to8Bit());
-            if (id3v2->comment() != TagLib::String::null) song->setComments(id3v2->comment().to8Bit());
-            
-            TagLib::ID3v2::FrameList frameList = id3v2->frameListMap()["POPM"];
-            if (!frameList.isEmpty()) {
-                TagLib::ID3v2::PopularimeterFrame *popm = dynamic_cast<TagLib::ID3v2::PopularimeterFrame*>(frameList.front());
-                song->setRating(popm->rating());
-            }
-            
-            // part of set
-            const string pos = getId3v2Text(id3v2, "TPOS");
-            if (pos.length() > 0) {
-                if (!song->getAlbumPart()) {
-                    AlbumPart ap;
-                    song->setAlbumPart(ap);
-                }
-                song->getAlbumPart()->setAlbum(*song->getAlbum());
-                song->getAlbumPart()->setPos(pos);
-            }
-            
-            // string in the DDMM format
-            const string date = getId3v2Text(id3v2, "TDAT");
-            char *tmp = new char[3];
-            tmp[0] = date[0];
-            tmp[1] = date[1];
-            tmp[2] = '\0';
-            if (tmp[0] != '0' || tmp[1] != '0')
-                song->getAlbum()->setReleaseDateDay(atoi(tmp));
-            tmp[0] = date[2];
-            tmp[1] = date[3];
-            song->getAlbum()->setReleaseDateMonth(atoi(tmp));
-            delete [] tmp;
-        }
+        readId3v2Tag(song);
+    } else if (boost::algorithm::iends_with(song->getFilepath(), ".m4a") ||
+               boost::algorithm::iends_with(song->getFilepath(), ".mp4") ||
+               boost::algorithm::iends_with(song->getFilepath(), ".aac") ||
+               boost::algorithm::iends_with(song->getFilepath(), ".alac")) {
+      TagLib::MP4::File f(song->getFilepath().c_str());
+      TagLib::MP4::Tag* tag = f.tag();
+      if (tag) {
+        stringstream ss;
+        if (tag->title() != TagLib::String::null) song->setTitle(tag->title().to8Bit());
+        if (tag->artist() != TagLib::String::null) song->setArtist(tag->artist().to8Bit());
+        if (tag->track() != 0) song->setTrack(static_cast<ostringstream*>(&(ostringstream() << tag->track()))->str());
+        if (tag->album() != TagLib::String::null) song->getAlbum()->setName(tag->album().to8Bit());
+        if (tag->comment() != TagLib::String::null) song->setComments(tag->comment().to8Bit());
+        if (tag->year() != 0) song->getAlbum()->setReleaseDateYear(tag->year());
+      }
+      readId3v2Tag(song);
     }
 }
 
 void MusicManager::writeTagsToSong(Song* song) {
     delete lastSongFixed;
     lastSongFixed = new Song(*song);
-    
-    if (boost::algorithm::iends_with(song->getFilepath(), ".mp3")) {
+  
+  if (boost::algorithm::iends_with(song->getFilepath(), ".mp3") ||
+      boost::algorithm::iends_with(song->getFilepath(), ".m4a") ||
+      boost::algorithm::iends_with(song->getFilepath(), ".mp4") ||
+      boost::algorithm::iends_with(song->getFilepath(), ".aac") ||
+      boost::algorithm::iends_with(song->getFilepath(), ".alac")) {
         TagLib::MPEG::File f(song->getFilepath().c_str());
-        TagLib::ID3v1::Tag* v1 = f.ID3v1Tag();
         TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag(true);
-        if (v1) {
-            if (id3v2->title() == TagLib::String::null) id3v2->setTitle(v1->title());
-            if (id3v2->artist() == TagLib::String::null) id3v2->setArtist(v1->artist());
-            if (id3v2->album() == TagLib::String::null) id3v2->setAlbum(v1->album());
-            if (id3v2->comment() == TagLib::String::null) id3v2->setComment(v1->comment());
-            if (id3v2->genre() == TagLib::String::null) id3v2->setGenre(v1->genre());
-            if (id3v2->year() == 0) id3v2->setYear(v1->year());
-        }
         f.strip(TagLib::MPEG::File::ID3v1);
         id3v2->setArtist(song->getArtist());
         setId3v2Text(id3v2, "TRCK", song->getTrack().c_str());

@@ -65,6 +65,8 @@ private:
     void operator=(MusicManager const&);
     
     void initializePathMembers();
+  
+    void readId3v2Tag(Song* song);
 };
     
 }
