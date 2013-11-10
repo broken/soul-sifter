@@ -352,6 +352,9 @@ void MusicManager::writeTagsToSong(Song* song) {
       if (song.getAlbum()->getBasicGenreId() == lastParsedSong->getAlbum()->getBasicGenreId()) {
         updatedSong->getAlbum()->setBasicGenreId(lastSongFixed->getAlbum()->getBasicGenreId());
       }
+      if (song.getComments().size() > 0 && !song.getComments().compare(lastParsedSong->getComments())) {
+        updatedSong->setComments(lastSongFixed->getComments());
+      }
       // we may not always have an album part
       if (song.getAlbumPart() && lastParsedSong->getAlbumPart()) {
         if (!song.getAlbumPart()->getName().compare(lastParsedSong->getAlbumPart()->getName()) &&
