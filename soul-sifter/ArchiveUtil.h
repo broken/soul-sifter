@@ -11,7 +11,6 @@
 @interface ArchiveUtil : NSObject
 {
 }
-+(void)unrarFile:(NSString *)file toPath:(NSString *)path;
 +(void)unzipFile:(NSString *)file toPath:(NSString *)path;
 +(NSURL *)unrarFile:(NSURL *)fileUrl;
 +(NSURL *)unzipFile:(NSURL *)fileUrl;
