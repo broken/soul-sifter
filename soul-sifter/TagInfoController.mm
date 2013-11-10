@@ -190,7 +190,7 @@
       dogatech::soulsifter::MusicManager::getInstance().moveImage(*path);
       // TODO should this really happen here?
       // update album with cover art
-      if (!strcasecmp(path->c_str(), filesToAdd->coverPath()->c_str())) {
+      if (filesToAdd->coverPath() && !strcasecmp(path->c_str(), filesToAdd->coverPath()->c_str())) {
         dogatech::soulsifter::MusicManager::getInstance().updateLastSongAlbumArtWithImage(*path);
       }
     }

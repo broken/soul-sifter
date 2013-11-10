@@ -28,6 +28,14 @@ namespace dogatech {
       deleteVectorPointers(&images);
       deleteQueuePointers(&misc);
     }
+    
+    void FilesToAdd::clear() {
+      coverIndex = 0;
+      cover = NULL;
+      deleteQueuePointers(&songs);
+      deleteVectorPointers(&images);
+      deleteQueuePointers(&misc);
+    }
   
     // TODO test if it's a directory and loop over it and process zips & rars
     void FilesToAdd::addFile(string path) {
@@ -49,6 +57,7 @@ namespace dogatech {
           boost::algorithm::iends_with(path, ".png")) {
         string* image = new string(path);
         images.push_back(image);
+        cover = images.at(coverIndex);
         return;
       }
     
@@ -91,9 +100,7 @@ namespace dogatech {
     }
   
     const string* FilesToAdd::coverPath() const {
-      if (images.empty()) return NULL;
-      
-      return images.at(coverIndex);
+        return cover != NULL ? cover : images.empty() ? NULL : images.at(coverIndex);
     }
     
     void FilesToAdd::switchCover() {
@@ -101,6 +108,7 @@ namespace dogatech {
       if (images.empty() || coverIndex >= images.size()) {
         coverIndex = 0;
       }
+      cover = images.at(coverIndex);
     }
     
   }  // namespace soulsifter

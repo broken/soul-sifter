@@ -23,6 +23,8 @@ namespace dogatech {
     public:
       FilesToAdd();
       ~FilesToAdd();
+      
+      void clear();
     
       void addFile(string path);
       void addSong(Song *song);
@@ -38,6 +40,8 @@ namespace dogatech {
       vector<string*> images;
       queue<string*> misc;
       int coverIndex;
+      // we use this to save the cover path after the file has been pulled
+      string* cover;
     };
   
   }  // namespace soulsifter
