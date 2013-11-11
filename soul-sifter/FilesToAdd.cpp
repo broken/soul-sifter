@@ -20,7 +20,8 @@ namespace dogatech {
   namespace soulsifter {
   
     FilesToAdd::FilesToAdd()
-    : coverIndex(0) {
+    : coverIndex(0),
+    cover(NULL) {
     }
   
     FilesToAdd::~FilesToAdd() {
