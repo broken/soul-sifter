@@ -29,8 +29,16 @@ def vectorGeneric(t)
   return t.match(/^vector<(const )?([^*]*)\*?\>$/).captures[1]
 end
 
+def getSetGeneric(t)
+  return t.match(/^set<(const )?([^*]*)\*?\>$/).captures[1]
+end
+
 def isVector(t)
   return t =~ /^vector</
+end
+
+def isSet(t)
+  return t =~ /^set</
 end
 
 def single(n)
@@ -185,7 +193,7 @@ def cClearFunction(name, fields)
   fields.each do |f|
     if (f[$type] == :int || f[$type] == :time_t)
       str << "        #{f[$name]} = 0;\n"
-    elsif (f[$type] == :string)
+    elsif (f[$type] == :string || isSet(f[$type]))
       str << "        #{f[$name]}.clear();\n"
     elsif (f[$type] == :bool)
       str << "        #{f[$name]} = false;\n"
@@ -337,6 +345,10 @@ def cSyncFunction(name, fields, secondaryKeys)
       str << "        if (!equivalentVectors<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n            if (!containsVector<int>(#{vectorIds(f)}, #{name}->#{vectorIds(f)})) {\n"
       str << "                cout << \"updating #{name} \" << id << \" #{vectorIds(f)}\" << endl;\n                needsUpdate = true;\n            }\n"
       str << "            appendUniqueVector<int>(#{name}->#{vectorIds(f)}, &#{vectorIds(f)});\n            #{f[$name]}.clear();\n        }\n"
+    elsif (isSet(f[$type]))
+      str << "        if (!equivalentSets<#{getSetGeneric(f[$type])}>(#{f[$name]}, #{name}->#{f[$name]})) {\n            if (!containsSet<#{getSetGeneric(f[$type])}>(#{f[$name]}, #{name}->#{f[$name]})) {\n"
+      str << "                cout << \"updating #{name} \" << id << \" #{f[$name]}\" << endl;\n                needsUpdate = true;\n            }\n"
+      str << "            #{f[$name]}.insert(#{name}->#{f[$name]}.begin(), #{name}->#{f[$name]}.end());\n        }\n"
     elsif (f[$attrib] & Attrib::PTR > 0)
       str << "        if (#{f[$name]}) needsUpdate |= #{f[$name]}->sync();\n"
     else
@@ -373,6 +385,8 @@ def cUpdateFunction(name, fields)
     elsif (f[$attrib] & Attrib::NULLABLE > 0)
       str << "            if (#{f[$name]} > 0) ps->set#{cap(f[$type].to_s)}(#{i}, #{f[$name]});\n"
       str << "            else ps->setNull(#{i}, sql::DataType::INTEGER);\n"
+    elsif (isSet(f[$type]))
+      str << "            ps->set#{cap(getSetGeneric(f[$type]))}(#{i}, setToCsv(#{f[$name]}));\n"
     else
       str << "            ps->set#{cap(f[$type].to_s)}(#{i}, #{f[$name]});\n"
     end
@@ -433,6 +447,8 @@ def cSaveFunction(name, fields, attribs)
     elsif (f[$attrib] & Attrib::NULLABLE > 0)
       str << "            if (#{f[$name]} > 0) ps->set#{cap(f[$type].to_s)}(#{i}, #{f[$name]});\n"
       str << "            else ps->setNull(#{i}, sql::DataType::INTEGER);\n"
+    elsif (isSet(f[$type]))
+      str << "            ps->set#{cap(getSetGeneric(f[$type]))}(#{i}, setToCsv(#{f[$name]}));\n"
     else
       str << "            ps->set#{cap(f[$type].to_s)}(#{i}, #{f[$name]});\n"
     end
@@ -467,7 +483,7 @@ def cPopulateFieldFunctions(name, fields)
   # populate basic fields
   str = "    void #{cap(name)}::populateFields(const sql::ResultSet* rs, #{cap(name)}* #{name}) {\n"
   fields.each do |f|
-    next if (f[$attrib] & Attrib::PTR > 0 || f[$attrib] & Attrib::TRANSIENT > 0 || isVector(f[$type]))
+    next if (f[$attrib] & Attrib::PTR > 0 || f[$attrib] & Attrib::TRANSIENT > 0 || isVector(f[$type]) || isSet(f[$type]))
     if (f[$type] == :bool)
       str << "        #{name}->set#{cap(f[$name])}(rs->getBoolean(\"#{f[$name]}\"));\n"
     elsif (f[$type] == :time_t)
@@ -481,6 +497,9 @@ def cPopulateFieldFunctions(name, fields)
   end
   fields.select{|f| isVector(f[$type])}.each do |f|
     str << "        populate#{cap(vectorIds(f))}(#{name});\n"
+  end
+  fields.select{|f| isSet(f[$type])}.each do |f|
+    str << "        if (!rs->isNull(\"#{f[$name]}\")) {\n            #{getSetGeneric(f[$type])} dbSet = rs->getString(\"#{f[$name]}\");\n            boost::split(song->#{f[$name]}, dbSet, boost::is_any_of(\",\"));\n        }\n"
   end
   str << "    }\n\n"
   # populate vector fields
@@ -507,6 +526,11 @@ def hAccessor(f)
     #str << "        void add#{cap(single(f[$name]))}(const #{vectorGeneric(f[$type])}& #{single(f[$name])});\n"
     str << "        void add#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id);\n"
     str << "        void remove#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id);\n"
+  elsif (isSet(f[$type]))
+    str << "        const #{f[$type]}& get#{cap(f[$name])}() const;\n"
+    str << "        void set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]});\n"
+    str << "        void add#{cap(single(f[$name]))}(const #{getSetGeneric(f[$type])}& #{single(f[$name])});\n"
+    str << "        void remove#{cap(single(f[$name]))}(const #{getSetGeneric(f[$type])}& #{single(f[$name])});\n"
   else
     str << "        const #{f[$type]}& get#{cap(f[$name])}() const;\n"
     str << "        void set#{cap(f[$name])}(const #{f[$type]}& #{f[1]});\n"
@@ -527,6 +551,11 @@ def cAccessor(name, f)
     str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        deleteVectorPointers<#{vectorGeneric(f[$type])}*>(&this->#{f[$name]});\n        this->#{f[$name]} = #{f[$name]};\n        this->#{vectorIds(f)}.clear();\n        for (#{f[$type]}::const_iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            this->#{vectorIds(f)}.push_back((*it)->getId());\n        }\n    }\n"
     str << "    void #{cap(name)}::add#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id) {\n        if (std::find(#{vectorIds(f)}.begin(), #{vectorIds(f)}.end(), #{single(f[$name])}Id) == #{vectorIds(f)}.end()) {\n                #{vectorIds(f)}.push_back(#{single(f[$name])}Id);\n                if (!#{f[$name]}.empty()) #{f[$name]}.push_back(#{vectorGeneric(f[$type])}::findById(#{single(f[$name])}Id));\n        }\n    }\n"
     str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}ById(int #{single(f[$name])}Id) {\n        for (#{f[$type]}::iterator it = #{f[$name]}.begin(); it != #{f[$name]}.end(); ++it) {\n            if (#{single(f[$name])}Id == (*it)->getId()) {\n                delete (*it);\n                #{f[$name]}.erase(it);\n            }\n        }\n        for (vector<int>::iterator it = #{vectorIds(f)}.begin(); it != #{vectorIds(f)}.end(); ++it) {\n            if (#{single(f[$name])}Id == *it) {\n                #{vectorIds(f)}.erase(it);\n            }\n        }\n    }\n"
+  elsif (isSet(f[$type]))
+    str << "    const #{f[$type]}& #{cap(name)}::get#{cap(f[$name])}() const {\n        return #{f[$name]};\n    }\n"
+    str << "    void #{cap(name)}::set#{cap(f[$name])}(const #{f[$type]}& #{f[$name]}) {\n        this->#{f[$name]} = #{f[$name]};\n    }\n"
+    str << "    void #{cap(name)}::add#{cap(single(f[$name]))}(const #{getSetGeneric(f[$type])}& #{single(f[$name])}) {\n        this->#{f[$name]}.insert(#{single(f[$name])});\n    }\n"
+    str << "    void #{cap(name)}::remove#{cap(single(f[$name]))}(const #{getSetGeneric(f[$type])}& #{single(f[$name])}) {\n        this->#{f[$name]}.erase(#{single(f[$name])});\n    }\n"
   else
     str << "    const #{f[$type]} #{cap(name)}::get#{cap(f[$name])}() const { return #{f[$name]}; }\n"
     if (f[$type] == :int && f[$name] =~ /Id$/ && f[$attrib] & Attrib::ID > 0)
@@ -544,11 +573,11 @@ def writeHeader (name, fields, attribs, customMethods, customHeaders)
   capName = cap(name)
   secondaryKeys = fields.select{|f| f[2] & Attrib::KEY2 > 0 }
   str = ""
-  str << "//\n//  #{capName}.h\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#ifndef __soul_sifter__#{capName}__\n#define __soul_sifter__#{capName}__\n\n#include <string>\n#include <vector>\n\n"
+  str << "//\n//  #{capName}.h\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#ifndef __soul_sifter__#{capName}__\n#define __soul_sifter__#{capName}__\n\n#include <set>\n#include <string>\n#include <vector>\n\n"
   str << customHeaders
   str << "#include \"ResultSetIterator.h\"\n"
   fields.transpose[0].uniq.each do |t|
-    unless ([:int, :bool, :time_t, :string].include?(t) || isVector(t))
+    unless ([:int, :bool, :time_t, :string].include?(t) || isVector(t) || isSet(t))
       str << "#include \"#{t}.h\"\n"
     end
   end
@@ -594,7 +623,7 @@ def writeCode (name, fields, attribs)
   capName = cap(name)
   secondaryKeys = fields.select{|f| f[$attrib] & Attrib::KEY2 > 0 }
   str = ""
-  str << "//\n//  #{capName}.cpp\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#include \"#{capName}.h\"\n\n#include <cmath>\n#include <string>\n\n#include <boost/regex.hpp>\n\n#include <cppconn/connection.h>\n#include <cppconn/statement.h>\n#include <cppconn/prepared_statement.h>\n#include <cppconn/resultset.h>\n#include <cppconn/exception.h>\n#include <cppconn/warning.h>\n\n#include \"MysqlAccess.h\"\n#include \"DTVectorUtil.h\"\n\nusing namespace std;\n\nnamespace dogatech {\nnamespace soulsifter {\n"
+  str << "//\n//  #{capName}.cpp\n//  soul-sifter\n//\n//  Created by Robby Neale\n//  Generated by generate_model.rb\n//\n\n#include \"#{capName}.h\"\n\n#include <cmath>\n#include <string>\n\n#include <boost/regex.hpp>\n#include <boost/algorithm/string.hpp>\n\n#include <cppconn/connection.h>\n#include <cppconn/statement.h>\n#include <cppconn/prepared_statement.h>\n#include <cppconn/resultset.h>\n#include <cppconn/exception.h>\n#include <cppconn/warning.h>\n\n#include \"MysqlAccess.h\"\n#include \"DTVectorUtil.h\"\n\nusing namespace std;\n\nnamespace dogatech {\nnamespace soulsifter {\n"
   str << "\n# pragma mark initialization\n\n"
   str << cConstructor(name, fields)
   str << cCopyConstructor(name, fields)
@@ -712,6 +741,8 @@ songFields = [
   [:string, "filepath", Attrib::FIND],
   [:int, "rating", 0],
   [:time_t, "dateAdded", 0],
+  [:string, "bpm", 0],
+  ["set<string>", "tonicKeys", 0],
   [:string, "comments", 0],
   [:bool, "trashed", 0],
   [:int, "reSongId", Attrib::KEY2 | Attrib::ID],
