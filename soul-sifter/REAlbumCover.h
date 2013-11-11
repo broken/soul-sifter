@@ -9,6 +9,7 @@
 #ifndef __soul_sifter__REAlbumCover__
 #define __soul_sifter__REAlbumCover__
 
+#include <set>
 #include <string>
 #include <vector>
 

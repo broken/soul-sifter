@@ -9,6 +9,7 @@
 #ifndef __soul_sifter__Mix__
 #define __soul_sifter__Mix__
 
+#include <set>
 #include <string>
 #include <vector>
 

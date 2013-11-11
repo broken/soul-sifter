@@ -9,6 +9,7 @@
 #ifndef __soul_sifter__REXml__
 #define __soul_sifter__REXml__
 
+#include <set>
 #include <string>
 #include <vector>
 

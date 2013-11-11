@@ -12,6 +12,7 @@
 #include <string>
 
 #include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include <cppconn/connection.h>
 #include <cppconn/statement.h>

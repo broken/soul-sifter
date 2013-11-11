@@ -9,6 +9,7 @@
 #ifndef __soul_sifter__RESong__
 #define __soul_sifter__RESong__
 
+#include <set>
 #include <string>
 #include <vector>
 

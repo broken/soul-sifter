@@ -9,6 +9,7 @@
 #ifndef __soul_sifter__Song__
 #define __soul_sifter__Song__
 
+#include <set>
 #include <string>
 #include <vector>
 
@@ -70,6 +71,12 @@ namespace soulsifter {
         void setRating(int rating);
         const time_t getDateAdded() const;
         void setDateAdded(time_t dateAdded);
+        const string& getBpm() const;
+        void setBpm(const string& bpm);
+        const set<string>& getTonicKeys() const;
+        void setTonicKeys(const set<string>& tonicKeys);
+        void addTonicKey(const string& tonicKey);
+        void removeTonicKey(const string& tonicKey);
         const string& getComments() const;
         void setComments(const string& comments);
         const bool getTrashed() const;
@@ -103,6 +110,8 @@ namespace soulsifter {
         string filepath;
         int rating;
         time_t dateAdded;
+        string bpm;
+        set<string> tonicKeys;
         string comments;
         bool trashed;
         int reSongId;

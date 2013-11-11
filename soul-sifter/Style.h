@@ -9,6 +9,7 @@
 #ifndef __soul_sifter__Style__
 #define __soul_sifter__Style__
 
+#include <set>
 #include <string>
 #include <vector>
 
