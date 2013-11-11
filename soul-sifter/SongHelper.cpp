@@ -33,6 +33,8 @@ namespace soulsifter {
     reSong(new RESong(*song)),
     rating(song->getRating()),
     dateAdded(timeFromString(song->getDateAdded())),
+    bpm(song->getBpmStart()),
+    tonicKeys(),
     comments(song->getComments()),
     trashed(!song->getDisabled().compare("yes")),
     albumId(0),
@@ -69,12 +71,17 @@ namespace soulsifter {
                 }
             }
         }
+      
         // basic genre
         const BasicGenre *genre = BasicGenre::findByFilepath(song->getFilename());
         if (genre)
             album->setBasicGenre(*genre);
+      
         // date added
         dateAdded = timeFromString(song->getDateAdded());
+      
+        // keys
+        // TODO tonicKeys.insert(<RE KEY TO KEY>);
     }
     
     void Song::findSongsByStyle(const Style& style, vector<Song*>** songsPtr) {
@@ -117,6 +124,8 @@ namespace soulsifter {
         re->setLabel(song.getAlbum()->getLabel());
         re->setRemix(song.getRemixer());
         re->setComments(song.getComments());
+        re->setBpmStart(song.getBpm());
+        re->setKeyStart(song.getTonicKeys().size() > 0 ? *(song.getTonicKeys().begin()) : "");
         re->setReleaseDate(song.getAlbum()->reReleaseDate());
         re->setFeaturing(song.getFeaturing());
         re->setDisabled(song.getTrashed() ? "yes" : "no");
