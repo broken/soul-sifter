@@ -50,6 +50,9 @@
     IBOutlet NSTextField *albumArtistTag;
     IBOutlet NSTextField *albumTag;
   
+  IBOutlet NSTextField *bpmTag;
+  IBOutlet NSTextField *keyTag;
+  
   IBOutlet NSImageView *imageView;
 }
 
@@ -59,6 +62,7 @@
 - (IBAction)skipMusicFile:(id)sender;
 - (IBAction)trashMusicFile:(id)sender;
 - (IBAction)switchCover:(id)sender;
+- (IBAction)analyzeAudio:(id)sender;
 
 @property(readwrite,retain,nonatomic) NSArray *fileUrls;
 @property(readwrite,retain,nonatomic) NSArray *filesToTrash;
@@ -91,6 +95,9 @@
 @property(readwrite,retain,nonatomic) NSTextField *commentsTag;
 @property(readwrite,retain,nonatomic) NSTextField *albumArtistTag;
 @property(readwrite,retain,nonatomic) NSTextField *albumTag;
+
+@property(readwrite,retain,nonatomic) NSTextField *bpmTag;
+@property(readwrite,retain,nonatomic) NSTextField *keyTag;
 
 @property(readwrite,retain,nonatomic) NSImageView *imageView;
 

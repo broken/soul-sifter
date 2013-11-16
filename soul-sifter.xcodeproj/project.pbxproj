@@ -28,6 +28,7 @@
 		182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5EF1605132A00AA9011 /* NSDataExtensions.m */; };
 		18322B7D18276497006E9BE3 /* Collection.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18322B7C18276497006E9BE3 /* Collection.xib */; };
 		1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1834E3B216689EBC00E4A761 /* RESong.cpp */; };
+		184A0E8F1836FEDE00483AA3 /* AudioAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 184A0E8D1836FEDE00483AA3 /* AudioAnalyzer.cpp */; };
 		185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A727F166AE69B00D14E96 /* RESetting.cpp */; };
 		185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */; };
 		185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7285166AF8D200D14E96 /* DTCopyHandler.cpp */; };
@@ -143,6 +144,8 @@
 		182DC5EF1605132A00AA9011 /* NSDataExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataExtensions.m; sourceTree = "<group>"; };
 		18322B7C18276497006E9BE3 /* Collection.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Collection.xib; sourceTree = "<group>"; };
 		1834E3B216689EBC00E4A761 /* RESong.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESong.cpp; sourceTree = "<group>"; };
+		184A0E8D1836FEDE00483AA3 /* AudioAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioAnalyzer.cpp; path = "soul-sifter/AudioAnalyzer.cpp"; sourceTree = "<group>"; };
+		184A0E8E1836FEDE00483AA3 /* AudioAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioAnalyzer.h; path = "soul-sifter/AudioAnalyzer.h"; sourceTree = "<group>"; };
 		185A727F166AE69B00D14E96 /* RESetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESetting.cpp; sourceTree = "<group>"; };
 		185A7280166AE69B00D14E96 /* RESetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESetting.h; sourceTree = "<group>"; };
 		185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigSettingsHandler.cpp; sourceTree = "<group>"; };
@@ -416,6 +419,16 @@
 			name = "Styles Tree";
 			sourceTree = "<group>";
 		};
+		187D0B44182F39F100783D7B /* Detection */ = {
+			isa = PBXGroup;
+			children = (
+				184A0E8D1836FEDE00483AA3 /* AudioAnalyzer.cpp */,
+				184A0E8E1836FEDE00483AA3 /* AudioAnalyzer.h */,
+			);
+			name = Detection;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		188E1B25164E1968004754F4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -517,6 +530,7 @@
 		189D22D0153D4F190043634A /* soul-sifter */ = {
 			isa = PBXGroup;
 			children = (
+				187D0B44182F39F100783D7B /* Detection */,
 				188E1B291650B073004754F4 /* Persistence */,
 				188E1B25164E1968004754F4 /* Model */,
 				182DC5F31605133500AA9011 /* LineReader (to package) */,
@@ -723,6 +737,7 @@
 				188E1B1A1648EAA1004754F4 /* RapidEvolutionDatabaseMixoutsHandler.cpp in Sources */,
 				188E1B1D1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.cpp in Sources */,
 				188E1B201648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp in Sources */,
+				184A0E8F1836FEDE00483AA3 /* AudioAnalyzer.cpp in Sources */,
 				188E1B28164E198C004754F4 /* Style.cpp in Sources */,
 				188E1B2C1650B250004754F4 /* MysqlAccess.cpp in Sources */,
 				18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */,

@@ -11,6 +11,7 @@
 #include "Album.h"
 #include "AlbumPart.h"
 #import "ArchiveUtil.h"
+#include "AudioAnalyzer.h"
 #include "BasicGenre.h"
 #import "Constants.h"
 #include "MusicManager.h"
@@ -368,6 +369,12 @@
   }
   
   [self loadNextSong];
+}
+
+- (IBAction)analyzeAudio:(id)sender {
+  NSLog(@"analyzeAudtio");
+  
+  dogatech::soulsifter::AudioAnalyzer::analyzeKey(song);
 }
 
 - (void)setFieldsAndUpdate:(BOOL)update {
