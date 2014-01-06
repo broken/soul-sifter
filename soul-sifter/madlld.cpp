@@ -447,7 +447,7 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
              * facility.
 			 */
 			mad_stream_buffer(&Stream,InputBuffer,ReadSize+Remaining);
-			Stream.error=0;
+			Stream.error=MAD_ERROR_NONE;
 		}
 
 		/* Decode the next MPEG frame. The streams is read from the
