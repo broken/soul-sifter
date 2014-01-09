@@ -46,6 +46,8 @@
 /****************************************************************************
  * Includes																	*
  ****************************************************************************/
+#include "madlld.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -53,7 +55,12 @@
 #include <errno.h>
 #include <math.h> /* for pow() and log10() */
 #include <mad.h>
+extern "C" {
 #include "bstdfile.h"
+}
+#include "Song.h"
+#include <aubio/aubio.h>
+#include "MiniBpm.h"
 
 /* Should we use getopt() for command-line arguments parsing? */
 #if (defined(unix) || defined (__unix__) || defined(__unix) || \
@@ -310,6 +317,7 @@ static void ApplyFilter(struct mad_frame *Frame)
  ****************************************************************************/
 #define INPUT_BUFFER_SIZE	(5*8192)
 #define OUTPUT_BUFFER_SIZE	8192 /* Must be an integer multiple of 4. */
+#define WIN_S 4608 // window size
 static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 {
 	struct mad_stream	Stream;
@@ -317,14 +325,21 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 	struct mad_synth	Synth;
 	mad_timer_t			Timer;
 	unsigned char		InputBuffer[INPUT_BUFFER_SIZE+MAD_BUFFER_GUARD],
-						OutputBuffer[OUTPUT_BUFFER_SIZE],
-						*OutputPtr=OutputBuffer,
+  //				OutputBuffer[OUTPUT_BUFFER_SIZE],
+	//					*OutputPtr=OutputBuffer,
 						*GuardPtr=NULL;
-	const unsigned char	*OutputBufferEnd=OutputBuffer+OUTPUT_BUFFER_SIZE;
+	//const unsigned char	*OutputBufferEnd=OutputBuffer+OUTPUT_BUFFER_SIZE;
 	int					Status=0,
 						i;
 	unsigned long		FrameCount=0;
 	bstdfile_t			*BstdFile;
+  
+  float samples[WIN_S];
+  fvec_t * in = new_fvec (WIN_S); // input vector
+  fvec_t * out = new_fvec (2); // output beat position
+  
+  aubio_tempo_t *tempo = new_aubio_tempo("default", WIN_S, WIN_S/4, 44100);
+  breakfastquay::MiniBPM miniBpm(44100);
 
 	/* First the structures used by libmad must be initialized. */
 	mad_stream_init(&Stream);
@@ -550,36 +565,41 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 		 * are temporarily stored in a buffer that is flushed when
 		 * full.
 		 */
+    int ptr = 0;
 		for(i=0;i<Synth.pcm.length;i++)
 		{
-			signed short	Sample;
+      samples[i] = Synth.pcm.samples[0][i];
+      in->data[ptr] = Synth.pcm.samples[0][i];
+      ptr++;
+      
+			//signed short	Sample;
 
-			/* Left channel */
+			/* Left channel *
 			Sample=MadFixedToSshort(Synth.pcm.samples[0][i]);
 			*(OutputPtr++)=Sample>>8;
 			*(OutputPtr++)=Sample&0xff;
 
 			/* Right channel. If the decoded stream is monophonic then
 			 * the right output channel is the same as the left one.
-			 */
+			 *
 			if(MAD_NCHANNELS(&Frame.header)==2)
 				Sample=MadFixedToSshort(Synth.pcm.samples[1][i]);
 			*(OutputPtr++)=Sample>>8;
 			*(OutputPtr++)=Sample&0xff;
 
 			/* Flush the output buffer if it is full. */
-			if(OutputPtr==OutputBufferEnd)
+			if(ptr == WIN_S/4)
 			{
-				if(fwrite(OutputBuffer,1,OUTPUT_BUFFER_SIZE,OutputFp)!=OUTPUT_BUFFER_SIZE)
-				{
-					fprintf(stderr,"%s: PCM write error (%s).\n",
-							ProgName,strerror(errno));
-					Status=2;
-					break;
-				}
-				OutputPtr=OutputBuffer;
+        aubio_tempo_do(tempo, in, out);
+        printf("beat at %.3fms, %.3fs, frame %d, %.2fbpm with confidence %.2f\n",
+                aubio_tempo_get_last_ms(tempo), aubio_tempo_get_last_s(tempo),
+                aubio_tempo_get_last(tempo), aubio_tempo_get_bpm(tempo), aubio_tempo_get_confidence(tempo));
+				//OutputPtr=OutputBuffer;
+        ptr = 0;
 			}
 		}
+    miniBpm.process(samples, i);
+    
 	}while(1);
 
 	/* The input file was completely read; the memory allocated by our
@@ -596,7 +616,7 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 
 	/* If the output buffer is not empty and no error occurred during
      * the last write, then flush it.
-	 */
+	 *
 	if(OutputPtr!=OutputBuffer && Status!=2)
 	{
 		size_t	BufferSize=OutputPtr-OutputBuffer;
@@ -607,7 +627,11 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 					ProgName,strerror(errno));
 			Status=2;
 		}
-	}
+	}*/
+  del_aubio_tempo(tempo);
+  del_fvec(in);
+  del_fvec(out);
+  aubio_cleanup();
 
 	/* Accounting report if no error occurred. */
 	if(!Status)
@@ -635,6 +659,12 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 		fprintf(stderr,"%s: %lu frames decoded (%s).\n",
 				ProgName,FrameCount,Buffer);
 	}
+  
+  printf("%.2f bpm MINININININININI", miniBpm.estimateTempo());
+  vector<double> candidates = miniBpm.getTempoCandidates();
+  for (vector<double>::const_iterator it = candidates.begin(); it != candidates.end(); ++it) {
+    printf("%.2f bpm candidate", *it);
+  }
 
 	/* That's the end of the world (in the H. G. Wells way). */
 	return(Status);
@@ -674,130 +704,12 @@ static void PrintUsage(void)
  * old getopt() method, other system are offered a really primitive options	*
  * interface.																*
  ****************************************************************************/
-static int ParseArgs(int argc, char * const argv[])
+static int ParseArgs()
 {
 	int				DoPhoneFilter=0,
-					i;
-	double			AmpFactor;
+  i;
 	mad_fixed_t		Amp=MAD_F_ONE;
-
-#ifdef HAVE_GETOPT /* This version is for Unix systems. */
-	int				Option;
-
-	/* Parse the command line. */
-	while((Option=getopt(argc,argv,"a:p"))!=-1)
-		switch(Option)
-		{
-			/* {5} Set the amplification/attenuation factor, expressed
-			 * in dB.
-			 */
-			case 'a':
-				/* If the current linear amplification factor is not
-				 * one (MAD_F_ONE) then is was already set. Setting it
-				 * again is not permitted.
-				 */
-				if(Amp!=MAD_F_ONE)
-				{
-					fprintf(stderr,"%s: the amplification/attenuation factor "
-							"was set several times.\n",ProgName);
-					return(1);
-				}
-
-				/* The decibel value is converted to a linear factor.
-				 * That factor is checked against the maximum value
-				 * that can be stored in a mad_fixed_t. The upper
-				 * bound is MAD_F_MAX, it is converted to a double
-				 * value with mad_f_todouble() for comparison.
-				 */
-				AmpFactor=pow(10.,atof(optarg)/20);
-				if(AmpFactor>mad_f_todouble(MAD_F_MAX))
-				{
-					fprintf(stderr,"%s: amplification out of range.\n",
-							ProgName);
-					return(1);
-				}
-
-				/* Eventually the amplification factor is converted
-				 * from double to fixed point with mad_f_tofixed().
-				 */
-				Amp=mad_f_tofixed(AmpFactor);
-				break;
-
-			/* {6} The output is filtered through a telephone wire. */
-			case 'p':
-				/* Only one occurrence of the option is permitted. */
-				if(DoPhoneFilter)
-				{
-					fprintf(stderr,"%s: the phone-line simulation option "
-							"was already set.\n",ProgName);
-					return(1);
-				}
-
-				/* The output will be filtered through a band-pass
-				 * filter simulating a phone line transmission.
-				 */
-				DoPhoneFilter=1;
-				break;
-
-			/* Print usage guide for invalid options. */
-			case '?':
-			default:
-				PrintUsage();
-				return(1);
-		}
-#else /* HAVE_GETOPT */ /* This other version is for non-Unix systems. */
-	/* Scan all command-line arguments. */
-	for(i=1;i<argc;i++)
-	{
-		/* Set the amplification factor if the current argument looks
-		 * like a number. Look at the comment of the case marked {5}
-		 * in the Unix section for details.
-		 */
-		if(*argv[i]=='+' || *argv[i]=='-' || isdigit(*argv[i]))
-		{
-			if(Amp!=MAD_F_ONE)
-			{
-				fprintf(stderr,"%s: the amplification/attenuation factor "
-						"was set several times.\n",ProgName);
-				return(1);
-			}
-
-			AmpFactor=pow(10.,atof(argv[i])/20);
-			if(AmpFactor>mad_f_todouble(MAD_F_MAX))
-			{
-				fprintf(stderr,"%s: amplification out of range.\n",
-						ProgName);
-				return(1);
-			}
-
-			Amp=mad_f_tofixed(AmpFactor);
-		}
-		else
-			/* Use the phone-like filter if the argument is the *
-			 * 'phone' string. Look at the comment of the case marked
-			 * {6} in the Unix section for details.
-			 */
-			if(strcmp(argv[i],"phone")==0)
-			{
-				if(DoPhoneFilter)
-				{
-					fprintf(stderr,"%s: the phone-line simulation option "
-							"was already set.\n",ProgName);
-					return(1);
-				}
-				DoPhoneFilter=1;
-			}
-			else
-			{
-				/* The argument is not a recognized one. Print the
-				 * usage guidelines and stop there.
-				 */
-				PrintUsage();
-				return(1);
-			}
-	}
-#endif /* HAVE_GETOPT */
-
+  
 	/* Initialize the subband-domain filter coefficients to one if
 	 * filtering is requested.
 	 */
@@ -836,28 +748,27 @@ static int ParseArgs(int argc, char * const argv[])
 /****************************************************************************
  * Program entry point.														*
  ****************************************************************************/
-int main(int argc, char *argv[])
+int detectBpm(dogatech::soulsifter::Song* song)
 {
-	char	*cptr;
 	int		Status;
-
+  
 	/* Keep this for error messages. */
-	cptr=strrchr(argv[0],'/');
-	if(cptr==NULL)
-		ProgName=argv[0];
-	else
-		ProgName=cptr+1;
-
+	ProgName="madlld";
+  
 	/* The command-line arguments are analyzed. */
-	if(ParseArgs(argc,argv))
+	if(ParseArgs())
 		return(1);
-
-	/* Decode stdin to stdout. */
-	Status=MpegAudioDecoder(stdin,stdout);
+  char* outfile = "/tmp/tmp.wav";
+	/* Decode song file. */
+  FILE *inputFile = fopen(song->getFilepath().c_str(), "r");
+  if (inputFile == NULL) perror ("Error opening file");
+  FILE *outputFile = fopen(outfile, "w+");
+	Status=MpegAudioDecoder(inputFile, outputFile);
 	if(Status)
 		fprintf(stderr,"%s: an error occurred during decoding.\n",ProgName);
-
-	/* All done. */
+  fclose(inputFile);
+  fclose(outputFile);
+  
 	return(Status);
 }
 
