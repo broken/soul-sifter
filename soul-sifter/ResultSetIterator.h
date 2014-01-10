@@ -9,7 +9,7 @@
 #ifndef soul_sifter_DTResultSet_h
 #define soul_sifter_DTResultSet_h
 
-#include <vector.h>
+#include <vector>
 
 #include <cppconn/prepared_statement.h>
 #include <cppconn/resultset.h>
