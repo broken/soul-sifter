@@ -59,7 +59,6 @@ extern "C" {
 #include "bstdfile.h"
 }
 #include "Song.h"
-#include <aubio/aubio.h>
 #include "MiniBpm.h"
 
 /* Should we use getopt() for command-line arguments parsing? */
@@ -318,7 +317,7 @@ static void ApplyFilter(struct mad_frame *Frame)
 #define INPUT_BUFFER_SIZE	(5*8192)
 #define OUTPUT_BUFFER_SIZE	8192 /* Must be an integer multiple of 4. */
 #define WIN_S 4608 // window size
-static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
+static int MpegAudioDecoder(FILE *InputFp, ProcessSampleCallback processSampleCallback)
 {
 	struct mad_stream	Stream;
 	struct mad_frame	Frame;
@@ -335,11 +334,6 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 	bstdfile_t			*BstdFile;
   
   float samples[WIN_S];
-  fvec_t * in = new_fvec (WIN_S); // input vector
-  fvec_t * out = new_fvec (2); // output beat position
-  
-  aubio_tempo_t *tempo = new_aubio_tempo("default", WIN_S, WIN_S/4, 44100);
-  breakfastquay::MiniBPM miniBpm(44100);
 
 	/* First the structures used by libmad must be initialized. */
 	mad_stream_init(&Stream);
@@ -565,12 +559,9 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 		 * are temporarily stored in a buffer that is flushed when
 		 * full.
 		 */
-    int ptr = 0;
 		for(i=0;i<Synth.pcm.length;i++)
 		{
       samples[i] = Synth.pcm.samples[0][i];
-      in->data[ptr] = Synth.pcm.samples[0][i];
-      ptr++;
       
 			//signed short	Sample;
 
@@ -588,17 +579,8 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 			*(OutputPtr++)=Sample&0xff;
 
 			/* Flush the output buffer if it is full. */
-			if(ptr == WIN_S/4)
-			{
-        aubio_tempo_do(tempo, in, out);
-        printf("beat at %.3fms, %.3fs, frame %d, %.2fbpm with confidence %.2f\n",
-                aubio_tempo_get_last_ms(tempo), aubio_tempo_get_last_s(tempo),
-                aubio_tempo_get_last(tempo), aubio_tempo_get_bpm(tempo), aubio_tempo_get_confidence(tempo));
-				//OutputPtr=OutputBuffer;
-        ptr = 0;
-			}
 		}
-    miniBpm.process(samples, i);
+    processSampleCallback(samples, i);
     
 	}while(1);
 
@@ -628,10 +610,6 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 			Status=2;
 		}
 	}*/
-  del_aubio_tempo(tempo);
-  del_fvec(in);
-  del_fvec(out);
-  aubio_cleanup();
 
 	/* Accounting report if no error occurred. */
 	if(!Status)
@@ -659,12 +637,6 @@ static int MpegAudioDecoder(FILE *InputFp, FILE *OutputFp)
 		fprintf(stderr,"%s: %lu frames decoded (%s).\n",
 				ProgName,FrameCount,Buffer);
 	}
-  
-  printf("%.2f bpm MINININININININI", miniBpm.estimateTempo());
-  vector<double> candidates = miniBpm.getTempoCandidates();
-  for (vector<double>::const_iterator it = candidates.begin(); it != candidates.end(); ++it) {
-    printf("%.2f bpm candidate", *it);
-  }
 
 	/* That's the end of the world (in the H. G. Wells way). */
 	return(Status);
@@ -748,8 +720,9 @@ static int ParseArgs()
 /****************************************************************************
  * Program entry point.														*
  ****************************************************************************/
-int detectBpm(dogatech::soulsifter::Song* song)
+int detectBpm(const char* filepath, ProcessSampleCallback processSampleCallback)
 {
+  printf("detect bpm!");
 	int		Status;
   
 	/* Keep this for error messages. */
@@ -758,16 +731,13 @@ int detectBpm(dogatech::soulsifter::Song* song)
 	/* The command-line arguments are analyzed. */
 	if(ParseArgs())
 		return(1);
-  char* outfile = "/tmp/tmp.wav";
-	/* Decode song file. */
-  FILE *inputFile = fopen(song->getFilepath().c_str(), "r");
+  /* Decode song file. */
+  FILE *inputFile = fopen(filepath, "r");
   if (inputFile == NULL) perror ("Error opening file");
-  FILE *outputFile = fopen(outfile, "w+");
-	Status=MpegAudioDecoder(inputFile, outputFile);
+	Status=MpegAudioDecoder(inputFile, processSampleCallback);
 	if(Status)
 		fprintf(stderr,"%s: an error occurred during decoding.\n",ProgName);
   fclose(inputFile);
-  fclose(outputFile);
   
 	return(Status);
 }

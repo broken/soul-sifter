@@ -41,7 +41,8 @@
     IBOutlet NSTextField *releaseDateDay;
     IBOutlet NSButton *mixed;
     IBOutlet NSOutlineView *styles;
-    
+    IBOutlet NSTextField *bpm;
+  
     IBOutlet NSTextField *artistTag;
     IBOutlet NSTextField *trackNumTag;
     IBOutlet NSTextField *titleTag;
@@ -50,8 +51,8 @@
     IBOutlet NSTextField *albumArtistTag;
     IBOutlet NSTextField *albumTag;
   
-  IBOutlet NSTextField *bpmTag;
-  IBOutlet NSTextField *keyTag;
+  IBOutlet NSTextField *bpmAnalyzed;
+  IBOutlet NSTextField *keyAnalyzed;
   
   IBOutlet NSImageView *imageView;
 }
@@ -62,7 +63,6 @@
 - (IBAction)skipMusicFile:(id)sender;
 - (IBAction)trashMusicFile:(id)sender;
 - (IBAction)switchCover:(id)sender;
-- (IBAction)analyzeAudio:(id)sender;
 
 @property(readwrite,retain,nonatomic) NSArray *fileUrls;
 @property(readwrite,retain,nonatomic) NSArray *filesToTrash;
@@ -87,6 +87,7 @@
 @property(readwrite,retain) NSTextField *releaseDateDay;
 @property(readwrite,retain) NSButton *mixed;
 @property(readwrite,retain) NSOutlineView *styles;
+@property(readwrite,retain,nonatomic) NSTextField *bpm;
 
 @property(readwrite,retain,nonatomic) NSTextField *artistTag;
 @property(readwrite,retain,nonatomic) NSTextField *trackNumTag;
@@ -96,8 +97,8 @@
 @property(readwrite,retain,nonatomic) NSTextField *albumArtistTag;
 @property(readwrite,retain,nonatomic) NSTextField *albumTag;
 
-@property(readwrite,retain,nonatomic) NSTextField *bpmTag;
-@property(readwrite,retain,nonatomic) NSTextField *keyTag;
+@property(readwrite,retain,nonatomic) NSTextField *bpmAnalyzed;
+@property(readwrite,retain,nonatomic) NSTextField *keyAnalyzed;
 
 @property(readwrite,retain,nonatomic) NSImageView *imageView;
 

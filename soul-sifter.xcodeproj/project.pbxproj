@@ -23,12 +23,12 @@
 		1816964B154CD8E000593FEC /* TagInfoController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1816964A154CD8E000593FEC /* TagInfoController.mm */; };
 		18169651154D06EB00593FEC /* MusicManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18169650154D06EB00593FEC /* MusicManager.cpp */; };
 		1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1816965E154D4A2700593FEC /* LowerCaseFormatter.m */; };
-		181E3C841826597600BCC0AC /* libtag.1.14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */; };
 		182DC5F01605132A00AA9011 /* FileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5ED1605132A00AA9011 /* FileReader.m */; };
 		182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 182DC5EF1605132A00AA9011 /* NSDataExtensions.m */; };
 		18322B7D18276497006E9BE3 /* Collection.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18322B7C18276497006E9BE3 /* Collection.xib */; };
 		1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1834E3B216689EBC00E4A761 /* RESong.cpp */; };
-		184A0E8F1836FEDE00483AA3 /* AudioAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 184A0E8D1836FEDE00483AA3 /* AudioAnalyzer.cpp */; };
+		184B475D187EB32F00ECD5D7 /* libtag.1.14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */; };
+		184B475F187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */; };
 		185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A727F166AE69B00D14E96 /* RESetting.cpp */; };
 		185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */; };
 		185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7285166AF8D200D14E96 /* DTCopyHandler.cpp */; };
@@ -55,7 +55,6 @@
 		188E1B1A1648EAA1004754F4 /* RapidEvolutionDatabaseMixoutsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B181648EAA1004754F4 /* RapidEvolutionDatabaseMixoutsHandler.cpp */; };
 		188E1B1D1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B1B1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.cpp */; };
 		188E1B201648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B1E1648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp */; };
-		188E1B221648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 188E1B211648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib */; };
 		188E1B241648FADB004754F4 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 188E1B231648FADB004754F4 /* libmysqlclient.18.dylib */; };
 		188E1B28164E198C004754F4 /* Style.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B26164E198C004754F4 /* Style.cpp */; };
 		188E1B2C1650B250004754F4 /* MysqlAccess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 188E1B2A1650B250004754F4 /* MysqlAccess.cpp */; };
@@ -89,8 +88,14 @@
 		18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BB611A16ACA53C009495A9 /* libboost_system-mt.dylib */; };
 		18C41F831709B5AF00B23738 /* CollectionController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C41F821709B5AF00B23738 /* CollectionController.mm */; };
 		18C41F861709C1F200B23738 /* SongWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C41F851709C1F200B23738 /* SongWrapper.mm */; };
+		18C4B698187E7B6D004AE27A /* AudioAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18C4B696187E7B6D004AE27A /* AudioAnalyzer.cpp */; };
 		18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9DA166189A800912FD3 /* ArchiveUtil.m */; };
 		18C5F9E31661978400912FD3 /* NSString+MD5.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18C5F9E21661978400912FD3 /* NSString+MD5.mm */; };
+		18CD9FB7187A18F900AD2DCF /* libmad.0.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 182C38A91832095F00F9DE04 /* libmad.0.2.1.dylib */; };
+		18CD9FC2187A373A00AD2DCF /* bstdfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 18CD9FBD187A373A00AD2DCF /* bstdfile.c */; };
+		18CD9FC3187A373A00AD2DCF /* madlld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18CD9FBF187A373A00AD2DCF /* madlld.cpp */; };
+		18CD9FC4187A373A00AD2DCF /* SongAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18CD9FC0187A373A00AD2DCF /* SongAnalyzer.cpp */; };
+		18D130C8187BEBA9002AB582 /* MiniBpm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18D130C6187BEBA9002AB582 /* MiniBpm.cpp */; };
 		18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FB7CAB15572F0000BEF750 /* PathButton.m */; };
 /* End PBXBuildFile section */
 
@@ -138,14 +143,15 @@
 		1816965D154D4A2700593FEC /* LowerCaseFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LowerCaseFormatter.h; sourceTree = "<group>"; };
 		1816965E154D4A2700593FEC /* LowerCaseFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LowerCaseFormatter.m; sourceTree = "<group>"; };
 		181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtag.1.14.0.dylib; path = ../../../../../../../usr/local/Cellar/taglib/1.9.1/lib/libtag.1.14.0.dylib; sourceTree = "<group>"; };
+		182C38741830A79E00F9DE04 /* libmp3lame.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmp3lame.0.dylib; path = ../../../../../../../usr/local/Cellar/lame/3.99.5/lib/libmp3lame.0.dylib; sourceTree = "<group>"; };
+		182C38A91832095F00F9DE04 /* libmad.0.2.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmad.0.2.1.dylib; path = ../../../../../../../usr/local/Cellar/mad/0.15.1b/lib/libmad.0.2.1.dylib; sourceTree = "<group>"; };
 		182DC5EC1605132A00AA9011 /* FileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileReader.h; sourceTree = "<group>"; };
 		182DC5ED1605132A00AA9011 /* FileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileReader.m; sourceTree = "<group>"; };
 		182DC5EE1605132A00AA9011 /* NSDataExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataExtensions.h; sourceTree = "<group>"; };
 		182DC5EF1605132A00AA9011 /* NSDataExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataExtensions.m; sourceTree = "<group>"; };
 		18322B7C18276497006E9BE3 /* Collection.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Collection.xib; sourceTree = "<group>"; };
 		1834E3B216689EBC00E4A761 /* RESong.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESong.cpp; sourceTree = "<group>"; };
-		184A0E8D1836FEDE00483AA3 /* AudioAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioAnalyzer.cpp; path = "soul-sifter/AudioAnalyzer.cpp"; sourceTree = "<group>"; };
-		184A0E8E1836FEDE00483AA3 /* AudioAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioAnalyzer.h; path = "soul-sifter/AudioAnalyzer.h"; sourceTree = "<group>"; };
+		184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlcppconn.7.1.1.3.dylib; path = "../../../../../../../usr/local/Cellar/mysql-connector-c++/1.1.3/lib/libmysqlcppconn.7.1.1.3.dylib"; sourceTree = "<group>"; };
 		185A727F166AE69B00D14E96 /* RESetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESetting.cpp; sourceTree = "<group>"; };
 		185A7280166AE69B00D14E96 /* RESetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESetting.h; sourceTree = "<group>"; };
 		185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigSettingsHandler.cpp; sourceTree = "<group>"; };
@@ -255,10 +261,20 @@
 		18C41F821709B5AF00B23738 /* CollectionController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CollectionController.mm; sourceTree = "<group>"; };
 		18C41F841709C1F200B23738 /* SongWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongWrapper.h; sourceTree = "<group>"; };
 		18C41F851709C1F200B23738 /* SongWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SongWrapper.mm; sourceTree = "<group>"; };
+		18C4B696187E7B6D004AE27A /* AudioAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioAnalyzer.cpp; path = "soul-sifter/AudioAnalyzer.cpp"; sourceTree = "<group>"; };
+		18C4B697187E7B6D004AE27A /* AudioAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioAnalyzer.h; path = "soul-sifter/AudioAnalyzer.h"; sourceTree = "<group>"; };
 		18C5F9D9166189A800912FD3 /* ArchiveUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiveUtil.h; sourceTree = "<group>"; };
 		18C5F9DA166189A800912FD3 /* ArchiveUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiveUtil.m; sourceTree = "<group>"; };
 		18C5F9E11661978400912FD3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
 		18C5F9E21661978400912FD3 /* NSString+MD5.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+MD5.mm"; sourceTree = "<group>"; };
+		18CD9FBD187A373A00AD2DCF /* bstdfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bstdfile.c; path = "soul-sifter/bstdfile.c"; sourceTree = "<group>"; };
+		18CD9FBE187A373A00AD2DCF /* bstdfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bstdfile.h; path = "soul-sifter/bstdfile.h"; sourceTree = "<group>"; };
+		18CD9FBF187A373A00AD2DCF /* madlld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = madlld.cpp; path = "soul-sifter/madlld.cpp"; sourceTree = "<group>"; };
+		18CD9FC0187A373A00AD2DCF /* SongAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SongAnalyzer.cpp; path = "soul-sifter/SongAnalyzer.cpp"; sourceTree = "<group>"; };
+		18CD9FC1187A373A00AD2DCF /* SongAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongAnalyzer.h; path = "soul-sifter/SongAnalyzer.h"; sourceTree = "<group>"; };
+		18CD9FC5187A38AA00AD2DCF /* madlld.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = madlld.h; path = "soul-sifter/madlld.h"; sourceTree = "<group>"; };
+		18D130C6187BEBA9002AB582 /* MiniBpm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MiniBpm.cpp; path = "soul-sifter/MiniBpm.cpp"; sourceTree = "<group>"; };
+		18D130C7187BEBA9002AB582 /* MiniBpm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniBpm.h; path = "soul-sifter/MiniBpm.h"; sourceTree = "<group>"; };
 		18D7D3271675D5D80043146B /* libboost_date_time-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_date_time-mt.dylib"; path = "../../../../../../../usr/local/Cellar/boost/1.51.0/lib/libboost_date_time-mt.dylib"; sourceTree = "<group>"; };
 		18FB7CAA15572F0000BEF750 /* PathButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathButton.h; sourceTree = "<group>"; };
 		18FB7CAB15572F0000BEF750 /* PathButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathButton.m; sourceTree = "<group>"; };
@@ -269,14 +285,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				181E3C841826597600BCC0AC /* libtag.1.14.0.dylib in Frameworks */,
+				184B475F187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib in Frameworks */,
+				184B475D187EB32F00ECD5D7 /* libtag.1.14.0.dylib in Frameworks */,
+				18CD9FB7187A18F900AD2DCF /* libmad.0.2.1.dylib in Frameworks */,
 				1884FAFC16F6E8BA00CFD5AC /* libboost_regex-mt.dylib in Frameworks */,
 				18BB611B16ACA53C009495A9 /* libboost_date_time-mt.dylib in Frameworks */,
 				18BB611C16ACA53C009495A9 /* libboost_system-mt.dylib in Frameworks */,
 				18BB611816ACA508009495A9 /* libboost_filesystem-mt.dylib in Frameworks */,
 				18BB611616ACA187009495A9 /* libxerces-c-3.1.dylib in Frameworks */,
 				188E1B241648FADB004754F4 /* libmysqlclient.18.dylib in Frameworks */,
-				188E1B221648FA50004754F4 /* libmysqlcppconn.5.1.1.0.dylib in Frameworks */,
 				189D22CB153D4F190043634A /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,8 +439,16 @@
 		187D0B44182F39F100783D7B /* Detection */ = {
 			isa = PBXGroup;
 			children = (
-				184A0E8D1836FEDE00483AA3 /* AudioAnalyzer.cpp */,
-				184A0E8E1836FEDE00483AA3 /* AudioAnalyzer.h */,
+				18C4B696187E7B6D004AE27A /* AudioAnalyzer.cpp */,
+				18C4B697187E7B6D004AE27A /* AudioAnalyzer.h */,
+				18D130C6187BEBA9002AB582 /* MiniBpm.cpp */,
+				18D130C7187BEBA9002AB582 /* MiniBpm.h */,
+				18CD9FBD187A373A00AD2DCF /* bstdfile.c */,
+				18CD9FBE187A373A00AD2DCF /* bstdfile.h */,
+				18CD9FBF187A373A00AD2DCF /* madlld.cpp */,
+				18CD9FC5187A38AA00AD2DCF /* madlld.h */,
+				18CD9FC0187A373A00AD2DCF /* SongAnalyzer.cpp */,
+				18CD9FC1187A373A00AD2DCF /* SongAnalyzer.h */,
 			);
 			name = Detection;
 			path = ..;
@@ -509,6 +534,9 @@
 		189D22C9153D4F190043634A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */,
+				182C38A91832095F00F9DE04 /* libmad.0.2.1.dylib */,
+				182C38741830A79E00F9DE04 /* libmp3lame.0.dylib */,
 				181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */,
 				189D22CA153D4F190043634A /* Cocoa.framework */,
 				189D22E8153D4F190043634A /* SenTestingKit.framework */,
@@ -646,7 +674,7 @@
 		189D22BD153D4F190043634A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = 189D22C0153D4F190043634A /* Build configuration list for PBXProject "soul-sifter" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -717,14 +745,17 @@
 				189D22DE153D4F190043634A /* AppDelegate.mm in Sources */,
 				18169643154CADFB00593FEC /* AppController.mm in Sources */,
 				18169648154CB7D200593FEC /* DropBox.m in Sources */,
+				18D130C8187BEBA9002AB582 /* MiniBpm.cpp in Sources */,
 				1816964B154CD8E000593FEC /* TagInfoController.mm in Sources */,
 				18169651154D06EB00593FEC /* MusicManager.cpp in Sources */,
 				1816965F154D4A2700593FEC /* LowerCaseFormatter.m in Sources */,
 				18144CA1154DC6AD009C36EE /* PreferencesController.mm in Sources */,
 				18144CA4154DCA31009C36EE /* Constants.m in Sources */,
 				18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */,
+				18CD9FC3187A373A00AD2DCF /* madlld.cpp in Sources */,
 				182DC5F01605132A00AA9011 /* FileReader.m in Sources */,
 				182DC5F11605132A00AA9011 /* NSDataExtensions.m in Sources */,
+				18CD9FC2187A373A00AD2DCF /* bstdfile.c in Sources */,
 				18028C401647870A00938259 /* RapidEvolutionMusicDatabaseReader.cpp in Sources */,
 				18028C471647A55800938259 /* RapidEvolutionDatabaseHandler.cpp in Sources */,
 				18028C4A1647B66F00938259 /* RapidEvolutionDatabaseSongsHandler.cpp in Sources */,
@@ -737,7 +768,6 @@
 				188E1B1A1648EAA1004754F4 /* RapidEvolutionDatabaseMixoutsHandler.cpp in Sources */,
 				188E1B1D1648EB1D004754F4 /* RapidEvolutionDatabaseAlbumcoversHandler.cpp in Sources */,
 				188E1B201648ECBE004754F4 /* RapidEvolutionDatabaseStylesStyleHandler.cpp in Sources */,
-				184A0E8F1836FEDE00483AA3 /* AudioAnalyzer.cpp in Sources */,
 				188E1B28164E198C004754F4 /* Style.cpp in Sources */,
 				188E1B2C1650B250004754F4 /* MysqlAccess.cpp in Sources */,
 				18C5F9DB166189A800912FD3 /* ArchiveUtil.m in Sources */,
@@ -749,6 +779,7 @@
 				1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */,
 				185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */,
 				185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */,
+				18CD9FC4187A373A00AD2DCF /* SongAnalyzer.cpp in Sources */,
 				185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */,
 				185A728A166B005800D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp in Sources */,
 				185A728D166B048600D14E96 /* REXml.cpp in Sources */,
@@ -760,6 +791,7 @@
 				185A72A2166CA89D00D14E96 /* RapidEvolutionDatabaseMixoutsMixoutHandler.cpp in Sources */,
 				185A72B2166FECE300D14E96 /* DTXMLWriter.cpp in Sources */,
 				185A72B516755C4600D14E96 /* Album.cpp in Sources */,
+				18C4B698187E7B6D004AE27A /* AudioAnalyzer.cpp in Sources */,
 				185CFC3A167EE52F006FB8AF /* StylesViewController.m in Sources */,
 				185CFC3E167EE75F006FB8AF /* StylesTreeDataSource.mm in Sources */,
 				185CFC42167EEC97006FB8AF /* StyleTreeItem.mm in Sources */,
@@ -838,15 +870,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -855,13 +888,15 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -871,24 +906,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -913,9 +951,12 @@
 					/usr/local/Cellar/boost/1.52.0/lib,
 					/usr/local/Cellar/taglib/1.8/lib,
 					/usr/local/Cellar/taglib/1.9.1/lib,
+					/usr/local/Cellar/lame/3.99.5/lib,
+					/usr/local/Cellar/mad/0.15.1b/lib,
+					"/usr/local/Cellar/mysql-connector-c++/1.1.3/lib",
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -941,9 +982,12 @@
 					/usr/local/Cellar/boost/1.52.0/lib,
 					/usr/local/Cellar/taglib/1.8/lib,
 					/usr/local/Cellar/taglib/1.9.1/lib,
+					/usr/local/Cellar/lame/3.99.5/lib,
+					/usr/local/Cellar/mad/0.15.1b/lib,
+					"/usr/local/Cellar/mysql-connector-c++/1.1.3/lib",
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

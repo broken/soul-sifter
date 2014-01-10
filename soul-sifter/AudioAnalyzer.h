@@ -15,9 +15,15 @@ namespace dogatech {
     
     class Song;
     
+    struct Bpms {
+      float candidate[3];
+    };
+    
     class AudioAnalyzer {
     public:
       static void analyzeKey(Song* song);
+      
+      static const Bpms* analyzeBpm(Song* song);
     };
     
   }

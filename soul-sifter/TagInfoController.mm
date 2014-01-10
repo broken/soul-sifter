@@ -371,12 +371,6 @@
   [self loadNextSong];
 }
 
-- (IBAction)analyzeAudio:(id)sender {
-  NSLog(@"analyzeAudtio");
-  
-  dogatech::soulsifter::AudioAnalyzer::analyzeKey(song);
-}
-
 - (void)setFieldsAndUpdate:(BOOL)update {
     dogatech::soulsifter::Song *updatedSong = update ? dogatech::soulsifter::MusicManager::getInstance().updateSongWithChanges(*song) : song;
     [artist setStringValue:[NSString stringWithUTF8String:updatedSong->getArtist().c_str()]];
@@ -393,7 +387,8 @@
     [releaseDateMonth setStringValue:[NSString stringWithFormat:@"%i",updatedSong->getAlbum()->getReleaseDateMonth()]];
     [releaseDateDay setStringValue:[NSString stringWithFormat:@"%i",updatedSong->getAlbum()->getReleaseDateDay()]];
     [mixed setState:(updatedSong->getAlbum()->getMixed()) ? NSOnState : NSOffState];
-    
+    [bpm setStringValue:[NSString stringWithUTF8String:updatedSong->getBpm().c_str()]];
+  
     const dogatech::soulsifter::BasicGenre* basicGenre = updatedSong->getAlbum()->getBasicGenre();
     if (!basicGenre) basicGenre = dogatech::soulsifter::MusicManager::getInstance().findBasicGenreForArtist(updatedSong->getArtist());
     if (basicGenre) [genreComboBox setStringValue:[NSString stringWithUTF8String:basicGenre->getName().c_str()]];
@@ -434,7 +429,12 @@
     }
   
   [filePath setStringValue:[NSString stringWithUTF8String:updatedSong->getFilepath().substr(updatedSong->getFilepath().rfind('/') + 1).c_str()]];
-    
+  
+  // TODO do this in a different thread and have it update the UI when finished
+  const dogatech::soulsifter::Bpms *bpms = dogatech::soulsifter::AudioAnalyzer::analyzeBpm(updatedSong);
+  if (!updatedSong->getBpm().empty()) [bpm setStringValue:[NSString stringWithFormat:@"%.2f",bpms->candidate[0]]];
+  [bpmAnalyzed setStringValue:[NSString stringWithFormat:@"%.2f, %.2f, %.2f",bpms->candidate[0],bpms->candidate[1],bpms->candidate[2]]];
+  
   delete basicGenre;
   //if (update) delete updatedSong;
 }
@@ -464,6 +464,7 @@
 @synthesize releaseDateDay;
 @synthesize mixed;
 @synthesize styles;
+@synthesize bpm;
 
 @synthesize artistTag;
 @synthesize trackNumTag;
@@ -472,6 +473,9 @@
 @synthesize commentsTag;
 @synthesize albumArtistTag;
 @synthesize albumTag;
+
+@synthesize bpmAnalyzed;
+@synthesize keyAnalyzed;
 
 @synthesize imageView;
 
