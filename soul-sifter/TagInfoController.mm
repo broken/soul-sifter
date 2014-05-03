@@ -233,6 +233,7 @@
     song->setRemixer([[remixer stringValue] UTF8String]);
     song->setComments([[comments stringValue] UTF8String]);
     song->setRating([rating intValue]);
+    song->setBpm([[bpm stringValue] UTF8String]);
     songAlbum->setArtist([[albumArtist stringValue] UTF8String]);
     songAlbum->setName([[album stringValue] UTF8String]);
     songAlbum->setLabel([[label stringValue] UTF8String]);
@@ -434,6 +435,7 @@
   const dogatech::soulsifter::Bpms *bpms = dogatech::soulsifter::AudioAnalyzer::analyzeBpm(updatedSong);
   if (!updatedSong->getBpm().empty()) [bpm setStringValue:[NSString stringWithFormat:@"%.2f",bpms->candidate[0]]];
   [bpmAnalyzed setStringValue:[NSString stringWithFormat:@"%.2f, %.2f, %.2f",bpms->candidate[0],bpms->candidate[1],bpms->candidate[2]]];
+  delete[] bpms;
   
   delete basicGenre;
   //if (update) delete updatedSong;

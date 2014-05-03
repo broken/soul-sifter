@@ -133,4 +133,17 @@
     [pool release];
 }
 
+- (IBAction)analyzeSong:(dogatech::soulsifter::Song *)song {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  NSLog(@"analyzeSong");
+  tagWriter = new dogatech::soulsifter::TagWriter();
+  [self startProgressBar:self];
+  [[self window] setTitle:@"Writing tags to music files"];
+  tagWriter->writeAll();
+  delete tagWriter;
+  tagWriter = NULL;
+  [[self window] close];
+  [pool release];
+}
+
 @end

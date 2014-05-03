@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#include "Song.h"
 #include "RapidEvolutionMusicDatabaseReader.h"
 #include "TagWriter.h"
 
@@ -24,5 +25,7 @@
 - (IBAction)exportToRapidEvolutionDatabase:(id)sender;
 - (IBAction)flushStagingDirectory:(id)sender;
 - (IBAction)writeTags:(id)sender;
+
+- (IBAction)analyzeSong:(dogatech::soulsifter::Song*)song;
 
 @end

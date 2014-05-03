@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include "FilesToAdd.h"
+#include "ImageViewWithFilepath.h"
 #include "Song.h"
 
 @interface TagInfoController : NSWindowController {
@@ -54,7 +55,7 @@
   IBOutlet NSTextField *bpmAnalyzed;
   IBOutlet NSTextField *keyAnalyzed;
   
-  IBOutlet NSImageView *imageView;
+  IBOutlet ImageViewWithFilepath *imageView;
 }
 
 - (void)showWindow:(id)sender withSong:(dogatech::soulsifter::Song *)song;
@@ -100,6 +101,6 @@
 @property(readwrite,retain,nonatomic) NSTextField *bpmAnalyzed;
 @property(readwrite,retain,nonatomic) NSTextField *keyAnalyzed;
 
-@property(readwrite,retain,nonatomic) NSImageView *imageView;
+@property(readwrite,retain,nonatomic) ImageViewWithFilepath *imageView;
 
 @end

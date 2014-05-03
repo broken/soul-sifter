@@ -50,7 +50,7 @@ namespace dogatech {
     }
     
     void AudioAnalyzer::analyzeKey(Song *song) {
-      cout << "& here" << endl;
+      cout << "analyze key" << endl;
     }
     
   }

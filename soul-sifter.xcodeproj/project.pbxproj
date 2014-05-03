@@ -29,6 +29,7 @@
 		1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1834E3B216689EBC00E4A761 /* RESong.cpp */; };
 		184B475D187EB32F00ECD5D7 /* libtag.1.14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */; };
 		184B475F187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */; };
+		184B47621880D4A100ECD5D7 /* ImageViewWithFilepath.m in Sources */ = {isa = PBXBuildFile; fileRef = 184B47611880D4A100ECD5D7 /* ImageViewWithFilepath.m */; };
 		185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A727F166AE69B00D14E96 /* RESetting.cpp */; };
 		185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */; };
 		185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7285166AF8D200D14E96 /* DTCopyHandler.cpp */; };
@@ -94,7 +95,6 @@
 		18CD9FB7187A18F900AD2DCF /* libmad.0.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 182C38A91832095F00F9DE04 /* libmad.0.2.1.dylib */; };
 		18CD9FC2187A373A00AD2DCF /* bstdfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 18CD9FBD187A373A00AD2DCF /* bstdfile.c */; };
 		18CD9FC3187A373A00AD2DCF /* madlld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18CD9FBF187A373A00AD2DCF /* madlld.cpp */; };
-		18CD9FC4187A373A00AD2DCF /* SongAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18CD9FC0187A373A00AD2DCF /* SongAnalyzer.cpp */; };
 		18D130C8187BEBA9002AB582 /* MiniBpm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18D130C6187BEBA9002AB582 /* MiniBpm.cpp */; };
 		18FB7CAC15572F0000BEF750 /* PathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FB7CAB15572F0000BEF750 /* PathButton.m */; };
 /* End PBXBuildFile section */
@@ -152,6 +152,8 @@
 		18322B7C18276497006E9BE3 /* Collection.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Collection.xib; sourceTree = "<group>"; };
 		1834E3B216689EBC00E4A761 /* RESong.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESong.cpp; sourceTree = "<group>"; };
 		184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlcppconn.7.1.1.3.dylib; path = "../../../../../../../usr/local/Cellar/mysql-connector-c++/1.1.3/lib/libmysqlcppconn.7.1.1.3.dylib"; sourceTree = "<group>"; };
+		184B47601880D4A100ECD5D7 /* ImageViewWithFilepath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewWithFilepath.h; sourceTree = "<group>"; };
+		184B47611880D4A100ECD5D7 /* ImageViewWithFilepath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewWithFilepath.m; sourceTree = "<group>"; };
 		185A727F166AE69B00D14E96 /* RESetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESetting.cpp; sourceTree = "<group>"; };
 		185A7280166AE69B00D14E96 /* RESetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESetting.h; sourceTree = "<group>"; };
 		185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigSettingsHandler.cpp; sourceTree = "<group>"; };
@@ -270,8 +272,6 @@
 		18CD9FBD187A373A00AD2DCF /* bstdfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bstdfile.c; path = "soul-sifter/bstdfile.c"; sourceTree = "<group>"; };
 		18CD9FBE187A373A00AD2DCF /* bstdfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bstdfile.h; path = "soul-sifter/bstdfile.h"; sourceTree = "<group>"; };
 		18CD9FBF187A373A00AD2DCF /* madlld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = madlld.cpp; path = "soul-sifter/madlld.cpp"; sourceTree = "<group>"; };
-		18CD9FC0187A373A00AD2DCF /* SongAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SongAnalyzer.cpp; path = "soul-sifter/SongAnalyzer.cpp"; sourceTree = "<group>"; };
-		18CD9FC1187A373A00AD2DCF /* SongAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongAnalyzer.h; path = "soul-sifter/SongAnalyzer.h"; sourceTree = "<group>"; };
 		18CD9FC5187A38AA00AD2DCF /* madlld.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = madlld.h; path = "soul-sifter/madlld.h"; sourceTree = "<group>"; };
 		18D130C6187BEBA9002AB582 /* MiniBpm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MiniBpm.cpp; path = "soul-sifter/MiniBpm.cpp"; sourceTree = "<group>"; };
 		18D130C7187BEBA9002AB582 /* MiniBpm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniBpm.h; path = "soul-sifter/MiniBpm.h"; sourceTree = "<group>"; };
@@ -367,6 +367,8 @@
 				1816965E154D4A2700593FEC /* LowerCaseFormatter.m */,
 				18FB7CAA15572F0000BEF750 /* PathButton.h */,
 				18FB7CAB15572F0000BEF750 /* PathButton.m */,
+				184B47601880D4A100ECD5D7 /* ImageViewWithFilepath.h */,
+				184B47611880D4A100ECD5D7 /* ImageViewWithFilepath.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -447,8 +449,6 @@
 				18CD9FBE187A373A00AD2DCF /* bstdfile.h */,
 				18CD9FBF187A373A00AD2DCF /* madlld.cpp */,
 				18CD9FC5187A38AA00AD2DCF /* madlld.h */,
-				18CD9FC0187A373A00AD2DCF /* SongAnalyzer.cpp */,
-				18CD9FC1187A373A00AD2DCF /* SongAnalyzer.h */,
 			);
 			name = Detection;
 			path = ..;
@@ -779,7 +779,6 @@
 				1834E3B316689EBC00E4A761 /* RESong.cpp in Sources */,
 				185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */,
 				185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */,
-				18CD9FC4187A373A00AD2DCF /* SongAnalyzer.cpp in Sources */,
 				185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */,
 				185A728A166B005800D14E96 /* RapidEvolutionDatabaseConfigColumnsHandler.cpp in Sources */,
 				185A728D166B048600D14E96 /* REXml.cpp in Sources */,
@@ -807,6 +806,7 @@
 				18C41F831709B5AF00B23738 /* CollectionController.mm in Sources */,
 				18C41F861709C1F200B23738 /* SongWrapper.mm in Sources */,
 				1873DDAA171BF48400B0F424 /* NSOutlineView+DTSelection.m in Sources */,
+				184B47621880D4A100ECD5D7 /* ImageViewWithFilepath.m in Sources */,
 				1812225F176EB551004FB69C /* AlbumPart.cpp in Sources */,
 				186CB07217B6CA1600D984CE /* FilesToAdd.cpp in Sources */,
 			);
