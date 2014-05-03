@@ -745,6 +745,7 @@ songFields = [
   ["set<string>", "tonicKeys", 0],
   [:string, "comments", 0],
   [:bool, "trashed", 0],
+  [:bool, "lowQuality", 0],
   [:int, "reSongId", Attrib::KEY2 | Attrib::ID],
   ["RESong", "reSong", Attrib::PTR],
   [:int, "albumId", Attrib::ID],

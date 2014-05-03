@@ -81,6 +81,8 @@ namespace soulsifter {
         void setComments(const string& comments);
         const bool getTrashed() const;
         void setTrashed(bool trashed);
+        const bool getLowQuality() const;
+        void setLowQuality(bool lowQuality);
         const int getRESongId() const;
         void setRESongId(int reSongId);
         RESong* getRESong() const;
@@ -114,6 +116,7 @@ namespace soulsifter {
         set<string> tonicKeys;
         string comments;
         bool trashed;
+        bool lowQuality;
         int reSongId;
         RESong* reSong;
         int albumId;

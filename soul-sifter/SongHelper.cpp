@@ -37,6 +37,7 @@ namespace soulsifter {
     tonicKeys(),
     comments(song->getComments()),
     trashed(!song->getDisabled().compare("yes")),
+    lowQuality(false),
     albumId(0),
     album(NULL),
     albumPartId(0),
