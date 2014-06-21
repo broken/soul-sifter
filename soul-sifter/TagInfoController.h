@@ -42,6 +42,7 @@
     IBOutlet NSTextField *releaseDateDay;
     IBOutlet NSButton *mixed;
     IBOutlet NSButton *lowQuality;
+    IBOutlet NSButton *compilation;
     IBOutlet NSOutlineView *styles;
     IBOutlet NSTextField *bpm;
   
@@ -89,6 +90,7 @@
 @property(readwrite,retain) NSTextField *releaseDateDay;
 @property(readwrite,retain) NSButton *mixed;
 @property(readwrite,retain) NSButton *lowQuality;
+@property(readwrite,retain) NSButton *compilation;
 @property(readwrite,retain) NSOutlineView *styles;
 @property(readwrite,retain,nonatomic) NSTextField *bpm;
 

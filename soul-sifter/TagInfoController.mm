@@ -235,7 +235,11 @@
     song->setRating([rating intValue]);
     song->setBpm([[bpm stringValue] UTF8String]);
     song->setLowQuality([lowQuality state] == NSOnState);
-    songAlbum->setArtist([[albumArtist stringValue] UTF8String]);
+    if ([compilation state] == NSOnState) {
+      songAlbum->setArtist("");
+    } else {
+      songAlbum->setArtist([[albumArtist stringValue] UTF8String]);
+    }
     songAlbum->setName([[album stringValue] UTF8String]);
     songAlbum->setLabel([[label stringValue] UTF8String]);
     songAlbum->setCatalogId([[catalogId stringValue] UTF8String]);
@@ -390,6 +394,7 @@
     [releaseDateDay setStringValue:[NSString stringWithFormat:@"%i",updatedSong->getAlbum()->getReleaseDateDay()]];
     [mixed setState:(updatedSong->getAlbum()->getMixed()) ? NSOnState : NSOffState];
     [lowQuality setState:(updatedSong->getLowQuality()) ? NSOnState : NSOffState];
+    [compilation setState:(updatedSong->getAlbum()->getArtist().size() == 0) ? NSOnState : NSOffState];
     [bpm setStringValue:[NSString stringWithUTF8String:updatedSong->getBpm().c_str()]];
   
     const dogatech::soulsifter::BasicGenre* basicGenre = updatedSong->getAlbum()->getBasicGenre();
@@ -468,6 +473,7 @@
 @synthesize releaseDateDay;
 @synthesize mixed;
 @synthesize lowQuality;
+@synthesize compilation;
 @synthesize styles;
 @synthesize bpm;
 
