@@ -30,6 +30,7 @@
 		184B475D187EB32F00ECD5D7 /* libtag.1.14.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 181E3C831826597600BCC0AC /* libtag.1.14.0.dylib */; };
 		184B475F187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */; };
 		184B47621880D4A100ECD5D7 /* ImageViewWithFilepath.m in Sources */ = {isa = PBXBuildFile; fileRef = 184B47611880D4A100ECD5D7 /* ImageViewWithFilepath.m */; };
+		184F499A19564F59000A52E0 /* libvamp-hostsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 184F499919564F59000A52E0 /* libvamp-hostsdk.dylib */; };
 		185A7281166AE69B00D14E96 /* RESetting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A727F166AE69B00D14E96 /* RESetting.cpp */; };
 		185A7284166AE90A00D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */; };
 		185A7287166AF8D300D14E96 /* DTCopyHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 185A7285166AF8D200D14E96 /* DTCopyHandler.cpp */; };
@@ -154,6 +155,7 @@
 		184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlcppconn.7.1.1.3.dylib; path = "../../../../../../../usr/local/Cellar/mysql-connector-c++/1.1.3/lib/libmysqlcppconn.7.1.1.3.dylib"; sourceTree = "<group>"; };
 		184B47601880D4A100ECD5D7 /* ImageViewWithFilepath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewWithFilepath.h; sourceTree = "<group>"; };
 		184B47611880D4A100ECD5D7 /* ImageViewWithFilepath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewWithFilepath.m; sourceTree = "<group>"; };
+		184F499919564F59000A52E0 /* libvamp-hostsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libvamp-hostsdk.dylib"; path = "../../../../../../../usr/local/lib/libvamp-hostsdk.dylib"; sourceTree = "<group>"; };
 		185A727F166AE69B00D14E96 /* RESetting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RESetting.cpp; sourceTree = "<group>"; };
 		185A7280166AE69B00D14E96 /* RESetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESetting.h; sourceTree = "<group>"; };
 		185A7282166AE90900D14E96 /* RapidEvolutionDatabaseConfigSettingsHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidEvolutionDatabaseConfigSettingsHandler.cpp; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				184F499A19564F59000A52E0 /* libvamp-hostsdk.dylib in Frameworks */,
 				184B475F187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib in Frameworks */,
 				184B475D187EB32F00ECD5D7 /* libtag.1.14.0.dylib in Frameworks */,
 				18CD9FB7187A18F900AD2DCF /* libmad.0.2.1.dylib in Frameworks */,
@@ -534,6 +537,7 @@
 		189D22C9153D4F190043634A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				184F499919564F59000A52E0 /* libvamp-hostsdk.dylib */,
 				184B475E187FD5B300ECD5D7 /* libmysqlcppconn.7.1.1.3.dylib */,
 				182C38A91832095F00F9DE04 /* libmad.0.2.1.dylib */,
 				182C38741830A79E00F9DE04 /* libmp3lame.0.dylib */,

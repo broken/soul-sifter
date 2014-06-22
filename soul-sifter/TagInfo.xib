@@ -18,7 +18,6 @@
                 <outlet property="artistTag" destination="242" id="264"/>
                 <outlet property="bpm" destination="ihb-bc-CSO" id="ffE-OP-TER"/>
                 <outlet property="bpmAnalyzed" destination="043-HW-pnl" id="HFZ-W6-CqH"/>
-                <outlet property="bpmTag" destination="ihb-bc-CSO" id="5Z0-QR-YeH"/>
                 <outlet property="catalogId" destination="156" id="163"/>
                 <outlet property="comments" destination="236" id="241"/>
                 <outlet property="commentsTag" destination="252" id="270"/>
@@ -27,6 +26,8 @@
                 <outlet property="genreComboBox" destination="59" id="114"/>
                 <outlet property="imageArrayController" destination="322" id="325"/>
                 <outlet property="imageView" destination="299" id="301"/>
+                <outlet property="key" destination="j76-nk-ciH" id="bdA-zA-gD2"/>
+                <outlet property="keyAnalyzed" destination="9Lj-GT-FWE" id="NSH-1x-4UP"/>
                 <outlet property="keyTag" destination="j76-nk-ciH" id="R9Y-pA-OHF"/>
                 <outlet property="label" destination="50" id="76"/>
                 <outlet property="lowQuality" destination="YHA-mp-hxH" id="gOu-z3-gzZ"/>
@@ -600,6 +601,15 @@
                         <rect key="frame" x="577" y="318" width="219" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" id="uVG-d1-mrh">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" id="9Lj-GT-FWE">
+                        <rect key="frame" x="577" y="142" width="219" height="103"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" id="QKo-Sm-509">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

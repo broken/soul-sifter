@@ -9,6 +9,9 @@
 #ifndef soul_sifter_AudioAnalyzer_h
 #define soul_sifter_AudioAnalyzer_h
 
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace dogatech {
   namespace soulsifter {
@@ -19,9 +22,17 @@ namespace dogatech {
       float candidate[3];
     };
     
+    struct Keys {
+      std::vector<std::pair<std::string, float> > candidate;
+      
+      template <class TI>
+      Keys(TI first, TI second) : candidate(first, second) { }
+      Keys() { }
+    };
+    
     class AudioAnalyzer {
     public:
-      static void analyzeKey(Song* song);
+      static const Keys* analyzeKey(Song* song);
       
       static const Bpms* analyzeBpm(Song* song);
     };

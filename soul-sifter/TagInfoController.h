@@ -45,6 +45,7 @@
     IBOutlet NSButton *compilation;
     IBOutlet NSOutlineView *styles;
     IBOutlet NSTextField *bpm;
+    IBOutlet NSTextField *key;
   
     IBOutlet NSTextField *artistTag;
     IBOutlet NSTextField *trackNumTag;
@@ -93,6 +94,7 @@
 @property(readwrite,retain) NSButton *compilation;
 @property(readwrite,retain) NSOutlineView *styles;
 @property(readwrite,retain,nonatomic) NSTextField *bpm;
+@property(readwrite,retain,nonatomic) NSTextField *key;
 
 @property(readwrite,retain,nonatomic) NSTextField *artistTag;
 @property(readwrite,retain,nonatomic) NSTextField *trackNumTag;

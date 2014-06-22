@@ -148,7 +148,6 @@ MusicManager::~MusicManager() {
     TagLib::MPEG::File f(song->getFilepath().c_str());
     TagLib::ID3v2::Tag* id3v2 = f.ID3v2Tag();
     if (id3v2) {
-      stringstream ss;
       if (id3v2->artist() != TagLib::String::null) song->setArtist(id3v2->artist().to8Bit());
       song->setTrack(getId3v2Text(id3v2, "TRCK"));
       if (id3v2->title() != TagLib::String::null) song->setTitle(id3v2->title().to8Bit());

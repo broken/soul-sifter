@@ -21,6 +21,12 @@
 #include "Style.h"
 #import "StyleTreeItem.h"
 
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/format.hpp>
+#include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string/split.hpp>
+
+
 
 # pragma mark private method helpers
 
@@ -235,6 +241,12 @@
     song->setRating([rating intValue]);
     song->setBpm([[bpm stringValue] UTF8String]);
     song->setLowQuality([lowQuality state] == NSOnState);
+    vector<string> keys;
+    string keyString = [[key stringValue] UTF8String];
+    boost::split(keys, keyString, boost::is_any_of(","));
+    for (string tonicKey : keys) {
+      song->addTonicKey(tonicKey);
+    }
     if ([compilation state] == NSOnState) {
       songAlbum->setArtist("");
     } else {
@@ -396,6 +408,7 @@
     [lowQuality setState:(updatedSong->getLowQuality()) ? NSOnState : NSOffState];
     [compilation setState:(updatedSong->getAlbum()->getArtist().size() == 0) ? NSOnState : NSOffState];
     [bpm setStringValue:[NSString stringWithUTF8String:updatedSong->getBpm().c_str()]];
+    [key setStringValue:[NSString stringWithUTF8String:boost::algorithm::join(updatedSong->getTonicKeys(), ",").c_str()]];
   
     const dogatech::soulsifter::BasicGenre* basicGenre = updatedSong->getAlbum()->getBasicGenre();
     if (!basicGenre) basicGenre = dogatech::soulsifter::MusicManager::getInstance().findBasicGenreForArtist(updatedSong->getArtist());
@@ -442,7 +455,17 @@
   const dogatech::soulsifter::Bpms *bpms = dogatech::soulsifter::AudioAnalyzer::analyzeBpm(updatedSong);
   if (!updatedSong->getBpm().empty()) [bpm setStringValue:[NSString stringWithFormat:@"%.2f",bpms->candidate[0]]];
   [bpmAnalyzed setStringValue:[NSString stringWithFormat:@"%.2f, %.2f, %.2f",bpms->candidate[0],bpms->candidate[1],bpms->candidate[2]]];
-  delete[] bpms;
+  delete bpms;
+  
+  const dogatech::soulsifter::Keys *keys = dogatech::soulsifter::AudioAnalyzer::analyzeKey(updatedSong);
+  if (updatedSong->getTonicKeys().empty()) [key setStringValue:[NSString stringWithFormat:@"%s",keys->candidate[0].first.c_str()]];
+  stringstream ss;
+  boost::format fmt("%.1f");
+  for (int i = 0; i < keys->candidate.size() && keys->candidate[i].second > 20; ++i) {
+    ss << keys->candidate[i].first.c_str() << "(" << fmt % keys->candidate[i].second << "), ";
+  }
+  [keyAnalyzed setStringValue:[NSString stringWithFormat:@"%s", ss.str().c_str()]];
+  delete keys;
   
   delete basicGenre;
   //if (update) delete updatedSong;
@@ -476,6 +499,7 @@
 @synthesize compilation;
 @synthesize styles;
 @synthesize bpm;
+@synthesize key;
 
 @synthesize artistTag;
 @synthesize trackNumTag;
