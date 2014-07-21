@@ -9,9 +9,11 @@
 #ifndef soul_sifter_DTVectorUtil_h
 #define soul_sifter_DTVectorUtil_h
 
-#include <ostream>
+#include <sstream>
 #include <set>
 #include <vector>
+
+using namespace std;
 
 namespace dogatech {
 
