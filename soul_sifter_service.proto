@@ -1,0 +1,13 @@
+package dogatech.soulsifter;
+
+message GetSongRequest {
+  optional int32 id = 1;
+}
+
+message GetSongResponse {
+  optional string title = 1;
+}
+
+service SoulSifterService {
+  rpc GetSong(GetSongRequest) returns(GetSongResponse);
+}
