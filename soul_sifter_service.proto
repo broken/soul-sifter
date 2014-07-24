@@ -1,4 +1,6 @@
-package dogatech.soulsifter;
+package dogatech.soulsifter.proto;
+
+import "soul_sifter.proto";
 
 message GetSongRequest {
   optional int32 id = 1;
@@ -8,6 +10,20 @@ message GetSongResponse {
   optional string title = 1;
 }
 
+message FindSongsRequest {
+  optional string query = 1;
+  optional TonicKey key_to_match = 2;
+  optional bool key_lock = 3 [default=true];
+  optional int32 max_bpm = 4;
+  optional int32 min_bpm = 5;
+  repeated Genre genre = 6;
+}
+
+message FindSongsResponse {
+  repeated Song song = 1;
+}
+
 service SoulSifterService {
+  rpc FindSongs(FindSongsRequest) returns(FindSongsResponse);
   rpc GetSong(GetSongRequest) returns(GetSongResponse);
 }
