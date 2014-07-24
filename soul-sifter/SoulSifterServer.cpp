@@ -13,6 +13,9 @@
 #include <google/protobuf/stubs/common.h>
 #include <rpcz/rpcz.hpp>
 
+#include "Search.h"
+#include "soul_sifter.pb.h"
+#include "soul_sifter.rpcz.h"
 #include "soul_sifter_service.pb.h"
 #include "soul_sifter_service.rpcz.h"
 
@@ -21,13 +24,21 @@ using namespace std;
 namespace dogatech {
 namespace soulsifter {
 
-class SoulSifterServiceImpl : public SoulSifterService {
+class SoulSifterServiceImpl : public proto::SoulSifterService {
   
-  virtual void GetSong(const GetSongRequest& request,
-                       rpcz::reply<GetSongResponse> reply) {
+  virtual void GetSong(const proto::GetSongRequest& request,
+                       rpcz::reply<proto::GetSongResponse> reply) {
     cout << "Got request for '" << request.id() << "'" << endl;
-    GetSongResponse response;
+    proto::GetSongResponse response;
     response.set_title("result1 for ");
+    reply.send(response);
+  }
+  
+  virtual void FindSongs(const proto::FindSongsRequest& request, rpcz::reply<proto::FindSongsResponse> reply) {
+    cout << "FindSongs with query: " << request.query() << endl;
+    proto::FindSongsResponse response;
+    searchSongs(request, &response);
+    cout << "Rcvd " << response.song_size() << " songs" << endl;
     reply.send(response);
   }
 
