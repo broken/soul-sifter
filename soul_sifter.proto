@@ -1,0 +1,70 @@
+package dogatech.soulsifter.proto;
+
+enum TonicKey {
+  C = 0;
+  G = 1;
+  D = 2;
+  A = 3;
+  E = 4;
+  B = 5;
+  Fs = 6;
+  Db = 7;
+  Ab = 8;
+  Eb = 9;
+  Bb = 10;
+  F = 11;
+  Am = 12;
+  Em = 13;
+  Bm = 14;
+  Fsm = 15;
+  Csm = 16;
+  Gsm = 17;
+  Ebm = 18;
+  Bbm = 19;
+  Fm = 20;
+  Cm = 21;
+  Gm = 22;
+  Dm = 23;
+}
+
+message Album {
+  optional int32 id = 1;
+  optional string name = 2;
+  optional string artist = 3;
+  optional string coverFilepath = 4;
+  optional bool mixed = 5;
+  optional string label = 6;
+  optional string catalogId = 7;
+  optional int32 releaseDateYear = 8;
+  optional int32 releaseDateMonth = 9;
+  optional int32 releaseDateDay = 10;
+}
+
+message Genre {
+  optional int32 id = 1;
+  optional string name = 2;
+  repeated Genre child = 3;
+}
+
+message Song {
+  optional int32 id = 1;
+  optional string artist = 2;
+  optional string track = 3;
+  optional string title = 4;
+  optional string remixer = 5;
+  optional string featuring = 16;
+  optional string filePath = 6;
+  optional string reSongId = 17;
+  optional int32 albumId = 7;
+  optional int32 rating = 8;
+  optional string dateAdded = 9;
+  optional string comments = 10;
+  optional bool trashed = 11;
+  optional int32 albumPartId = 12;
+  optional string bpm = 13;
+  repeated TonicKey tonicKey = 14;
+  optional bool lowQuality = 15;
+
+  optional Album album = 18;
+  repeated Genre genre = 19;
+}
