@@ -16,11 +16,22 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
+namespace dogatech {
+namespace soulsifter {
+namespace proto {
+
 namespace {
 
+const ::google::protobuf::Descriptor* Album_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Album_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Genre_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Genre_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Song_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Song_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* TonicKey_descriptor_ = NULL;
 
 }  // namespace
 
@@ -31,7 +42,31 @@ void protobuf_AssignDesc_soul_5fsifter_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "soul_sifter.proto");
   GOOGLE_CHECK(file != NULL);
-  Genre_descriptor_ = file->message_type(0);
+  Album_descriptor_ = file->message_type(0);
+  static const int Album_offsets_[10] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, artist_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, coverfilepath_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, mixed_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, label_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, catalogid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, releasedateyear_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, releasedatemonth_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, releasedateday_),
+  };
+  Album_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Album_descriptor_,
+      Album::default_instance_,
+      Album_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Album, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Album));
+  Genre_descriptor_ = file->message_type(1);
   static const int Genre_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Genre, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Genre, name_),
@@ -48,6 +83,40 @@ void protobuf_AssignDesc_soul_5fsifter_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Genre));
+  Song_descriptor_ = file->message_type(2);
+  static const int Song_offsets_[19] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, artist_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, track_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, title_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, remixer_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, featuring_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, filepath_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, resongid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, albumid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, rating_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, dateadded_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, comments_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, trashed_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, albumpartid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, bpm_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, tonickey_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, lowquality_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, album_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, genre_),
+  };
+  Song_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Song_descriptor_,
+      Song::default_instance_,
+      Song_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Song, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Song));
+  TonicKey_descriptor_ = file->enum_type(0);
 }
 
 namespace {
@@ -61,14 +130,22 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Album_descriptor_, &Album::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Genre_descriptor_, &Genre::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Song_descriptor_, &Song::default_instance());
 }
 
 }  // namespace
 
 void protobuf_ShutdownFile_soul_5fsifter_2eproto() {
+  delete Album::default_instance_;
+  delete Album_reflection_;
   delete Genre::default_instance_;
   delete Genre_reflection_;
+  delete Song::default_instance_;
+  delete Song_reflection_;
 }
 
 void protobuf_AddDesc_soul_5fsifter_2eproto() {
@@ -78,12 +155,39 @@ void protobuf_AddDesc_soul_5fsifter_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\021soul_sifter.proto\"8\n\005Genre\022\n\n\002id\030\001 \001(\005"
-    "\022\014\n\004name\030\002 \001(\t\022\025\n\005child\030\003 \003(\0132\006.Genre", 77);
+    "\n\021soul_sifter.proto\022\031dogatech.soulsifter"
+    ".proto\"\304\001\n\005Album\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001"
+    "(\t\022\016\n\006artist\030\003 \001(\t\022\025\n\rcoverFilepath\030\004 \001("
+    "\t\022\r\n\005mixed\030\005 \001(\010\022\r\n\005label\030\006 \001(\t\022\021\n\tcatal"
+    "ogId\030\007 \001(\t\022\027\n\017releaseDateYear\030\010 \001(\005\022\030\n\020r"
+    "eleaseDateMonth\030\t \001(\005\022\026\n\016releaseDateDay\030"
+    "\n \001(\005\"R\n\005Genre\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t"
+    "\022/\n\005child\030\003 \003(\0132 .dogatech.soulsifter.pr"
+    "oto.Genre\"\256\003\n\004Song\022\n\n\002id\030\001 \001(\005\022\016\n\006artist"
+    "\030\002 \001(\t\022\r\n\005track\030\003 \001(\t\022\r\n\005title\030\004 \001(\t\022\017\n\007"
+    "remixer\030\005 \001(\t\022\021\n\tfeaturing\030\020 \001(\t\022\020\n\010file"
+    "Path\030\006 \001(\t\022\020\n\010reSongId\030\021 \001(\t\022\017\n\007albumId\030"
+    "\007 \001(\005\022\016\n\006rating\030\010 \001(\005\022\021\n\tdateAdded\030\t \001(\t"
+    "\022\020\n\010comments\030\n \001(\t\022\017\n\007trashed\030\013 \001(\010\022\023\n\013a"
+    "lbumPartId\030\014 \001(\005\022\013\n\003bpm\030\r \001(\t\0225\n\010tonicKe"
+    "y\030\016 \003(\0162#.dogatech.soulsifter.proto.Toni"
+    "cKey\022\022\n\nlowQuality\030\017 \001(\010\022/\n\005album\030\022 \001(\0132"
+    " .dogatech.soulsifter.proto.Album\022/\n\005gen"
+    "re\030\023 \003(\0132 .dogatech.soulsifter.proto.Gen"
+    "re*\310\001\n\010TonicKey\022\005\n\001C\020\000\022\005\n\001G\020\001\022\005\n\001D\020\002\022\005\n\001"
+    "A\020\003\022\005\n\001E\020\004\022\005\n\001B\020\005\022\006\n\002Fs\020\006\022\006\n\002Db\020\007\022\006\n\002Ab\020"
+    "\010\022\006\n\002Eb\020\t\022\006\n\002Bb\020\n\022\005\n\001F\020\013\022\006\n\002Am\020\014\022\006\n\002Em\020\r"
+    "\022\006\n\002Bm\020\016\022\007\n\003Fsm\020\017\022\007\n\003Csm\020\020\022\007\n\003Gsm\020\021\022\007\n\003E"
+    "bm\020\022\022\007\n\003Bbm\020\023\022\006\n\002Fm\020\024\022\006\n\002Cm\020\025\022\006\n\002Gm\020\026\022\006\n"
+    "\002Dm\020\027", 965);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "soul_sifter.proto", &protobuf_RegisterTypes);
+  Album::default_instance_ = new Album();
   Genre::default_instance_ = new Genre();
+  Song::default_instance_ = new Song();
+  Album::default_instance_->InitAsDefaultInstance();
   Genre::default_instance_->InitAsDefaultInstance();
+  Song::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_soul_5fsifter_2eproto);
 }
 
@@ -93,6 +197,699 @@ struct StaticDescriptorInitializer_soul_5fsifter_2eproto {
     protobuf_AddDesc_soul_5fsifter_2eproto();
   }
 } static_descriptor_initializer_soul_5fsifter_2eproto_;
+const ::google::protobuf::EnumDescriptor* TonicKey_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TonicKey_descriptor_;
+}
+bool TonicKey_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 20:
+    case 21:
+    case 22:
+    case 23:
+      return true;
+    default:
+      return false;
+  }
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int Album::kIdFieldNumber;
+const int Album::kNameFieldNumber;
+const int Album::kArtistFieldNumber;
+const int Album::kCoverFilepathFieldNumber;
+const int Album::kMixedFieldNumber;
+const int Album::kLabelFieldNumber;
+const int Album::kCatalogIdFieldNumber;
+const int Album::kReleaseDateYearFieldNumber;
+const int Album::kReleaseDateMonthFieldNumber;
+const int Album::kReleaseDateDayFieldNumber;
+#endif  // !_MSC_VER
+
+Album::Album()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Album::InitAsDefaultInstance() {
+}
+
+Album::Album(const Album& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Album::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  coverfilepath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  mixed_ = false;
+  label_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  catalogid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  releasedateyear_ = 0;
+  releasedatemonth_ = 0;
+  releasedateday_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Album::~Album() {
+  SharedDtor();
+}
+
+void Album::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (artist_ != &::google::protobuf::internal::kEmptyString) {
+    delete artist_;
+  }
+  if (coverfilepath_ != &::google::protobuf::internal::kEmptyString) {
+    delete coverfilepath_;
+  }
+  if (label_ != &::google::protobuf::internal::kEmptyString) {
+    delete label_;
+  }
+  if (catalogid_ != &::google::protobuf::internal::kEmptyString) {
+    delete catalogid_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void Album::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Album::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Album_descriptor_;
+}
+
+const Album& Album::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_soul_5fsifter_2eproto();
+  return *default_instance_;
+}
+
+Album* Album::default_instance_ = NULL;
+
+Album* Album::New() const {
+  return new Album;
+}
+
+void Album::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    id_ = 0;
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
+    }
+    if (has_artist()) {
+      if (artist_ != &::google::protobuf::internal::kEmptyString) {
+        artist_->clear();
+      }
+    }
+    if (has_coverfilepath()) {
+      if (coverfilepath_ != &::google::protobuf::internal::kEmptyString) {
+        coverfilepath_->clear();
+      }
+    }
+    mixed_ = false;
+    if (has_label()) {
+      if (label_ != &::google::protobuf::internal::kEmptyString) {
+        label_->clear();
+      }
+    }
+    if (has_catalogid()) {
+      if (catalogid_ != &::google::protobuf::internal::kEmptyString) {
+        catalogid_->clear();
+      }
+    }
+    releasedateyear_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    releasedatemonth_ = 0;
+    releasedateday_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Album::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional int32 id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_name;
+        break;
+      }
+
+      // optional string name = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_name:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_artist;
+        break;
+      }
+
+      // optional string artist = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_artist:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_artist()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->artist().data(), this->artist().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_coverFilepath;
+        break;
+      }
+
+      // optional string coverFilepath = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_coverFilepath:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_coverfilepath()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->coverfilepath().data(), this->coverfilepath().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_mixed;
+        break;
+      }
+
+      // optional bool mixed = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_mixed:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &mixed_)));
+          set_has_mixed();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_label;
+        break;
+      }
+
+      // optional string label = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_label:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_label()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->label().data(), this->label().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(58)) goto parse_catalogId;
+        break;
+      }
+
+      // optional string catalogId = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_catalogId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_catalogid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->catalogid().data(), this->catalogid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(64)) goto parse_releaseDateYear;
+        break;
+      }
+
+      // optional int32 releaseDateYear = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_releaseDateYear:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &releasedateyear_)));
+          set_has_releasedateyear();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(72)) goto parse_releaseDateMonth;
+        break;
+      }
+
+      // optional int32 releaseDateMonth = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_releaseDateMonth:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &releasedatemonth_)));
+          set_has_releasedatemonth();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(80)) goto parse_releaseDateDay;
+        break;
+      }
+
+      // optional int32 releaseDateDay = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_releaseDateDay:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &releasedateday_)));
+          set_has_releasedateday();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Album::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional int32 id = 1;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
+  }
+
+  // optional string name = 2;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->name(), output);
+  }
+
+  // optional string artist = 3;
+  if (has_artist()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->artist().data(), this->artist().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->artist(), output);
+  }
+
+  // optional string coverFilepath = 4;
+  if (has_coverfilepath()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->coverfilepath().data(), this->coverfilepath().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->coverfilepath(), output);
+  }
+
+  // optional bool mixed = 5;
+  if (has_mixed()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->mixed(), output);
+  }
+
+  // optional string label = 6;
+  if (has_label()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->label().data(), this->label().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      6, this->label(), output);
+  }
+
+  // optional string catalogId = 7;
+  if (has_catalogid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->catalogid().data(), this->catalogid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      7, this->catalogid(), output);
+  }
+
+  // optional int32 releaseDateYear = 8;
+  if (has_releasedateyear()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->releasedateyear(), output);
+  }
+
+  // optional int32 releaseDateMonth = 9;
+  if (has_releasedatemonth()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->releasedatemonth(), output);
+  }
+
+  // optional int32 releaseDateDay = 10;
+  if (has_releasedateday()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->releasedateday(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Album::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional int32 id = 1;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
+  }
+
+  // optional string name = 2;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->name(), target);
+  }
+
+  // optional string artist = 3;
+  if (has_artist()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->artist().data(), this->artist().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->artist(), target);
+  }
+
+  // optional string coverFilepath = 4;
+  if (has_coverfilepath()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->coverfilepath().data(), this->coverfilepath().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->coverfilepath(), target);
+  }
+
+  // optional bool mixed = 5;
+  if (has_mixed()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->mixed(), target);
+  }
+
+  // optional string label = 6;
+  if (has_label()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->label().data(), this->label().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->label(), target);
+  }
+
+  // optional string catalogId = 7;
+  if (has_catalogid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->catalogid().data(), this->catalogid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->catalogid(), target);
+  }
+
+  // optional int32 releaseDateYear = 8;
+  if (has_releasedateyear()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->releasedateyear(), target);
+  }
+
+  // optional int32 releaseDateMonth = 9;
+  if (has_releasedatemonth()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->releasedatemonth(), target);
+  }
+
+  // optional int32 releaseDateDay = 10;
+  if (has_releasedateday()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->releasedateday(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Album::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional int32 id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->id());
+    }
+
+    // optional string name = 2;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+
+    // optional string artist = 3;
+    if (has_artist()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->artist());
+    }
+
+    // optional string coverFilepath = 4;
+    if (has_coverfilepath()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->coverfilepath());
+    }
+
+    // optional bool mixed = 5;
+    if (has_mixed()) {
+      total_size += 1 + 1;
+    }
+
+    // optional string label = 6;
+    if (has_label()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->label());
+    }
+
+    // optional string catalogId = 7;
+    if (has_catalogid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->catalogid());
+    }
+
+    // optional int32 releaseDateYear = 8;
+    if (has_releasedateyear()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->releasedateyear());
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional int32 releaseDateMonth = 9;
+    if (has_releasedatemonth()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->releasedatemonth());
+    }
+
+    // optional int32 releaseDateDay = 10;
+    if (has_releasedateday()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->releasedateday());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Album::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Album* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Album*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Album::MergeFrom(const Album& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_id()) {
+      set_id(from.id());
+    }
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+    if (from.has_artist()) {
+      set_artist(from.artist());
+    }
+    if (from.has_coverfilepath()) {
+      set_coverfilepath(from.coverfilepath());
+    }
+    if (from.has_mixed()) {
+      set_mixed(from.mixed());
+    }
+    if (from.has_label()) {
+      set_label(from.label());
+    }
+    if (from.has_catalogid()) {
+      set_catalogid(from.catalogid());
+    }
+    if (from.has_releasedateyear()) {
+      set_releasedateyear(from.releasedateyear());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_releasedatemonth()) {
+      set_releasedatemonth(from.releasedatemonth());
+    }
+    if (from.has_releasedateday()) {
+      set_releasedateday(from.releasedateday());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Album::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Album::CopyFrom(const Album& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Album::IsInitialized() const {
+
+  return true;
+}
+
+void Album::Swap(Album* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(name_, other->name_);
+    std::swap(artist_, other->artist_);
+    std::swap(coverfilepath_, other->coverfilepath_);
+    std::swap(mixed_, other->mixed_);
+    std::swap(label_, other->label_);
+    std::swap(catalogid_, other->catalogid_);
+    std::swap(releasedateyear_, other->releasedateyear_);
+    std::swap(releasedatemonth_, other->releasedatemonth_);
+    std::swap(releasedateday_, other->releasedateday_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Album::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Album_descriptor_;
+  metadata.reflection = Album_reflection_;
+  return metadata;
+}
+
 
 // ===================================================================
 
@@ -208,7 +1005,7 @@ bool Genre::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .Genre child = 3;
+      // repeated .dogatech.soulsifter.proto.Genre child = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -255,7 +1052,7 @@ void Genre::SerializeWithCachedSizes(
       2, this->name(), output);
   }
 
-  // repeated .Genre child = 3;
+  // repeated .dogatech.soulsifter.proto.Genre child = 3;
   for (int i = 0; i < this->child_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, this->child(i), output);
@@ -284,7 +1081,7 @@ void Genre::SerializeWithCachedSizes(
         2, this->name(), target);
   }
 
-  // repeated .Genre child = 3;
+  // repeated .dogatech.soulsifter.proto.Genre child = 3;
   for (int i = 0; i < this->child_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -317,7 +1114,7 @@ int Genre::ByteSize() const {
     }
 
   }
-  // repeated .Genre child = 3;
+  // repeated .dogatech.soulsifter.proto.Genre child = 3;
   total_size += 1 * this->child_size();
   for (int i = 0; i < this->child_size(); i++) {
     total_size +=
@@ -399,6 +1196,1136 @@ void Genre::Swap(Genre* other) {
 }
 
 
+// ===================================================================
+
+#ifndef _MSC_VER
+const int Song::kIdFieldNumber;
+const int Song::kArtistFieldNumber;
+const int Song::kTrackFieldNumber;
+const int Song::kTitleFieldNumber;
+const int Song::kRemixerFieldNumber;
+const int Song::kFeaturingFieldNumber;
+const int Song::kFilePathFieldNumber;
+const int Song::kReSongIdFieldNumber;
+const int Song::kAlbumIdFieldNumber;
+const int Song::kRatingFieldNumber;
+const int Song::kDateAddedFieldNumber;
+const int Song::kCommentsFieldNumber;
+const int Song::kTrashedFieldNumber;
+const int Song::kAlbumPartIdFieldNumber;
+const int Song::kBpmFieldNumber;
+const int Song::kTonicKeyFieldNumber;
+const int Song::kLowQualityFieldNumber;
+const int Song::kAlbumFieldNumber;
+const int Song::kGenreFieldNumber;
+#endif  // !_MSC_VER
+
+Song::Song()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Song::InitAsDefaultInstance() {
+  album_ = const_cast< ::dogatech::soulsifter::proto::Album*>(&::dogatech::soulsifter::proto::Album::default_instance());
+}
+
+Song::Song(const Song& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Song::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = 0;
+  artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  track_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  title_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  remixer_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  featuring_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  filepath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  resongid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  albumid_ = 0;
+  rating_ = 0;
+  dateadded_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  comments_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  trashed_ = false;
+  albumpartid_ = 0;
+  bpm_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  lowquality_ = false;
+  album_ = NULL;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Song::~Song() {
+  SharedDtor();
+}
+
+void Song::SharedDtor() {
+  if (artist_ != &::google::protobuf::internal::kEmptyString) {
+    delete artist_;
+  }
+  if (track_ != &::google::protobuf::internal::kEmptyString) {
+    delete track_;
+  }
+  if (title_ != &::google::protobuf::internal::kEmptyString) {
+    delete title_;
+  }
+  if (remixer_ != &::google::protobuf::internal::kEmptyString) {
+    delete remixer_;
+  }
+  if (featuring_ != &::google::protobuf::internal::kEmptyString) {
+    delete featuring_;
+  }
+  if (filepath_ != &::google::protobuf::internal::kEmptyString) {
+    delete filepath_;
+  }
+  if (resongid_ != &::google::protobuf::internal::kEmptyString) {
+    delete resongid_;
+  }
+  if (dateadded_ != &::google::protobuf::internal::kEmptyString) {
+    delete dateadded_;
+  }
+  if (comments_ != &::google::protobuf::internal::kEmptyString) {
+    delete comments_;
+  }
+  if (bpm_ != &::google::protobuf::internal::kEmptyString) {
+    delete bpm_;
+  }
+  if (this != default_instance_) {
+    delete album_;
+  }
+}
+
+void Song::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Song::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Song_descriptor_;
+}
+
+const Song& Song::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_soul_5fsifter_2eproto();
+  return *default_instance_;
+}
+
+Song* Song::default_instance_ = NULL;
+
+Song* Song::New() const {
+  return new Song;
+}
+
+void Song::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    id_ = 0;
+    if (has_artist()) {
+      if (artist_ != &::google::protobuf::internal::kEmptyString) {
+        artist_->clear();
+      }
+    }
+    if (has_track()) {
+      if (track_ != &::google::protobuf::internal::kEmptyString) {
+        track_->clear();
+      }
+    }
+    if (has_title()) {
+      if (title_ != &::google::protobuf::internal::kEmptyString) {
+        title_->clear();
+      }
+    }
+    if (has_remixer()) {
+      if (remixer_ != &::google::protobuf::internal::kEmptyString) {
+        remixer_->clear();
+      }
+    }
+    if (has_featuring()) {
+      if (featuring_ != &::google::protobuf::internal::kEmptyString) {
+        featuring_->clear();
+      }
+    }
+    if (has_filepath()) {
+      if (filepath_ != &::google::protobuf::internal::kEmptyString) {
+        filepath_->clear();
+      }
+    }
+    if (has_resongid()) {
+      if (resongid_ != &::google::protobuf::internal::kEmptyString) {
+        resongid_->clear();
+      }
+    }
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    albumid_ = 0;
+    rating_ = 0;
+    if (has_dateadded()) {
+      if (dateadded_ != &::google::protobuf::internal::kEmptyString) {
+        dateadded_->clear();
+      }
+    }
+    if (has_comments()) {
+      if (comments_ != &::google::protobuf::internal::kEmptyString) {
+        comments_->clear();
+      }
+    }
+    trashed_ = false;
+    albumpartid_ = 0;
+    if (has_bpm()) {
+      if (bpm_ != &::google::protobuf::internal::kEmptyString) {
+        bpm_->clear();
+      }
+    }
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    lowquality_ = false;
+    if (has_album()) {
+      if (album_ != NULL) album_->::dogatech::soulsifter::proto::Album::Clear();
+    }
+  }
+  tonickey_.Clear();
+  genre_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Song::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional int32 id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_artist;
+        break;
+      }
+
+      // optional string artist = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_artist:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_artist()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->artist().data(), this->artist().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_track;
+        break;
+      }
+
+      // optional string track = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_track:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_track()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->track().data(), this->track().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_title;
+        break;
+      }
+
+      // optional string title = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_title:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_title()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->title().data(), this->title().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(42)) goto parse_remixer;
+        break;
+      }
+
+      // optional string remixer = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_remixer:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_remixer()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->remixer().data(), this->remixer().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_filePath;
+        break;
+      }
+
+      // optional string filePath = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_filePath:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_filepath()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->filepath().data(), this->filepath().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(56)) goto parse_albumId;
+        break;
+      }
+
+      // optional int32 albumId = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_albumId:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &albumid_)));
+          set_has_albumid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(64)) goto parse_rating;
+        break;
+      }
+
+      // optional int32 rating = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_rating:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &rating_)));
+          set_has_rating();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(74)) goto parse_dateAdded;
+        break;
+      }
+
+      // optional string dateAdded = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_dateAdded:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_dateadded()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->dateadded().data(), this->dateadded().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(82)) goto parse_comments;
+        break;
+      }
+
+      // optional string comments = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_comments:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_comments()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->comments().data(), this->comments().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(88)) goto parse_trashed;
+        break;
+      }
+
+      // optional bool trashed = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_trashed:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &trashed_)));
+          set_has_trashed();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(96)) goto parse_albumPartId;
+        break;
+      }
+
+      // optional int32 albumPartId = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_albumPartId:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &albumpartid_)));
+          set_has_albumpartid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(106)) goto parse_bpm;
+        break;
+      }
+
+      // optional string bpm = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_bpm:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bpm()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->bpm().data(), this->bpm().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(112)) goto parse_tonicKey;
+        break;
+      }
+
+      // repeated .dogatech.soulsifter.proto.TonicKey tonicKey = 14;
+      case 14: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_tonicKey:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::dogatech::soulsifter::proto::TonicKey_IsValid(value)) {
+            add_tonickey(static_cast< ::dogatech::soulsifter::proto::TonicKey >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(14, value);
+          }
+        } else if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag)
+                   == ::google::protobuf::internal::WireFormatLite::
+                      WIRETYPE_LENGTH_DELIMITED) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedEnumNoInline(
+                 input,
+                 &::dogatech::soulsifter::proto::TonicKey_IsValid,
+                 this->mutable_tonickey())));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(112)) goto parse_tonicKey;
+        if (input->ExpectTag(120)) goto parse_lowQuality;
+        break;
+      }
+
+      // optional bool lowQuality = 15;
+      case 15: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_lowQuality:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &lowquality_)));
+          set_has_lowquality();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(130)) goto parse_featuring;
+        break;
+      }
+
+      // optional string featuring = 16;
+      case 16: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_featuring:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_featuring()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->featuring().data(), this->featuring().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(138)) goto parse_reSongId;
+        break;
+      }
+
+      // optional string reSongId = 17;
+      case 17: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_reSongId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_resongid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->resongid().data(), this->resongid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(146)) goto parse_album;
+        break;
+      }
+
+      // optional .dogatech.soulsifter.proto.Album album = 18;
+      case 18: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_album:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_album()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(154)) goto parse_genre;
+        break;
+      }
+
+      // repeated .dogatech.soulsifter.proto.Genre genre = 19;
+      case 19: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_genre:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_genre()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(154)) goto parse_genre;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Song::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional int32 id = 1;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
+  }
+
+  // optional string artist = 2;
+  if (has_artist()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->artist().data(), this->artist().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->artist(), output);
+  }
+
+  // optional string track = 3;
+  if (has_track()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->track().data(), this->track().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->track(), output);
+  }
+
+  // optional string title = 4;
+  if (has_title()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->title().data(), this->title().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->title(), output);
+  }
+
+  // optional string remixer = 5;
+  if (has_remixer()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->remixer().data(), this->remixer().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      5, this->remixer(), output);
+  }
+
+  // optional string filePath = 6;
+  if (has_filepath()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->filepath().data(), this->filepath().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      6, this->filepath(), output);
+  }
+
+  // optional int32 albumId = 7;
+  if (has_albumid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->albumid(), output);
+  }
+
+  // optional int32 rating = 8;
+  if (has_rating()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->rating(), output);
+  }
+
+  // optional string dateAdded = 9;
+  if (has_dateadded()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->dateadded().data(), this->dateadded().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      9, this->dateadded(), output);
+  }
+
+  // optional string comments = 10;
+  if (has_comments()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->comments().data(), this->comments().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      10, this->comments(), output);
+  }
+
+  // optional bool trashed = 11;
+  if (has_trashed()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->trashed(), output);
+  }
+
+  // optional int32 albumPartId = 12;
+  if (has_albumpartid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->albumpartid(), output);
+  }
+
+  // optional string bpm = 13;
+  if (has_bpm()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->bpm().data(), this->bpm().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      13, this->bpm(), output);
+  }
+
+  // repeated .dogatech.soulsifter.proto.TonicKey tonicKey = 14;
+  for (int i = 0; i < this->tonickey_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      14, this->tonickey(i), output);
+  }
+
+  // optional bool lowQuality = 15;
+  if (has_lowquality()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(15, this->lowquality(), output);
+  }
+
+  // optional string featuring = 16;
+  if (has_featuring()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->featuring().data(), this->featuring().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      16, this->featuring(), output);
+  }
+
+  // optional string reSongId = 17;
+  if (has_resongid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->resongid().data(), this->resongid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      17, this->resongid(), output);
+  }
+
+  // optional .dogatech.soulsifter.proto.Album album = 18;
+  if (has_album()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      18, this->album(), output);
+  }
+
+  // repeated .dogatech.soulsifter.proto.Genre genre = 19;
+  for (int i = 0; i < this->genre_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      19, this->genre(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Song::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional int32 id = 1;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
+  }
+
+  // optional string artist = 2;
+  if (has_artist()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->artist().data(), this->artist().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->artist(), target);
+  }
+
+  // optional string track = 3;
+  if (has_track()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->track().data(), this->track().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->track(), target);
+  }
+
+  // optional string title = 4;
+  if (has_title()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->title().data(), this->title().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->title(), target);
+  }
+
+  // optional string remixer = 5;
+  if (has_remixer()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->remixer().data(), this->remixer().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->remixer(), target);
+  }
+
+  // optional string filePath = 6;
+  if (has_filepath()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->filepath().data(), this->filepath().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->filepath(), target);
+  }
+
+  // optional int32 albumId = 7;
+  if (has_albumid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->albumid(), target);
+  }
+
+  // optional int32 rating = 8;
+  if (has_rating()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->rating(), target);
+  }
+
+  // optional string dateAdded = 9;
+  if (has_dateadded()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->dateadded().data(), this->dateadded().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->dateadded(), target);
+  }
+
+  // optional string comments = 10;
+  if (has_comments()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->comments().data(), this->comments().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->comments(), target);
+  }
+
+  // optional bool trashed = 11;
+  if (has_trashed()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->trashed(), target);
+  }
+
+  // optional int32 albumPartId = 12;
+  if (has_albumpartid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->albumpartid(), target);
+  }
+
+  // optional string bpm = 13;
+  if (has_bpm()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->bpm().data(), this->bpm().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        13, this->bpm(), target);
+  }
+
+  // repeated .dogatech.soulsifter.proto.TonicKey tonicKey = 14;
+  for (int i = 0; i < this->tonickey_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      14, this->tonickey(i), target);
+  }
+
+  // optional bool lowQuality = 15;
+  if (has_lowquality()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(15, this->lowquality(), target);
+  }
+
+  // optional string featuring = 16;
+  if (has_featuring()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->featuring().data(), this->featuring().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        16, this->featuring(), target);
+  }
+
+  // optional string reSongId = 17;
+  if (has_resongid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->resongid().data(), this->resongid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        17, this->resongid(), target);
+  }
+
+  // optional .dogatech.soulsifter.proto.Album album = 18;
+  if (has_album()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        18, this->album(), target);
+  }
+
+  // repeated .dogatech.soulsifter.proto.Genre genre = 19;
+  for (int i = 0; i < this->genre_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        19, this->genre(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Song::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional int32 id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->id());
+    }
+
+    // optional string artist = 2;
+    if (has_artist()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->artist());
+    }
+
+    // optional string track = 3;
+    if (has_track()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->track());
+    }
+
+    // optional string title = 4;
+    if (has_title()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->title());
+    }
+
+    // optional string remixer = 5;
+    if (has_remixer()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->remixer());
+    }
+
+    // optional string featuring = 16;
+    if (has_featuring()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->featuring());
+    }
+
+    // optional string filePath = 6;
+    if (has_filepath()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->filepath());
+    }
+
+    // optional string reSongId = 17;
+    if (has_resongid()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->resongid());
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional int32 albumId = 7;
+    if (has_albumid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->albumid());
+    }
+
+    // optional int32 rating = 8;
+    if (has_rating()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->rating());
+    }
+
+    // optional string dateAdded = 9;
+    if (has_dateadded()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->dateadded());
+    }
+
+    // optional string comments = 10;
+    if (has_comments()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->comments());
+    }
+
+    // optional bool trashed = 11;
+    if (has_trashed()) {
+      total_size += 1 + 1;
+    }
+
+    // optional int32 albumPartId = 12;
+    if (has_albumpartid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->albumpartid());
+    }
+
+    // optional string bpm = 13;
+    if (has_bpm()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->bpm());
+    }
+
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    // optional bool lowQuality = 15;
+    if (has_lowquality()) {
+      total_size += 1 + 1;
+    }
+
+    // optional .dogatech.soulsifter.proto.Album album = 18;
+    if (has_album()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->album());
+    }
+
+  }
+  // repeated .dogatech.soulsifter.proto.TonicKey tonicKey = 14;
+  {
+    int data_size = 0;
+    for (int i = 0; i < this->tonickey_size(); i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::EnumSize(
+        this->tonickey(i));
+    }
+    total_size += 1 * this->tonickey_size() + data_size;
+  }
+
+  // repeated .dogatech.soulsifter.proto.Genre genre = 19;
+  total_size += 2 * this->genre_size();
+  for (int i = 0; i < this->genre_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->genre(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Song::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Song* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Song*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Song::MergeFrom(const Song& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  tonickey_.MergeFrom(from.tonickey_);
+  genre_.MergeFrom(from.genre_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_id()) {
+      set_id(from.id());
+    }
+    if (from.has_artist()) {
+      set_artist(from.artist());
+    }
+    if (from.has_track()) {
+      set_track(from.track());
+    }
+    if (from.has_title()) {
+      set_title(from.title());
+    }
+    if (from.has_remixer()) {
+      set_remixer(from.remixer());
+    }
+    if (from.has_featuring()) {
+      set_featuring(from.featuring());
+    }
+    if (from.has_filepath()) {
+      set_filepath(from.filepath());
+    }
+    if (from.has_resongid()) {
+      set_resongid(from.resongid());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_albumid()) {
+      set_albumid(from.albumid());
+    }
+    if (from.has_rating()) {
+      set_rating(from.rating());
+    }
+    if (from.has_dateadded()) {
+      set_dateadded(from.dateadded());
+    }
+    if (from.has_comments()) {
+      set_comments(from.comments());
+    }
+    if (from.has_trashed()) {
+      set_trashed(from.trashed());
+    }
+    if (from.has_albumpartid()) {
+      set_albumpartid(from.albumpartid());
+    }
+    if (from.has_bpm()) {
+      set_bpm(from.bpm());
+    }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (from.has_lowquality()) {
+      set_lowquality(from.lowquality());
+    }
+    if (from.has_album()) {
+      mutable_album()->::dogatech::soulsifter::proto::Album::MergeFrom(from.album());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Song::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Song::CopyFrom(const Song& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Song::IsInitialized() const {
+
+  return true;
+}
+
+void Song::Swap(Song* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(artist_, other->artist_);
+    std::swap(track_, other->track_);
+    std::swap(title_, other->title_);
+    std::swap(remixer_, other->remixer_);
+    std::swap(featuring_, other->featuring_);
+    std::swap(filepath_, other->filepath_);
+    std::swap(resongid_, other->resongid_);
+    std::swap(albumid_, other->albumid_);
+    std::swap(rating_, other->rating_);
+    std::swap(dateadded_, other->dateadded_);
+    std::swap(comments_, other->comments_);
+    std::swap(trashed_, other->trashed_);
+    std::swap(albumpartid_, other->albumpartid_);
+    std::swap(bpm_, other->bpm_);
+    tonickey_.Swap(&other->tonickey_);
+    std::swap(lowquality_, other->lowquality_);
+    std::swap(album_, other->album_);
+    genre_.Swap(&other->genre_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Song::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Song_descriptor_;
+  metadata.reflection = Song_reflection_;
+  return metadata;
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
+
+}  // namespace proto
+}  // namespace soulsifter
+}  // namespace dogatech
 
 // @@protoc_insertion_point(global_scope)

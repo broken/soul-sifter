@@ -19,7 +19,15 @@ class closure;
 class rpc_channel;
 }  //namesacpe rpcz
 #include "soul_sifter.pb.h"
+
+namespace dogatech {
+namespace soulsifter {
+namespace proto {
 void rpcz_protobuf_AssignDesc_soul_5fsifter_2eproto();
 void rpcz_protobuf_ShutdownFile_soul_5fsifter_2eproto();
 
+
+}  // namespace proto
+}  // namespace soulsifter
+}  // namespace dogatech
 #endif  // RPCZ_soul_5fsifter_2eproto__INCLUDED

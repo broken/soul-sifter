@@ -11,6 +11,7 @@ const ::google::protobuf::ServiceDescriptor* SoulSifterService_descriptor_ = NUL
 
 namespace dogatech {
 namespace soulsifter {
+namespace proto {
 
 void rpcz_protobuf_AssignDesc_soul_5fsifter_5fservice_2eproto() {
   const ::google::protobuf::FileDescriptor* file =
@@ -43,13 +44,24 @@ void rpcz_protobuf_AddDesc_soul_5fsifter_5fservice_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::dogatech::soulsifter::proto::protobuf_AddDesc_soul_5fsifter_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\031soul_sifter_service.proto\022\023dogatech.so"
-    "ulsifter\"\034\n\016GetSongRequest\022\n\n\002id\030\001 \001(\005\" "
-    "\n\017GetSongResponse\022\r\n\005title\030\001 \001(\t2i\n\021Soul"
-    "SifterService\022T\n\007GetSong\022#.dogatech.soul"
-    "sifter.GetSongRequest\032$.dogatech.soulsif"
-    "ter.GetSongResponse", 219);
+    "\n\031soul_sifter_service.proto\022\031dogatech.so"
+    "ulsifter.proto\032\021soul_sifter.proto\"\034\n\016Get"
+    "SongRequest\022\n\n\002id\030\001 \001(\005\" \n\017GetSongRespon"
+    "se\022\r\n\005title\030\001 \001(\t\"\307\001\n\020FindSongsRequest\022\r"
+    "\n\005query\030\001 \001(\t\0229\n\014key_to_match\030\002 \001(\0162#.do"
+    "gatech.soulsifter.proto.TonicKey\022\026\n\010key_"
+    "lock\030\003 \001(\010:\004true\022\017\n\007max_bpm\030\004 \001(\005\022\017\n\007min"
+    "_bpm\030\005 \001(\005\022/\n\005genre\030\006 \003(\0132 .dogatech.sou"
+    "lsifter.proto.Genre\"B\n\021FindSongsResponse"
+    "\022-\n\004song\030\001 \003(\0132\037.dogatech.soulsifter.pro"
+    "to.Song2\335\001\n\021SoulSifterService\022f\n\tFindSon"
+    "gs\022+.dogatech.soulsifter.proto.FindSongs"
+    "Request\032,.dogatech.soulsifter.proto.Find"
+    "SongsResponse\022`\n\007GetSong\022).dogatech.soul"
+    "sifter.proto.GetSongRequest\032*.dogatech.s"
+    "oulsifter.proto.GetSongResponse", 631);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "soul_sifter_service.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&rpcz_protobuf_ShutdownFile_soul_5fsifter_5fservice_2eproto);
@@ -69,8 +81,14 @@ const ::google::protobuf::ServiceDescriptor* SoulSifterService::GetDescriptor() 
   return SoulSifterService_descriptor_;
 }
 
-void SoulSifterService::GetSong(const ::dogatech::soulsifter::GetSongRequest&,
-                         ::rpcz::reply< ::dogatech::soulsifter::GetSongResponse> reply) {
+void SoulSifterService::FindSongs(const ::dogatech::soulsifter::proto::FindSongsRequest&,
+                         ::rpcz::reply< ::dogatech::soulsifter::proto::FindSongsResponse> reply) {
+  reply.Error(::rpcz::application_error::METHOD_NOT_IMPLEMENTED,
+              "Method FindSongs() not implemented.");
+}
+
+void SoulSifterService::GetSong(const ::dogatech::soulsifter::proto::GetSongRequest&,
+                         ::rpcz::reply< ::dogatech::soulsifter::proto::GetSongResponse> reply) {
   reply.Error(::rpcz::application_error::METHOD_NOT_IMPLEMENTED,
               "Method GetSong() not implemented.");
 }
@@ -81,9 +99,14 @@ void SoulSifterService::call_method(const ::google::protobuf::MethodDescriptor* 
   GOOGLE_DCHECK_EQ(method->service(), SoulSifterService_descriptor_);
   switch(method->index()) {
     case 0:
+      FindSongs(
+          *::google::protobuf::down_cast<const ::dogatech::soulsifter::proto::FindSongsRequest*>(&request),
+          ::rpcz::reply< ::dogatech::soulsifter::proto::FindSongsResponse>(channel));
+      break;
+    case 1:
       GetSong(
-          *::google::protobuf::down_cast<const ::dogatech::soulsifter::GetSongRequest*>(&request),
-          ::rpcz::reply< ::dogatech::soulsifter::GetSongResponse>(channel));
+          *::google::protobuf::down_cast<const ::dogatech::soulsifter::proto::GetSongRequest*>(&request),
+          ::rpcz::reply< ::dogatech::soulsifter::proto::GetSongResponse>(channel));
       break;
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
@@ -96,7 +119,9 @@ const ::google::protobuf::Message& SoulSifterService::GetRequestPrototype(
   GOOGLE_DCHECK_EQ(method->service(), descriptor());
   switch(method->index()) {
     case 0:
-      return ::dogatech::soulsifter::GetSongRequest::default_instance();
+      return ::dogatech::soulsifter::proto::FindSongsRequest::default_instance();
+    case 1:
+      return ::dogatech::soulsifter::proto::GetSongRequest::default_instance();
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
       return *reinterpret_cast< ::google::protobuf::Message*>(NULL);
@@ -108,7 +133,9 @@ const ::google::protobuf::Message& SoulSifterService::GetResponsePrototype(
   GOOGLE_DCHECK_EQ(method->service(), descriptor());
   switch(method->index()) {
     case 0:
-      return ::dogatech::soulsifter::GetSongResponse::default_instance();
+      return ::dogatech::soulsifter::proto::FindSongsResponse::default_instance();
+    case 1:
+      return ::dogatech::soulsifter::proto::GetSongResponse::default_instance();
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
       return *reinterpret_cast< ::google::protobuf::Message*>(NULL);
@@ -128,16 +155,16 @@ SoulSifterService_Stub::~SoulSifterService_Stub() {
   if (owns_channel_) delete channel_;
 }
 
-void SoulSifterService_Stub::GetSong(const ::dogatech::soulsifter::GetSongRequest& request,
-                              ::dogatech::soulsifter::GetSongResponse* response,
+void SoulSifterService_Stub::FindSongs(const ::dogatech::soulsifter::proto::FindSongsRequest& request,
+                              ::dogatech::soulsifter::proto::FindSongsResponse* response,
                               ::rpcz::rpc* rpc,
                               ::rpcz::closure* done) {
   channel_->call_method(service_name_,
                         SoulSifterService::descriptor()->method(0),
                         request, response, rpc, done);
 }
-void SoulSifterService_Stub::GetSong(const ::dogatech::soulsifter::GetSongRequest& request,
-                              ::dogatech::soulsifter::GetSongResponse* response,
+void SoulSifterService_Stub::FindSongs(const ::dogatech::soulsifter::proto::FindSongsRequest& request,
+                              ::dogatech::soulsifter::proto::FindSongsResponse* response,
                               long deadline_ms) {
   ::rpcz::rpc rpc;
   rpc.set_deadline_ms(deadline_ms);
@@ -149,6 +176,28 @@ void SoulSifterService_Stub::GetSong(const ::dogatech::soulsifter::GetSongReques
     throw ::rpcz::rpc_error(rpc);
   }
 }
+void SoulSifterService_Stub::GetSong(const ::dogatech::soulsifter::proto::GetSongRequest& request,
+                              ::dogatech::soulsifter::proto::GetSongResponse* response,
+                              ::rpcz::rpc* rpc,
+                              ::rpcz::closure* done) {
+  channel_->call_method(service_name_,
+                        SoulSifterService::descriptor()->method(1),
+                        request, response, rpc, done);
+}
+void SoulSifterService_Stub::GetSong(const ::dogatech::soulsifter::proto::GetSongRequest& request,
+                              ::dogatech::soulsifter::proto::GetSongResponse* response,
+                              long deadline_ms) {
+  ::rpcz::rpc rpc;
+  rpc.set_deadline_ms(deadline_ms);
+  channel_->call_method(service_name_,
+                        SoulSifterService::descriptor()->method(1),
+                        request, response, &rpc, NULL);
+  rpc.wait();
+  if (!rpc.ok()) {
+    throw ::rpcz::rpc_error(rpc);
+  }
+}
 
+}  // namespace proto
 }  // namespace soulsifter
 }  // namespace dogatech

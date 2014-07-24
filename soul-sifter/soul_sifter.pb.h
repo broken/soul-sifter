@@ -23,17 +23,262 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
+
+namespace dogatech {
+namespace soulsifter {
+namespace proto {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_soul_5fsifter_2eproto();
 void protobuf_AssignDesc_soul_5fsifter_2eproto();
 void protobuf_ShutdownFile_soul_5fsifter_2eproto();
 
+class Album;
 class Genre;
+class Song;
 
+enum TonicKey {
+  C = 0,
+  G = 1,
+  D = 2,
+  A = 3,
+  E = 4,
+  B = 5,
+  Fs = 6,
+  Db = 7,
+  Ab = 8,
+  Eb = 9,
+  Bb = 10,
+  F = 11,
+  Am = 12,
+  Em = 13,
+  Bm = 14,
+  Fsm = 15,
+  Csm = 16,
+  Gsm = 17,
+  Ebm = 18,
+  Bbm = 19,
+  Fm = 20,
+  Cm = 21,
+  Gm = 22,
+  Dm = 23
+};
+bool TonicKey_IsValid(int value);
+const TonicKey TonicKey_MIN = C;
+const TonicKey TonicKey_MAX = Dm;
+const int TonicKey_ARRAYSIZE = TonicKey_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TonicKey_descriptor();
+inline const ::std::string& TonicKey_Name(TonicKey value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TonicKey_descriptor(), value);
+}
+inline bool TonicKey_Parse(
+    const ::std::string& name, TonicKey* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TonicKey>(
+    TonicKey_descriptor(), name, value);
+}
 // ===================================================================
+
+class Album : public ::google::protobuf::Message {
+ public:
+  Album();
+  virtual ~Album();
+
+  Album(const Album& from);
+
+  inline Album& operator=(const Album& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Album& default_instance();
+
+  void Swap(Album* other);
+
+  // implements Message ----------------------------------------------
+
+  Album* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Album& from);
+  void MergeFrom(const Album& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+
+  // optional string name = 2;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 2;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
+
+  // optional string artist = 3;
+  inline bool has_artist() const;
+  inline void clear_artist();
+  static const int kArtistFieldNumber = 3;
+  inline const ::std::string& artist() const;
+  inline void set_artist(const ::std::string& value);
+  inline void set_artist(const char* value);
+  inline void set_artist(const char* value, size_t size);
+  inline ::std::string* mutable_artist();
+  inline ::std::string* release_artist();
+  inline void set_allocated_artist(::std::string* artist);
+
+  // optional string coverFilepath = 4;
+  inline bool has_coverfilepath() const;
+  inline void clear_coverfilepath();
+  static const int kCoverFilepathFieldNumber = 4;
+  inline const ::std::string& coverfilepath() const;
+  inline void set_coverfilepath(const ::std::string& value);
+  inline void set_coverfilepath(const char* value);
+  inline void set_coverfilepath(const char* value, size_t size);
+  inline ::std::string* mutable_coverfilepath();
+  inline ::std::string* release_coverfilepath();
+  inline void set_allocated_coverfilepath(::std::string* coverfilepath);
+
+  // optional bool mixed = 5;
+  inline bool has_mixed() const;
+  inline void clear_mixed();
+  static const int kMixedFieldNumber = 5;
+  inline bool mixed() const;
+  inline void set_mixed(bool value);
+
+  // optional string label = 6;
+  inline bool has_label() const;
+  inline void clear_label();
+  static const int kLabelFieldNumber = 6;
+  inline const ::std::string& label() const;
+  inline void set_label(const ::std::string& value);
+  inline void set_label(const char* value);
+  inline void set_label(const char* value, size_t size);
+  inline ::std::string* mutable_label();
+  inline ::std::string* release_label();
+  inline void set_allocated_label(::std::string* label);
+
+  // optional string catalogId = 7;
+  inline bool has_catalogid() const;
+  inline void clear_catalogid();
+  static const int kCatalogIdFieldNumber = 7;
+  inline const ::std::string& catalogid() const;
+  inline void set_catalogid(const ::std::string& value);
+  inline void set_catalogid(const char* value);
+  inline void set_catalogid(const char* value, size_t size);
+  inline ::std::string* mutable_catalogid();
+  inline ::std::string* release_catalogid();
+  inline void set_allocated_catalogid(::std::string* catalogid);
+
+  // optional int32 releaseDateYear = 8;
+  inline bool has_releasedateyear() const;
+  inline void clear_releasedateyear();
+  static const int kReleaseDateYearFieldNumber = 8;
+  inline ::google::protobuf::int32 releasedateyear() const;
+  inline void set_releasedateyear(::google::protobuf::int32 value);
+
+  // optional int32 releaseDateMonth = 9;
+  inline bool has_releasedatemonth() const;
+  inline void clear_releasedatemonth();
+  static const int kReleaseDateMonthFieldNumber = 9;
+  inline ::google::protobuf::int32 releasedatemonth() const;
+  inline void set_releasedatemonth(::google::protobuf::int32 value);
+
+  // optional int32 releaseDateDay = 10;
+  inline bool has_releasedateday() const;
+  inline void clear_releasedateday();
+  static const int kReleaseDateDayFieldNumber = 10;
+  inline ::google::protobuf::int32 releasedateday() const;
+  inline void set_releasedateday(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:dogatech.soulsifter.proto.Album)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_artist();
+  inline void clear_has_artist();
+  inline void set_has_coverfilepath();
+  inline void clear_has_coverfilepath();
+  inline void set_has_mixed();
+  inline void clear_has_mixed();
+  inline void set_has_label();
+  inline void clear_has_label();
+  inline void set_has_catalogid();
+  inline void clear_has_catalogid();
+  inline void set_has_releasedateyear();
+  inline void clear_has_releasedateyear();
+  inline void set_has_releasedatemonth();
+  inline void clear_has_releasedatemonth();
+  inline void set_has_releasedateday();
+  inline void clear_has_releasedateday();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* name_;
+  ::std::string* artist_;
+  ::google::protobuf::int32 id_;
+  bool mixed_;
+  ::std::string* coverfilepath_;
+  ::std::string* label_;
+  ::std::string* catalogid_;
+  ::google::protobuf::int32 releasedateyear_;
+  ::google::protobuf::int32 releasedatemonth_;
+  ::google::protobuf::int32 releasedateday_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
+
+  friend void  protobuf_AddDesc_soul_5fsifter_2eproto();
+  friend void protobuf_AssignDesc_soul_5fsifter_2eproto();
+  friend void protobuf_ShutdownFile_soul_5fsifter_2eproto();
+
+  void InitAsDefaultInstance();
+  static Album* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class Genre : public ::google::protobuf::Message {
  public:
@@ -108,19 +353,19 @@ class Genre : public ::google::protobuf::Message {
   inline ::std::string* release_name();
   inline void set_allocated_name(::std::string* name);
 
-  // repeated .Genre child = 3;
+  // repeated .dogatech.soulsifter.proto.Genre child = 3;
   inline int child_size() const;
   inline void clear_child();
   static const int kChildFieldNumber = 3;
-  inline const ::Genre& child(int index) const;
-  inline ::Genre* mutable_child(int index);
-  inline ::Genre* add_child();
-  inline const ::google::protobuf::RepeatedPtrField< ::Genre >&
+  inline const ::dogatech::soulsifter::proto::Genre& child(int index) const;
+  inline ::dogatech::soulsifter::proto::Genre* mutable_child(int index);
+  inline ::dogatech::soulsifter::proto::Genre* add_child();
+  inline const ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >&
       child() const;
-  inline ::google::protobuf::RepeatedPtrField< ::Genre >*
+  inline ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >*
       mutable_child();
 
-  // @@protoc_insertion_point(class_scope:Genre)
+  // @@protoc_insertion_point(class_scope:dogatech.soulsifter.proto.Genre)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -130,7 +375,7 @@ class Genre : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* name_;
-  ::google::protobuf::RepeatedPtrField< ::Genre > child_;
+  ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre > child_;
   ::google::protobuf::int32 id_;
 
   mutable int _cached_size_;
@@ -143,10 +388,792 @@ class Genre : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static Genre* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class Song : public ::google::protobuf::Message {
+ public:
+  Song();
+  virtual ~Song();
+
+  Song(const Song& from);
+
+  inline Song& operator=(const Song& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Song& default_instance();
+
+  void Swap(Song* other);
+
+  // implements Message ----------------------------------------------
+
+  Song* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Song& from);
+  void MergeFrom(const Song& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+
+  // optional string artist = 2;
+  inline bool has_artist() const;
+  inline void clear_artist();
+  static const int kArtistFieldNumber = 2;
+  inline const ::std::string& artist() const;
+  inline void set_artist(const ::std::string& value);
+  inline void set_artist(const char* value);
+  inline void set_artist(const char* value, size_t size);
+  inline ::std::string* mutable_artist();
+  inline ::std::string* release_artist();
+  inline void set_allocated_artist(::std::string* artist);
+
+  // optional string track = 3;
+  inline bool has_track() const;
+  inline void clear_track();
+  static const int kTrackFieldNumber = 3;
+  inline const ::std::string& track() const;
+  inline void set_track(const ::std::string& value);
+  inline void set_track(const char* value);
+  inline void set_track(const char* value, size_t size);
+  inline ::std::string* mutable_track();
+  inline ::std::string* release_track();
+  inline void set_allocated_track(::std::string* track);
+
+  // optional string title = 4;
+  inline bool has_title() const;
+  inline void clear_title();
+  static const int kTitleFieldNumber = 4;
+  inline const ::std::string& title() const;
+  inline void set_title(const ::std::string& value);
+  inline void set_title(const char* value);
+  inline void set_title(const char* value, size_t size);
+  inline ::std::string* mutable_title();
+  inline ::std::string* release_title();
+  inline void set_allocated_title(::std::string* title);
+
+  // optional string remixer = 5;
+  inline bool has_remixer() const;
+  inline void clear_remixer();
+  static const int kRemixerFieldNumber = 5;
+  inline const ::std::string& remixer() const;
+  inline void set_remixer(const ::std::string& value);
+  inline void set_remixer(const char* value);
+  inline void set_remixer(const char* value, size_t size);
+  inline ::std::string* mutable_remixer();
+  inline ::std::string* release_remixer();
+  inline void set_allocated_remixer(::std::string* remixer);
+
+  // optional string featuring = 16;
+  inline bool has_featuring() const;
+  inline void clear_featuring();
+  static const int kFeaturingFieldNumber = 16;
+  inline const ::std::string& featuring() const;
+  inline void set_featuring(const ::std::string& value);
+  inline void set_featuring(const char* value);
+  inline void set_featuring(const char* value, size_t size);
+  inline ::std::string* mutable_featuring();
+  inline ::std::string* release_featuring();
+  inline void set_allocated_featuring(::std::string* featuring);
+
+  // optional string filePath = 6;
+  inline bool has_filepath() const;
+  inline void clear_filepath();
+  static const int kFilePathFieldNumber = 6;
+  inline const ::std::string& filepath() const;
+  inline void set_filepath(const ::std::string& value);
+  inline void set_filepath(const char* value);
+  inline void set_filepath(const char* value, size_t size);
+  inline ::std::string* mutable_filepath();
+  inline ::std::string* release_filepath();
+  inline void set_allocated_filepath(::std::string* filepath);
+
+  // optional string reSongId = 17;
+  inline bool has_resongid() const;
+  inline void clear_resongid();
+  static const int kReSongIdFieldNumber = 17;
+  inline const ::std::string& resongid() const;
+  inline void set_resongid(const ::std::string& value);
+  inline void set_resongid(const char* value);
+  inline void set_resongid(const char* value, size_t size);
+  inline ::std::string* mutable_resongid();
+  inline ::std::string* release_resongid();
+  inline void set_allocated_resongid(::std::string* resongid);
+
+  // optional int32 albumId = 7;
+  inline bool has_albumid() const;
+  inline void clear_albumid();
+  static const int kAlbumIdFieldNumber = 7;
+  inline ::google::protobuf::int32 albumid() const;
+  inline void set_albumid(::google::protobuf::int32 value);
+
+  // optional int32 rating = 8;
+  inline bool has_rating() const;
+  inline void clear_rating();
+  static const int kRatingFieldNumber = 8;
+  inline ::google::protobuf::int32 rating() const;
+  inline void set_rating(::google::protobuf::int32 value);
+
+  // optional string dateAdded = 9;
+  inline bool has_dateadded() const;
+  inline void clear_dateadded();
+  static const int kDateAddedFieldNumber = 9;
+  inline const ::std::string& dateadded() const;
+  inline void set_dateadded(const ::std::string& value);
+  inline void set_dateadded(const char* value);
+  inline void set_dateadded(const char* value, size_t size);
+  inline ::std::string* mutable_dateadded();
+  inline ::std::string* release_dateadded();
+  inline void set_allocated_dateadded(::std::string* dateadded);
+
+  // optional string comments = 10;
+  inline bool has_comments() const;
+  inline void clear_comments();
+  static const int kCommentsFieldNumber = 10;
+  inline const ::std::string& comments() const;
+  inline void set_comments(const ::std::string& value);
+  inline void set_comments(const char* value);
+  inline void set_comments(const char* value, size_t size);
+  inline ::std::string* mutable_comments();
+  inline ::std::string* release_comments();
+  inline void set_allocated_comments(::std::string* comments);
+
+  // optional bool trashed = 11;
+  inline bool has_trashed() const;
+  inline void clear_trashed();
+  static const int kTrashedFieldNumber = 11;
+  inline bool trashed() const;
+  inline void set_trashed(bool value);
+
+  // optional int32 albumPartId = 12;
+  inline bool has_albumpartid() const;
+  inline void clear_albumpartid();
+  static const int kAlbumPartIdFieldNumber = 12;
+  inline ::google::protobuf::int32 albumpartid() const;
+  inline void set_albumpartid(::google::protobuf::int32 value);
+
+  // optional string bpm = 13;
+  inline bool has_bpm() const;
+  inline void clear_bpm();
+  static const int kBpmFieldNumber = 13;
+  inline const ::std::string& bpm() const;
+  inline void set_bpm(const ::std::string& value);
+  inline void set_bpm(const char* value);
+  inline void set_bpm(const char* value, size_t size);
+  inline ::std::string* mutable_bpm();
+  inline ::std::string* release_bpm();
+  inline void set_allocated_bpm(::std::string* bpm);
+
+  // repeated .dogatech.soulsifter.proto.TonicKey tonicKey = 14;
+  inline int tonickey_size() const;
+  inline void clear_tonickey();
+  static const int kTonicKeyFieldNumber = 14;
+  inline ::dogatech::soulsifter::proto::TonicKey tonickey(int index) const;
+  inline void set_tonickey(int index, ::dogatech::soulsifter::proto::TonicKey value);
+  inline void add_tonickey(::dogatech::soulsifter::proto::TonicKey value);
+  inline const ::google::protobuf::RepeatedField<int>& tonickey() const;
+  inline ::google::protobuf::RepeatedField<int>* mutable_tonickey();
+
+  // optional bool lowQuality = 15;
+  inline bool has_lowquality() const;
+  inline void clear_lowquality();
+  static const int kLowQualityFieldNumber = 15;
+  inline bool lowquality() const;
+  inline void set_lowquality(bool value);
+
+  // optional .dogatech.soulsifter.proto.Album album = 18;
+  inline bool has_album() const;
+  inline void clear_album();
+  static const int kAlbumFieldNumber = 18;
+  inline const ::dogatech::soulsifter::proto::Album& album() const;
+  inline ::dogatech::soulsifter::proto::Album* mutable_album();
+  inline ::dogatech::soulsifter::proto::Album* release_album();
+  inline void set_allocated_album(::dogatech::soulsifter::proto::Album* album);
+
+  // repeated .dogatech.soulsifter.proto.Genre genre = 19;
+  inline int genre_size() const;
+  inline void clear_genre();
+  static const int kGenreFieldNumber = 19;
+  inline const ::dogatech::soulsifter::proto::Genre& genre(int index) const;
+  inline ::dogatech::soulsifter::proto::Genre* mutable_genre(int index);
+  inline ::dogatech::soulsifter::proto::Genre* add_genre();
+  inline const ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >&
+      genre() const;
+  inline ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >*
+      mutable_genre();
+
+  // @@protoc_insertion_point(class_scope:dogatech.soulsifter.proto.Song)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_artist();
+  inline void clear_has_artist();
+  inline void set_has_track();
+  inline void clear_has_track();
+  inline void set_has_title();
+  inline void clear_has_title();
+  inline void set_has_remixer();
+  inline void clear_has_remixer();
+  inline void set_has_featuring();
+  inline void clear_has_featuring();
+  inline void set_has_filepath();
+  inline void clear_has_filepath();
+  inline void set_has_resongid();
+  inline void clear_has_resongid();
+  inline void set_has_albumid();
+  inline void clear_has_albumid();
+  inline void set_has_rating();
+  inline void clear_has_rating();
+  inline void set_has_dateadded();
+  inline void clear_has_dateadded();
+  inline void set_has_comments();
+  inline void clear_has_comments();
+  inline void set_has_trashed();
+  inline void clear_has_trashed();
+  inline void set_has_albumpartid();
+  inline void clear_has_albumpartid();
+  inline void set_has_bpm();
+  inline void clear_has_bpm();
+  inline void set_has_lowquality();
+  inline void clear_has_lowquality();
+  inline void set_has_album();
+  inline void clear_has_album();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* artist_;
+  ::std::string* track_;
+  ::std::string* title_;
+  ::std::string* remixer_;
+  ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 albumid_;
+  ::std::string* featuring_;
+  ::std::string* filepath_;
+  ::std::string* resongid_;
+  ::std::string* dateadded_;
+  ::std::string* comments_;
+  ::google::protobuf::int32 rating_;
+  ::google::protobuf::int32 albumpartid_;
+  ::std::string* bpm_;
+  ::google::protobuf::RepeatedField<int> tonickey_;
+  ::dogatech::soulsifter::proto::Album* album_;
+  ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre > genre_;
+  bool trashed_;
+  bool lowquality_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(19 + 31) / 32];
+
+  friend void  protobuf_AddDesc_soul_5fsifter_2eproto();
+  friend void protobuf_AssignDesc_soul_5fsifter_2eproto();
+  friend void protobuf_ShutdownFile_soul_5fsifter_2eproto();
+
+  void InitAsDefaultInstance();
+  static Song* default_instance_;
+};
 // ===================================================================
 
 
 // ===================================================================
+
+// Album
+
+// optional int32 id = 1;
+inline bool Album::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Album::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Album::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Album::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 Album::id() const {
+  return id_;
+}
+inline void Album::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// optional string name = 2;
+inline bool Album::has_name() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Album::set_has_name() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Album::clear_has_name() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Album::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& Album::name() const {
+  return *name_;
+}
+inline void Album::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void Album::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void Album::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Album::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* Album::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Album::set_allocated_name(::std::string* name) {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (name) {
+    set_has_name();
+    name_ = name;
+  } else {
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string artist = 3;
+inline bool Album::has_artist() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Album::set_has_artist() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Album::clear_has_artist() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Album::clear_artist() {
+  if (artist_ != &::google::protobuf::internal::kEmptyString) {
+    artist_->clear();
+  }
+  clear_has_artist();
+}
+inline const ::std::string& Album::artist() const {
+  return *artist_;
+}
+inline void Album::set_artist(const ::std::string& value) {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  artist_->assign(value);
+}
+inline void Album::set_artist(const char* value) {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  artist_->assign(value);
+}
+inline void Album::set_artist(const char* value, size_t size) {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  artist_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Album::mutable_artist() {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  return artist_;
+}
+inline ::std::string* Album::release_artist() {
+  clear_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = artist_;
+    artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Album::set_allocated_artist(::std::string* artist) {
+  if (artist_ != &::google::protobuf::internal::kEmptyString) {
+    delete artist_;
+  }
+  if (artist) {
+    set_has_artist();
+    artist_ = artist;
+  } else {
+    clear_has_artist();
+    artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string coverFilepath = 4;
+inline bool Album::has_coverfilepath() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Album::set_has_coverfilepath() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Album::clear_has_coverfilepath() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Album::clear_coverfilepath() {
+  if (coverfilepath_ != &::google::protobuf::internal::kEmptyString) {
+    coverfilepath_->clear();
+  }
+  clear_has_coverfilepath();
+}
+inline const ::std::string& Album::coverfilepath() const {
+  return *coverfilepath_;
+}
+inline void Album::set_coverfilepath(const ::std::string& value) {
+  set_has_coverfilepath();
+  if (coverfilepath_ == &::google::protobuf::internal::kEmptyString) {
+    coverfilepath_ = new ::std::string;
+  }
+  coverfilepath_->assign(value);
+}
+inline void Album::set_coverfilepath(const char* value) {
+  set_has_coverfilepath();
+  if (coverfilepath_ == &::google::protobuf::internal::kEmptyString) {
+    coverfilepath_ = new ::std::string;
+  }
+  coverfilepath_->assign(value);
+}
+inline void Album::set_coverfilepath(const char* value, size_t size) {
+  set_has_coverfilepath();
+  if (coverfilepath_ == &::google::protobuf::internal::kEmptyString) {
+    coverfilepath_ = new ::std::string;
+  }
+  coverfilepath_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Album::mutable_coverfilepath() {
+  set_has_coverfilepath();
+  if (coverfilepath_ == &::google::protobuf::internal::kEmptyString) {
+    coverfilepath_ = new ::std::string;
+  }
+  return coverfilepath_;
+}
+inline ::std::string* Album::release_coverfilepath() {
+  clear_has_coverfilepath();
+  if (coverfilepath_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = coverfilepath_;
+    coverfilepath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Album::set_allocated_coverfilepath(::std::string* coverfilepath) {
+  if (coverfilepath_ != &::google::protobuf::internal::kEmptyString) {
+    delete coverfilepath_;
+  }
+  if (coverfilepath) {
+    set_has_coverfilepath();
+    coverfilepath_ = coverfilepath;
+  } else {
+    clear_has_coverfilepath();
+    coverfilepath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional bool mixed = 5;
+inline bool Album::has_mixed() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Album::set_has_mixed() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Album::clear_has_mixed() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Album::clear_mixed() {
+  mixed_ = false;
+  clear_has_mixed();
+}
+inline bool Album::mixed() const {
+  return mixed_;
+}
+inline void Album::set_mixed(bool value) {
+  set_has_mixed();
+  mixed_ = value;
+}
+
+// optional string label = 6;
+inline bool Album::has_label() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Album::set_has_label() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Album::clear_has_label() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Album::clear_label() {
+  if (label_ != &::google::protobuf::internal::kEmptyString) {
+    label_->clear();
+  }
+  clear_has_label();
+}
+inline const ::std::string& Album::label() const {
+  return *label_;
+}
+inline void Album::set_label(const ::std::string& value) {
+  set_has_label();
+  if (label_ == &::google::protobuf::internal::kEmptyString) {
+    label_ = new ::std::string;
+  }
+  label_->assign(value);
+}
+inline void Album::set_label(const char* value) {
+  set_has_label();
+  if (label_ == &::google::protobuf::internal::kEmptyString) {
+    label_ = new ::std::string;
+  }
+  label_->assign(value);
+}
+inline void Album::set_label(const char* value, size_t size) {
+  set_has_label();
+  if (label_ == &::google::protobuf::internal::kEmptyString) {
+    label_ = new ::std::string;
+  }
+  label_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Album::mutable_label() {
+  set_has_label();
+  if (label_ == &::google::protobuf::internal::kEmptyString) {
+    label_ = new ::std::string;
+  }
+  return label_;
+}
+inline ::std::string* Album::release_label() {
+  clear_has_label();
+  if (label_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = label_;
+    label_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Album::set_allocated_label(::std::string* label) {
+  if (label_ != &::google::protobuf::internal::kEmptyString) {
+    delete label_;
+  }
+  if (label) {
+    set_has_label();
+    label_ = label;
+  } else {
+    clear_has_label();
+    label_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string catalogId = 7;
+inline bool Album::has_catalogid() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Album::set_has_catalogid() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Album::clear_has_catalogid() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Album::clear_catalogid() {
+  if (catalogid_ != &::google::protobuf::internal::kEmptyString) {
+    catalogid_->clear();
+  }
+  clear_has_catalogid();
+}
+inline const ::std::string& Album::catalogid() const {
+  return *catalogid_;
+}
+inline void Album::set_catalogid(const ::std::string& value) {
+  set_has_catalogid();
+  if (catalogid_ == &::google::protobuf::internal::kEmptyString) {
+    catalogid_ = new ::std::string;
+  }
+  catalogid_->assign(value);
+}
+inline void Album::set_catalogid(const char* value) {
+  set_has_catalogid();
+  if (catalogid_ == &::google::protobuf::internal::kEmptyString) {
+    catalogid_ = new ::std::string;
+  }
+  catalogid_->assign(value);
+}
+inline void Album::set_catalogid(const char* value, size_t size) {
+  set_has_catalogid();
+  if (catalogid_ == &::google::protobuf::internal::kEmptyString) {
+    catalogid_ = new ::std::string;
+  }
+  catalogid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Album::mutable_catalogid() {
+  set_has_catalogid();
+  if (catalogid_ == &::google::protobuf::internal::kEmptyString) {
+    catalogid_ = new ::std::string;
+  }
+  return catalogid_;
+}
+inline ::std::string* Album::release_catalogid() {
+  clear_has_catalogid();
+  if (catalogid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = catalogid_;
+    catalogid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Album::set_allocated_catalogid(::std::string* catalogid) {
+  if (catalogid_ != &::google::protobuf::internal::kEmptyString) {
+    delete catalogid_;
+  }
+  if (catalogid) {
+    set_has_catalogid();
+    catalogid_ = catalogid;
+  } else {
+    clear_has_catalogid();
+    catalogid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional int32 releaseDateYear = 8;
+inline bool Album::has_releasedateyear() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Album::set_has_releasedateyear() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Album::clear_has_releasedateyear() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Album::clear_releasedateyear() {
+  releasedateyear_ = 0;
+  clear_has_releasedateyear();
+}
+inline ::google::protobuf::int32 Album::releasedateyear() const {
+  return releasedateyear_;
+}
+inline void Album::set_releasedateyear(::google::protobuf::int32 value) {
+  set_has_releasedateyear();
+  releasedateyear_ = value;
+}
+
+// optional int32 releaseDateMonth = 9;
+inline bool Album::has_releasedatemonth() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Album::set_has_releasedatemonth() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Album::clear_has_releasedatemonth() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Album::clear_releasedatemonth() {
+  releasedatemonth_ = 0;
+  clear_has_releasedatemonth();
+}
+inline ::google::protobuf::int32 Album::releasedatemonth() const {
+  return releasedatemonth_;
+}
+inline void Album::set_releasedatemonth(::google::protobuf::int32 value) {
+  set_has_releasedatemonth();
+  releasedatemonth_ = value;
+}
+
+// optional int32 releaseDateDay = 10;
+inline bool Album::has_releasedateday() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void Album::set_has_releasedateday() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void Album::clear_has_releasedateday() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void Album::clear_releasedateday() {
+  releasedateday_ = 0;
+  clear_has_releasedateday();
+}
+inline ::google::protobuf::int32 Album::releasedateday() const {
+  return releasedateday_;
+}
+inline void Album::set_releasedateday(::google::protobuf::int32 value) {
+  set_has_releasedateday();
+  releasedateday_ = value;
+}
+
+// -------------------------------------------------------------------
 
 // Genre
 
@@ -242,38 +1269,972 @@ inline void Genre::set_allocated_name(::std::string* name) {
   }
 }
 
-// repeated .Genre child = 3;
+// repeated .dogatech.soulsifter.proto.Genre child = 3;
 inline int Genre::child_size() const {
   return child_.size();
 }
 inline void Genre::clear_child() {
   child_.Clear();
 }
-inline const ::Genre& Genre::child(int index) const {
+inline const ::dogatech::soulsifter::proto::Genre& Genre::child(int index) const {
   return child_.Get(index);
 }
-inline ::Genre* Genre::mutable_child(int index) {
+inline ::dogatech::soulsifter::proto::Genre* Genre::mutable_child(int index) {
   return child_.Mutable(index);
 }
-inline ::Genre* Genre::add_child() {
+inline ::dogatech::soulsifter::proto::Genre* Genre::add_child() {
   return child_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Genre >&
+inline const ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >&
 Genre::child() const {
   return child_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::Genre >*
+inline ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >*
 Genre::mutable_child() {
   return &child_;
+}
+
+// -------------------------------------------------------------------
+
+// Song
+
+// optional int32 id = 1;
+inline bool Song::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Song::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Song::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Song::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 Song::id() const {
+  return id_;
+}
+inline void Song::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// optional string artist = 2;
+inline bool Song::has_artist() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Song::set_has_artist() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Song::clear_has_artist() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Song::clear_artist() {
+  if (artist_ != &::google::protobuf::internal::kEmptyString) {
+    artist_->clear();
+  }
+  clear_has_artist();
+}
+inline const ::std::string& Song::artist() const {
+  return *artist_;
+}
+inline void Song::set_artist(const ::std::string& value) {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  artist_->assign(value);
+}
+inline void Song::set_artist(const char* value) {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  artist_->assign(value);
+}
+inline void Song::set_artist(const char* value, size_t size) {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  artist_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_artist() {
+  set_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    artist_ = new ::std::string;
+  }
+  return artist_;
+}
+inline ::std::string* Song::release_artist() {
+  clear_has_artist();
+  if (artist_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = artist_;
+    artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_artist(::std::string* artist) {
+  if (artist_ != &::google::protobuf::internal::kEmptyString) {
+    delete artist_;
+  }
+  if (artist) {
+    set_has_artist();
+    artist_ = artist;
+  } else {
+    clear_has_artist();
+    artist_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string track = 3;
+inline bool Song::has_track() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Song::set_has_track() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Song::clear_has_track() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Song::clear_track() {
+  if (track_ != &::google::protobuf::internal::kEmptyString) {
+    track_->clear();
+  }
+  clear_has_track();
+}
+inline const ::std::string& Song::track() const {
+  return *track_;
+}
+inline void Song::set_track(const ::std::string& value) {
+  set_has_track();
+  if (track_ == &::google::protobuf::internal::kEmptyString) {
+    track_ = new ::std::string;
+  }
+  track_->assign(value);
+}
+inline void Song::set_track(const char* value) {
+  set_has_track();
+  if (track_ == &::google::protobuf::internal::kEmptyString) {
+    track_ = new ::std::string;
+  }
+  track_->assign(value);
+}
+inline void Song::set_track(const char* value, size_t size) {
+  set_has_track();
+  if (track_ == &::google::protobuf::internal::kEmptyString) {
+    track_ = new ::std::string;
+  }
+  track_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_track() {
+  set_has_track();
+  if (track_ == &::google::protobuf::internal::kEmptyString) {
+    track_ = new ::std::string;
+  }
+  return track_;
+}
+inline ::std::string* Song::release_track() {
+  clear_has_track();
+  if (track_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = track_;
+    track_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_track(::std::string* track) {
+  if (track_ != &::google::protobuf::internal::kEmptyString) {
+    delete track_;
+  }
+  if (track) {
+    set_has_track();
+    track_ = track;
+  } else {
+    clear_has_track();
+    track_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string title = 4;
+inline bool Song::has_title() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Song::set_has_title() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Song::clear_has_title() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Song::clear_title() {
+  if (title_ != &::google::protobuf::internal::kEmptyString) {
+    title_->clear();
+  }
+  clear_has_title();
+}
+inline const ::std::string& Song::title() const {
+  return *title_;
+}
+inline void Song::set_title(const ::std::string& value) {
+  set_has_title();
+  if (title_ == &::google::protobuf::internal::kEmptyString) {
+    title_ = new ::std::string;
+  }
+  title_->assign(value);
+}
+inline void Song::set_title(const char* value) {
+  set_has_title();
+  if (title_ == &::google::protobuf::internal::kEmptyString) {
+    title_ = new ::std::string;
+  }
+  title_->assign(value);
+}
+inline void Song::set_title(const char* value, size_t size) {
+  set_has_title();
+  if (title_ == &::google::protobuf::internal::kEmptyString) {
+    title_ = new ::std::string;
+  }
+  title_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_title() {
+  set_has_title();
+  if (title_ == &::google::protobuf::internal::kEmptyString) {
+    title_ = new ::std::string;
+  }
+  return title_;
+}
+inline ::std::string* Song::release_title() {
+  clear_has_title();
+  if (title_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = title_;
+    title_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_title(::std::string* title) {
+  if (title_ != &::google::protobuf::internal::kEmptyString) {
+    delete title_;
+  }
+  if (title) {
+    set_has_title();
+    title_ = title;
+  } else {
+    clear_has_title();
+    title_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string remixer = 5;
+inline bool Song::has_remixer() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Song::set_has_remixer() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Song::clear_has_remixer() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Song::clear_remixer() {
+  if (remixer_ != &::google::protobuf::internal::kEmptyString) {
+    remixer_->clear();
+  }
+  clear_has_remixer();
+}
+inline const ::std::string& Song::remixer() const {
+  return *remixer_;
+}
+inline void Song::set_remixer(const ::std::string& value) {
+  set_has_remixer();
+  if (remixer_ == &::google::protobuf::internal::kEmptyString) {
+    remixer_ = new ::std::string;
+  }
+  remixer_->assign(value);
+}
+inline void Song::set_remixer(const char* value) {
+  set_has_remixer();
+  if (remixer_ == &::google::protobuf::internal::kEmptyString) {
+    remixer_ = new ::std::string;
+  }
+  remixer_->assign(value);
+}
+inline void Song::set_remixer(const char* value, size_t size) {
+  set_has_remixer();
+  if (remixer_ == &::google::protobuf::internal::kEmptyString) {
+    remixer_ = new ::std::string;
+  }
+  remixer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_remixer() {
+  set_has_remixer();
+  if (remixer_ == &::google::protobuf::internal::kEmptyString) {
+    remixer_ = new ::std::string;
+  }
+  return remixer_;
+}
+inline ::std::string* Song::release_remixer() {
+  clear_has_remixer();
+  if (remixer_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = remixer_;
+    remixer_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_remixer(::std::string* remixer) {
+  if (remixer_ != &::google::protobuf::internal::kEmptyString) {
+    delete remixer_;
+  }
+  if (remixer) {
+    set_has_remixer();
+    remixer_ = remixer;
+  } else {
+    clear_has_remixer();
+    remixer_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string featuring = 16;
+inline bool Song::has_featuring() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Song::set_has_featuring() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Song::clear_has_featuring() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Song::clear_featuring() {
+  if (featuring_ != &::google::protobuf::internal::kEmptyString) {
+    featuring_->clear();
+  }
+  clear_has_featuring();
+}
+inline const ::std::string& Song::featuring() const {
+  return *featuring_;
+}
+inline void Song::set_featuring(const ::std::string& value) {
+  set_has_featuring();
+  if (featuring_ == &::google::protobuf::internal::kEmptyString) {
+    featuring_ = new ::std::string;
+  }
+  featuring_->assign(value);
+}
+inline void Song::set_featuring(const char* value) {
+  set_has_featuring();
+  if (featuring_ == &::google::protobuf::internal::kEmptyString) {
+    featuring_ = new ::std::string;
+  }
+  featuring_->assign(value);
+}
+inline void Song::set_featuring(const char* value, size_t size) {
+  set_has_featuring();
+  if (featuring_ == &::google::protobuf::internal::kEmptyString) {
+    featuring_ = new ::std::string;
+  }
+  featuring_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_featuring() {
+  set_has_featuring();
+  if (featuring_ == &::google::protobuf::internal::kEmptyString) {
+    featuring_ = new ::std::string;
+  }
+  return featuring_;
+}
+inline ::std::string* Song::release_featuring() {
+  clear_has_featuring();
+  if (featuring_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = featuring_;
+    featuring_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_featuring(::std::string* featuring) {
+  if (featuring_ != &::google::protobuf::internal::kEmptyString) {
+    delete featuring_;
+  }
+  if (featuring) {
+    set_has_featuring();
+    featuring_ = featuring;
+  } else {
+    clear_has_featuring();
+    featuring_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string filePath = 6;
+inline bool Song::has_filepath() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Song::set_has_filepath() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Song::clear_has_filepath() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Song::clear_filepath() {
+  if (filepath_ != &::google::protobuf::internal::kEmptyString) {
+    filepath_->clear();
+  }
+  clear_has_filepath();
+}
+inline const ::std::string& Song::filepath() const {
+  return *filepath_;
+}
+inline void Song::set_filepath(const ::std::string& value) {
+  set_has_filepath();
+  if (filepath_ == &::google::protobuf::internal::kEmptyString) {
+    filepath_ = new ::std::string;
+  }
+  filepath_->assign(value);
+}
+inline void Song::set_filepath(const char* value) {
+  set_has_filepath();
+  if (filepath_ == &::google::protobuf::internal::kEmptyString) {
+    filepath_ = new ::std::string;
+  }
+  filepath_->assign(value);
+}
+inline void Song::set_filepath(const char* value, size_t size) {
+  set_has_filepath();
+  if (filepath_ == &::google::protobuf::internal::kEmptyString) {
+    filepath_ = new ::std::string;
+  }
+  filepath_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_filepath() {
+  set_has_filepath();
+  if (filepath_ == &::google::protobuf::internal::kEmptyString) {
+    filepath_ = new ::std::string;
+  }
+  return filepath_;
+}
+inline ::std::string* Song::release_filepath() {
+  clear_has_filepath();
+  if (filepath_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = filepath_;
+    filepath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_filepath(::std::string* filepath) {
+  if (filepath_ != &::google::protobuf::internal::kEmptyString) {
+    delete filepath_;
+  }
+  if (filepath) {
+    set_has_filepath();
+    filepath_ = filepath;
+  } else {
+    clear_has_filepath();
+    filepath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string reSongId = 17;
+inline bool Song::has_resongid() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Song::set_has_resongid() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Song::clear_has_resongid() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Song::clear_resongid() {
+  if (resongid_ != &::google::protobuf::internal::kEmptyString) {
+    resongid_->clear();
+  }
+  clear_has_resongid();
+}
+inline const ::std::string& Song::resongid() const {
+  return *resongid_;
+}
+inline void Song::set_resongid(const ::std::string& value) {
+  set_has_resongid();
+  if (resongid_ == &::google::protobuf::internal::kEmptyString) {
+    resongid_ = new ::std::string;
+  }
+  resongid_->assign(value);
+}
+inline void Song::set_resongid(const char* value) {
+  set_has_resongid();
+  if (resongid_ == &::google::protobuf::internal::kEmptyString) {
+    resongid_ = new ::std::string;
+  }
+  resongid_->assign(value);
+}
+inline void Song::set_resongid(const char* value, size_t size) {
+  set_has_resongid();
+  if (resongid_ == &::google::protobuf::internal::kEmptyString) {
+    resongid_ = new ::std::string;
+  }
+  resongid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_resongid() {
+  set_has_resongid();
+  if (resongid_ == &::google::protobuf::internal::kEmptyString) {
+    resongid_ = new ::std::string;
+  }
+  return resongid_;
+}
+inline ::std::string* Song::release_resongid() {
+  clear_has_resongid();
+  if (resongid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = resongid_;
+    resongid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_resongid(::std::string* resongid) {
+  if (resongid_ != &::google::protobuf::internal::kEmptyString) {
+    delete resongid_;
+  }
+  if (resongid) {
+    set_has_resongid();
+    resongid_ = resongid;
+  } else {
+    clear_has_resongid();
+    resongid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional int32 albumId = 7;
+inline bool Song::has_albumid() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Song::set_has_albumid() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Song::clear_has_albumid() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Song::clear_albumid() {
+  albumid_ = 0;
+  clear_has_albumid();
+}
+inline ::google::protobuf::int32 Song::albumid() const {
+  return albumid_;
+}
+inline void Song::set_albumid(::google::protobuf::int32 value) {
+  set_has_albumid();
+  albumid_ = value;
+}
+
+// optional int32 rating = 8;
+inline bool Song::has_rating() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void Song::set_has_rating() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void Song::clear_has_rating() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void Song::clear_rating() {
+  rating_ = 0;
+  clear_has_rating();
+}
+inline ::google::protobuf::int32 Song::rating() const {
+  return rating_;
+}
+inline void Song::set_rating(::google::protobuf::int32 value) {
+  set_has_rating();
+  rating_ = value;
+}
+
+// optional string dateAdded = 9;
+inline bool Song::has_dateadded() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void Song::set_has_dateadded() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void Song::clear_has_dateadded() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void Song::clear_dateadded() {
+  if (dateadded_ != &::google::protobuf::internal::kEmptyString) {
+    dateadded_->clear();
+  }
+  clear_has_dateadded();
+}
+inline const ::std::string& Song::dateadded() const {
+  return *dateadded_;
+}
+inline void Song::set_dateadded(const ::std::string& value) {
+  set_has_dateadded();
+  if (dateadded_ == &::google::protobuf::internal::kEmptyString) {
+    dateadded_ = new ::std::string;
+  }
+  dateadded_->assign(value);
+}
+inline void Song::set_dateadded(const char* value) {
+  set_has_dateadded();
+  if (dateadded_ == &::google::protobuf::internal::kEmptyString) {
+    dateadded_ = new ::std::string;
+  }
+  dateadded_->assign(value);
+}
+inline void Song::set_dateadded(const char* value, size_t size) {
+  set_has_dateadded();
+  if (dateadded_ == &::google::protobuf::internal::kEmptyString) {
+    dateadded_ = new ::std::string;
+  }
+  dateadded_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_dateadded() {
+  set_has_dateadded();
+  if (dateadded_ == &::google::protobuf::internal::kEmptyString) {
+    dateadded_ = new ::std::string;
+  }
+  return dateadded_;
+}
+inline ::std::string* Song::release_dateadded() {
+  clear_has_dateadded();
+  if (dateadded_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = dateadded_;
+    dateadded_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_dateadded(::std::string* dateadded) {
+  if (dateadded_ != &::google::protobuf::internal::kEmptyString) {
+    delete dateadded_;
+  }
+  if (dateadded) {
+    set_has_dateadded();
+    dateadded_ = dateadded;
+  } else {
+    clear_has_dateadded();
+    dateadded_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string comments = 10;
+inline bool Song::has_comments() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void Song::set_has_comments() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void Song::clear_has_comments() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void Song::clear_comments() {
+  if (comments_ != &::google::protobuf::internal::kEmptyString) {
+    comments_->clear();
+  }
+  clear_has_comments();
+}
+inline const ::std::string& Song::comments() const {
+  return *comments_;
+}
+inline void Song::set_comments(const ::std::string& value) {
+  set_has_comments();
+  if (comments_ == &::google::protobuf::internal::kEmptyString) {
+    comments_ = new ::std::string;
+  }
+  comments_->assign(value);
+}
+inline void Song::set_comments(const char* value) {
+  set_has_comments();
+  if (comments_ == &::google::protobuf::internal::kEmptyString) {
+    comments_ = new ::std::string;
+  }
+  comments_->assign(value);
+}
+inline void Song::set_comments(const char* value, size_t size) {
+  set_has_comments();
+  if (comments_ == &::google::protobuf::internal::kEmptyString) {
+    comments_ = new ::std::string;
+  }
+  comments_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_comments() {
+  set_has_comments();
+  if (comments_ == &::google::protobuf::internal::kEmptyString) {
+    comments_ = new ::std::string;
+  }
+  return comments_;
+}
+inline ::std::string* Song::release_comments() {
+  clear_has_comments();
+  if (comments_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = comments_;
+    comments_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_comments(::std::string* comments) {
+  if (comments_ != &::google::protobuf::internal::kEmptyString) {
+    delete comments_;
+  }
+  if (comments) {
+    set_has_comments();
+    comments_ = comments;
+  } else {
+    clear_has_comments();
+    comments_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional bool trashed = 11;
+inline bool Song::has_trashed() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void Song::set_has_trashed() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void Song::clear_has_trashed() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void Song::clear_trashed() {
+  trashed_ = false;
+  clear_has_trashed();
+}
+inline bool Song::trashed() const {
+  return trashed_;
+}
+inline void Song::set_trashed(bool value) {
+  set_has_trashed();
+  trashed_ = value;
+}
+
+// optional int32 albumPartId = 12;
+inline bool Song::has_albumpartid() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void Song::set_has_albumpartid() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void Song::clear_has_albumpartid() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void Song::clear_albumpartid() {
+  albumpartid_ = 0;
+  clear_has_albumpartid();
+}
+inline ::google::protobuf::int32 Song::albumpartid() const {
+  return albumpartid_;
+}
+inline void Song::set_albumpartid(::google::protobuf::int32 value) {
+  set_has_albumpartid();
+  albumpartid_ = value;
+}
+
+// optional string bpm = 13;
+inline bool Song::has_bpm() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void Song::set_has_bpm() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void Song::clear_has_bpm() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void Song::clear_bpm() {
+  if (bpm_ != &::google::protobuf::internal::kEmptyString) {
+    bpm_->clear();
+  }
+  clear_has_bpm();
+}
+inline const ::std::string& Song::bpm() const {
+  return *bpm_;
+}
+inline void Song::set_bpm(const ::std::string& value) {
+  set_has_bpm();
+  if (bpm_ == &::google::protobuf::internal::kEmptyString) {
+    bpm_ = new ::std::string;
+  }
+  bpm_->assign(value);
+}
+inline void Song::set_bpm(const char* value) {
+  set_has_bpm();
+  if (bpm_ == &::google::protobuf::internal::kEmptyString) {
+    bpm_ = new ::std::string;
+  }
+  bpm_->assign(value);
+}
+inline void Song::set_bpm(const char* value, size_t size) {
+  set_has_bpm();
+  if (bpm_ == &::google::protobuf::internal::kEmptyString) {
+    bpm_ = new ::std::string;
+  }
+  bpm_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Song::mutable_bpm() {
+  set_has_bpm();
+  if (bpm_ == &::google::protobuf::internal::kEmptyString) {
+    bpm_ = new ::std::string;
+  }
+  return bpm_;
+}
+inline ::std::string* Song::release_bpm() {
+  clear_has_bpm();
+  if (bpm_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = bpm_;
+    bpm_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Song::set_allocated_bpm(::std::string* bpm) {
+  if (bpm_ != &::google::protobuf::internal::kEmptyString) {
+    delete bpm_;
+  }
+  if (bpm) {
+    set_has_bpm();
+    bpm_ = bpm;
+  } else {
+    clear_has_bpm();
+    bpm_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// repeated .dogatech.soulsifter.proto.TonicKey tonicKey = 14;
+inline int Song::tonickey_size() const {
+  return tonickey_.size();
+}
+inline void Song::clear_tonickey() {
+  tonickey_.Clear();
+}
+inline ::dogatech::soulsifter::proto::TonicKey Song::tonickey(int index) const {
+  return static_cast< ::dogatech::soulsifter::proto::TonicKey >(tonickey_.Get(index));
+}
+inline void Song::set_tonickey(int index, ::dogatech::soulsifter::proto::TonicKey value) {
+  assert(::dogatech::soulsifter::proto::TonicKey_IsValid(value));
+  tonickey_.Set(index, value);
+}
+inline void Song::add_tonickey(::dogatech::soulsifter::proto::TonicKey value) {
+  assert(::dogatech::soulsifter::proto::TonicKey_IsValid(value));
+  tonickey_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField<int>&
+Song::tonickey() const {
+  return tonickey_;
+}
+inline ::google::protobuf::RepeatedField<int>*
+Song::mutable_tonickey() {
+  return &tonickey_;
+}
+
+// optional bool lowQuality = 15;
+inline bool Song::has_lowquality() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void Song::set_has_lowquality() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void Song::clear_has_lowquality() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void Song::clear_lowquality() {
+  lowquality_ = false;
+  clear_has_lowquality();
+}
+inline bool Song::lowquality() const {
+  return lowquality_;
+}
+inline void Song::set_lowquality(bool value) {
+  set_has_lowquality();
+  lowquality_ = value;
+}
+
+// optional .dogatech.soulsifter.proto.Album album = 18;
+inline bool Song::has_album() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+inline void Song::set_has_album() {
+  _has_bits_[0] |= 0x00020000u;
+}
+inline void Song::clear_has_album() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+inline void Song::clear_album() {
+  if (album_ != NULL) album_->::dogatech::soulsifter::proto::Album::Clear();
+  clear_has_album();
+}
+inline const ::dogatech::soulsifter::proto::Album& Song::album() const {
+  return album_ != NULL ? *album_ : *default_instance_->album_;
+}
+inline ::dogatech::soulsifter::proto::Album* Song::mutable_album() {
+  set_has_album();
+  if (album_ == NULL) album_ = new ::dogatech::soulsifter::proto::Album;
+  return album_;
+}
+inline ::dogatech::soulsifter::proto::Album* Song::release_album() {
+  clear_has_album();
+  ::dogatech::soulsifter::proto::Album* temp = album_;
+  album_ = NULL;
+  return temp;
+}
+inline void Song::set_allocated_album(::dogatech::soulsifter::proto::Album* album) {
+  delete album_;
+  album_ = album;
+  if (album) {
+    set_has_album();
+  } else {
+    clear_has_album();
+  }
+}
+
+// repeated .dogatech.soulsifter.proto.Genre genre = 19;
+inline int Song::genre_size() const {
+  return genre_.size();
+}
+inline void Song::clear_genre() {
+  genre_.Clear();
+}
+inline const ::dogatech::soulsifter::proto::Genre& Song::genre(int index) const {
+  return genre_.Get(index);
+}
+inline ::dogatech::soulsifter::proto::Genre* Song::mutable_genre(int index) {
+  return genre_.Mutable(index);
+}
+inline ::dogatech::soulsifter::proto::Genre* Song::add_genre() {
+  return genre_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >&
+Song::genre() const {
+  return genre_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::dogatech::soulsifter::proto::Genre >*
+Song::mutable_genre() {
+  return &genre_;
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace proto
+}  // namespace soulsifter
+}  // namespace dogatech
+
 #ifndef SWIG
 namespace google {
 namespace protobuf {
 
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::dogatech::soulsifter::proto::TonicKey>() {
+  return ::dogatech::soulsifter::proto::TonicKey_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf

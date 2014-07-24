@@ -18,10 +18,12 @@ class rpc;
 class closure;
 class rpc_channel;
 }  //namesacpe rpcz
+#include "soul_sifter.pb.h"
 #include "soul_sifter_service.pb.h"
 
 namespace dogatech {
 namespace soulsifter {
+namespace proto {
 void rpcz_protobuf_AssignDesc_soul_5fsifter_5fservice_2eproto();
 void rpcz_protobuf_ShutdownFile_soul_5fsifter_5fservice_2eproto();
 
@@ -38,8 +40,10 @@ class SoulSifterService : public rpcz::service {
 
   static const ::google::protobuf::ServiceDescriptor* descriptor();
 
-  virtual void GetSong(const ::dogatech::soulsifter::GetSongRequest& request,
-                       ::rpcz::reply< ::dogatech::soulsifter::GetSongResponse> response);
+  virtual void FindSongs(const ::dogatech::soulsifter::proto::FindSongsRequest& request,
+                       ::rpcz::reply< ::dogatech::soulsifter::proto::FindSongsResponse> response);
+  virtual void GetSong(const ::dogatech::soulsifter::proto::GetSongRequest& request,
+                       ::rpcz::reply< ::dogatech::soulsifter::proto::GetSongResponse> response);
 
   // implements Service ----------------------------------------------
 
@@ -68,11 +72,17 @@ class SoulSifterService_Stub {
   inline ::rpcz::rpc_channel* channel() { return channel_; }
 
 
-  void GetSong(const ::dogatech::soulsifter::GetSongRequest& request,
-                       ::dogatech::soulsifter::GetSongResponse* response,
+  void FindSongs(const ::dogatech::soulsifter::proto::FindSongsRequest& request,
+                       ::dogatech::soulsifter::proto::FindSongsResponse* response,
                        ::rpcz::rpc* rpc,                     ::rpcz::closure* done);
-  void GetSong(const ::dogatech::soulsifter::GetSongRequest& request,
-                       ::dogatech::soulsifter::GetSongResponse* response,
+  void FindSongs(const ::dogatech::soulsifter::proto::FindSongsRequest& request,
+                       ::dogatech::soulsifter::proto::FindSongsResponse* response,
+                       long deadline_ms = -1);
+  void GetSong(const ::dogatech::soulsifter::proto::GetSongRequest& request,
+                       ::dogatech::soulsifter::proto::GetSongResponse* response,
+                       ::rpcz::rpc* rpc,                     ::rpcz::closure* done);
+  void GetSong(const ::dogatech::soulsifter::proto::GetSongRequest& request,
+                       ::dogatech::soulsifter::proto::GetSongResponse* response,
                        long deadline_ms = -1);
  private:
   ::rpcz::rpc_channel* channel_;
@@ -82,6 +92,7 @@ class SoulSifterService_Stub {
 };
 
 
+}  // namespace proto
 }  // namespace soulsifter
 }  // namespace dogatech
 #endif  // RPCZ_soul_5fsifter_5fservice_2eproto__INCLUDED

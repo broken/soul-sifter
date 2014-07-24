@@ -18,6 +18,7 @@
 
 namespace dogatech {
 namespace soulsifter {
+namespace proto {
 
 namespace {
 
@@ -27,6 +28,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* GetSongResponse_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   GetSongResponse_reflection_ = NULL;
+const ::google::protobuf::Descriptor* FindSongsRequest_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  FindSongsRequest_reflection_ = NULL;
+const ::google::protobuf::Descriptor* FindSongsResponse_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  FindSongsResponse_reflection_ = NULL;
 
 }  // namespace
 
@@ -67,6 +74,41 @@ void protobuf_AssignDesc_soul_5fsifter_5fservice_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GetSongResponse));
+  FindSongsRequest_descriptor_ = file->message_type(2);
+  static const int FindSongsRequest_offsets_[6] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, query_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, key_to_match_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, key_lock_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, max_bpm_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, min_bpm_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, genre_),
+  };
+  FindSongsRequest_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      FindSongsRequest_descriptor_,
+      FindSongsRequest::default_instance_,
+      FindSongsRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsRequest, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(FindSongsRequest));
+  FindSongsResponse_descriptor_ = file->message_type(3);
+  static const int FindSongsResponse_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsResponse, song_),
+  };
+  FindSongsResponse_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      FindSongsResponse_descriptor_,
+      FindSongsResponse::default_instance_,
+      FindSongsResponse_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsResponse, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FindSongsResponse, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(FindSongsResponse));
 }
 
 namespace {
@@ -83,6 +125,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
     GetSongRequest_descriptor_, &GetSongRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     GetSongResponse_descriptor_, &GetSongResponse::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    FindSongsRequest_descriptor_, &FindSongsRequest::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    FindSongsResponse_descriptor_, &FindSongsResponse::default_instance());
 }
 
 }  // namespace
@@ -92,6 +138,10 @@ void protobuf_ShutdownFile_soul_5fsifter_5fservice_2eproto() {
   delete GetSongRequest_reflection_;
   delete GetSongResponse::default_instance_;
   delete GetSongResponse_reflection_;
+  delete FindSongsRequest::default_instance_;
+  delete FindSongsRequest_reflection_;
+  delete FindSongsResponse::default_instance_;
+  delete FindSongsResponse_reflection_;
 }
 
 void protobuf_AddDesc_soul_5fsifter_5fservice_2eproto() {
@@ -100,19 +150,34 @@ void protobuf_AddDesc_soul_5fsifter_5fservice_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::dogatech::soulsifter::proto::protobuf_AddDesc_soul_5fsifter_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\031soul_sifter_service.proto\022\023dogatech.so"
-    "ulsifter\"\034\n\016GetSongRequest\022\n\n\002id\030\001 \001(\005\" "
-    "\n\017GetSongResponse\022\r\n\005title\030\001 \001(\t2i\n\021Soul"
-    "SifterService\022T\n\007GetSong\022#.dogatech.soul"
-    "sifter.GetSongRequest\032$.dogatech.soulsif"
-    "ter.GetSongResponse", 219);
+    "\n\031soul_sifter_service.proto\022\031dogatech.so"
+    "ulsifter.proto\032\021soul_sifter.proto\"\034\n\016Get"
+    "SongRequest\022\n\n\002id\030\001 \001(\005\" \n\017GetSongRespon"
+    "se\022\r\n\005title\030\001 \001(\t\"\307\001\n\020FindSongsRequest\022\r"
+    "\n\005query\030\001 \001(\t\0229\n\014key_to_match\030\002 \001(\0162#.do"
+    "gatech.soulsifter.proto.TonicKey\022\026\n\010key_"
+    "lock\030\003 \001(\010:\004true\022\017\n\007max_bpm\030\004 \001(\005\022\017\n\007min"
+    "_bpm\030\005 \001(\005\022/\n\005genre\030\006 \003(\0132 .dogatech.sou"
+    "lsifter.proto.Genre\"B\n\021FindSongsResponse"
+    "\022-\n\004song\030\001 \003(\0132\037.dogatech.soulsifter.pro"
+    "to.Song2\335\001\n\021SoulSifterService\022f\n\tFindSon"
+    "gs\022+.dogatech.soulsifter.proto.FindSongs"
+    "Request\032,.dogatech.soulsifter.proto.Find"
+    "SongsResponse\022`\n\007GetSong\022).dogatech.soul"
+    "sifter.proto.GetSongRequest\032*.dogatech.s"
+    "oulsifter.proto.GetSongResponse", 631);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "soul_sifter_service.proto", &protobuf_RegisterTypes);
   GetSongRequest::default_instance_ = new GetSongRequest();
   GetSongResponse::default_instance_ = new GetSongResponse();
+  FindSongsRequest::default_instance_ = new FindSongsRequest();
+  FindSongsResponse::default_instance_ = new FindSongsResponse();
   GetSongRequest::default_instance_->InitAsDefaultInstance();
   GetSongResponse::default_instance_->InitAsDefaultInstance();
+  FindSongsRequest::default_instance_->InitAsDefaultInstance();
+  FindSongsResponse::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_soul_5fsifter_5fservice_2eproto);
 }
 
@@ -556,8 +621,641 @@ void GetSongResponse::Swap(GetSongResponse* other) {
 }
 
 
+// ===================================================================
+
+#ifndef _MSC_VER
+const int FindSongsRequest::kQueryFieldNumber;
+const int FindSongsRequest::kKeyToMatchFieldNumber;
+const int FindSongsRequest::kKeyLockFieldNumber;
+const int FindSongsRequest::kMaxBpmFieldNumber;
+const int FindSongsRequest::kMinBpmFieldNumber;
+const int FindSongsRequest::kGenreFieldNumber;
+#endif  // !_MSC_VER
+
+FindSongsRequest::FindSongsRequest()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void FindSongsRequest::InitAsDefaultInstance() {
+}
+
+FindSongsRequest::FindSongsRequest(const FindSongsRequest& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void FindSongsRequest::SharedCtor() {
+  _cached_size_ = 0;
+  query_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  key_to_match_ = 0;
+  key_lock_ = true;
+  max_bpm_ = 0;
+  min_bpm_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+FindSongsRequest::~FindSongsRequest() {
+  SharedDtor();
+}
+
+void FindSongsRequest::SharedDtor() {
+  if (query_ != &::google::protobuf::internal::kEmptyString) {
+    delete query_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void FindSongsRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* FindSongsRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return FindSongsRequest_descriptor_;
+}
+
+const FindSongsRequest& FindSongsRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_soul_5fsifter_5fservice_2eproto();
+  return *default_instance_;
+}
+
+FindSongsRequest* FindSongsRequest::default_instance_ = NULL;
+
+FindSongsRequest* FindSongsRequest::New() const {
+  return new FindSongsRequest;
+}
+
+void FindSongsRequest::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_query()) {
+      if (query_ != &::google::protobuf::internal::kEmptyString) {
+        query_->clear();
+      }
+    }
+    key_to_match_ = 0;
+    key_lock_ = true;
+    max_bpm_ = 0;
+    min_bpm_ = 0;
+  }
+  genre_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool FindSongsRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string query = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_query()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->query().data(), this->query().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_key_to_match;
+        break;
+      }
+
+      // optional .dogatech.soulsifter.proto.TonicKey key_to_match = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_key_to_match:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::dogatech::soulsifter::proto::TonicKey_IsValid(value)) {
+            set_key_to_match(static_cast< ::dogatech::soulsifter::proto::TonicKey >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(2, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_key_lock;
+        break;
+      }
+
+      // optional bool key_lock = 3 [default = true];
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_key_lock:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &key_lock_)));
+          set_has_key_lock();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_max_bpm;
+        break;
+      }
+
+      // optional int32 max_bpm = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_max_bpm:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &max_bpm_)));
+          set_has_max_bpm();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_min_bpm;
+        break;
+      }
+
+      // optional int32 min_bpm = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_min_bpm:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &min_bpm_)));
+          set_has_min_bpm();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_genre;
+        break;
+      }
+
+      // repeated .dogatech.soulsifter.proto.Genre genre = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_genre:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_genre()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_genre;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void FindSongsRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional string query = 1;
+  if (has_query()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->query().data(), this->query().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->query(), output);
+  }
+
+  // optional .dogatech.soulsifter.proto.TonicKey key_to_match = 2;
+  if (has_key_to_match()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      2, this->key_to_match(), output);
+  }
+
+  // optional bool key_lock = 3 [default = true];
+  if (has_key_lock()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->key_lock(), output);
+  }
+
+  // optional int32 max_bpm = 4;
+  if (has_max_bpm()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->max_bpm(), output);
+  }
+
+  // optional int32 min_bpm = 5;
+  if (has_min_bpm()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->min_bpm(), output);
+  }
+
+  // repeated .dogatech.soulsifter.proto.Genre genre = 6;
+  for (int i = 0; i < this->genre_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      6, this->genre(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* FindSongsRequest::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional string query = 1;
+  if (has_query()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->query().data(), this->query().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->query(), target);
+  }
+
+  // optional .dogatech.soulsifter.proto.TonicKey key_to_match = 2;
+  if (has_key_to_match()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      2, this->key_to_match(), target);
+  }
+
+  // optional bool key_lock = 3 [default = true];
+  if (has_key_lock()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->key_lock(), target);
+  }
+
+  // optional int32 max_bpm = 4;
+  if (has_max_bpm()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->max_bpm(), target);
+  }
+
+  // optional int32 min_bpm = 5;
+  if (has_min_bpm()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->min_bpm(), target);
+  }
+
+  // repeated .dogatech.soulsifter.proto.Genre genre = 6;
+  for (int i = 0; i < this->genre_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        6, this->genre(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int FindSongsRequest::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional string query = 1;
+    if (has_query()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->query());
+    }
+
+    // optional .dogatech.soulsifter.proto.TonicKey key_to_match = 2;
+    if (has_key_to_match()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->key_to_match());
+    }
+
+    // optional bool key_lock = 3 [default = true];
+    if (has_key_lock()) {
+      total_size += 1 + 1;
+    }
+
+    // optional int32 max_bpm = 4;
+    if (has_max_bpm()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->max_bpm());
+    }
+
+    // optional int32 min_bpm = 5;
+    if (has_min_bpm()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->min_bpm());
+    }
+
+  }
+  // repeated .dogatech.soulsifter.proto.Genre genre = 6;
+  total_size += 1 * this->genre_size();
+  for (int i = 0; i < this->genre_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->genre(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void FindSongsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const FindSongsRequest* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const FindSongsRequest*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void FindSongsRequest::MergeFrom(const FindSongsRequest& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  genre_.MergeFrom(from.genre_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_query()) {
+      set_query(from.query());
+    }
+    if (from.has_key_to_match()) {
+      set_key_to_match(from.key_to_match());
+    }
+    if (from.has_key_lock()) {
+      set_key_lock(from.key_lock());
+    }
+    if (from.has_max_bpm()) {
+      set_max_bpm(from.max_bpm());
+    }
+    if (from.has_min_bpm()) {
+      set_min_bpm(from.min_bpm());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void FindSongsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void FindSongsRequest::CopyFrom(const FindSongsRequest& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FindSongsRequest::IsInitialized() const {
+
+  return true;
+}
+
+void FindSongsRequest::Swap(FindSongsRequest* other) {
+  if (other != this) {
+    std::swap(query_, other->query_);
+    std::swap(key_to_match_, other->key_to_match_);
+    std::swap(key_lock_, other->key_lock_);
+    std::swap(max_bpm_, other->max_bpm_);
+    std::swap(min_bpm_, other->min_bpm_);
+    genre_.Swap(&other->genre_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata FindSongsRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = FindSongsRequest_descriptor_;
+  metadata.reflection = FindSongsRequest_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int FindSongsResponse::kSongFieldNumber;
+#endif  // !_MSC_VER
+
+FindSongsResponse::FindSongsResponse()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void FindSongsResponse::InitAsDefaultInstance() {
+}
+
+FindSongsResponse::FindSongsResponse(const FindSongsResponse& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void FindSongsResponse::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+FindSongsResponse::~FindSongsResponse() {
+  SharedDtor();
+}
+
+void FindSongsResponse::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void FindSongsResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* FindSongsResponse::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return FindSongsResponse_descriptor_;
+}
+
+const FindSongsResponse& FindSongsResponse::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_soul_5fsifter_5fservice_2eproto();
+  return *default_instance_;
+}
+
+FindSongsResponse* FindSongsResponse::default_instance_ = NULL;
+
+FindSongsResponse* FindSongsResponse::New() const {
+  return new FindSongsResponse;
+}
+
+void FindSongsResponse::Clear() {
+  song_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool FindSongsResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .dogatech.soulsifter.proto.Song song = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_song:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_song()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(10)) goto parse_song;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void FindSongsResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // repeated .dogatech.soulsifter.proto.Song song = 1;
+  for (int i = 0; i < this->song_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->song(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* FindSongsResponse::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // repeated .dogatech.soulsifter.proto.Song song = 1;
+  for (int i = 0; i < this->song_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->song(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int FindSongsResponse::ByteSize() const {
+  int total_size = 0;
+
+  // repeated .dogatech.soulsifter.proto.Song song = 1;
+  total_size += 1 * this->song_size();
+  for (int i = 0; i < this->song_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->song(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void FindSongsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const FindSongsResponse* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const FindSongsResponse*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void FindSongsResponse::MergeFrom(const FindSongsResponse& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  song_.MergeFrom(from.song_);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void FindSongsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void FindSongsResponse::CopyFrom(const FindSongsResponse& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FindSongsResponse::IsInitialized() const {
+
+  return true;
+}
+
+void FindSongsResponse::Swap(FindSongsResponse* other) {
+  if (other != this) {
+    song_.Swap(&other->song_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata FindSongsResponse::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = FindSongsResponse_descriptor_;
+  metadata.reflection = FindSongsResponse_reflection_;
+  return metadata;
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 
+}  // namespace proto
 }  // namespace soulsifter
 }  // namespace dogatech
 
